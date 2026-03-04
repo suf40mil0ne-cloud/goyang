@@ -167,6 +167,75 @@ const state = {
   selectedProjectTab: "창릉 3기 신도시",
 };
 
+const districtProjects = [
+  {
+    project: "창릉 3기 신도시",
+    status: "ongoing",
+    statusLabel: "진행중",
+    location: "덕양구 화전·동산·용두동 일원",
+    period: "2019 ~ 2029(단계 진행)",
+    keyValue: "면적 8,119,006㎡ / 주택 38,000호",
+    summary: "고양 서남부의 대규모 공공주택지구로 광역교통·자족기능 도입이 핵심입니다.",
+    links: [
+      { label: "3기 신도시(창릉)", url: "https://xn--3-3u6ey6lv7rsa.kr/usr/city/intro/changneung.do" },
+      { label: "LH", url: "https://www.lh.or.kr/" },
+      { label: "고양시청", url: "https://www.goyang.go.kr/www/index.do" },
+    ],
+  },
+  {
+    project: "일산테크노밸리",
+    status: "ongoing",
+    statusLabel: "진행중",
+    location: "일산서구 대화동 일원",
+    period: "2016 ~ 2026(조성 단계)",
+    keyValue: "면적 약 87만㎡",
+    summary: "첨단산업·일자리 거점 조성 사업으로 킨텍스 일대 산업·MICE 축과 연계됩니다.",
+    links: [
+      { label: "경기도 일산테크노밸리", url: "https://www.gg.go.kr/contents/contents.do?ciIdx=1162&menuId=3237" },
+      { label: "고양시청", url: "https://www.goyang.go.kr/www/index.do" },
+    ],
+  },
+  {
+    project: "킨텍스 일원 복합개발",
+    status: "ongoing",
+    statusLabel: "진행중",
+    location: "일산서구 킨텍스 일원",
+    period: "단계별 추진",
+    keyValue: "제3전시장 건립 포함",
+    summary: "전시·상업·업무·관광 기능을 결합한 복합개발 권역으로 교통 연계 검토가 중요합니다.",
+    links: [
+      { label: "킨텍스 제3전시장", url: "https://www.kintex.com/web/ko/html/company/exhibitionHall3.do" },
+      { label: "고양시청", url: "https://www.goyang.go.kr/www/index.do" },
+    ],
+  },
+  {
+    project: "원당 재정비",
+    status: "ongoing",
+    statusLabel: "진행중",
+    location: "덕양구 원당권",
+    period: "단계별 추진",
+    keyValue: "도시재생·생활SOC 연계",
+    summary: "구도심 재정비 및 도시재생 사업으로 생활환경 개선과 중심지 기능 회복이 핵심입니다.",
+    links: [
+      { label: "고양시 주요성과", url: "https://www.goyang.go.kr/www/www04/www04_4/www04_4_1.jsp" },
+      { label: "원당재창조 자료(PDF)", url: "https://www.goyang.go.kr/common/download.do?filePath=www&fileName=2022032404102510.pdf" },
+    ],
+  },
+  {
+    project: "방송영상밸리",
+    status: "ongoing",
+    statusLabel: "진행중",
+    location: "일산동구 장항동 일원",
+    period: "2019 ~ 2026(사업 추진)",
+    keyValue: "면적 701,984㎡",
+    summary: "방송·영상 콘텐츠 산업 거점 조성 사업으로 인접 개발사업과의 시너지 검토가 중요합니다.",
+    links: [
+      { label: "고양시 성과 자료", url: "https://www.goyang.go.kr/www/www04/www04_4/www04_4_1.jsp" },
+      { label: "고양시 자료(PDF)", url: "https://www.goyang.go.kr/common/download.do?filePath=www&fileName=2021092903524427.pdf" },
+    ],
+  },
+];
+
 const projectTimelines = {
   "창릉 3기 신도시": [
     "사업 개요 및 지구 지정 관련 공고 확인",
@@ -551,6 +620,63 @@ function renderProjectTabContent() {
   timelineElement.innerHTML = timelineItems.map((item) => `<li>${item}</li>`).join("");
 }
 
+function renderDistrictStatus() {
+  const container = document.getElementById("district-status-grid");
+  if (!container) return;
+
+  container.innerHTML = districtProjects
+    .map(
+      (item) => `
+      <article class="district-card">
+        <div class="district-top">
+          <h4>${item.project}</h4>
+          <span class="district-status ${item.status}">${item.statusLabel}</span>
+        </div>
+        <ul class="district-meta">
+          <li>위치: ${item.location}</li>
+          <li>사업기간: ${item.period}</li>
+          <li>핵심지표: ${item.keyValue}</li>
+        </ul>
+        <p class="district-summary">${item.summary}</p>
+        <div class="district-links">
+          <a href="#" data-focus-project="${item.project}">포털에서 보기</a>
+          ${item.links
+            .map(
+              (link) =>
+                `<a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.label}</a>`
+            )
+            .join("")}
+        </div>
+      </article>
+    `
+    )
+    .join("");
+}
+
+function initDistrictInteractions() {
+  const anchors = document.querySelectorAll("[data-focus-project]");
+  anchors.forEach((anchor) => {
+    anchor.addEventListener("click", (event) => {
+      event.preventDefault();
+      const projectName = anchor.getAttribute("data-focus-project") || "";
+      if (!projectName) return;
+
+      const projectSelect = document.getElementById("tag-project");
+      if (projectSelect) {
+        const optionExists = Array.from(projectSelect.options).some((opt) => opt.value === projectName);
+        projectSelect.value = optionExists ? projectName : "all";
+      }
+
+      const categorySelect = document.getElementById("resource-category");
+      if (categorySelect) categorySelect.value = "project";
+      renderResources();
+
+      const tabButton = document.querySelector(`.project-tab[data-project-tab="${projectName}"]`);
+      if (tabButton instanceof HTMLButtonElement) tabButton.click();
+    });
+  });
+}
+
 function initProjectTabs() {
   const buttons = Array.from(document.querySelectorAll(".project-tab"));
   if (buttons.length === 0) return;
@@ -588,3 +714,5 @@ initUpload();
 initDownload();
 initMap();
 initProjectTabs();
+renderDistrictStatus();
+initDistrictInteractions();
