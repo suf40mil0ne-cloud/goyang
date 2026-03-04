@@ -164,6 +164,34 @@ const baseResources = [
 
 const state = {
   customResources: [],
+  selectedProjectTab: "창릉 3기 신도시",
+};
+
+const projectTimelines = {
+  "창릉 3기 신도시": [
+    "사업 개요 및 지구 지정 관련 공고 확인",
+    "광역교통개선대책·기반시설 계획 병행 검토",
+    "주요 인허가 및 보상 절차 진행 상황 추적",
+    "주택공급·자족기능 도입 단계별 일정 점검",
+  ],
+  "일산테크노밸리": [
+    "산업단지 조성 계획 및 기관 협약 문서 확인",
+    "용지 조성·분양·기업유치 추진 단계 점검",
+    "주변 교통/정주여건 연계 인프라 계획 검토",
+    "일자리 창출 및 지역 파급효과 지표 추적",
+  ],
+  "킨텍스 일원 복합개발": [
+    "복합개발 구상(상업·업무·문화) 기본 자료 확인",
+    "도시관리계획 변경 및 지구단위계획 문서 점검",
+    "교통영향 및 보행·대중교통 연계 계획 검토",
+    "단계별 사업 시행 계획과 공공기여 항목 추적",
+  ],
+  "원당 재정비": [
+    "재정비/도시재생 대상지 현황 및 문제진단 확인",
+    "정비계획·주민의견 수렴·공람 절차 문서 점검",
+    "생활SOC·주거환경 개선 사업 연계 계획 검토",
+    "구도심 활성화 성과지표 및 후속사업 추적",
+  ],
 };
 
 function setText(id, text) {
@@ -257,11 +285,13 @@ function renderResources() {
   if (filtered.length === 0) {
     container.innerHTML = '<div class="empty-state">검색 결과가 없습니다. 태그/키워드를 다시 조합해보세요.</div>';
     if (counter) counter.textContent = "총 0건";
+    renderProjectTabContent();
     return;
   }
 
   container.innerHTML = filtered.map(buildResourceCard).join("");
   if (counter) counter.textContent = `총 ${filtered.length}건`;
+  renderProjectTabContent();
 }
 
 function loadCustomResources() {
@@ -501,6 +531,50 @@ function initMap() {
   }).addTo(map);
 }
 
+function renderProjectTabContent() {
+  const listElement = document.getElementById("project-tab-list");
+  const timelineElement = document.getElementById("project-timeline");
+  if (!listElement || !timelineElement) return;
+
+  const allResources = getAllResources();
+  const projectResources = allResources
+    .filter((item) => item.project === state.selectedProjectTab)
+    .slice(0, 6);
+
+  if (projectResources.length === 0) {
+    listElement.innerHTML = '<div class="empty-state">선택한 사업에 연결된 문서가 없습니다.</div>';
+  } else {
+    listElement.innerHTML = projectResources.map(buildResourceCard).join("");
+  }
+
+  const timelineItems = projectTimelines[state.selectedProjectTab] || ["사업 단계 정보를 준비 중입니다."];
+  timelineElement.innerHTML = timelineItems.map((item) => `<li>${item}</li>`).join("");
+}
+
+function initProjectTabs() {
+  const buttons = Array.from(document.querySelectorAll(".project-tab"));
+  if (buttons.length === 0) return;
+
+  const setActive = (projectName) => {
+    state.selectedProjectTab = projectName;
+    buttons.forEach((btn) => {
+      const isActive = btn.dataset.projectTab === projectName;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+    renderProjectTabContent();
+  };
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const projectName = button.dataset.projectTab || "";
+      setActive(projectName);
+    });
+  });
+
+  setActive(state.selectedProjectTab);
+}
+
 function initUpdatedAt() {
   const nowText = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
   setText("updated-at", `마지막 갱신: ${nowText}`);
@@ -513,3 +587,4 @@ initResourceForm();
 initUpload();
 initDownload();
 initMap();
+initProjectTabs();

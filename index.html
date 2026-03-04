@@ -114,6 +114,29 @@
       </div>
     </section>
 
+    <section class="panel">
+      <div class="panel-head">
+        <h3>개발사업 전용 탭</h3>
+        <span>사업별 문서·타임라인</span>
+      </div>
+      <div class="project-tabs" role="tablist" aria-label="개발사업 탭">
+        <button class="project-tab active" data-project-tab="창릉 3기 신도시" role="tab" aria-selected="true">창릉 3기 신도시</button>
+        <button class="project-tab" data-project-tab="일산테크노밸리" role="tab" aria-selected="false">일산테크노밸리</button>
+        <button class="project-tab" data-project-tab="킨텍스 일원 복합개발" role="tab" aria-selected="false">킨텍스 일원 복합개발</button>
+        <button class="project-tab" data-project-tab="원당 재정비" role="tab" aria-selected="false">원당 재정비</button>
+      </div>
+      <div class="project-tab-panels">
+        <div class="tab-panel-block">
+          <h4>문서 아카이브</h4>
+          <div id="project-tab-list" class="resource-grid" aria-live="polite"></div>
+        </div>
+        <div class="tab-panel-block">
+          <h4>사업 타임라인</h4>
+          <ol id="project-timeline" class="project-timeline" aria-live="polite"></ol>
+        </div>
+      </div>
+    </section>
+
     <section class="panel two-col planning-two-col">
       <div class="panel-block">
         <div class="panel-head">
