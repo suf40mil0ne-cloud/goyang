@@ -1,3 +1,1 @@
-# Add your publisher line after AdSense account approval.
-# Format example:
-# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+google.com, pub-7104324664246128, DIRECT, f08c47fec0942fa0
