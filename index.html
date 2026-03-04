@@ -36,10 +36,10 @@
   <main class="layout planning-layout">
     <section class="hero planning-hero">
       <p class="hero-kicker">서울도시공간포털 참고 개편</p>
-      <h2>고양시 도시계획 실무 자료를 주제별로 빠르게 찾는 작업 화면</h2>
+      <h2>고양시 개발사업 중심 도시계획 자료를 빠르게 찾는 실무 포털</h2>
       <p>
-        도시기본계획, 도시관리계획, 지구단위계획, 고시·공고, 공간정보 지도, 통계·데이터를
-        한 화면에서 분류해 접근할 수 있도록 구성했습니다. 실무 문서 확인은 반드시 원문 기준으로 진행하세요.
+        창릉 3기 신도시, 일산테크노밸리, 킨텍스 일원 복합개발, 원당 재정비 등 주요 개발사업을 중심으로
+        관련 계획문서·고시·공고·지도·통계를 연결했습니다. 실무 문서 확인은 반드시 원문 기준으로 진행하세요.
       </p>
       <div class="hero-meta">
         <span id="updated-at">마지막 갱신 확인 중...</span>
@@ -50,43 +50,68 @@
     <section class="planner-toolbar panel" aria-label="자료 검색 도구">
       <div class="toolbar-row">
         <label for="resource-search">자료 검색</label>
-        <input id="resource-search" type="search" placeholder="예: 지구단위계획, 고시공고, 토지이음" />
+        <input id="resource-search" type="search" placeholder="예: 창릉, 테크노밸리, 고시공고" />
       </div>
       <div class="toolbar-row">
         <label for="resource-category">분류</label>
         <select id="resource-category">
+          <option value="project">핵심 개발사업</option>
           <option value="all">전체</option>
           <option value="master-plan">도시기본계획</option>
           <option value="management-plan">도시관리·지구단위계획</option>
           <option value="notice">고시·공고·행정문서</option>
           <option value="map">지도·공간정보</option>
           <option value="stats">통계·공공데이터</option>
-          <option value="project">핵심 개발사업</option>
         </select>
       </div>
     </section>
 
-    <section class="kpi-grid planning-kpi" aria-label="도시계획 핵심 축">
+    <section class="kpi-grid planning-kpi" aria-label="개발사업 핵심 축">
       <article class="kpi-card warm">
-        <h3>도시기본계획</h3>
-        <p class="kpi-value">장기 비전</p>
-        <span class="kpi-note">2040 계획 수립 동향 확인</span>
+        <h3>창릉 3기 신도시</h3>
+        <p class="kpi-value">광역개발축</p>
+        <span class="kpi-note">교통·자족기능·공공주택 연계</span>
       </article>
       <article class="kpi-card cool">
-        <h3>도시관리계획</h3>
-        <p class="kpi-value">법정 결정</p>
-        <span class="kpi-note">용도·시설·지구단위 고시</span>
+        <h3>일산테크노밸리</h3>
+        <p class="kpi-value">산업거점</p>
+        <span class="kpi-note">첨단산업·일자리 집적</span>
       </article>
       <article class="kpi-card mint">
-        <h3>공간정보</h3>
-        <p class="kpi-value">지도 열람</p>
-        <span class="kpi-note">토지이용규제·행정경계·시설</span>
+        <h3>킨텍스 일원</h3>
+        <p class="kpi-value">복합개발</p>
+        <span class="kpi-note">MICE·교통·상업 기능 결합</span>
       </article>
       <article class="kpi-card sand">
-        <h3>도시재생·사업</h3>
-        <p class="kpi-value">사업 추적</p>
-        <span class="kpi-note">원당·테크노밸리 등 주요 사업</span>
+        <h3>원당 재정비</h3>
+        <p class="kpi-value">도심재생</p>
+        <span class="kpi-note">생활SOC·주거·상권 개선</span>
       </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h3>우선 추적 사업</h3>
+        <span>개발사업 중심 브리핑</span>
+      </div>
+      <div class="project-focus-grid">
+        <article>
+          <h4>창릉 3기 신도시</h4>
+          <p>광역교통대책, 자족용지, 공공시설 공급 계획을 함께 봐야 사업 타임라인 해석이 정확해집니다.</p>
+        </article>
+        <article>
+          <h4>일산테크노밸리</h4>
+          <p>산업용지 공급, 기업 유치, 인접 주거·교통 연계를 동시에 검토해야 사업성 판단이 가능합니다.</p>
+        </article>
+        <article>
+          <h4>킨텍스 일원 복합개발</h4>
+          <p>전시·관광·상업 기능과 교통 수요가 결합되는 지역으로, 토지이용과 교통대책 문서를 함께 추적하세요.</p>
+        </article>
+        <article>
+          <h4>원당 재정비/도시재생</h4>
+          <p>주거환경 개선, 생활SOC 확충, 구도심 활성화 계획의 단계별 고시를 시계열로 모아보는 것이 핵심입니다.</p>
+        </article>
+      </div>
     </section>
 
     <section class="panel two-col planning-two-col">
@@ -144,7 +169,7 @@
     <section class="panel">
       <div class="panel-head">
         <h3>자료 확장 도구</h3>
-        <span>수동 등록 · JSON 업로드</span>
+        <span>수동 등록 · CSV/JSON 업로드</span>
       </div>
       <div class="expander-grid">
         <form id="resource-form" class="resource-form" autocomplete="off">
@@ -196,9 +221,10 @@
         </form>
 
         <div class="upload-box">
-          <p>JSON 파일 업로드(배열)로 자료를 한 번에 추가할 수 있습니다.</p>
+          <p>CSV 또는 JSON 파일 업로드로 자료를 한 번에 추가할 수 있습니다.</p>
           <p class="upload-hint">필드: `title, year, docType, project, category, org, type, url, summary`</p>
-          <input id="resource-upload" type="file" accept=".json,application/json" />
+          <input id="resource-upload" type="file" accept=".json,.csv,application/json,text/csv" />
+          <button id="download-json" type="button">사용자 추가자료 JSON 다운로드</button>
           <div id="upload-result" class="upload-result" aria-live="polite"></div>
         </div>
       </div>

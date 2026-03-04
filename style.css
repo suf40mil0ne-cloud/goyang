@@ -321,6 +321,31 @@ a { color: inherit; }
 
 .resource-link:hover { border-color: #78add6; }
 
+.project-focus-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.project-focus-grid article {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 12px;
+}
+
+.project-focus-grid h4 {
+  margin: 0 0 7px;
+  font-size: 0.94rem;
+}
+
+.project-focus-grid p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #446179;
+  line-height: 1.55;
+}
+
 .expander-grid {
   display: grid;
   gap: 12px;
@@ -384,6 +409,20 @@ a { color: inherit; }
   min-height: 20px;
   font-size: 0.82rem;
   color: #30526f;
+}
+
+.upload-box button {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  padding: 9px 12px;
+  width: fit-content;
+  font: inherit;
+  cursor: pointer;
+}
+
+.upload-box button:hover {
+  border-color: #79afd7;
 }
 
 .notice-wrap {
@@ -466,6 +505,7 @@ a { color: inherit; }
   .two-col,
   .kpi-grid,
   .resource-grid,
+  .project-focus-grid,
   .notice-wrap {
     grid-template-columns: 1fr 1fr;
   }
@@ -499,6 +539,7 @@ a { color: inherit; }
 
   .kpi-grid,
   .resource-grid,
+  .project-focus-grid,
   .archive-filters,
   .notice-wrap {
     grid-template-columns: 1fr;

@@ -7,26 +7,59 @@ const STORAGE_KEY = "goyang_custom_resources_v1";
 
 const baseResources = [
   {
-    title: "고양시청 대표 포털",
-    category: "notice",
-    org: "고양시",
-    type: "행정포털",
+    title: "창릉 3기 신도시 관련 정보",
+    category: "project",
+    org: "LH",
+    type: "사업정보",
     year: "2026",
-    docType: "공고/공지",
-    project: "시정 일반",
-    url: "https://www.goyang.go.kr/www/index.do",
-    summary: "도시계획 관련 고시·공고, 보도자료, 행정 안내를 확인하는 기본 진입점입니다.",
+    docType: "사업개요",
+    project: "창릉 3기 신도시",
+    url: "https://www.lh.or.kr/",
+    summary: "창릉지구 사업 개요, 보상·공급·지구계획 관련 공지 확인에 활용합니다.",
   },
   {
-    title: "고양시 도시정보/빅데이터 플랫폼",
-    category: "map",
+    title: "고양시청 도시계획/고시공고",
+    category: "notice",
     org: "고양시",
-    type: "공간정보",
+    type: "행정문서",
     year: "2026",
-    docType: "공간데이터",
-    project: "도시현황 분석",
-    url: "https://www.bigdata-goyang.kr/",
-    summary: "지도 기반 인구·상권·이동 데이터와 지역 현황을 시각적으로 검토할 수 있습니다.",
+    docType: "고시·공고",
+    project: "창릉 3기 신도시",
+    url: "https://www.goyang.go.kr/www/index.do",
+    summary: "고양시 고시/공고 게시판에서 개발사업 관련 행정 절차 문서를 확인합니다.",
+  },
+  {
+    title: "일산테크노밸리 사업 안내",
+    category: "project",
+    org: "경기도/고양시",
+    type: "사업정보",
+    year: "2026",
+    docType: "사업개요",
+    project: "일산테크노밸리",
+    url: "https://www.gg.go.kr/",
+    summary: "산업단지 조성, 기업유치, 연계 인프라 구축 동향을 추적할 수 있습니다.",
+  },
+  {
+    title: "킨텍스 일원 개발 관련 소식",
+    category: "project",
+    org: "고양시",
+    type: "사업동향",
+    year: "2026",
+    docType: "사업동향",
+    project: "킨텍스 일원 복합개발",
+    url: "https://www.goyang.go.kr/www/index.do",
+    summary: "전시·상업·업무 복합개발과 교통연계 계획 문서 탐색의 시작점으로 활용합니다.",
+  },
+  {
+    title: "원당 재정비/도시재생 관련 정보",
+    category: "project",
+    org: "고양시",
+    type: "사업동향",
+    year: "2026",
+    docType: "사업동향",
+    project: "원당 재정비",
+    url: "https://www.goyang.go.kr/www/index.do",
+    summary: "도시재생 및 정비사업의 계획 수립/공람/결정 단계를 추적합니다.",
   },
   {
     title: "토지이음",
@@ -35,64 +68,9 @@ const baseResources = [
     type: "계획확인",
     year: "2026",
     docType: "법정계획 열람",
-    project: "토지이용규제",
+    project: "창릉 3기 신도시",
     url: "https://www.eum.go.kr/",
-    summary: "토지이용계획확인서, 용도지역·지구 지정 현황 등 법정 계획 정보를 열람합니다.",
-  },
-  {
-    title: "국토교통부",
-    category: "master-plan",
-    org: "중앙부처",
-    type: "정책원문",
-    year: "2026",
-    docType: "정책발표",
-    project: "국토·도시정책",
-    url: "https://www.molit.go.kr/",
-    summary: "국토·도시 정책 방향과 법령 개정 동향, 주요 계획 발표 자료를 확인합니다.",
-  },
-  {
-    title: "경기도청",
-    category: "notice",
-    org: "경기도",
-    type: "광역행정",
-    year: "2026",
-    docType: "고시/공고",
-    project: "광역정책",
-    url: "https://www.gg.go.kr/",
-    summary: "광역 차원의 도시·교통·산업 정책 및 고시 정보를 함께 검토할 때 활용합니다.",
-  },
-  {
-    title: "KOSIS 국가통계포털",
-    category: "stats",
-    org: "통계청",
-    type: "통계",
-    year: "2026",
-    docType: "통계표",
-    project: "도시기초통계",
-    url: "https://kosis.kr/",
-    summary: "인구, 주택, 산업, 교통 등 도시기초통계를 비교·다운로드할 수 있습니다.",
-  },
-  {
-    title: "공공데이터포털",
-    category: "stats",
-    org: "행정안전부",
-    type: "데이터API",
-    year: "2026",
-    docType: "API/CSV",
-    project: "데이터 수집",
-    url: "https://www.data.go.kr/",
-    summary: "고양시/경기도 관련 API와 데이터셋을 확보해 자체 분석에 연결할 수 있습니다.",
-  },
-  {
-    title: "국가공간정보포털",
-    category: "map",
-    org: "국토정보",
-    type: "공간데이터",
-    year: "2026",
-    docType: "지도서비스",
-    project: "공간정보 연계",
-    url: "https://www.nsdi.go.kr/",
-    summary: "공간데이터 목록, 연계 서비스, 표준 정보 확인에 유용합니다.",
+    summary: "개발사업 대상지의 용도지역/지구/구역과 행위제한을 법정지도 기준으로 점검합니다.",
   },
   {
     title: "국가법령정보센터",
@@ -101,9 +79,75 @@ const baseResources = [
     type: "법령",
     year: "2026",
     docType: "법령원문",
-    project: "법제 검토",
+    project: "공통 법제 검토",
     url: "https://www.law.go.kr/",
-    summary: "국토계획법, 도시개발법 등 도시계획 관련 법령과 시행령·시행규칙 원문을 확인합니다.",
+    summary: "국토계획법, 도시개발법 등 개발사업 검토의 법적 기준 원문을 확인합니다.",
+  },
+  {
+    title: "고양시 도시정보/빅데이터 플랫폼",
+    category: "map",
+    org: "고양시",
+    type: "공간정보",
+    year: "2026",
+    docType: "공간데이터",
+    project: "일산테크노밸리",
+    url: "https://www.bigdata-goyang.kr/",
+    summary: "사업지 주변 인구·상권·이동 데이터를 지도 기반으로 검토할 수 있습니다.",
+  },
+  {
+    title: "국가공간정보포털",
+    category: "map",
+    org: "국토정보",
+    type: "공간데이터",
+    year: "2026",
+    docType: "지도서비스",
+    project: "킨텍스 일원 복합개발",
+    url: "https://www.nsdi.go.kr/",
+    summary: "공간데이터 연계와 표준 좌표 기반 분석 자료 확인에 활용합니다.",
+  },
+  {
+    title: "KOSIS 국가통계포털",
+    category: "stats",
+    org: "통계청",
+    type: "통계",
+    year: "2026",
+    docType: "통계표",
+    project: "원당 재정비",
+    url: "https://kosis.kr/",
+    summary: "사업권역의 인구/주택/산업 기초통계 시계열 비교에 사용합니다.",
+  },
+  {
+    title: "공공데이터포털",
+    category: "stats",
+    org: "행정안전부",
+    type: "데이터API",
+    year: "2026",
+    docType: "API/CSV",
+    project: "공통 데이터 수집",
+    url: "https://www.data.go.kr/",
+    summary: "개발사업 분석용 공공 API와 데이터셋 확보에 활용합니다.",
+  },
+  {
+    title: "경기교통정보센터",
+    category: "stats",
+    org: "경기도",
+    type: "교통정보",
+    year: "2026",
+    docType: "교통운영 데이터",
+    project: "창릉 3기 신도시",
+    url: "https://gits.gg.go.kr/",
+    summary: "교통흐름/CCTV/돌발정보를 통해 주변 교통체계 진단에 활용합니다.",
+  },
+  {
+    title: "경기버스정보시스템",
+    category: "stats",
+    org: "경기도",
+    type: "대중교통",
+    year: "2026",
+    docType: "대중교통 데이터",
+    project: "일산테크노밸리",
+    url: "https://www.gbis.go.kr/",
+    summary: "노선/정류소 접근성 검토 및 대중교통 연계성 분석에 활용합니다.",
   },
   {
     title: "서울도시공간포털",
@@ -270,6 +314,10 @@ function initResourceFilter() {
   });
 
   refreshTagFilters();
+  const categoryElement = document.getElementById("resource-category");
+  if (categoryElement && !categoryElement.value) {
+    categoryElement.value = "project";
+  }
   renderResources();
 }
 
@@ -327,13 +375,7 @@ function initUpload() {
 
     try {
       const text = await file.text();
-      const parsed = JSON.parse(text);
-      if (!Array.isArray(parsed)) {
-        setText("upload-result", "JSON 배열 형식만 지원합니다.");
-        return;
-      }
-
-      const valid = parsed.map(normalizeResource).filter(isValidResource);
+      const valid = parseUploadedResources(file.name, text);
       if (valid.length === 0) {
         setText("upload-result", "추가 가능한 유효 데이터가 없습니다.");
         return;
@@ -343,11 +385,86 @@ function initUpload() {
       saveCustomResources();
       refreshTagFilters();
       renderResources();
-      setText("upload-result", `JSON 업로드 완료: ${valid.length}건 추가`);
+      setText("upload-result", `업로드 완료: ${valid.length}건 추가`);
       input.value = "";
     } catch (err) {
-      setText("upload-result", "JSON 파싱 실패: 형식을 확인해 주세요.");
+      setText("upload-result", "파일 파싱 실패: CSV/JSON 형식을 확인해 주세요.");
     }
+  });
+}
+
+function parseUploadedResources(filename, text) {
+  const lower = filename.toLowerCase();
+  if (lower.endsWith(".json")) {
+    const parsed = JSON.parse(text);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map(normalizeResource).filter(isValidResource);
+  }
+
+  if (lower.endsWith(".csv")) {
+    return parseCsv(text).map(normalizeResource).filter(isValidResource);
+  }
+
+  return [];
+}
+
+function parseCsv(text) {
+  const lines = text.split(/\r?\n/).filter((line) => line.trim().length > 0);
+  if (lines.length < 2) return [];
+
+  const headers = splitCsvLine(lines[0]).map((h) => h.trim());
+  const out = [];
+  for (let i = 1; i < lines.length; i += 1) {
+    const cols = splitCsvLine(lines[i]);
+    const row = {};
+    headers.forEach((header, idx) => {
+      row[header] = (cols[idx] || "").trim();
+    });
+    out.push(row);
+  }
+  return out;
+}
+
+function splitCsvLine(line) {
+  const cols = [];
+  let current = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const ch = line[i];
+    if (ch === "\"") {
+      if (inQuotes && line[i + 1] === "\"") {
+        current += "\"";
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (ch === "," && !inQuotes) {
+      cols.push(current);
+      current = "";
+    } else {
+      current += ch;
+    }
+  }
+  cols.push(current);
+  return cols;
+}
+
+function initDownload() {
+  const button = document.getElementById("download-json");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    const data = JSON.stringify(state.customResources, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "goyang-custom-resources.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setText("upload-result", "사용자 추가자료를 JSON 파일로 다운로드했습니다.");
   });
 }
 
@@ -394,4 +511,5 @@ initUpdatedAt();
 initResourceFilter();
 initResourceForm();
 initUpload();
+initDownload();
 initMap();
