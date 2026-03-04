@@ -118,7 +118,90 @@
         <h3>도시계획 자료 아카이브</h3>
         <span id="resource-count">총 0건</span>
       </div>
+      <div class="archive-filters" aria-label="세부 필터">
+        <div class="toolbar-row">
+          <label for="tag-year">연도</label>
+          <select id="tag-year">
+            <option value="all">전체</option>
+          </select>
+        </div>
+        <div class="toolbar-row">
+          <label for="tag-type">문서유형</label>
+          <select id="tag-type">
+            <option value="all">전체</option>
+          </select>
+        </div>
+        <div class="toolbar-row">
+          <label for="tag-project">사업명</label>
+          <select id="tag-project">
+            <option value="all">전체</option>
+          </select>
+        </div>
+      </div>
       <div id="resource-list" class="resource-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h3>자료 확장 도구</h3>
+        <span>수동 등록 · JSON 업로드</span>
+      </div>
+      <div class="expander-grid">
+        <form id="resource-form" class="resource-form" autocomplete="off">
+          <div class="form-grid">
+            <div class="toolbar-row">
+              <label for="f-title">자료명</label>
+              <input id="f-title" name="title" required placeholder="예: 2030 고양 도시기본계획 보고서" />
+            </div>
+            <div class="toolbar-row">
+              <label for="f-year">연도</label>
+              <input id="f-year" name="year" required placeholder="예: 2026" />
+            </div>
+            <div class="toolbar-row">
+              <label for="f-doc-type">문서유형</label>
+              <input id="f-doc-type" name="docType" required placeholder="예: 고시문, 계획보고서" />
+            </div>
+            <div class="toolbar-row">
+              <label for="f-project">사업명</label>
+              <input id="f-project" name="project" required placeholder="예: 창릉신도시, 원당재정비" />
+            </div>
+            <div class="toolbar-row">
+              <label for="f-category">분류</label>
+              <select id="f-category" name="category" required>
+                <option value="master-plan">도시기본계획</option>
+                <option value="management-plan">도시관리·지구단위계획</option>
+                <option value="notice">고시·공고·행정문서</option>
+                <option value="map">지도·공간정보</option>
+                <option value="stats">통계·공공데이터</option>
+                <option value="project">핵심 개발사업</option>
+              </select>
+            </div>
+            <div class="toolbar-row">
+              <label for="f-org">기관</label>
+              <input id="f-org" name="org" required placeholder="예: 고양시청 도시계획과" />
+            </div>
+            <div class="toolbar-row">
+              <label for="f-url">원문 링크</label>
+              <input id="f-url" name="url" required placeholder="https://..." />
+            </div>
+            <div class="toolbar-row">
+              <label for="f-summary">요약</label>
+              <input id="f-summary" name="summary" required placeholder="자료 성격과 활용 포인트를 적어주세요." />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit">자료 추가</button>
+            <button id="clear-custom" type="button">사용자 추가자료 초기화</button>
+          </div>
+        </form>
+
+        <div class="upload-box">
+          <p>JSON 파일 업로드(배열)로 자료를 한 번에 추가할 수 있습니다.</p>
+          <p class="upload-hint">필드: `title, year, docType, project, category, org, type, url, summary`</p>
+          <input id="resource-upload" type="file" accept=".json,application/json" />
+          <div id="upload-result" class="upload-result" aria-live="polite"></div>
+        </div>
+      </div>
     </section>
 
     <section class="panel">
