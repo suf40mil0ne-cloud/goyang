@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
-  <title>고양 Urban Board | 고양시 도시정보 허브</title>
-  <meta name="description" content="고양시의 생활·교통·기상·대기·도시지표를 정리하는 정보형 웹사이트" />
+  <title>고양 도시계획 포털 | Urban Planning Desk</title>
+  <meta name="description" content="고양시 도시계획 실무 자료를 한곳에서 탐색하는 도시계획 포털" />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://suf40mil0ne-cloud.github.io/goyang/" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
@@ -21,8 +21,8 @@
     <div class="brand">
       <span class="brand-mark">GY</span>
       <div>
-        <p class="brand-sub">Goyang Smart City</p>
-        <h1>고양 Urban Board</h1>
+        <p class="brand-sub">Urban Planning Desk</p>
+        <h1>고양 도시계획 포털</h1>
       </div>
     </div>
     <nav class="main-nav" aria-label="주요 메뉴">
@@ -33,128 +33,110 @@
     </nav>
   </header>
 
-  <main class="layout">
-    <section class="hero">
-      <p class="hero-kicker">도시 데이터 허브</p>
-      <h2>고양시 핵심 정보를 실시간 지표와 해설형 콘텐츠로 제공합니다.</h2>
+  <main class="layout planning-layout">
+    <section class="hero planning-hero">
+      <p class="hero-kicker">서울도시공간포털 참고 개편</p>
+      <h2>고양시 도시계획 실무 자료를 주제별로 빠르게 찾는 작업 화면</h2>
       <p>
-        이 사이트는 고양시 관련 공공 정보를 한 화면에서 찾기 쉽게 정리하는 독립 정보 페이지입니다.
-        실시간 수치(기상/대기)는 공개 API를 통해 표시하고, 정책·통계·생활 정보는 공식 기관 출처로 이동할 수 있게 구성했습니다.
+        도시기본계획, 도시관리계획, 지구단위계획, 고시·공고, 공간정보 지도, 통계·데이터를
+        한 화면에서 분류해 접근할 수 있도록 구성했습니다. 실무 문서 확인은 반드시 원문 기준으로 진행하세요.
       </p>
       <div class="hero-meta">
-        <span id="updated-at">업데이트 확인 중...</span>
-        <span>기준 좌표: 37.6584, 126.8320</span>
+        <span id="updated-at">마지막 갱신 확인 중...</span>
+        <span>대상 지역: 경기도 고양시</span>
       </div>
     </section>
 
-    <section class="kpi-grid" aria-label="핵심 지표">
+    <section class="planner-toolbar panel" aria-label="자료 검색 도구">
+      <div class="toolbar-row">
+        <label for="resource-search">자료 검색</label>
+        <input id="resource-search" type="search" placeholder="예: 지구단위계획, 고시공고, 토지이음" />
+      </div>
+      <div class="toolbar-row">
+        <label for="resource-category">분류</label>
+        <select id="resource-category">
+          <option value="all">전체</option>
+          <option value="master-plan">도시기본계획</option>
+          <option value="management-plan">도시관리·지구단위계획</option>
+          <option value="notice">고시·공고·행정문서</option>
+          <option value="map">지도·공간정보</option>
+          <option value="stats">통계·공공데이터</option>
+          <option value="project">핵심 개발사업</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="kpi-grid planning-kpi" aria-label="도시계획 핵심 축">
       <article class="kpi-card warm">
-        <h3>현재 기온</h3>
-        <p id="temp-now" class="kpi-value">-</p>
-        <span id="weather-desc" class="kpi-note">날씨 정보 로딩 중</span>
+        <h3>도시기본계획</h3>
+        <p class="kpi-value">장기 비전</p>
+        <span class="kpi-note">2040 계획 수립 동향 확인</span>
       </article>
       <article class="kpi-card cool">
-        <h3>일교차</h3>
-        <p id="temp-range" class="kpi-value">-</p>
-        <span id="sun-info" class="kpi-note">일출/일몰 계산 중</span>
+        <h3>도시관리계획</h3>
+        <p class="kpi-value">법정 결정</p>
+        <span class="kpi-note">용도·시설·지구단위 고시</span>
       </article>
       <article class="kpi-card mint">
-        <h3>미세먼지 PM2.5</h3>
-        <p id="pm25-now" class="kpi-value">-</p>
-        <span id="aqi-level" class="kpi-note">대기질 정보 로딩 중</span>
+        <h3>공간정보</h3>
+        <p class="kpi-value">지도 열람</p>
+        <span class="kpi-note">토지이용규제·행정경계·시설</span>
       </article>
       <article class="kpi-card sand">
-        <h3>행정구역</h3>
-        <p class="kpi-value">3개 구</p>
-        <span class="kpi-note">덕양구 · 일산동구 · 일산서구</span>
-      </article>
-      <article class="kpi-card blue">
-        <h3>상대습도</h3>
-        <p id="humidity-now" class="kpi-value">-</p>
-        <span class="kpi-note">실시간 관측값</span>
-      </article>
-      <article class="kpi-card green">
-        <h3>풍속</h3>
-        <p id="wind-now" class="kpi-value">-</p>
-        <span class="kpi-note">10m 고도 기준</span>
+        <h3>도시재생·사업</h3>
+        <p class="kpi-value">사업 추적</p>
+        <span class="kpi-note">원당·테크노밸리 등 주요 사업</span>
       </article>
     </section>
 
-    <section class="panel two-col">
+    <section class="panel two-col planning-two-col">
       <div class="panel-block">
         <div class="panel-head">
-          <h3>도시 맵</h3>
-          <span>주요 행정 거점</span>
+          <h3>계획 검토 지도</h3>
+          <span>행정 거점 레이어</span>
         </div>
-        <div id="city-map" class="map" role="img" aria-label="고양시 주요 행정구 지도"></div>
+        <div id="city-map" class="map" role="img" aria-label="고양시 도시계획 검토용 지도"></div>
       </div>
 
-      <div class="panel-block">
+      <div class="panel-block stage-panel">
         <div class="panel-head">
-          <h3>공식 정보 바로가기</h3>
-          <span>기관/포털 원문 연결</span>
+          <h3>도시계획 업무 흐름</h3>
+          <span>실무 체크 순서</span>
         </div>
-        <ul id="source-list" class="source-list"></ul>
-      </div>
-    </section>
-
-    <section class="panel text-panel">
-      <div class="panel-head">
-        <h3>도시 정보 해설</h3>
-        <span>수치 중심 요약</span>
-      </div>
-      <div class="content-grid">
-        <article class="article-card">
-          <h4>1. 생활권 이동과 교통 확인</h4>
-          <p>
-            고양시는 서울 생활권과 맞닿아 있어 출퇴근 시간 교통 체감이 크고, 구별로 생활 동선이 다릅니다.
-            버스 도착 정보와 도로 소통 정보는 이동 전에 반드시 확인하는 것이 효율적입니다.
-            본 페이지에서는 교통 서비스를 빠르게 이동할 수 있도록 별도 링크를 제공해 생활권 이동에 필요한 기본 판단 시간을 줄이는 데 초점을 둡니다.
-          </p>
-        </article>
-        <article class="article-card">
-          <h4>2. 기상·대기와 야외 활동 계획</h4>
-          <p>
-            같은 날에도 시간대별로 체감 환경이 달라집니다. 현재 기온만 볼 때보다 일교차, PM2.5, 풍속, 습도를 함께 확인하면
-            야외 활동의 적정 시간대를 고르기 쉽습니다. 특히 강수 확률과 UV 지수는 짧은 외출에서도 준비물 선택에 영향을 주므로
-            24시간 예보 카드로 함께 제공합니다.
-          </p>
-        </article>
-        <article class="article-card">
-          <h4>3. 통계·정책 원문 검증 습관</h4>
-          <p>
-            도시 정보는 시점에 따라 해석이 달라질 수 있어, 숫자 자체보다 기준 시점과 출처 확인이 중요합니다.
-            이 사이트의 통계 링크는 고양시청, KOSIS, 고양시 빅데이터 플랫폼 등 공신력 있는 출처로 연결되며,
-            본문 요약은 참고용으로 제공됩니다. 정책 판단이나 보고서 작성 시에는 반드시 원문 수치와 최신 공고를 재확인해야 합니다.
-          </p>
-        </article>
+        <ol class="stage-list">
+          <li><strong>기초현황</strong> 인구·산업·토지이용 기초 통계 점검</li>
+          <li><strong>상위계획 검토</strong> 도시기본계획·광역계획 정합성 확인</li>
+          <li><strong>도시관리계획 검토</strong> 용도지역·지구단위계획·기반시설 검토</li>
+          <li><strong>행정문서 확인</strong> 고시·공고 및 공람 자료 원문 검증</li>
+          <li><strong>의견수렴·결정</strong> 주민의견 및 위원회 절차 확인</li>
+        </ol>
       </div>
     </section>
 
     <section class="panel">
       <div class="panel-head">
-        <h3>24시간 예보</h3>
-        <span>강수확률 · 자외선지수</span>
+        <h3>도시계획 자료 아카이브</h3>
+        <span id="resource-count">총 0건</span>
       </div>
-      <div id="hourly-forecast" class="hourly-grid" aria-live="polite"></div>
+      <div id="resource-list" class="resource-grid" aria-live="polite"></div>
     </section>
 
-    <section class="panel notice-panel">
+    <section class="panel">
       <div class="panel-head">
-        <h3>운영 정책 요약</h3>
+        <h3>실무 메모</h3>
       </div>
       <div class="notice-wrap">
         <article>
-          <h4>독창 콘텐츠 원칙</h4>
-          <p>단순 링크 재배열이 아닌 고양시 생활 맥락 중심 해설 텍스트를 직접 작성하여 게시합니다.</p>
+          <h4>원문 우선 원칙</h4>
+          <p>본 포털은 길잡이 화면입니다. 결정문·고시문·공고문은 반드시 연결된 원문 문서에서 최종 확인하세요.</p>
         </article>
         <article>
-          <h4>탐색 가능성</h4>
-          <p>모든 페이지는 상단/하단 네비게이션으로 상호 연결되며, 정책 페이지를 명확히 분리해 제공합니다.</p>
+          <h4>버전 관리</h4>
+          <p>계획안/결정문은 개정 이력이 누적됩니다. 문서 확인 시 등록일, 고시번호, 첨부파일 버전을 함께 기록하세요.</p>
         </article>
         <article>
-          <h4>투명성</h4>
-          <p>개인정보처리방침, 이용약관, 출처·편집 정책, 문의 채널을 공개하여 운영 주체와 책임 범위를 명시합니다.</p>
+          <h4>지도 교차검증</h4>
+          <p>토지이음·지자체 고시문·통계 포털 지도를 교차 검토하면 해석 오류를 줄일 수 있습니다.</p>
         </article>
       </div>
     </section>
@@ -169,7 +151,7 @@
       <a href="pages/terms.html">이용약관</a>
       <a href="pages/contact.html">문의</a>
     </nav>
-    <p>© 2026 Goyang Urban Board. Independent information project for Goyang city users.</p>
+    <p>© 2026 Goyang Urban Planning Desk</p>
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
