@@ -1,14 +1,128 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+  <title>고양 Urban Board</title>
+  <meta name="description" content="고양시 도시 정보를 한 화면에서 확인하는 대시보드" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link href="/style.css" rel="stylesheet" />
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">GY</span>
+      <div>
+        <p class="brand-sub">Goyang Smart City</p>
+        <h1>고양 Urban Board</h1>
+      </div>
+    </div>
+    <a class="city-link" href="https://www.goyang.go.kr/www/index.do" target="_blank" rel="noopener noreferrer">고양시청</a>
+  </header>
+
+  <main class="layout">
+    <section class="hero">
+      <p class="hero-kicker">도시 데이터 허브</p>
+      <h2>고양시 핵심 정보를 실시간과 공식 링크로 연결합니다.</h2>
+      <p>
+        날씨/대기질은 공개 API로 자동 갱신하고,
+        정책·교통·통계·생활 인프라는 공식 포털을 기준으로 빠르게 이동할 수 있게 구성했습니다.
+      </p>
+      <div class="hero-meta">
+        <span id="updated-at">업데이트 확인 중...</span>
+        <span>기준 좌표: 37.6584, 126.8320</span>
+      </div>
+    </section>
+
+    <section class="kpi-grid" aria-label="핵심 지표">
+      <article class="kpi-card warm">
+        <h3>현재 기온</h3>
+        <p id="temp-now" class="kpi-value">-</p>
+        <span id="weather-desc" class="kpi-note">날씨 정보 로딩 중</span>
+      </article>
+      <article class="kpi-card cool">
+        <h3>체감 지표 (일교차)</h3>
+        <p id="temp-range" class="kpi-value">-</p>
+        <span id="sun-info" class="kpi-note">일출/일몰 계산 중</span>
+      </article>
+      <article class="kpi-card mint">
+        <h3>미세먼지 PM2.5</h3>
+        <p id="pm25-now" class="kpi-value">-</p>
+        <span id="aqi-level" class="kpi-note">대기질 정보 로딩 중</span>
+      </article>
+      <article class="kpi-card sand">
+        <h3>행정구역</h3>
+        <p class="kpi-value">3개 구</p>
+        <span class="kpi-note">덕양구 · 일산동구 · 일산서구</span>
+      </article>
+      <article class="kpi-card blue">
+        <h3>상대습도</h3>
+        <p id="humidity-now" class="kpi-value">-</p>
+        <span class="kpi-note">실시간 기상 관측</span>
+      </article>
+      <article class="kpi-card green">
+        <h3>풍속</h3>
+        <p id="wind-now" class="kpi-value">-</p>
+        <span class="kpi-note">10m 고도 기준</span>
+      </article>
+    </section>
+
+    <section class="panel two-col">
+      <div class="panel-block">
+        <div class="panel-head">
+          <h3>도시 맵</h3>
+          <span>주요 거점 표시</span>
+        </div>
+        <div id="city-map" class="map" role="img" aria-label="고양시 주요 행정구 지도"></div>
+      </div>
+
+      <div class="panel-block">
+        <div class="panel-head">
+          <h3>바로가기</h3>
+          <span>공식 데이터/서비스</span>
+        </div>
+        <ul id="source-list" class="source-list"></ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h3>이용 안내</h3>
+      </div>
+      <div class="notice-wrap">
+        <article>
+          <h4>데이터 성격</h4>
+          <p>실시간 카드(날씨/대기질)는 Open-Meteo 공개 API 기반 자동 갱신 데이터입니다.</p>
+        </article>
+        <article>
+          <h4>정책·통계 확인</h4>
+          <p>인구/도시계획/행정 통계는 하단 공식 링크(고양시청·KOSIS·빅데이터 포털)에서 최신 원문을 확인하세요.</p>
+        </article>
+        <article>
+          <h4>운영 확장</h4>
+          <p>추후 공공데이터 API 키를 연결하면 버스 도착정보, 주차장 혼잡도, 민원 통계까지 이 화면에 통합할 수 있습니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h3>24시간 예보</h3>
+        <span>강수확률 · 자외선지수</span>
+      </div>
+      <div id="hourly-forecast" class="hourly-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Designed for Goyang City Information Sharing</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script defer src="/main.js"></script>
 </body>
 </html>
