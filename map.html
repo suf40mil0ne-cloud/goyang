@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
+  <title>지도 보기 | 주민공람 레이더</title>
+  <meta name="description" content="수도권 주민공람공고를 지도에서 확인하고, 상태와 지역별로 필터링할 수 있습니다." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://goyang.pages.dev/map.html" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link href="style.css" rel="stylesheet" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7104324664246128" crossorigin="anonymous"></script>
+</head>
+<body data-page="map">
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">JR</span>
+      <div>
+        <p class="brand-sub">Urban Planning Desk</p>
+        <h1>주민공람 레이더</h1>
+      </div>
+    </div>
+    <nav class="main-nav" aria-label="주요 메뉴">
+      <a href="index.html">홈</a>
+      <a href="map.html" aria-current="page">지도 보기</a>
+      <a href="pages/public-hearing-guide.html">제도 안내</a>
+      <a href="pages/how-to-submit.html">의견 제출 안내</a>
+      <a href="pages/sources.html">데이터 출처</a>
+      <a href="pages/contact.html">문의</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero page-hero">
+      <div class="breadcrumbs">
+        <a href="index.html">홈</a>
+        <span>/</span>
+        <span>지도 보기</span>
+      </div>
+      <h2>수도권 주민공람공고 지도</h2>
+      <p>지도는 공고를 빠르게 훑는 진입점입니다. 실제 의견 제출 여부를 판단할 때는 상세 페이지와 원문 공고문을 함께 확인하세요.</p>
+      <div class="hero-meta">
+        <span>서울 · 인천 · 경기 필터 지원</span>
+        <span>진행 중 / 마감 임박 / 종료 공고 분리</span>
+      </div>
+    </section>
+
+    <section class="page-card">
+      <div class="panel-head">
+        <h2>지도 필터</h2>
+        <span>전국 확장 전 수도권 우선 구조</span>
+      </div>
+      <div class="compact-grid">
+        <div>
+          <label for="map-area">지역</label>
+          <select id="map-area">
+            <option value="all">전체</option>
+            <option value="seoul">서울특별시</option>
+            <option value="incheon">인천광역시</option>
+            <option value="gyeonggi">경기도</option>
+          </select>
+        </div>
+        <div>
+          <label for="map-status">상태</label>
+          <select id="map-status">
+            <option value="active">진행 중</option>
+            <option value="closing-soon">마감 임박</option>
+            <option value="ended">종료 공고</option>
+            <option value="recent">최근 공고</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-two-col">
+      <section class="page-card">
+        <h2>지도</h2>
+        <div id="overview-map" class="map" role="img" aria-label="수도권 주민공람공고 전체 지도"></div>
+      </section>
+
+      <section class="page-card">
+        <h2>공고 목록</h2>
+        <div id="map-notice-list" class="stack-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <nav class="footer-nav" aria-label="푸터 메뉴">
+      <a href="index.html">홈</a>
+      <a href="pages/about.html">사이트 소개</a>
+      <a href="pages/data-policy.html">편집·출처 정책</a>
+      <a href="pages/privacy.html">개인정보처리방침</a>
+      <a href="pages/terms.html">이용약관</a>
+      <a href="pages/contact.html">문의</a>
+    </nav>
+    <p>© <span data-current-year>2026</span> 주민공람 레이더 | Urban Planning Desk</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

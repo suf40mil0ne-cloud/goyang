@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
+  <title>공고 상세 | 주민공람 레이더</title>
+  <meta name="description" content="주민공람공고 상세 정보, 쉬운 해설, 공식 제출처 링크를 확인하세요." />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="공고 상세 | 주민공람 레이더" />
+  <meta property="og:description" content="공고 제목, 열람기간, 생활영향, 의견 제출 방법을 한 화면에서 확인합니다." />
+  <link rel="canonical" href="https://goyang.pages.dev/notice.html" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link href="style.css" rel="stylesheet" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7104324664246128" crossorigin="anonymous"></script>
+</head>
+<body data-page="detail">
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">JR</span>
+      <div>
+        <p class="brand-sub">Urban Planning Desk</p>
+        <h1>주민공람 레이더</h1>
+      </div>
+    </div>
+    <nav class="main-nav" aria-label="주요 메뉴">
+      <a href="index.html">홈</a>
+      <a href="map.html">지도 보기</a>
+      <a href="pages/public-hearing-guide.html">제도 안내</a>
+      <a href="pages/how-to-submit.html">의견 제출 안내</a>
+      <a href="pages/sources.html">데이터 출처</a>
+      <a href="pages/contact.html">문의</a>
+    </nav>
+  </header>
+
+  <main id="notice-main" class="page-shell">
+    <section class="hero detail-hero">
+      <div class="breadcrumbs">
+        <a href="index.html">홈</a>
+        <span>/</span>
+        <a href="map.html">지도 보기</a>
+        <span>/</span>
+        <span id="breadcrumb-current">공고 상세</span>
+      </div>
+      <div id="notice-meta-badges" class="resource-meta"></div>
+      <h2 id="notice-title" class="detail-title">공고를 불러오는 중입니다.</h2>
+      <p id="notice-summary" class="detail-subtitle">공고 핵심 내용을 시민이 이해하기 쉬운 문장으로 정리해 보여줍니다.</p>
+      <div class="hero-meta">
+        <span id="last-verified">마지막 확인 시각 불러오는 중...</span>
+        <span>원문 기준 최종 확인 필요</span>
+      </div>
+    </section>
+
+    <section class="detail-layout">
+      <div class="detail-main">
+        <section class="page-card">
+          <h2>핵심 해설</h2>
+          <div id="notice-overview" class="detail-stack"></div>
+        </section>
+
+        <section class="page-card">
+          <h2>지도 위치</h2>
+          <div id="detail-map" class="map" role="img" aria-label="공고 위치 지도"></div>
+          <p class="map-note">지도 위치는 빠른 탐색을 돕기 위한 참고 정보입니다. 세부 경계와 열람도서는 원문 첨부문서를 기준으로 보세요.</p>
+        </section>
+
+        <section class="page-card">
+          <h2>공고 정보</h2>
+          <div id="notice-details" class="info-table"></div>
+          <div class="disclaimer-box" style="margin-top: 14px;">
+            이 사이트는 공식 제출처가 아니며, 실제 의견 제출은 공고문에 적힌 공식 절차를 따라야 합니다.
+          </div>
+        </section>
+
+        <section class="page-card">
+          <h2>첨부문서 및 원문 링크</h2>
+          <ul id="notice-attachments" class="source-list"></ul>
+        </section>
+      </div>
+
+      <aside class="detail-aside">
+        <section class="page-card">
+          <h2>관련 지역 다른 공고</h2>
+          <div id="related-notices" class="stack-list"></div>
+        </section>
+
+        <section class="page-card">
+          <h2>자주 묻는 질문</h2>
+          <div id="notice-faq" class="faq-grid"></div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <nav class="footer-nav" aria-label="푸터 메뉴">
+      <a href="index.html">홈</a>
+      <a href="pages/about.html">사이트 소개</a>
+      <a href="pages/data-policy.html">편집·출처 정책</a>
+      <a href="pages/privacy.html">개인정보처리방침</a>
+      <a href="pages/terms.html">이용약관</a>
+      <a href="pages/contact.html">문의</a>
+    </nav>
+    <p>© <span data-current-year>2026</span> 주민공람 레이더 | Urban Planning Desk</p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

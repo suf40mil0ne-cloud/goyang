@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://suf40mil0ne-cloud.github.io/goyang/sitemap.xml
+Sitemap: https://goyang.pages.dev/sitemap.xml
