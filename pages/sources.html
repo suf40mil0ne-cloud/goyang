@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
   <title>데이터 출처 | 주민공람 레이더</title>
-  <meta name="description" content="주민공람 레이더의 데이터 출처, 편집 원칙, AI 요약 원칙, 오류 제보 안내를 확인하세요." />
+  <meta name="description" content="토지이음 주민의견청취 공람, 인터넷 주민의견청취, 후속 고시, 공공데이터 보조 소스 등 데이터 출처를 공개합니다." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://goyang.pages.dev/pages/sources.html" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
@@ -27,6 +27,7 @@
       <a href="../map.html">지도 보기</a>
       <a href="public-hearing-guide.html">제도 안내</a>
       <a href="how-to-submit.html">의견 제출 안내</a>
+      <a href="how-to-read-notice.html">공고문 읽는 법</a>
       <a href="sources.html" aria-current="page">데이터 출처</a>
       <a href="contact.html">문의</a>
     </nav>
@@ -34,39 +35,46 @@
 
   <main class="page-shell">
     <section class="page-card">
-      <h2>데이터 출처와 편집 원칙</h2>
+      <h2>데이터 출처</h2>
       <p>
-        주민공람 레이더는 공고를 직접 생산하는 기관이 아니라, 주민이 원문 공고를 더 쉽게 찾고 읽도록 돕는 독립 정보 서비스입니다.
-        따라서 데이터 출처와 편집 원칙을 명확히 공개하는 것이 중요합니다. 홈과 상세 페이지의 표기 정보는 1차 출처를 기준으로 정리하며,
-        실제 제출 전에는 반드시 원문 공고문과 첨부문서를 다시 확인해야 합니다.
+        주민공람 레이더는 특정 기관의 공식 서비스가 아니라, 주민이 원문 공고를 더 빠르게 찾고 이해하도록 돕는 독립 정보 서비스입니다.
+        그래서 어떤 소스를 기준으로 데이터를 정리하는지 명확하게 공개합니다. 실제 의견 제출과 법적 판단은 반드시 원문 공고문과 첨부도서를 기준으로 해야 합니다.
       </p>
 
-      <h3>주요 데이터 출처</h3>
+      <h3>핵심 1차 소스</h3>
       <ul>
-        <li>시·군·구 고시공고 게시판</li>
-        <li>광역지자체 도시계획·도시공간 관련 게시판</li>
-        <li>토지이음, 도시계획도, 공공 지도 서비스 등 위치 확인용 자료</li>
-        <li>관계 기관 대표 페이지 및 열람 장소 안내 문서</li>
+        <li>토지이음 주민의견청취 공람 목록: <a href="https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp" target="_blank" rel="noopener noreferrer">https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp</a></li>
+        <li>토지이음 인터넷 주민의견청취 목록: <a href="https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp" target="_blank" rel="noopener noreferrer">https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp</a></li>
+        <li>토지이음 고시정보·결정고시·실시계획인가 등 후속 추적 소스</li>
+        <li>지자체 고시공고 게시판과 열람 장소 안내 문서</li>
+      </ul>
+
+      <h3>보조 소스</h3>
+      <ul>
+        <li>공공데이터포털의 국토교통부 인터넷 주민의견청취 공고 데이터</li>
+        <li>위치 해석 보조용 지도·행정구역 정보</li>
+        <li>도시계획통계, 데이터개방 자료 등 후속 맥락 확인용 문서</li>
+      </ul>
+
+      <h3>정규화 원칙</h3>
+      <ul>
+        <li>`sourceType`, `sourceNoticeId`, `organization`, `adminCode`, `locationConfidence`, `timelineKey` 등 앱 전환을 고려한 필드를 분리합니다.</li>
+        <li>좌표가 명확하지 않은 공고는 제목, 지역, 열람 장소, 법정동명을 조합해 위치를 추정하고 신뢰도 점수를 남깁니다.</li>
+        <li>후속 고시는 같은 지역, 사업 키워드, 제목 패턴을 기준으로 연결하며, 확정적 단정 대신 추적 예시로 표기합니다.</li>
       </ul>
 
       <h3>AI 요약 원칙</h3>
       <ul>
-        <li>행정문서를 일반 시민이 이해하기 쉬운 문장으로 바꾸되, 원문에 없는 사실을 단정하지 않습니다.</li>
-        <li>찬반을 유도하지 않으며, 정치적 표현을 사용하지 않습니다.</li>
-        <li>무엇이 바뀌는지, 왜 의견을 받는지, 누가 특히 봐야 하는지, 언제까지 무엇을 해야 하는지를 중심으로 정리합니다.</li>
-        <li>요약 하단 또는 상세 설명에는 원문 기준 최종 확인 필요 문구를 유지합니다.</li>
+        <li>원문을 일반 시민의 언어로 바꾸되, 원문에 없는 사실을 단정하지 않습니다.</li>
+        <li>찬반 유도와 정치적 표현을 배제합니다.</li>
+        <li>무엇이 바뀌는지, 왜 의견을 받는지, 누가 특히 봐야 하는지, 언제까지 무엇을 해야 하는지에 집중합니다.</li>
+        <li>요약 하단에는 원문 기준 최종 확인 필요 원칙을 유지합니다.</li>
       </ul>
 
-      <h3>원문 우선 원칙</h3>
+      <h3>오류 제보와 검증</h3>
       <p>
-        주민공람 레이더의 텍스트, 카드, 지도, 상태 배지는 탐색을 돕는 요약 인터페이스입니다. 법적 효력과 최종 기준은 각 기관이 게시한 원문 공고문,
-        첨부도서, 담당 부서 안내에 있습니다. 특히 마감 시각, 제출처 주소, 첨부도서 버전은 변동될 수 있으므로 제출 직전 재확인이 필요합니다.
-      </p>
-
-      <h3>오류 제보 안내</h3>
-      <p>
-        링크 오류, 기간 오기, 좌표 오차, 설명 누락 등은 문의 페이지를 통해 제보할 수 있습니다. 현재 공개된 데이터셋은 수도권 시범 구조이며,
-        전국 확장 전에 데이터 검증 흐름과 UI 사용성을 먼저 점검하고 있습니다.
+        링크 오류, 기간 오기, 좌표 오차, 후속 고시 연결 오류는 문의 페이지로 제보할 수 있습니다. 현재 데이터셋은 수도권 시드 데이터이며,
+        실제 운영에서는 정규 수집 파이프라인과 사람 검토 절차를 통해 보강하는 구조를 전제로 설계했습니다.
       </p>
     </section>
   </main>

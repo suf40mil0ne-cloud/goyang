@@ -4,17 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
-  <title>지도 중심 탐색 | 주민공람 레이더</title>
-  <meta name="description" content="수도권 주민공람공고를 지도에서 보고 상태와 지역별로 필터링하세요." />
+  <title>사업 추적 타임라인 | 주민공람 레이더</title>
+  <meta name="description" content="주민공람 이후 고시정보, 결정고시, 실시계획인가까지 같은 사업 키워드로 추적합니다." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://goyang.pages.dev/map.html" />
+  <link rel="canonical" href="https://goyang.pages.dev/timeline.html" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link href="style.css" rel="stylesheet" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7104324664246128" crossorigin="anonymous"></script>
 </head>
-<body data-page="map">
+<body data-page="timeline">
   <div class="bg-layer" aria-hidden="true"></div>
+
   <header class="topbar">
     <div class="brand">
       <span class="brand-mark">JR</span>
@@ -25,7 +25,7 @@
     </div>
     <nav class="main-nav" aria-label="주요 메뉴">
       <a href="index.html">홈</a>
-      <a href="map.html" aria-current="page">지도 보기</a>
+      <a href="map.html">지도 보기</a>
       <a href="region.html?area=seoul">지역 허브</a>
       <a href="pages/public-hearing-guide.html">제도 안내</a>
       <a href="pages/how-to-submit.html">의견 제출 안내</a>
@@ -40,49 +40,30 @@
       <div class="breadcrumbs">
         <a href="index.html">홈</a>
         <span>/</span>
-        <span>지도 보기</span>
+        <span>사업 추적 타임라인</span>
       </div>
-      <h2>지도 중심 탐색</h2>
-      <p>지도와 리스트를 함께 보며, 수도권 주민공람공고를 상태·지역·유형 기준으로 빠르게 탐색합니다.</p>
+      <h2 id="timeline-title">사업 추적 타임라인</h2>
+      <p id="timeline-summary">공람에서 끝나지 않고, 같은 키워드의 후속 고시와 실시 단계까지 추적합니다.</p>
       <div class="hero-meta">
-        <span>Leaflet 지도 유지</span>
-        <span>진행 중 / 마감 임박 / 종료 공고</span>
-        <span>공식 제출처는 원문 공고 기준</span>
-      </div>
-    </section>
-
-    <section class="page-card">
-      <div class="compact-grid">
-        <div>
-          <label for="map-area">지역</label>
-          <select id="map-area">
-            <option value="all">전체</option>
-            <option value="seoul">서울특별시</option>
-            <option value="incheon">인천광역시</option>
-            <option value="gyeonggi">경기도</option>
-          </select>
-        </div>
-        <div>
-          <label for="map-status">상태</label>
-          <select id="map-status">
-            <option value="active">진행 중</option>
-            <option value="closing-soon">마감 임박</option>
-            <option value="recent">최근 공고</option>
-            <option value="ended">종료 공고</option>
-          </select>
-        </div>
+        <span>공람 → 고시 → 결정 → 실시 흐름</span>
+        <span>원문 기준 최종 확인 필요</span>
       </div>
     </section>
 
     <section class="page-two-col">
       <section class="page-card">
-        <h2>지도</h2>
-        <div id="overview-map" class="map" role="img" aria-label="수도권 주민공람공고 지도"></div>
+        <h2>타임라인 흐름</h2>
+        <div id="timeline-flow" class="timeline-grid"></div>
       </section>
       <section class="page-card">
-        <h2>지도 리스트</h2>
-        <div id="map-notice-list" class="stack-list"></div>
+        <h2>연결된 공람</h2>
+        <div id="timeline-related" class="stack-list"></div>
       </section>
+    </section>
+
+    <section class="page-card">
+      <h2>타임라인 FAQ</h2>
+      <div id="timeline-faq" class="faq-grid"></div>
     </section>
   </main>
 
@@ -98,7 +79,6 @@
     <p>© <span data-current-year>2026</span> 주민공람 레이더 | Urban Planning Desk</p>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script type="module" src="main.js"></script>
 </body>
 </html>

@@ -1,0 +1,434 @@
+[
+  {
+    "id": "gosi-bukgajwa-road-01",
+    "key": "bukgajwa-road-plan",
+    "stageType": "결정고시",
+    "title": "북가좌동 도로 결정 변경 고시",
+    "organization": "서울특별시 서대문구청",
+    "sido": "서울특별시",
+    "sigungu": "서대문구",
+    "postedDate": "2026-04-12",
+    "status": "예상 후속",
+    "sourceUrl": "https://www.sdm.go.kr/",
+    "summary": "주민열람 이후 도로 결정 고시 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "sr-2026-001"
+    ]
+  },
+  {
+    "id": "gosi-magok-plan-01",
+    "key": "magok-district-plan",
+    "stageType": "결정고시",
+    "title": "마곡지구 지구단위계획 결정고시",
+    "organization": "서울특별시",
+    "sido": "서울특별시",
+    "sigungu": "강서구",
+    "postedDate": "2026-04-01",
+    "status": "후속 추적",
+    "sourceUrl": "https://news.seoul.go.kr/citybuild/archives/category/urbanplanning",
+    "summary": "지구단위계획 주민의견청취 이후 결정 단계 추적 예시입니다.",
+    "relatedNoticeIds": [
+      "sr-2026-002"
+    ]
+  },
+  {
+    "id": "gosi-magok-plan-02",
+    "key": "magok-district-plan",
+    "stageType": "실시계획인가",
+    "title": "마곡지구 공공공간 실시계획인가",
+    "organization": "서울특별시",
+    "sido": "서울특별시",
+    "sigungu": "강서구",
+    "postedDate": "2026-05-18",
+    "status": "후속 추적",
+    "sourceUrl": "https://news.seoul.go.kr/citybuild/archives/category/urbanplanning",
+    "summary": "공공공간 조성 관련 실시계획인가 연결 예시입니다.",
+    "relatedNoticeIds": [
+      "sr-2026-002"
+    ]
+  },
+  {
+    "id": "gosi-noryangjin-plan-01",
+    "key": "noryangjin-station-plan",
+    "stageType": "고시정보",
+    "title": "노량진역 주변 지구단위계획구역 지정 고시",
+    "organization": "서울특별시 동작구청",
+    "sido": "서울특별시",
+    "sigungu": "동작구",
+    "postedDate": "2026-03-28",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.dongjak.go.kr/",
+    "summary": "열람 종료 후 지정 고시 여부를 추적하는 예시입니다.",
+    "relatedNoticeIds": [
+      "sr-2026-003"
+    ]
+  },
+  {
+    "id": "gosi-seongsu-road-01",
+    "key": "seongsu-road-improvement",
+    "stageType": "고시정보",
+    "title": "성수전략정비구역 주변 도로 정비 예비고시",
+    "organization": "서울특별시 성동구청",
+    "sido": "서울특별시",
+    "sigungu": "성동구",
+    "postedDate": "2026-04-09",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.sd.go.kr/",
+    "summary": "주민공람 이후 예비고시 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "sr-2026-004"
+    ]
+  },
+  {
+    "id": "gosi-seongsu-road-02",
+    "key": "seongsu-road-improvement",
+    "stageType": "실시계획인가",
+    "title": "성수전략정비구역 주변 도로 실시계획인가",
+    "organization": "서울특별시 성동구청",
+    "sido": "서울특별시",
+    "sigungu": "성동구",
+    "postedDate": "2026-06-14",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.sd.go.kr/",
+    "summary": "주변 도로 공사 단계 연결 예시입니다.",
+    "relatedNoticeIds": [
+      "sr-2026-004"
+    ]
+  },
+  {
+    "id": "gosi-jingwan-pedestrian-01",
+    "key": "jingwan-pedestrian-axis",
+    "stageType": "결정고시",
+    "title": "진관지구 공원 연결보행축 결정고시",
+    "organization": "서울특별시 은평구청",
+    "sido": "서울특별시",
+    "sigungu": "은평구",
+    "postedDate": "2026-04-20",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.ep.go.kr/",
+    "summary": "보행축 위치 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "sr-2026-005"
+    ]
+  },
+  {
+    "id": "gosi-yeouido-plan-01",
+    "key": "yeouido-finance-plan",
+    "stageType": "결정고시",
+    "title": "여의도 금융지구 지구단위계획 결정고시",
+    "organization": "서울특별시 영등포구청",
+    "sido": "서울특별시",
+    "sigungu": "영등포구",
+    "postedDate": "2026-03-29",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.ydp.go.kr/",
+    "summary": "지구단위계획 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "sr-2026-006"
+    ]
+  },
+  {
+    "id": "gosi-yeouido-plan-02",
+    "key": "yeouido-finance-plan",
+    "stageType": "실시계획인가",
+    "title": "여의도 금융지구 공개공지 정비 실시계획인가",
+    "organization": "서울특별시",
+    "sido": "서울특별시",
+    "sigungu": "영등포구",
+    "postedDate": "2026-05-30",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.ydp.go.kr/",
+    "summary": "실제 정비 단계 연결 예시입니다.",
+    "relatedNoticeIds": [
+      "sr-2026-006"
+    ]
+  },
+  {
+    "id": "gosi-geomdan-road-01",
+    "key": "geomdan-road-connection",
+    "stageType": "고시정보",
+    "title": "검단신도시 연결도로 노선 고시",
+    "organization": "인천광역시",
+    "sido": "인천광역시",
+    "sigungu": "서구",
+    "postedDate": "2026-03-27",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.incheon.go.kr/",
+    "summary": "연결도로 노선 고시 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "ic-2026-001"
+    ]
+  },
+  {
+    "id": "gosi-geomdan-road-02",
+    "key": "geomdan-road-connection",
+    "stageType": "실시계획인가",
+    "title": "검단신도시 연결도로 실시계획인가",
+    "organization": "인천광역시",
+    "sido": "인천광역시",
+    "sigungu": "서구",
+    "postedDate": "2026-05-11",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.incheon.go.kr/",
+    "summary": "도로 시행 단계 연결 예시입니다.",
+    "relatedNoticeIds": [
+      "ic-2026-001"
+    ]
+  },
+  {
+    "id": "gosi-bupyeong-park-01",
+    "key": "bupyeong-park-plan",
+    "stageType": "결정고시",
+    "title": "부평공원 조성계획 변경 결정고시",
+    "organization": "인천광역시 부평구청",
+    "sido": "인천광역시",
+    "sigungu": "부평구",
+    "postedDate": "2026-03-25",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.icbp.go.kr/",
+    "summary": "공원 조성계획 변경 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "ic-2026-002"
+    ]
+  },
+  {
+    "id": "gosi-songdo-use-01",
+    "key": "songdo-use-change",
+    "stageType": "결정고시",
+    "title": "송도유원지 일원 용도지역 변경 결정고시",
+    "organization": "인천광역시 연수구청",
+    "sido": "인천광역시",
+    "sigungu": "연수구",
+    "postedDate": "2026-03-18",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.yeonsu.go.kr/",
+    "summary": "용도지역 변경 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "ic-2026-003"
+    ]
+  },
+  {
+    "id": "gosi-songdo-school-01",
+    "key": "songdo-school-site",
+    "stageType": "고시정보",
+    "title": "송도국제도시 학교용지 배치 조정 고시",
+    "organization": "인천경제자유구역청",
+    "sido": "인천광역시",
+    "sigungu": "연수구",
+    "postedDate": "2026-04-08",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.ifez.go.kr/",
+    "summary": "학교용지 조정 고시 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "ic-2026-004"
+    ]
+  },
+  {
+    "id": "gosi-cheongna-public-01",
+    "key": "cheongna-public-complex",
+    "stageType": "결정고시",
+    "title": "청라국제도시 공공청사 복합화 결정고시",
+    "organization": "인천광역시 서구청",
+    "sido": "인천광역시",
+    "sigungu": "서구",
+    "postedDate": "2026-04-15",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.seo.incheon.kr/",
+    "summary": "복합 행정시설 배치 결정 예시입니다.",
+    "relatedNoticeIds": [
+      "ic-2026-005"
+    ]
+  },
+  {
+    "id": "gosi-gyeyang-greenbelt-01",
+    "key": "gyeyang-greenbelt-buffer",
+    "stageType": "고시정보",
+    "title": "계양테크노밸리 완충녹지 변경 고시",
+    "organization": "인천광역시 계양구청",
+    "sido": "인천광역시",
+    "sigungu": "계양구",
+    "postedDate": "2026-03-21",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.gyeyang.go.kr/",
+    "summary": "완충녹지 변경 후속 고시 예시입니다.",
+    "relatedNoticeIds": [
+      "ic-2026-006"
+    ]
+  },
+  {
+    "id": "gosi-changneung-park-01",
+    "key": "changneung-riverside-park",
+    "stageType": "결정고시",
+    "title": "창릉천변 공원 결정고시",
+    "organization": "경기도 고양시청",
+    "sido": "경기도",
+    "sigungu": "고양시 덕양구",
+    "postedDate": "2026-04-07",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.goyang.go.kr/",
+    "summary": "공원 계획 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-001"
+    ]
+  },
+  {
+    "id": "gosi-seryu-use-01",
+    "key": "seryu-use-change",
+    "stageType": "결정고시",
+    "title": "세류동 용도지역 변경 결정고시",
+    "organization": "경기도 수원시청",
+    "sido": "경기도",
+    "sigungu": "수원시 권선구",
+    "postedDate": "2026-03-31",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.suwon.go.kr/",
+    "summary": "용도지역 조정의 후속 결정고시 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-002"
+    ]
+  },
+  {
+    "id": "gosi-geumto-road-01",
+    "key": "geumto-road-link",
+    "stageType": "실시계획인가",
+    "title": "금토지구 연결도로 실시계획인가",
+    "organization": "경기도 성남시청",
+    "sido": "경기도",
+    "sigungu": "성남시 수정구",
+    "postedDate": "2026-04-18",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.seongnam.go.kr/",
+    "summary": "연결도로 시행 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-003"
+    ]
+  },
+  {
+    "id": "gosi-pyeongchon-plan-01",
+    "key": "pyeongchon-plan-renewal",
+    "stageType": "결정고시",
+    "title": "평촌신도시 지구단위계획 재정비 결정고시",
+    "organization": "경기도 안양시청",
+    "sido": "경기도",
+    "sigungu": "안양시 동안구",
+    "postedDate": "2026-04-21",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.anyang.go.kr/",
+    "summary": "재정비안 결정 고시 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-004"
+    ]
+  },
+  {
+    "id": "gosi-pyeongchon-plan-02",
+    "key": "pyeongchon-plan-renewal",
+    "stageType": "실시계획인가",
+    "title": "평촌신도시 공개공지 정비 실시계획인가",
+    "organization": "경기도 안양시청",
+    "sido": "경기도",
+    "sigungu": "안양시 동안구",
+    "postedDate": "2026-06-02",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.anyang.go.kr/",
+    "summary": "공개공지 정비 실행 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-004"
+    ]
+  },
+  {
+    "id": "gosi-wangsuk-transport-01",
+    "key": "wangsuk2-transport",
+    "stageType": "결정고시",
+    "title": "왕숙2 광역교통개선 계획 결정고시",
+    "organization": "경기도 남양주시청",
+    "sido": "경기도",
+    "sigungu": "남양주시",
+    "postedDate": "2026-04-09",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.nyj.go.kr/",
+    "summary": "광역교통개선 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-005"
+    ]
+  },
+  {
+    "id": "gosi-daejang-green-01",
+    "key": "daejang-greenbelt",
+    "stageType": "결정고시",
+    "title": "대장지구 인접 녹지축 공원조성계획 결정고시",
+    "organization": "경기도 부천시청",
+    "sido": "경기도",
+    "sigungu": "부천시",
+    "postedDate": "2026-03-19",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.bucheon.go.kr/",
+    "summary": "녹지축 계획 변경 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-006"
+    ]
+  },
+  {
+    "id": "gosi-gwanggyo-public-01",
+    "key": "gwanggyo-public-site",
+    "stageType": "결정고시",
+    "title": "광교신도시 공공청사 예정부지 활용계획 결정고시",
+    "organization": "경기도 수원시청",
+    "sido": "경기도",
+    "sigungu": "수원시 영통구",
+    "postedDate": "2026-04-13",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.suwon.go.kr/",
+    "summary": "공공청사 활용 계획 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-007"
+    ]
+  },
+  {
+    "id": "gosi-dongtan-school-01",
+    "key": "dongtan-school-route",
+    "stageType": "결정고시",
+    "title": "동탄2신도시 통학로 개선시설 결정고시",
+    "organization": "경기도 화성시청",
+    "sido": "경기도",
+    "sigungu": "화성시",
+    "postedDate": "2026-03-29",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.hscity.go.kr/",
+    "summary": "통학로 개선시설 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-008"
+    ]
+  },
+  {
+    "id": "gosi-galmae-station-01",
+    "key": "galmae-station-plan",
+    "stageType": "결정고시",
+    "title": "구리갈매역세권 지구단위계획 결정고시",
+    "organization": "경기도 구리시청",
+    "sido": "경기도",
+    "sigungu": "구리시",
+    "postedDate": "2026-03-24",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.guri.go.kr/",
+    "summary": "역세권 계획 결정 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-009"
+    ]
+  },
+  {
+    "id": "gosi-galmae-station-02",
+    "key": "galmae-station-plan",
+    "stageType": "실시계획인가",
+    "title": "구리갈매역세권 보행광장 실시계획인가",
+    "organization": "경기도 구리시청",
+    "sido": "경기도",
+    "sigungu": "구리시",
+    "postedDate": "2026-05-22",
+    "status": "후속 추적",
+    "sourceUrl": "https://www.guri.go.kr/",
+    "summary": "보행광장 조성 실행 단계 예시입니다.",
+    "relatedNoticeIds": [
+      "gg-2026-009"
+    ]
+  }
+]

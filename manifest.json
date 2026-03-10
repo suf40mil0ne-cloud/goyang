@@ -1,0 +1,10 @@
+{
+  "name": "주민공람 레이더",
+  "short_name": "주민공람 레이더",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f5fbff",
+  "theme_color": "#0c5ecf",
+  "description": "내 주변 주민공람공고를 쉽게 찾고 이해하는 도시변화 탐색 서비스",
+  "lang": "ko"
+}

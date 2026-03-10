@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
-  <title>지역별 주민공람공고 | 주민공람 레이더</title>
-  <meta name="description" content="서울, 인천, 경기 지역별 주민공람공고와 주민의견청취 공고를 정리해 보여줍니다." />
+  <title>지역 허브 | 주민공람 레이더</title>
+  <meta name="description" content="서울, 인천, 경기 지역별 주민공람공고와 자주 나오는 유형, 지역별 체크포인트를 확인하세요." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://goyang.pages.dev/region.html" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
@@ -15,7 +15,6 @@
 </head>
 <body data-page="region">
   <div class="bg-layer" aria-hidden="true"></div>
-
   <header class="topbar">
     <div class="brand">
       <span class="brand-mark">JR</span>
@@ -27,8 +26,10 @@
     <nav class="main-nav" aria-label="주요 메뉴">
       <a href="index.html">홈</a>
       <a href="map.html">지도 보기</a>
+      <a href="region.html?area=seoul" aria-current="page">지역 허브</a>
       <a href="pages/public-hearing-guide.html">제도 안내</a>
       <a href="pages/how-to-submit.html">의견 제출 안내</a>
+      <a href="pages/how-to-read-notice.html">공고문 읽는 법</a>
       <a href="pages/sources.html">데이터 출처</a>
       <a href="pages/contact.html">문의</a>
     </nav>
@@ -39,14 +40,14 @@
       <div class="breadcrumbs">
         <a href="index.html">홈</a>
         <span>/</span>
-        <span>지역별 보기</span>
+        <span>지역 허브</span>
       </div>
       <div id="region-links" class="project-tabs"></div>
-      <h2 id="region-title">지역별 주민공람공고 보기</h2>
-      <p id="region-summary">서울, 인천, 경기의 주민공람공고를 지역 단위로 나눠서 확인할 수 있습니다.</p>
+      <h2 id="region-title">지역 허브</h2>
+      <p id="region-summary">지역별 최근 공고와 자주 나오는 유형, 주민이 먼저 확인할 질문을 함께 보여줍니다.</p>
       <div class="hero-meta">
-        <span id="region-count">현재 등록 공고 0건</span>
-        <span>지역 페이지는 추후 전국 확장을 고려한 구조입니다.</span>
+        <span id="region-count">등록 공고 0건</span>
+        <span>시군구별 허브 확장 전 단계</span>
       </div>
     </section>
 
@@ -59,23 +60,25 @@
       <section class="page-card">
         <h2>지역 지도</h2>
         <div id="region-map" class="map" role="img" aria-label="지역별 주민공람공고 지도"></div>
-        <p class="map-note">같은 지역 안에서도 공고 유형이 다르므로, 상세 페이지에서 원문 링크와 제출 방식을 함께 확인해 주세요.</p>
+        <p class="map-note">지역 허브는 시도 기준 진입 페이지이며, 실제 생활권과 거리는 상세 페이지에서 다시 확인해야 합니다.</p>
       </section>
-
       <section class="page-card">
-        <h2>이 지역을 볼 때 체크할 점</h2>
-        <ol class="stage-list">
-          <li><strong>마감 임박 공고 우선</strong> 종료 직전 공고를 먼저 확인하세요.</li>
-          <li><strong>생활권과 거리 확인</strong> 같은 시도 안에서도 실제 생활권과 거리가 다를 수 있습니다.</li>
-          <li><strong>유형별 차이 이해</strong> 지구단위계획, 도시계획시설, 정비사업은 읽는 포인트가 다릅니다.</li>
-          <li><strong>원문 기준 재확인</strong> 지도와 해설은 참고용이며, 최종 판단은 원문 공고문 기준입니다.</li>
-        </ol>
+        <h2>이 지역에서 자주 보는 질문</h2>
+        <div id="region-faq" class="faq-grid"></div>
       </section>
     </section>
 
     <section class="page-card">
+      <div class="panel-head">
+        <h2>자주 나오는 유형</h2>
+        <span>지역마다 반복되는 계획 유형이 다릅니다.</span>
+      </div>
+      <div id="region-types" class="card-grid"></div>
+    </section>
+
+    <section class="page-card">
       <h2>지역 공고 목록</h2>
-      <div id="region-notices" class="notice-grid" aria-live="polite"></div>
+      <div id="region-notices" class="notice-grid"></div>
     </section>
   </main>
 

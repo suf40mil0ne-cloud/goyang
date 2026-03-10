@@ -709,6 +709,52 @@ button {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.timeline-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.timeline-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.84);
+  padding: 15px;
+  position: relative;
+}
+
+.timeline-card::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  bottom: -18px;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(12, 94, 207, 0.28), rgba(234, 107, 39, 0.1));
+}
+
+.timeline-card:last-child::before {
+  display: none;
+}
+
+.timeline-card h3 {
+  margin: 10px 0 8px;
+  font-size: 1rem;
+}
+
+.timeline-card .resource-link {
+  margin-top: 10px;
+}
+
+.summary-card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.summary-card li {
+  color: #466076;
+  line-height: 1.6;
+}
+
 .stat-card .stat-value {
   display: block;
   margin-top: 6px;
