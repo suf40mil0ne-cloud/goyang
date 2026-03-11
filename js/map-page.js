@@ -154,7 +154,7 @@ export async function initMapPage() {
     updateListUi(selectedDistrict, region, scoped);
 
     try {
-      const map = await createNoticeMap({
+      const mapHandle = await createNoticeMap({
         elementId: 'overview-map',
         notices: scoped,
         center,
@@ -162,17 +162,20 @@ export async function initMapPage() {
         currentPosition: state.currentPosition,
         hybrid: Boolean(hybridToggle?.checked),
       });
-      state.mapReady = Boolean(map);
-      if (map) {
-        state.mapProjection = map.getView().getProjection()?.getCode?.() || 'EPSG:5179';
-        state.currentExtent = map.getView().calculateExtent(map.getSize());
+      state.mapReady = Boolean(mapHandle?.supportsExtent);
+      if (mapHandle?.baseReady && helper && !mapHandle.supportsExtent) {
+        helper.textContent = '기본 지도는 표시되지만, 현재 환경에서는 지도 범위 기반 보기와 핀 표시가 제한될 수 있습니다.';
+      }
+      if (mapHandle?.supportsExtent) {
+        state.mapProjection = mapHandle.getProjection() || 'EPSG:5179';
+        state.currentExtent = mapHandle.getCurrentExtent();
         if (state.listMode === 'map-extent') {
           state.appliedExtent = state.currentExtent;
           state.extentDirty = false;
         }
         let ignoreInitialMove = true;
-        map.on('moveend', () => {
-          state.currentExtent = map.getView().calculateExtent(map.getSize());
+        mapHandle.on('moveend', () => {
+          state.currentExtent = mapHandle.getCurrentExtent();
           if (ignoreInitialMove) {
             ignoreInitialMove = false;
             updateListUi(selectedDistrict, region, scoped);
@@ -181,6 +184,11 @@ export async function initMapPage() {
           state.extentDirty = true;
           updateListUi(selectedDistrict, region, scoped);
         });
+      } else {
+        state.mapProjection = '';
+        state.currentExtent = null;
+        state.appliedExtent = null;
+        state.extentDirty = false;
       }
       updateListUi(selectedDistrict, region, scoped);
     } catch (error) {

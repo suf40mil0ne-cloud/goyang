@@ -275,6 +275,24 @@ function setHybrid(mapInstance, enabled) {
   mapInstance._setHybridMap(Boolean(enabled));
 }
 
+function createMapHandle({ map, mapInstance, projection }) {
+  return {
+    baseReady: Boolean(mapInstance),
+    supportsExtent: Boolean(map),
+    projection: projection || MAP_CONFIG.projectionCode,
+    on(eventName, handler) {
+      if (map?.on) map.on(eventName, handler);
+    },
+    getCurrentExtent() {
+      if (!map?.getView || !map?.getSize) return null;
+      return map.getView().calculateExtent(map.getSize());
+    },
+    getProjection() {
+      return projection || MAP_CONFIG.projectionCode;
+    },
+  };
+}
+
 export async function createNoticeMap({
   elementId,
   notices,
@@ -339,11 +357,17 @@ export async function createNoticeMap({
     throw error;
   }
   setHybrid(mapInstance, hybrid);
+  logInfo('Base NGII map created', { elementId, hybrid });
 
   const map = resolveOlMap(mapInstance);
   if (!map) {
-    logError('NGII map wrapper did not expose an OpenLayers instance.');
-    throw new Error('NGII OpenLayers map instance could not be resolved.');
+    logError('NGII map wrapper did not expose an OpenLayers instance. Keeping base map only.');
+    registry.set(element, { map: null, mapInstance, featureLayer: null, overlay: null });
+    return createMapHandle({
+      map: null,
+      mapInstance,
+      projection: MAP_CONFIG.projectionCode,
+    });
   }
 
   const projection = map.getView().getProjection()?.getCode?.() || MAP_CONFIG.projectionCode;
@@ -389,5 +413,9 @@ export async function createNoticeMap({
   window.setTimeout(() => map.updateSize(), 0);
   window.setTimeout(() => map.updateSize(), 180);
   logInfo('Map render completed', { projection, notices: notices.length });
-  return map;
+  return createMapHandle({
+    map,
+    mapInstance,
+    projection,
+  });
 }
