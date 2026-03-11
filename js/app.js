@@ -1,4 +1,4 @@
-import { getDistrictNotices, haversineKm, normalizeRegionText } from './filters.js';
+import { getDistrictNotices } from './filters.js';
 import { buildDistrictIndex, findDistrictByName, getCurrentPosition, reverseGeocodeDistrict } from './location.js';
 import { loadNotices, loadRegions } from './notices.js';
 import {
@@ -9,7 +9,7 @@ import {
   savePreferredRegion,
   toggleFavoriteRegion,
 } from './storage.js';
-import { getRegionHref } from './regions.js';
+import { getAdjacentDistricts, getRegionHref, loadRegionAdjacency } from './regions.js';
 
 const INITIAL_VISIBLE_COUNT = 5;
 
@@ -17,6 +17,7 @@ const state = {
   notices: [],
   regions: [],
   districts: [],
+  adjacency: {},
   selectedRegion: null,
   selectedLegalDong: '',
   visibleCount: INITIAL_VISIBLE_COUNT,
@@ -185,23 +186,9 @@ function getCurrentRegionNotices(filterKey = 'active') {
 
 function getAdjacentRegionNotices() {
   if (!state.selectedRegion) return [];
-  const current = state.districts.find((district) =>
-    normalizeRegionText(district.sido) === normalizeRegionText(state.selectedRegion.sido) &&
-    normalizeRegionText(district.sigungu) === normalizeRegionText(state.selectedRegion.sigungu)
-  );
+  const adjacentDistricts = getAdjacentDistricts(state.adjacency, state.districts, state.selectedRegion);
 
-  const nearbyDistricts = state.districts
-    .filter((district) =>
-      normalizeRegionText(district.sido) !== normalizeRegionText(state.selectedRegion.sido) ||
-      normalizeRegionText(district.sigungu) !== normalizeRegionText(state.selectedRegion.sigungu)
-    )
-    .map((district) => ({
-      ...district,
-      distanceKm: current?.center && district.center ? haversineKm(current.center, district.center) : Number.POSITIVE_INFINITY,
-    }))
-    .sort((a, b) => a.distanceKm - b.distanceKm || a.sigungu.localeCompare(b.sigungu, 'ko'));
-
-  return nearbyDistricts
+  return adjacentDistricts
     .flatMap((district) => getDistrictNotices(state.notices, district, 'active').slice(0, 2))
     .slice(0, 6);
 }
@@ -479,9 +466,9 @@ function bindRegionForm() {
       const nearby = getAdjacentRegionNotices();
       renderSecondaryResults(
         '인접 시군구 진행 중 공고',
-        `${state.selectedRegion.sido} 안팎에서 가까운 다른 지역 공고를 보여줍니다.`,
+        `${getRegionLabel(state.selectedRegion)}와 실제로 맞닿은 인접 시군구의 공고를 보여줍니다.`,
         nearby,
-        '표시할 인접 지역 공고가 없습니다.'
+        '인접 지역 정보를 아직 준비 중이거나, 현재 공고가 없습니다.'
       );
     }
   });
@@ -490,11 +477,12 @@ function bindRegionForm() {
 export async function initHomePage() {
   resetHomeState();
   setCurrentYear();
-  const [notices, regions] = await Promise.all([loadNotices(), loadRegions()]);
+  const [notices, regions, adjacency] = await Promise.all([loadNotices(), loadRegions(), loadRegionAdjacency()]);
 
   state.notices = notices;
   state.regions = regions;
   state.districts = buildDistrictIndex(regions, notices);
+  state.adjacency = adjacency;
 
   setUpdatedTime();
   populateSidoOptions();

@@ -2,9 +2,11 @@ import { loadRegions } from './notices.js';
 
 const sidoUrl = new URL('../data/sido.json', import.meta.url);
 const sigunguUrl = new URL('../data/sigungu.json', import.meta.url);
+const adjacencyUrl = new URL('../data/region-adjacency.json', import.meta.url);
 
 let sidoCache;
 let sigunguCache;
+let adjacencyCache;
 
 async function fetchJson(url) {
   const response = await fetch(url);
@@ -22,14 +24,20 @@ export async function loadSigunguCatalog() {
   return sigunguCache;
 }
 
+export async function loadRegionAdjacency() {
+  if (!adjacencyCache) adjacencyCache = fetchJson(adjacencyUrl);
+  return adjacencyCache;
+}
+
 export async function loadRegionCatalog() {
-  const [regions, sidos, sigungus] = await Promise.all([
+  const [regions, sidos, sigungus, adjacency] = await Promise.all([
     loadRegions(),
     loadSidoCatalog(),
     loadSigunguCatalog(),
+    loadRegionAdjacency(),
   ]);
 
-  return { regions, sidos, sigungus };
+  return { regions, sidos, sigungus, adjacency };
 }
 
 export function getNationMeta() {
@@ -100,4 +108,20 @@ export function getRegionDisplayName({ scope, sido, sigungu }) {
   if (scope === 'sigungu' && sido && sigungu) return `${sido} ${sigungu}`;
   if (scope === 'sido' && sido) return sido;
   return '전국';
+}
+
+export function getAdjacentDistricts(adjacencyMap, districts, region) {
+  if (!adjacencyMap || !districts?.length || !region?.adminCode) return [];
+  const adjacentCodes = Array.isArray(adjacencyMap[region.adminCode]) ? adjacencyMap[region.adminCode] : [];
+  if (!adjacentCodes.length) return [];
+
+  const districtByCode = new Map(
+    districts
+      .filter((district) => district.adminCode)
+      .map((district) => [district.adminCode, district])
+  );
+
+  return adjacentCodes
+    .map((code) => districtByCode.get(code))
+    .filter(Boolean);
 }
