@@ -1515,6 +1515,9 @@ button {
   background: var(--surface);
   box-shadow: var(--shadow-soft);
   padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .source-grid {
@@ -1535,6 +1538,12 @@ button {
   line-height: 1.45;
 }
 
+.source-card-body {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
 .source-card p {
   margin: 0;
 }
@@ -1549,8 +1558,16 @@ button {
   margin: 10px 0 12px;
 }
 
+.source-card-actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
 .source-card .resource-link {
-  margin-top: 12px;
+  margin-top: 0;
+  align-self: flex-start;
+  max-width: 100%;
 }
 
 .source-card-compact {

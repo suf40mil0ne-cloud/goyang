@@ -58,20 +58,24 @@ function buildSummaryLines(notice) {
 function renderLinkedSourceCard(item, typeLabel, buttonLabel = '바로가기') {
   return `
     <article class="source-card">
-      <div class="source-card-head">
-        <strong>${item.title}</strong>
-        <span class="subtle-label">${typeLabel}</span>
+      <div class="source-card-body">
+        <div class="source-card-head">
+          <strong>${item.title}</strong>
+          <span class="subtle-label">${typeLabel}</span>
+        </div>
+        <p>${item.organization || item.publisher || item.sourceSite || ''}</p>
+        <div class="meta-line">
+          ${item.noticeNumber ? `<span>${item.noticeNumber}</span>` : ''}
+          ${item.postedDate ? `<span>${item.postedDate}</span>` : ''}
+          ${item.publishedAt ? `<span>${item.publishedAt}</span>` : ''}
+          ${item.confidence ? `<span>연결도 ${Math.round(item.confidence * 100)}%</span>` : ''}
+          ${item.relevanceScore ? `<span>관련도 ${Math.round(item.relevanceScore * 100)}%</span>` : ''}
+        </div>
+        ${item.snippet ? `<p>${item.snippet}</p>` : ''}
       </div>
-      <p>${item.organization || item.publisher || item.sourceSite || ''}</p>
-      <div class="meta-line">
-        ${item.noticeNumber ? `<span>${item.noticeNumber}</span>` : ''}
-        ${item.postedDate ? `<span>${item.postedDate}</span>` : ''}
-        ${item.publishedAt ? `<span>${item.publishedAt}</span>` : ''}
-        ${item.confidence ? `<span>연결도 ${Math.round(item.confidence * 100)}%</span>` : ''}
-        ${item.relevanceScore ? `<span>관련도 ${Math.round(item.relevanceScore * 100)}%</span>` : ''}
+      <div class="source-card-actions">
+        <a class="resource-link" href="${item.url}" target="_blank" rel="noopener noreferrer">${buttonLabel}</a>
       </div>
-      ${item.snippet ? `<p>${item.snippet}</p>` : ''}
-      <a class="resource-link" href="${item.url}" target="_blank" rel="noopener noreferrer">${buttonLabel}</a>
     </article>
   `;
 }
@@ -79,12 +83,16 @@ function renderLinkedSourceCard(item, typeLabel, buttonLabel = '바로가기') {
 function renderPrimaryActionCard({ title, label, description, url, buttonLabel }) {
   return `
     <article class="source-card source-card-compact">
-      <div class="source-card-head">
-        <strong>${title}</strong>
-        <span class="subtle-label">${label}</span>
+      <div class="source-card-body">
+        <div class="source-card-head">
+          <strong>${title}</strong>
+          <span class="subtle-label">${label}</span>
+        </div>
+        <p>${description}</p>
       </div>
-      <p>${description}</p>
-      <a class="resource-link" href="${url}" target="_blank" rel="noopener noreferrer">${buttonLabel}</a>
+      <div class="source-card-actions">
+        <a class="resource-link" href="${url}" target="_blank" rel="noopener noreferrer">${buttonLabel}</a>
+      </div>
     </article>
   `;
 }
