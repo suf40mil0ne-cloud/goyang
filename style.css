@@ -554,11 +554,19 @@ button {
 
 .filter-chip,
 .project-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: #fff;
   padding: 9px 13px;
   font-weight: 600;
+  line-height: 1.3;
+  min-height: 38px;
 }
 
 .filter-chip.is-active,
@@ -1362,6 +1370,14 @@ button,
   border-radius: 14px;
   padding: 11px 16px;
   font-weight: 650;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
+  line-height: 1.3;
+  min-height: 44px;
 }
 
 .primary-button {
@@ -1384,9 +1400,17 @@ button {
 .status-badge,
 .badge,
 .saved-area-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
   border-radius: 999px;
   padding: 5px 10px;
   font-size: 0.74rem;
+  line-height: 1.25;
+  min-height: 28px;
   border-color: transparent;
   background: var(--surface-muted);
   color: var(--ink-faint);
@@ -1463,11 +1487,16 @@ button {
 .signal-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
   min-height: 28px;
   padding: 0 10px;
   border-radius: 999px;
   font-size: 0.74rem;
   font-weight: 700;
+  line-height: 1.25;
   background: var(--surface-strong);
   color: var(--ink-soft);
 }
@@ -1740,6 +1769,9 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  box-sizing: border-box;
   gap: 6px;
   min-height: 38px;
   padding: 0 14px;
@@ -1749,6 +1781,7 @@ button {
   color: var(--ink);
   font-size: 0.92rem;
   font-weight: 600;
+  line-height: 1.3;
   text-decoration: none;
   cursor: pointer;
   transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
