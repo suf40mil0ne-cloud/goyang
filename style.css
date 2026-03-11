@@ -1256,7 +1256,14 @@ body {
   color: #a24f36;
   font-size: 2.16rem;
   font-weight: 800;
-  line-height: 1.62;
+  line-height: 1.38;
+  max-width: 14em;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: rgba(162, 79, 54, 0.08);
+  border: 1px solid rgba(162, 79, 54, 0.18);
+  box-shadow: 0 10px 24px rgba(162, 79, 54, 0.08);
+  letter-spacing: -0.02em;
 }
 
 .hero-meta span,
@@ -1963,5 +1970,12 @@ body {
   .notice-meta-list,
   .timeline-list {
     gap: 8px;
+  }
+
+  .hero-kicker-emphasis {
+    font-size: 1.72rem;
+    max-width: none;
+    padding: 12px 14px;
+    line-height: 1.42;
   }
 }
