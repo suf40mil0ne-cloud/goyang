@@ -54,7 +54,16 @@
     ],
     "timelineKey": "jingwan-pedestrian-axis",
     "sourceNoticeId": "EUM-IH-SEO-2026-005",
-    "onlineSubmissionAvailable": true
+    "onlineSubmissionAvailable": true,
+    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
+      "https://www.ep.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T09:05:00+09:00"
   },
   {
     "id": "gg-2026-007",
@@ -112,7 +121,16 @@
     ],
     "timelineKey": "gwanggyo-public-site",
     "sourceNoticeId": "EUM-HR-GG-2026-007",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+      "https://www.suwon.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T09:20:00+09:00"
   },
   {
     "id": "sr-2026-004",
@@ -172,7 +190,16 @@
     ],
     "timelineKey": "seongsu-road-improvement",
     "sourceNoticeId": "EUM-HR-SEO-2026-004",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+      "https://www.sd.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T09:00:00+09:00"
   },
   {
     "id": "dj-2026-001",
@@ -225,7 +252,15 @@
     ],
     "timelineKey": "doryong-road-adjustment",
     "onlineSubmissionAvailable": true,
-    "adminCode": "30200"
+    "adminCode": "30200",
+    "sourceDetailUrl": "https://www.yuseong.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.yuseong.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:15:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -281,7 +316,15 @@
     ],
     "rawSourceName": "안양시청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:45:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.anyang.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.anyang.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:45:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -336,7 +379,15 @@
     ],
     "rawSourceName": "남양주시청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:50:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.nyj.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.nyj.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:50:00+09:00"
   },
   {
     "id": "dg-2026-001",
@@ -389,7 +440,15 @@
     ],
     "timelineKey": "beomeo-district-plan",
     "onlineSubmissionAvailable": true,
-    "adminCode": "27260"
+    "adminCode": "27260",
+    "sourceDetailUrl": "https://www.suseong.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.suseong.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:05:00+09:00"
   },
   {
     "id": "sj-2026-001",
@@ -442,7 +501,15 @@
     ],
     "timelineKey": "naseong-district-plan",
     "onlineSubmissionAvailable": true,
-    "adminCode": "36110"
+    "adminCode": "36110",
+    "sourceDetailUrl": "https://www.sejong.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.sejong.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:25:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -501,7 +568,16 @@
     ],
     "rawSourceName": "서대문구청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:00:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.sdm.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.sdm.go.kr/",
+      "https://www.sdm.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:00:00+09:00"
   },
   {
     "id": "gb-2026-001",
@@ -554,7 +630,15 @@
     ],
     "timelineKey": "ocheon-road-line",
     "onlineSubmissionAvailable": true,
-    "adminCode": "47111"
+    "adminCode": "47111",
+    "sourceDetailUrl": "https://www.pohang.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.pohang.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:55:00+09:00"
   },
   {
     "id": "cn-2026-001",
@@ -607,7 +691,15 @@
     ],
     "timelineKey": "buldang-road-system",
     "onlineSubmissionAvailable": true,
-    "adminCode": "44133"
+    "adminCode": "44133",
+    "sourceDetailUrl": "https://www.cheonan.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.cheonan.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:40:00+09:00"
   },
   {
     "id": "ic-2026-004",
@@ -665,7 +757,16 @@
     ],
     "timelineKey": "songdo-school-site",
     "sourceNoticeId": "EUM-IH-INC-2026-004",
-    "onlineSubmissionAvailable": true
+    "onlineSubmissionAvailable": true,
+    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
+      "https://www.ifez.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T09:10:00+09:00"
   },
   {
     "id": "bs-2026-001",
@@ -718,7 +819,15 @@
     ],
     "timelineKey": "haeundae-promenade",
     "onlineSubmissionAvailable": false,
-    "adminCode": "26350"
+    "adminCode": "26350",
+    "sourceDetailUrl": "https://www.haeundae.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.haeundae.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:00:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -773,7 +882,15 @@
     ],
     "rawSourceName": "인천광역시 고시공고",
     "lastVerifiedAt": "2026-03-10T08:20:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.incheon.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.incheon.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:20:00+09:00"
   },
   {
     "id": "gw-2026-001",
@@ -826,7 +943,15 @@
     ],
     "timelineKey": "soyangg-river-park",
     "onlineSubmissionAvailable": false,
-    "adminCode": "42110"
+    "adminCode": "42110",
+    "sourceDetailUrl": "https://www.chuncheon.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.chuncheon.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:30:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -880,7 +1005,15 @@
     ],
     "rawSourceName": "고양시청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:30:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.goyang.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.goyang.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:30:00+09:00"
   },
   {
     "id": "jn-2026-001",
@@ -933,7 +1066,15 @@
     ],
     "timelineKey": "suncheon-riverfront-plan",
     "onlineSubmissionAvailable": false,
-    "adminCode": "46150"
+    "adminCode": "46150",
+    "sourceDetailUrl": "https://www.suncheon.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.suncheon.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:50:00+09:00"
   },
   {
     "id": "jj-2026-001",
@@ -986,7 +1127,15 @@
     ],
     "timelineKey": "nohyeong-park-link",
     "onlineSubmissionAvailable": false,
-    "adminCode": "50110"
+    "adminCode": "50110",
+    "sourceDetailUrl": "https://www.jejusi.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.jejusi.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T10:05:00+09:00"
   },
   {
     "id": "gg-2026-008",
@@ -1042,7 +1191,16 @@
     ],
     "timelineKey": "dongtan-school-route",
     "sourceNoticeId": "EUM-IH-GG-2026-008",
-    "onlineSubmissionAvailable": true
+    "onlineSubmissionAvailable": true,
+    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
+      "https://www.hscity.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T09:24:00+09:00"
   },
   {
     "id": "gj-2026-001",
@@ -1095,7 +1253,15 @@
     ],
     "timelineKey": "gwangju-park-link",
     "onlineSubmissionAvailable": false,
-    "adminCode": "29170"
+    "adminCode": "29170",
+    "sourceDetailUrl": "https://www.bukgu.gwangju.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.bukgu.gwangju.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:10:00+09:00"
   },
   {
     "id": "ic-2026-005",
@@ -1153,7 +1319,16 @@
     ],
     "timelineKey": "cheongna-public-complex",
     "sourceNoticeId": "EUM-HR-INC-2026-005",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+      "https://www.seo.incheon.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T09:14:00+09:00"
   },
   {
     "id": "cb-2026-001",
@@ -1206,7 +1381,15 @@
     ],
     "timelineKey": "osong-station-plaza",
     "onlineSubmissionAvailable": false,
-    "adminCode": "43113"
+    "adminCode": "43113",
+    "sourceDetailUrl": "https://www.cheongju.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.cheongju.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:35:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -1261,7 +1444,15 @@
     ],
     "rawSourceName": "수원시청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:35:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.suwon.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.suwon.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:35:00+09:00"
   },
   {
     "id": "sr-2026-006",
@@ -1320,7 +1511,16 @@
     ],
     "timelineKey": "yeouido-finance-plan",
     "sourceNoticeId": "EUM-HR-SEO-2026-006",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+      "https://www.ydp.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T09:08:00+09:00"
   },
   {
     "id": "us-2026-001",
@@ -1373,7 +1573,15 @@
     ],
     "timelineKey": "samsan-park-refresh",
     "onlineSubmissionAvailable": false,
-    "adminCode": "31140"
+    "adminCode": "31140",
+    "sourceDetailUrl": "https://www.ulsannamgu.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.ulsannamgu.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:20:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -1427,7 +1635,15 @@
     ],
     "rawSourceName": "부평구청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:25:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.icbp.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.icbp.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:25:00+09:00"
   },
   {
     "id": "gn-2026-001",
@@ -1480,7 +1696,15 @@
     ],
     "timelineKey": "sangnam-public-space",
     "onlineSubmissionAvailable": false,
-    "adminCode": "48123"
+    "adminCode": "48123",
+    "sourceDetailUrl": "https://www.changwon.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.changwon.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T10:00:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -1536,7 +1760,15 @@
     ],
     "rawSourceName": "서울도시계획포털 공고 게시판",
     "lastVerifiedAt": "2026-03-10T08:10:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://news.seoul.go.kr/citybuild/archives/category/urbanplanning",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://news.seoul.go.kr/citybuild/archives/category/urbanplanning"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:10:00+09:00"
   },
   {
     "id": "jb-2026-001",
@@ -1589,7 +1821,15 @@
     ],
     "timelineKey": "gaeksa-walk-zone",
     "onlineSubmissionAvailable": false,
-    "adminCode": "45111"
+    "adminCode": "45111",
+    "sourceDetailUrl": "https://www.jeonju.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.jeonju.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-11T09:45:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -1643,7 +1883,15 @@
     ],
     "rawSourceName": "성남시청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:40:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.seongnam.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.seongnam.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:40:00+09:00"
   },
   {
     "id": "gg-2026-009",
@@ -1702,7 +1950,16 @@
     ],
     "timelineKey": "galmae-station-plan",
     "sourceNoticeId": "EUM-HR-GG-2026-009",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+      "https://www.guri.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T09:28:00+09:00"
   },
   {
     "id": "ic-2026-006",
@@ -1758,7 +2015,16 @@
     ],
     "timelineKey": "gyeyang-greenbelt-buffer",
     "sourceNoticeId": "EUM-HR-INC-2026-006",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+      "https://www.gyeyang.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T09:17:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -1813,7 +2079,15 @@
     ],
     "rawSourceName": "동작구청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:15:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.dongjak.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.dongjak.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:15:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -1868,7 +2142,15 @@
     ],
     "rawSourceName": "연수구청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:28:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.yeonsu.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.yeonsu.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:28:00+09:00"
   },
   {
     "sourceType": "land-hearing",
@@ -1922,6 +2204,14 @@
     ],
     "rawSourceName": "부천시청 고시공고",
     "lastVerifiedAt": "2026-03-10T08:55:00+09:00",
-    "onlineSubmissionAvailable": false
+    "onlineSubmissionAvailable": false,
+    "sourceDetailUrl": "https://www.bucheon.go.kr/",
+    "officialNoticeUrl": "",
+    "attachmentUrls": [
+      "https://www.bucheon.go.kr/"
+    ],
+    "hasOfficialNotice": false,
+    "hasAttachment": true,
+    "linkVerifiedAt": "2026-03-10T08:55:00+09:00"
   }
 ]

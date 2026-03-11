@@ -200,7 +200,7 @@ function renderNotice(notice, relatedNotices) {
             <strong>공식 공고 원문</strong>
             <span class="subtle-label">확인 중</span>
           </div>
-          <p>현재 공고번호 또는 연결 신뢰도가 충분히 확인된 공식 원문 링크를 검수 중입니다. 아래 기준 출처와 제출 안내를 먼저 확인해 주세요.</p>
+          <p>${notice.officialNoticeReviewReason || '현재 공고번호 또는 연결 신뢰도가 충분히 확인된 공식 원문 링크를 검수 중입니다. 아래 기준 출처와 제출 안내를 먼저 확인해 주세요.'}</p>
         </article>
       `);
     }

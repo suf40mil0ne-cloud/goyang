@@ -43,6 +43,67 @@ function isLikelyHomepageUrl(value = '') {
   return (url.pathname === '/' || url.pathname === '') && !url.search;
 }
 
+function classifyUrl(value = '') {
+  if (!isUsableUrl(value)) return 'invalid';
+  if (isEumUrl(value)) return 'source-detail';
+  const normalizedUrl = normalizeUrl(value).toLowerCase();
+  if (/\.(pdf|hwp|hwpx|doc|docx|xls|xlsx|zip)(\?|$)/i.test(normalizedUrl)) return 'document';
+  if (isLikelyHomepageUrl(value)) return 'homepage';
+  return 'detail';
+}
+
+function normalizeNoticeNumber(value = '') {
+  return String(value).replace(/\s+/g, '').replace(/[()]/g, '').toLowerCase();
+}
+
+function normalizeOrganization(value = '') {
+  return String(value)
+    .replace(/특별자치도|특별자치시|특별시|광역시|경기도|경상북도|경상남도|전라남도|전북특별자치도|충청남도|충청북도|강원특별자치도/g, '')
+    .replace(/시청|군청|구청|시장|군수|구청장|도시계획국|도시정비과|도시관리과|도시계획과|경제자유구역청/g, '')
+    .replace(/\s+/g, '')
+    .toLowerCase();
+}
+
+function normalizeTitle(value = '') {
+  return String(value)
+    .replace(/\[[^\]]+\]|\([^)]+\)|<[^>]+>/g, ' ')
+    .replace(/공고|주민공람|주민열람|주민의견청취|인터넷|결정안|변경안|고시공고/gi, ' ')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+function scoreOfficialCandidate(notice, enrichment, item) {
+  let score = item.confidence ?? 0;
+  const noticeNumber = normalizeNoticeNumber(enrichment.noticeNumber || notice.noticeNumber);
+  const candidateNumber = normalizeNoticeNumber(item.noticeNumber);
+  if (noticeNumber && candidateNumber && noticeNumber === candidateNumber) score += 0.18;
+
+  const noticeOrg = normalizeOrganization(notice.organization);
+  const candidateOrg = normalizeOrganization(item.organization || item.sourceSite);
+  if (noticeOrg && candidateOrg && (candidateOrg.includes(noticeOrg) || noticeOrg.includes(candidateOrg))) score += 0.08;
+
+  const noticeTitle = normalizeTitle(enrichment.normalizedTitle || notice.title);
+  const candidateTitle = normalizeTitle(item.title);
+  if (noticeTitle && candidateTitle && (candidateTitle.includes(noticeTitle) || noticeTitle.includes(candidateTitle))) score += 0.06;
+
+  if (notice.postedDate && item.postedDate && notice.postedDate === item.postedDate) score += 0.05;
+
+  const urlType = classifyUrl(item.url);
+  if (urlType === 'document') score += 0.05;
+  if (urlType === 'homepage') score -= 0.35;
+  if (urlType === 'source-detail') score -= 0.25;
+
+  return Math.max(0, Math.min(score, 1));
+}
+
+function getLinkConfidenceTier(score = 0) {
+  if (score >= 0.9) return 'high';
+  if (score >= 0.75) return 'medium';
+  return 'low';
+}
+
 function isLikelyAttachment(item) {
   if (!isUsableUrl(item?.url)) return false;
   const label = `${item.label || item.title || ''}`.toLowerCase();
@@ -53,16 +114,17 @@ function isLikelyAttachment(item) {
 }
 
 function buildSourceDetailLink(notice) {
-  if (!isUsableUrl(notice.sourceUrl)) return null;
+  const sourceUrl = notice.sourceDetailUrl || notice.sourceUrl;
+  if (!isUsableUrl(sourceUrl)) return null;
 
   return {
-    title: isEumUrl(notice.sourceUrl) ? '토지이음에서 보기' : '기준 출처에서 보기',
-    url: notice.sourceUrl,
-    description: isEumUrl(notice.sourceUrl)
+    title: isEumUrl(sourceUrl) ? '토지이음에서 보기' : '기준 출처에서 보기',
+    url: sourceUrl,
+    description: isEumUrl(sourceUrl)
       ? '토지이음 상세 화면에서 공고 메타데이터와 열람기간을 다시 확인합니다.'
       : '수집 기준이 된 출처 화면입니다. 실제 제출과 법적 효력 판단은 공식 공고 원문을 우선 확인해야 합니다.',
     sourceSite: notice.sourceMeta?.label || notice.rawSourceName || '기준 출처',
-    buttonLabel: isEumUrl(notice.sourceUrl) ? '토지이음에서 보기' : '출처 보기',
+    buttonLabel: isEumUrl(sourceUrl) ? '토지이음에서 보기' : '출처 보기',
   };
 }
 
@@ -70,22 +132,64 @@ function deriveOfficialNotices(notice, enrichment) {
   return dedupeByUrl(
     normalizeList(enrichment.officialNotices)
       .filter((item) => isUsableUrl(item?.url))
-      .filter((item) => (item.confidence ?? 0) >= 0.88)
-      .filter((item) => !isLikelyHomepageUrl(item.url))
+      .map((item) => ({
+        ...item,
+        verifiedScore: scoreOfficialCandidate(notice, enrichment, item),
+      }))
+      .filter((item) => classifyUrl(item.url) === 'detail' || classifyUrl(item.url) === 'document')
+      .filter((item) => getLinkConfidenceTier(item.verifiedScore) === 'high')
+      .sort((a, b) => b.verifiedScore - a.verifiedScore)
       .map((item, index) => ({
         id: item.id || `${notice.id}-official-${index + 1}`,
         ...item,
+        confidence: item.verifiedScore,
       }))
   );
 }
 
-function hasReviewPendingOfficial(enrichment = {}) {
-  return normalizeList(enrichment.officialNotices).some(
-    (item) =>
-      isUsableUrl(item?.url)
-      && (item.confidence ?? 0) >= 0.7
-      && ((item.confidence ?? 0) < 0.88 || isLikelyHomepageUrl(item.url))
-  );
+function getOfficialReviewState(notice, enrichment = {}) {
+  const candidates = normalizeList(enrichment.officialNotices)
+    .filter((item) => isUsableUrl(item?.url))
+    .map((item) => ({
+      ...item,
+      verifiedScore: scoreOfficialCandidate(notice, enrichment, item),
+      urlType: classifyUrl(item.url),
+    }));
+
+  if (!candidates.length) {
+    return {
+      pending: false,
+      reason: '',
+      confidence: 'low',
+    };
+  }
+
+  const best = candidates.sort((a, b) => b.verifiedScore - a.verifiedScore)[0];
+  const confidence = getLinkConfidenceTier(best.verifiedScore);
+
+  if ((best.urlType === 'homepage' || best.urlType === 'source-detail') && confidence !== 'low') {
+    return {
+      pending: true,
+      reason: '현재 연결된 후보는 기관 대표 페이지 수준이어서 공식 공고 원문으로 확정하지 않았습니다.',
+      confidence: 'medium',
+    };
+  }
+
+  if (best.urlType === 'detail' || best.urlType === 'document') {
+    return {
+      pending: confidence !== 'high',
+      reason: confidence === 'medium'
+        ? '기관명·제목·날짜는 대체로 맞지만, 공고번호까지 확인된 링크는 아닙니다.'
+        : '',
+      confidence,
+    };
+  }
+
+  return {
+    pending: confidence !== 'low',
+    reason: '공식 원문 후보를 검토 중입니다.',
+    confidence,
+  };
 }
 
 function deriveAttachmentLinks(notice, officialNotices, sourceDetailLink) {
@@ -143,6 +247,7 @@ function deriveFollowups(notice, relatedGosi) {
 
 export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []) {
   const officialNotices = deriveOfficialNotices(notice, enrichment);
+  const officialReviewState = getOfficialReviewState(notice, enrichment);
   const tentativeSourceDetailLink = buildSourceDetailLink(notice);
   const sourceDetailLink = tentativeSourceDetailLink
     && !officialNotices.some((item) => normalizeUrl(item.url) === normalizeUrl(tentativeSourceDetailLink.url))
@@ -157,9 +262,18 @@ export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []
     normalizedTitle: enrichment.normalizedTitle || notice.title,
     noticeNumber: enrichment.noticeNumber || notice.noticeNumber || '',
     officialNotices,
-    officialNoticeReviewPending: hasReviewPendingOfficial(enrichment),
+    officialNoticeReviewPending: officialReviewState.pending,
+    officialNoticeReviewReason: officialReviewState.reason,
     sourceDetailLink,
+    sourceDetailUrl: sourceDetailLink?.url || '',
+    officialNoticeUrl: officialNotices[0]?.url || '',
+    officialNoticeLabel: officialNotices[0]?.sourceSite || '',
     attachmentLinks,
+    attachmentUrls: attachmentLinks.map((item) => item.url),
+    linkConfidence: officialNotices[0] ? 'high' : officialReviewState.confidence,
+    linkVerifiedAt: notice.lastVerifiedAt,
+    hasOfficialNotice: Boolean(officialNotices.length),
+    hasAttachment: Boolean(attachmentLinks.length),
     officialPressReleases,
     relatedNews,
     relatedFollowups,

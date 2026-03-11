@@ -694,11 +694,20 @@ function decorateNotice(notice) {
   const onlineSubmissionAvailable = typeof notice.onlineSubmissionAvailable === 'boolean'
     ? notice.onlineSubmissionAvailable
     : notice.hearingType?.includes('인터넷') || notice.sourceType === 'land-internet';
+  const attachmentUrls = Array.isArray(notice.attachments)
+    ? notice.attachments.map((item) => item.url).filter(Boolean)
+    : [];
 
   return {
     ...notice,
     adminCode: notice.adminCode || region?.adminCode || '',
     onlineSubmissionAvailable,
+    sourceDetailUrl: notice.sourceDetailUrl || notice.sourceUrl || '',
+    officialNoticeUrl: notice.officialNoticeUrl || '',
+    attachmentUrls,
+    hasOfficialNotice: Boolean(notice.officialNoticeUrl),
+    hasAttachment: attachmentUrls.length > 0,
+    linkVerifiedAt: notice.linkVerifiedAt || notice.lastVerifiedAt,
   };
 }
 
