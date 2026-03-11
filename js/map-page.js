@@ -20,19 +20,20 @@ function buildRow(notice) {
       <p>${notice.onlineSubmissionMeta.label}</p>
       <div class="button-row compact-actions">
         <a class="text-link" href="notice.html?id=${encodeURIComponent(notice.id)}">상세 보기</a>
-        <a class="text-link" href="${notice.sourceUrl}" target="_blank" rel="noopener noreferrer">원문 공고</a>
+        <a class="text-link" href="${notice.sourceDetailLink?.url || notice.sourceUrl}" target="_blank" rel="noopener noreferrer">${notice.sourceDetailLink ? '토지이음에서 보기' : '기준 출처 보기'}</a>
       </div>
     </article>
   `;
 }
 
-function renderMapFallback(message) {
+function renderMapFallback(message, detail = '') {
   const element = document.getElementById('overview-map');
   if (!element) return;
   const previewNote = window.self !== window.top
     ? '<p class="small-note">Firebase Studio 미리보기에서는 외부 지도 스크립트가 차단될 수 있습니다. 새 탭에서 다시 확인해 보세요.</p>'
     : '';
-  element.innerHTML = `<div class="error-state map-error-state"><p>${message}</p>${previewNote}</div>`;
+  const detailMarkup = detail ? `<p class="small-note">${detail}</p>` : '';
+  element.innerHTML = `<div class="error-state map-error-state"><p>${message}</p>${detailMarkup}${previewNote}</div>`;
 }
 
 export async function initMapPage() {
@@ -58,7 +59,9 @@ export async function initMapPage() {
     currentPosition: null,
     listMode: 'region',
     baseScoped: [],
-    pendingExtent: null,
+    currentExtent: null,
+    appliedExtent: null,
+    extentDirty: false,
     mapProjection: '',
     mapReady: false,
   };
@@ -98,12 +101,12 @@ export async function initMapPage() {
   }
 
   function getNoticesInMapExtent() {
-    if (!state.pendingExtent || !window.ol?.extent?.containsCoordinate || !state.mapProjection) return [];
+    if (!state.appliedExtent || !window.ol?.extent?.containsCoordinate || !state.mapProjection) return [];
     return sortForCards(
       state.baseScoped.filter((notice) => {
         if (!Number.isFinite(notice.latitude) || !Number.isFinite(notice.longitude)) return false;
         const point = window.ol.proj.transform([notice.longitude, notice.latitude], 'EPSG:4326', state.mapProjection);
-        return window.ol.extent.containsCoordinate(state.pendingExtent, point);
+        return window.ol.extent.containsCoordinate(state.appliedExtent, point);
       })
     );
   }
@@ -115,7 +118,9 @@ export async function initMapPage() {
     if (modeLabel) modeLabel.textContent = isExtentMode ? '지도 범위 기준' : '내 지역 기준';
     if (modeSummary) {
       modeSummary.textContent = isExtentMode
-        ? '현재 화면에 보이는 지도 범위 안의 공고만 리스트에 표시합니다.'
+        ? state.extentDirty
+          ? '지도를 다시 움직였습니다. 현재 화면을 기준으로 다시 보려면 범위 적용 버튼을 한 번 더 눌러 주세요.'
+          : '현재 화면에 보이는 지도 범위 안의 공고만 리스트에 표시합니다.'
         : '선택한 시도 또는 시군구 기준으로 공고 리스트를 보여줍니다.';
     }
 
@@ -137,7 +142,7 @@ export async function initMapPage() {
           : '<div class="empty-state">선택한 조건의 공고가 없습니다.</div>';
     }
 
-    if (applyExtentButton) applyExtentButton.disabled = !state.mapReady || !state.pendingExtent;
+    if (applyExtentButton) applyExtentButton.disabled = !state.mapReady || !state.currentExtent;
     if (resetRegionButton) resetRegionButton.disabled = state.listMode === 'region';
   }
 
@@ -160,23 +165,37 @@ export async function initMapPage() {
       state.mapReady = Boolean(map);
       if (map) {
         state.mapProjection = map.getView().getProjection()?.getCode?.() || 'EPSG:5179';
-        state.pendingExtent = map.getView().calculateExtent(map.getSize());
+        state.currentExtent = map.getView().calculateExtent(map.getSize());
+        if (state.listMode === 'map-extent') {
+          state.appliedExtent = state.currentExtent;
+          state.extentDirty = false;
+        }
+        let ignoreInitialMove = true;
         map.on('moveend', () => {
-          state.pendingExtent = map.getView().calculateExtent(map.getSize());
-          if (state.listMode === 'map-extent') {
+          state.currentExtent = map.getView().calculateExtent(map.getSize());
+          if (ignoreInitialMove) {
+            ignoreInitialMove = false;
             updateListUi(selectedDistrict, region, scoped);
-          } else if (applyExtentButton) {
-            applyExtentButton.disabled = false;
+            return;
           }
+          state.extentDirty = true;
+          updateListUi(selectedDistrict, region, scoped);
         });
       }
       updateListUi(selectedDistrict, region, scoped);
     } catch (error) {
       console.error('[map-page] Failed to render map.', error);
-      renderMapFallback('지도를 불러오지 못했습니다. 잠시 후 다시 시도하거나 새로고침해 주세요.');
-      if (helper) helper.textContent = '지도 로딩에 실패했습니다.';
+      const isPreview = window.self !== window.top;
+      const detail = isPreview
+        ? '미리보기 iframe에서 NGII 외부 스크립트가 차단되면 지도가 비어 보일 수 있습니다.'
+        : 'NGII 스크립트 또는 OpenLayers 초기화에 실패했습니다.';
+      renderMapFallback('지도를 불러오지 못했습니다. 잠시 후 다시 시도하거나 새로고침해 주세요.', detail);
+      if (helper) helper.textContent = '지도 로딩에 실패했습니다. 기본 리스트는 계속 볼 수 있습니다.';
+      state.listMode = 'region';
       state.mapReady = false;
-      state.pendingExtent = null;
+      state.currentExtent = null;
+      state.appliedExtent = null;
+      state.extentDirty = false;
       updateListUi(selectedDistrict, region, scoped);
     }
   }
@@ -202,8 +221,10 @@ export async function initMapPage() {
   hybridToggle?.addEventListener('change', render);
 
   applyExtentButton?.addEventListener('click', () => {
-    if (!state.mapReady || !state.pendingExtent) return;
+    if (!state.mapReady || !state.currentExtent) return;
     state.listMode = 'map-extent';
+    state.appliedExtent = state.currentExtent;
+    state.extentDirty = false;
     const { selectedDistrict, region, scoped } = getBaseScopedNotices();
     state.baseScoped = scoped;
     updateListUi(selectedDistrict, region, scoped);
@@ -211,6 +232,8 @@ export async function initMapPage() {
 
   resetRegionButton?.addEventListener('click', () => {
     state.listMode = 'region';
+    state.appliedExtent = null;
+    state.extentDirty = false;
     const { selectedDistrict, region, scoped } = getBaseScopedNotices();
     state.baseScoped = scoped;
     updateListUi(selectedDistrict, region, scoped);

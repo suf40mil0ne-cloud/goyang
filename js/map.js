@@ -40,8 +40,7 @@ function loadScript(url) {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
     script.src = url;
-    script.async = true;
-    script.crossOrigin = 'anonymous';
+    script.async = false;
     script.addEventListener('load', () => {
       script.dataset.loaded = 'true';
       resolve();
@@ -56,13 +55,20 @@ async function ensureMapAssets() {
     assetsPromise = (async () => {
       ensureStylesheet(MAP_CONFIG.openLayersCssUrl);
       await loadScript(MAP_CONFIG.jqueryScriptUrl);
+      if (!window.jQuery) throw new Error('jQuery did not initialize after loading.');
       await loadScript(MAP_CONFIG.proj4ScriptUrl);
+      if (!window.proj4) throw new Error('proj4 did not initialize after loading.');
       await loadScript(MAP_CONFIG.openLayersScriptUrl);
+      if (!window.ol?.Map) throw new Error('OpenLayers did not initialize after loading.');
       await loadScript(MAP_CONFIG.ngiiScriptUrl);
       if (!window.ngii_wmts?.map) {
         throw new Error('NGII script loaded but ngii_wmts.map is unavailable. The preview environment may be blocking the external script.');
       }
       registerProjection();
+      if (!projectionReady) throw new Error('EPSG:5179 projection registration failed.');
+    })().catch((error) => {
+      assetsPromise = null;
+      throw error;
     })();
   }
 
@@ -226,9 +232,16 @@ export async function createNoticeMap({
     return null;
   }
 
-  const { width, height } = element.getBoundingClientRect();
+  await new Promise((resolve) => window.requestAnimationFrame(resolve));
+  let { width, height } = element.getBoundingClientRect();
+  if (!height) {
+    element.style.minHeight = `${element.classList.contains('map-large') ? 420 : 360}px`;
+    await new Promise((resolve) => window.requestAnimationFrame(resolve));
+    ({ width, height } = element.getBoundingClientRect());
+  }
   if (!width || !height) {
-    console.warn(`[map] Map container #${elementId} has invalid size: ${width}x${height}.`);
+    console.error(`[map] Map container #${elementId} has invalid size: ${width}x${height}.`);
+    throw new Error('Map container size is invalid.');
   }
 
   if (!window.ngii_wmts || !window.ol) {
@@ -296,5 +309,6 @@ export async function createNoticeMap({
 
   registry.set(element, { map, mapInstance, featureLayer, overlay });
   window.setTimeout(() => map.updateSize(), 0);
+  window.setTimeout(() => map.updateSize(), 180);
   return map;
 }

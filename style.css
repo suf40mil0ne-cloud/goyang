@@ -656,9 +656,12 @@ button {
 
 .map {
   height: 360px;
+  min-height: 360px;
   border: 1px solid var(--line);
   border-radius: 16px;
   overflow: hidden;
+  position: relative;
+  background: rgba(255, 255, 255, 0.74);
 }
 
 .stack-list {
@@ -939,6 +942,7 @@ button {
 
 .map-large {
   height: 420px;
+  min-height: 420px;
 }
 
 .map-error-state {
@@ -946,6 +950,7 @@ button {
   place-items: center;
   min-height: 100%;
   text-align: center;
+  padding: 24px;
 }
 
 .map-popup {
