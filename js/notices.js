@@ -67,6 +67,75 @@ function getEasySummary(notice) {
   return splitAiSummary(notice.aiSummary)[0] || '';
 }
 
+function normalizeTopicText(value = '') {
+  return String(value)
+    .replace(/\[[^\]]+\]|\([^)]+\)|<[^>]+>/g, ' ')
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+function extractKeywords(notice) {
+  const stopwords = new Set([
+    '주민공람', '주민의견청취', '인터넷', '열람', '공람', '공고', '계획', '변경', '결정', '주민', '의견', '청취', '주민열람',
+  ]);
+  return new Set(
+    normalizeTopicText(`${notice.title} ${notice.projectType || ''} ${notice.hearingType || ''}`)
+      .split(' ')
+      .filter((token) => token.length >= 2 && !stopwords.has(token))
+  );
+}
+
+function distanceKm(a, b) {
+  if (![a?.latitude, a?.longitude, b?.latitude, b?.longitude].every(Number.isFinite)) return null;
+  const toRadians = (value) => value * Math.PI / 180;
+  const earthRadius = 6371;
+  const dLat = toRadians(b.latitude - a.latitude);
+  const dLng = toRadians(b.longitude - a.longitude);
+  const lat1 = toRadians(a.latitude);
+  const lat2 = toRadians(b.latitude);
+  const haversine = Math.sin(dLat / 2) ** 2
+    + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return 2 * earthRadius * Math.asin(Math.sqrt(haversine));
+}
+
+function scoreRelatedNotice(currentNotice, candidate) {
+  if (candidate.id === currentNotice.id) return null;
+  if (candidate.sigungu !== currentNotice.sigungu || candidate.sido !== currentNotice.sido) return null;
+
+  let score = 2.5;
+  if (currentNotice.legalDong && candidate.legalDong && currentNotice.legalDong === candidate.legalDong) score += 2;
+  if (currentNotice.projectType && candidate.projectType && currentNotice.projectType === candidate.projectType) score += 1.6;
+  if (currentNotice.hearingType && candidate.hearingType && currentNotice.hearingType === candidate.hearingType) score += 0.7;
+
+  const currentKeywords = extractKeywords(currentNotice);
+  const candidateKeywords = extractKeywords(candidate);
+  let overlap = 0;
+  currentKeywords.forEach((keyword) => {
+    if (candidateKeywords.has(keyword)) overlap += 1;
+  });
+  score += Math.min(overlap * 0.7, 2.1);
+
+  const dateGap = Math.abs(daysBetween(asDate(currentNotice.postedDate), asDate(candidate.postedDate)));
+  if (dateGap <= 14) score += 0.8;
+  else if (dateGap <= 30) score += 0.45;
+
+  const km = distanceKm(currentNotice, candidate);
+  if (km !== null) {
+    if (km <= 2.5) score += 0.9;
+    else if (km <= 6) score += 0.45;
+  }
+
+  if (overlap === 0 && currentNotice.projectType !== candidate.projectType) return null;
+  if (score < 4.2) return null;
+
+  return {
+    ...candidate,
+    relatedRelevanceScore: Number(score.toFixed(2)),
+  };
+}
+
 function getOnlineSubmissionMeta(notice) {
   const isAvailable = Boolean(notice.onlineSubmissionAvailable);
   if (isAvailable) {
@@ -180,11 +249,10 @@ export async function getNoticeById(id) {
 
 export function getRelatedNotices(notices, currentNotice, limit = 3) {
   return notices
-    .filter((notice) => notice.id !== currentNotice.id)
+    .map((notice) => scoreRelatedNotice(currentNotice, notice))
+    .filter(Boolean)
     .sort((a, b) => {
-      const scoreA = (a.sigungu === currentNotice.sigungu ? -2 : 0) + (a.projectType === currentNotice.projectType ? -1 : 0);
-      const scoreB = (b.sigungu === currentNotice.sigungu ? -2 : 0) + (b.projectType === currentNotice.projectType ? -1 : 0);
-      if (scoreA !== scoreB) return scoreA - scoreB;
+      if (b.relatedRelevanceScore !== a.relatedRelevanceScore) return b.relatedRelevanceScore - a.relatedRelevanceScore;
       return asDate(b.postedDate) - asDate(a.postedDate);
     })
     .slice(0, limit);

@@ -1557,6 +1557,29 @@ button {
   background: linear-gradient(180deg, rgba(31, 59, 87, 0.03), transparent 100%), var(--surface);
 }
 
+.page-card-muted {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.reference-disclosure summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink-soft);
+  list-style: none;
+}
+
+.reference-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.reference-disclosure[open] summary {
+  margin-bottom: var(--space-4);
+}
+
+.reference-links {
+  margin-top: var(--space-2);
+}
+
 .info-row {
   grid-template-columns: 160px minmax(0, 1fr);
   gap: 12px;

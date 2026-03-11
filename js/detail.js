@@ -114,7 +114,9 @@ function renderNotice(notice, relatedNotices) {
   const officialPressList = document.getElementById('official-press-list');
   const relatedNewsList = document.getElementById('related-news-list');
   const impactNotes = document.getElementById('impact-notes');
+  const followupSection = document.getElementById('followup-section');
   const followupList = document.getElementById('followup-list');
+  const relatedSection = document.getElementById('related-notices-section');
   const relatedContainer = document.getElementById('related-notices');
 
   if (title) title.textContent = notice.title;
@@ -281,27 +283,34 @@ function renderNotice(notice, relatedNotices) {
   }
 
   if (followupList) {
-    followupList.innerHTML = notice.relatedFollowups.length
-      ? notice.relatedFollowups.map((item) => `
+    const reliableFollowups = notice.relatedFollowups.filter((item) => (item.confidence ?? 0) >= 0.82);
+    if (followupSection) {
+      followupSection.hidden = !reliableFollowups.length;
+    }
+    followupList.innerHTML = reliableFollowups.length
+      ? reliableFollowups.map((item) => `
           <article class="mini-card">
             <strong>${item.title}</strong>
             <p>${item.stageType} · ${item.postedDate} · ${item.organization}</p>
             <a class="text-link" href="${item.url}" target="_blank" rel="noopener noreferrer">후속 문서 보기</a>
           </article>
         `).join('')
-      : '<div class="empty-state">현재 연결된 후속 절차 문서는 없습니다.</div>';
+      : '';
   }
 
   if (relatedContainer) {
+    if (relatedSection) {
+      relatedSection.hidden = !relatedNotices.length;
+    }
     relatedContainer.innerHTML = relatedNotices.length
       ? relatedNotices.map((item) => `
           <article class="mini-card">
             <strong>${item.title}</strong>
-            <p>${item.sigungu} ${item.legalDong} · ${item.statusLabel}</p>
+            <p>${item.sigungu} ${item.legalDong} · ${item.statusLabel} · 관련도 ${Math.round(item.relatedRelevanceScore * 10)}점</p>
             <a class="text-link" href="notice.html?id=${encodeURIComponent(item.id)}">공고 보기</a>
           </article>
         `).join('')
-      : '<div class="empty-state">같은 지역의 다른 공고가 아직 없습니다.</div>';
+      : '';
   }
 
   injectStructuredData(notice);

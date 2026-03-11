@@ -230,6 +230,25 @@ function deriveRelatedNews(enrichment) {
   }));
 }
 
+function scoreFollowupCandidate(notice, item) {
+  let score = 0.84;
+  if (normalizeNoticeNumber(item.noticeNumber) && normalizeNoticeNumber(item.noticeNumber) === normalizeNoticeNumber(notice.noticeNumber)) {
+    score += 0.08;
+  }
+  if (item.relatedNoticeIds?.includes?.(notice.id)) score += 0.06;
+  if (classifyUrl(item.sourceUrl) === 'homepage') score -= 0.38;
+  if (classifyUrl(item.sourceUrl) === 'source-detail') score -= 0.28;
+
+  const text = `${item.summary || ''} ${item.status || ''} ${item.title || ''}`.toLowerCase();
+  if (/예시|예상 후속|후속 추적/.test(text)) score -= 0.34;
+
+  const noticeOrg = normalizeOrganization(notice.organization);
+  const itemOrg = normalizeOrganization(item.organization);
+  if (noticeOrg && itemOrg && (noticeOrg.includes(itemOrg) || itemOrg.includes(noticeOrg))) score += 0.04;
+
+  return Math.max(0, Math.min(score, 1));
+}
+
 function deriveFollowups(notice, relatedGosi) {
   return relatedGosi
     .filter((item) => notice.relatedGosi.includes(item.id))
@@ -241,7 +260,9 @@ function deriveFollowups(notice, relatedGosi) {
       url: item.sourceUrl,
       stageType: item.stageType,
       sourceSite: '후속 고시',
-      confidence: 0.86,
+      confidence: scoreFollowupCandidate(notice, item),
+      summary: item.summary,
+      status: item.status,
     }));
 }
 
