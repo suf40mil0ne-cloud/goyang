@@ -1252,6 +1252,13 @@ body {
   letter-spacing: 0.01em;
 }
 
+.hero-kicker-emphasis {
+  color: #0f4ea8;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.62;
+}
+
 .hero-meta span,
 .inline-metrics span,
 .meta-line span {
