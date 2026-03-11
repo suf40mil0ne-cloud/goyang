@@ -23,6 +23,25 @@ function normalizeUrl(value = '') {
   return `${url.protocol}//${url.hostname.toLowerCase()}${pathname}${search}`;
 }
 
+function compactText(value = '') {
+  return String(value).replace(/\s+/g, ' ').trim();
+}
+
+function normalizeSearchTitle(value = '') {
+  return compactText(
+    String(value)
+      .replace(/\[[^\]]+\]/g, ' ')
+      .replace(/\s+/g, ' ')
+  );
+}
+
+function normalizeSearchOrganization(value = '') {
+  return compactText(
+    String(value)
+      .replace(/도시계획과|도시관리과|도시정비과|도시디자인과|도시관리국|도시계획국/g, ' ')
+  );
+}
+
 function dedupeByUrl(items) {
   const seen = new Set();
   return items.filter((item) => {
@@ -35,6 +54,32 @@ function dedupeByUrl(items) {
 
 function isEumUrl(value = '') {
   return normalizeUrl(value).includes('eum.go.kr');
+}
+
+function getEumListPath(notice = {}, sourceUrl = '') {
+  const path = isUsableUrl(sourceUrl) ? new URL(String(sourceUrl)).pathname.toLowerCase() : '';
+  if (/\/ih\//i.test(path) || /internet|ih/.test(notice.sourceType || '')) {
+    return '/web/cp/ih/ihHearingList.jsp';
+  }
+  return '/web/cp/hr/hrPeopleHearList.jsp';
+}
+
+function buildEumSearchUrl(notice, sourceUrl = '') {
+  const title = normalizeSearchTitle(notice.title);
+  const noticeNumber = compactText(notice.noticeNumber);
+  const organization = normalizeSearchOrganization(notice.organization);
+  const hasSearchTerm = Boolean(title || noticeNumber || organization);
+
+  if (!hasSearchTerm) return sourceUrl;
+
+  const url = new URL(`https://www.eum.go.kr${getEumListPath(notice, sourceUrl)}`);
+  if (title) url.searchParams.set('zonenm', title);
+  if (noticeNumber) url.searchParams.set('gosino', noticeNumber);
+  if (organization) url.searchParams.set('chrgorg', organization);
+  if (notice.postedDate) url.searchParams.set('startdt', notice.postedDate);
+  if (notice.hearingEndDate) url.searchParams.set('enddt', notice.hearingEndDate);
+  if (notice.adminCode) url.searchParams.set('selSggCd', notice.adminCode);
+  return url.toString();
 }
 
 function isLikelyHomepageUrl(value = '') {
@@ -303,12 +348,13 @@ function buildSourceDetailLink(notice) {
   const sourceUrl = notice.sourceDetailUrl || notice.sourceUrl;
   if (!isUsableUrl(sourceUrl)) return null;
   if (!isEumUrl(sourceUrl) && !isDirectNoticeUrl(sourceUrl)) return null;
+  const resolvedSourceUrl = isEumUrl(sourceUrl) ? buildEumSearchUrl(notice, sourceUrl) : sourceUrl;
 
   return {
     title: isEumUrl(sourceUrl) ? '토지이음에서 보기' : '기준 출처에서 보기',
-    url: sourceUrl,
+    url: resolvedSourceUrl,
     description: isEumUrl(sourceUrl)
-      ? '토지이음 상세 화면에서 공고 메타데이터와 열람기간을 다시 확인합니다.'
+      ? '현재 공고 제목과 공고번호를 반영한 토지이음 검색 결과로 이동합니다.'
       : '수집 기준이 된 출처 화면입니다. 실제 제출과 법적 효력 판단은 공식 공고 원문을 우선 확인해야 합니다.',
     sourceSite: notice.sourceMeta?.label || notice.rawSourceName || '기준 출처',
     buttonLabel: isEumUrl(sourceUrl) ? '토지이음에서 보기' : '출처 보기',
