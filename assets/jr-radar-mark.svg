@@ -5,8 +5,7 @@
   <circle cx="128" cy="128" r="68" stroke="url(#ring)" stroke-opacity=".12" stroke-width="6"/>
   <path d="M128 32C180.935 32 224 75.0654 224 128" stroke="url(#sweep)" stroke-width="9" stroke-linecap="round"/>
   <circle cx="194" cy="76" r="6" fill="#9EDAF8"/>
-  <path d="M92 74V141C92 162.539 77.2254 176 56 176C50.1182 176 44.3096 174.958 39 172.922" stroke="white" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M136 176V80H172C192.987 80 206 93.4366 206 112.632C206 130.588 193.764 143.789 174.154 144.98L206 176" stroke="white" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="128" y="150" text-anchor="middle" fill="white" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="82" font-weight="800" letter-spacing="-6">주공</text>
   <defs>
     <linearGradient id="bg" x1="28" y1="20" x2="220" y2="236" gradientUnits="userSpaceOnUse">
       <stop stop-color="#183B60"/>
