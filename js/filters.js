@@ -12,6 +12,18 @@ export function haversineKm(from, to) {
   return earthRadius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+export function normalizeRegionText(value = "") {
+  return String(value).replace(/\s+/g, "").trim();
+}
+
+export function matchesDistrict(notice, region) {
+  if (!notice || !region) return false;
+  return (
+    normalizeRegionText(notice.sido) === normalizeRegionText(region.sido) &&
+    normalizeRegionText(notice.sigungu) === normalizeRegionText(region.sigungu)
+  );
+}
+
 export function filterByStatus(notices, filterKey) {
   if (filterKey === "all") return notices;
   if (filterKey === "active") return notices.filter((notice) => notice.statusKey === "active" || notice.statusKey === "closing-soon");
@@ -36,6 +48,10 @@ export function sortForCards(notices) {
   return [...notices].sort((a, b) => {
     const priorityDiff = priority[a.statusKey] - priority[b.statusKey];
     if (priorityDiff !== 0) return priorityDiff;
-    return new Date(b.postedDate) - new Date(a.postedDate);
+    return new Date(a.hearingEndDate) - new Date(b.hearingEndDate) || new Date(b.postedDate) - new Date(a.postedDate);
   });
+}
+
+export function getDistrictNotices(notices, region, filterKey = "active") {
+  return sortForCards(filterByStatus(notices.filter((notice) => matchesDistrict(notice, region)), filterKey));
 }

@@ -4,19 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
-  <title>주민공람 레이더 | 내 주변 주민공람공고·주민의견청취 찾기</title>
-  <meta name="description" content="토지이음 주민의견청취 공람과 인터넷 주민의견청취를 바탕으로, 내 주변 주민공람공고를 지도와 쉬운 설명으로 확인하는 서비스입니다." />
+  <title>주민공람 레이더 | 내 위치 기준 진행 중 주민공람공고</title>
+  <meta name="description" content="내 위치를 기준으로 지금 진행 중인 주민공람공고와 주민의견청취 공고를 빠르게 확인하는 서비스입니다." />
   <meta name="robots" content="index,follow" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="주민공람 레이더 | 내 주변 주민공람공고·주민의견청취 찾기" />
-  <meta property="og:description" content="위치기반 탐색, 쉬운 해설, 제출 안내, 후속 고시 추적까지 제공하는 주민공람 정보 서비스" />
+  <meta property="og:title" content="주민공람 레이더 | 내 위치 기준 진행 중 주민공람공고" />
+  <meta property="og:description" content="현재 위치 또는 지역 선택으로 내 자치구의 진행 중 주민공람공고를 바로 확인하세요." />
   <meta property="og:url" content="https://goyang.pages.dev/" />
   <meta property="og:site_name" content="주민공람 레이더" />
   <link rel="canonical" href="https://goyang.pages.dev/" />
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link href="style.css" rel="stylesheet" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7104324664246128" crossorigin="anonymous"></script>
   <script type="application/ld+json">
@@ -26,7 +25,7 @@
       "name": "주민공람 레이더",
       "alternateName": "Urban Planning Desk",
       "url": "https://goyang.pages.dev/",
-      "description": "수도권 주민공람공고를 위치기반 탐색, 쉬운 해설, 공식 제출처 링크, 후속 절차 타임라인으로 연결하는 정보 서비스"
+      "description": "내 위치를 기준으로 진행 중인 주민공람공고를 빠르게 보여주는 서비스"
     }
   </script>
 </head>
@@ -37,285 +36,99 @@
     <div class="brand">
       <span class="brand-mark">JR</span>
       <div>
-        <p class="brand-sub">Urban Planning Desk</p>
+        <p class="brand-sub">Location-Based Notice Service</p>
         <h1>주민공람 레이더</h1>
       </div>
     </div>
     <nav class="main-nav" aria-label="주요 메뉴">
       <a href="index.html" aria-current="page">홈</a>
-      <a href="map.html">지도 보기</a>
-      <a href="region.html?area=seoul">지역 허브</a>
-      <a href="pages/public-hearing-guide.html">제도 안내</a>
-      <a href="pages/how-to-submit.html">의견 제출 안내</a>
-      <a href="pages/how-to-read-notice.html">공고문 읽는 법</a>
-      <a href="pages/sources.html">데이터 출처</a>
+      <a href="pages/about.html">서비스 소개</a>
       <a href="pages/contact.html">문의</a>
     </nav>
   </header>
 
-  <main class="layout radar-layout">
+  <main class="layout home-layout">
     <section class="hero hero-home">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="hero-kicker">토지이음 주민의견청취 공람 · 인터넷 주민의견청취 기반</p>
-          <h2>내 주변 주민공람공고를 쉽게 찾고 이해하세요.</h2>
-          <p>
-            주민공람 레이더는 수도권 주민공람공고를 지도, 리스트, 쉬운 해설, 의견 제출 안내, 후속 고시 추적까지 한 번에 묶는 도시변화 탐색 서비스입니다.
-            이 사이트는 공식 의견 접수처가 아니며, 실제 제출은 반드시 원문 공고문에 적힌 공식 절차를 따라야 합니다.
-          </p>
+      <div class="hero-grid hero-grid-simple">
+        <div class="hero-copy hero-copy-compact">
+          <p class="hero-kicker">내 위치를 기준으로 지금 진행 중인 주민공람공고를 빠르게 확인하는 서비스</p>
+          <h2>내 위치 기준으로 지금 진행 중인 주민공람공고를 확인하세요.</h2>
+          <p>첫 화면에서는 내 자치구 또는 행정구의 진행 중 공고만 우선 보여줍니다. 실제 의견 제출은 반드시 원문 공고문 기준으로 진행해야 합니다.</p>
+          <div class="button-row">
+            <button id="detect-location" class="primary-button" type="button">현재 위치로 찾기</button>
+            <button id="toggle-region-picker" class="ghost-button" type="button" aria-expanded="false" aria-controls="region-picker">지역 직접 선택</button>
+          </div>
           <div class="hero-meta">
             <span id="updated-at">마지막 확인 시각 불러오는 중...</span>
-            <span>시작 범위: 서울특별시 · 인천광역시 · 경기도</span>
-            <span>다음 확장: 전국 데이터 · 앱 알림 · 관심 키워드 추적</span>
-          </div>
-          <div class="hero-bullets">
-            <article>
-              <strong>1단계 발견</strong>
-              <p>주소, 현재 위치, 반경 선택으로 생활권 안의 공람공고를 먼저 찾습니다.</p>
-            </article>
-            <article>
-              <strong>2단계 이해</strong>
-              <p>AI 한줄 요약, 생활영향 해석, 누가 봐야 하는지까지 일반 시민 언어로 바꿉니다.</p>
-            </article>
-            <article>
-              <strong>3단계 행동·추적</strong>
-              <p>제출 방법을 안내하고, 공람 이후 결정고시·실시계획까지 이어서 추적합니다.</p>
-            </article>
+            <span>수도권 시작: 서울특별시 · 인천광역시 · 경기도</span>
           </div>
         </div>
 
-        <div class="hero-search panel panel-tight">
+        <div class="panel panel-tight current-region-box">
           <div class="panel-head panel-head-stack">
-            <h3>내 주변 공고 찾기</h3>
-            <span>주소 검색, 현재 위치, 반경 선택으로 생활권 중심 탐색</span>
+            <h3>위치 확인 결과</h3>
+            <span id="location-helper">현재 위치를 확인하지 못했습니다. 위치를 허용하거나 지역을 선택해주세요.</span>
           </div>
-          <form id="location-search-form" class="search-form" autocomplete="off">
-            <label for="location-query">주소 또는 지역명</label>
-            <input id="location-query" name="query" type="search" placeholder="예: 마포구, 송도, 고양시청, 37.56,126.97" />
-            <div class="compact-grid">
-              <div>
-                <label for="radius-select">반경</label>
-                <select id="radius-select" name="radius">
-                  <option value="0.3">300m</option>
-                  <option value="0.5" selected>500m</option>
-                  <option value="1">1km</option>
-                  <option value="3">3km</option>
-                </select>
-              </div>
-              <div>
-                <label for="status-select">기본 상태</label>
-                <select id="status-select" name="status">
-                  <option value="active" selected>진행 중 우선</option>
-                  <option value="closing-soon">마감 임박 우선</option>
-                  <option value="recent">최근 공고 우선</option>
-                  <option value="ended">종료 공고 포함</option>
-                </select>
-              </div>
-            </div>
-            <div class="button-row">
-              <button class="primary-button" type="submit">내 주변 공고 찾기</button>
-              <button class="ghost-button" id="use-current-location" type="button">현재 위치</button>
-              <button class="ghost-button" id="save-interest-area" type="button">관심지역 저장</button>
-            </div>
-            <p id="search-feedback" class="helper-text">현재 위치 사용 또는 지역명 검색 후 반경 안 공고를 정렬합니다.</p>
-          </form>
-
-          <div class="saved-area-box">
-            <div class="mini-head">
-              <strong>관심지역 저장</strong>
-              <a href="pages/how-to-submit.html">제출 가이드</a>
-            </div>
-            <div id="saved-areas" class="saved-area-list" aria-live="polite"></div>
+          <div id="current-region-status" class="disclaimer-box">현재 위치를 확인하면 해당 자치구 또는 시군구 기준으로 진행 중 공고를 정리해 보여줍니다.</div>
+          <div class="meta-line">
+            <span id="location-resolution">위치 확인 대기 중</span>
+            <span id="selected-region-label">선택된 지역 없음</span>
           </div>
-
-          <form id="keyword-form" class="search-form" autocomplete="off">
-            <label for="keyword-query">관심 키워드 저장</label>
-            <input id="keyword-query" type="search" placeholder="예: 도로, 학교, 지구단위계획, 공원" />
-            <div class="button-row compact-actions">
-              <button class="ghost-button" type="submit">키워드 저장</button>
-            </div>
-            <div id="saved-keywords" class="saved-area-list" aria-live="polite"></div>
-          </form>
         </div>
       </div>
+    </section>
+
+    <section id="region-picker" class="panel panel-tight toggle-panel" hidden>
+      <div class="panel-head panel-head-stack">
+        <h3>지역 직접 선택</h3>
+        <span>서울특별시, 인천광역시, 경기도에서 현재 확인된 자치구·시군을 선택할 수 있습니다.</span>
+      </div>
+      <form id="region-form" class="search-form" autocomplete="off">
+        <div class="compact-grid">
+          <div>
+            <label for="sido-select">시도</label>
+            <select id="sido-select" name="sido"></select>
+          </div>
+          <div>
+            <label for="sigungu-select">자치구 / 시군구</label>
+            <select id="sigungu-select" name="sigungu"></select>
+          </div>
+        </div>
+        <div class="button-row compact-actions">
+          <button class="primary-button" type="submit">이 지역 공고 보기</button>
+          <button id="use-saved-region" class="ghost-button" type="button">최근 본 지역 불러오기</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head panel-head-stack">
+        <h3>내 지역 진행 중 공고</h3>
+        <span id="notice-section-summary">위치 확인 후 해당 자치구의 진행 중 공고를 최대 5건까지 먼저 보여줍니다.</span>
+      </div>
+      <div id="notice-list" class="stack-list" aria-live="polite"></div>
+      <div id="notice-list-actions" class="button-row compact-actions" hidden>
+        <button id="load-more-notices" class="ghost-button" type="button">더 보기</button>
+      </div>
+    </section>
+
+    <section id="secondary-results" class="panel panel-tight toggle-panel" hidden>
+      <div class="panel-head panel-head-stack">
+        <h3 id="secondary-results-title">보조 보기</h3>
+        <span id="secondary-results-summary"></span>
+      </div>
+      <div id="secondary-results-list" class="stack-list" aria-live="polite"></div>
     </section>
 
     <section class="panel panel-tight">
       <div class="panel-head panel-head-stack">
-        <h3>빠른 상태 필터</h3>
-        <span>지금 행동이 필요한 공고부터 확인할 수 있습니다.</span>
+        <h3>간단히 안내</h3>
+        <span>주민공람공고는 도시계획, 도로, 공원, 정비사업 등과 관련해 주민 의견을 받기 위해 공개되는 절차입니다.</span>
       </div>
-      <div id="status-filters" class="chip-group" role="toolbar" aria-label="공고 상태 필터">
-        <button class="filter-chip is-active" type="button" data-filter="active">진행 중</button>
-        <button class="filter-chip" type="button" data-filter="closing-soon">마감 임박</button>
-        <button class="filter-chip" type="button" data-filter="recent">최근 공고</button>
-        <button class="filter-chip" type="button" data-filter="ended">종료 공고</button>
-      </div>
-      <div id="status-summary" class="inline-metrics"><span>통계 계산 중...</span></div>
-    </section>
-
-    <section class="kpi-grid" aria-label="생활영향 핵심 범주">
-      <article class="kpi-card warm">
-        <h3>도로·교통</h3>
-        <p class="kpi-value">생활 동선 변화</p>
-        <span class="kpi-note">도로선형, 교차로, 광역교통 대책은 통학·출퇴근 체감에 직접 닿습니다.</span>
-      </article>
-      <article class="kpi-card cool">
-        <h3>공원·녹지</h3>
-        <p class="kpi-value">산책·보행 환경</p>
-        <span class="kpi-note">공원 조성계획과 완충녹지 변경은 일상 이용 방식과 소음 체감에 영향을 줍니다.</span>
-      </article>
-      <article class="kpi-card mint">
-        <h3>학교·주거</h3>
-        <p class="kpi-value">통학과 주거환경</p>
-        <span class="kpi-note">학교용지와 통학로, 정비사업 연계 계획은 가족 단위 생활권 판단과 연결됩니다.</span>
-      </article>
-      <article class="kpi-card sand">
-        <h3>정비·기반시설</h3>
-        <p class="kpi-value">장기 도시변화</p>
-        <span class="kpi-note">지구단위계획, 공공청사, 정비사업은 중장기 생활환경 방향을 바꿀 수 있습니다.</span>
-      </article>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head">
-        <h3>마감 임박 공고</h3>
-        <span>의견 제출이 곧 끝나는 공고를 먼저 보여줍니다.</span>
-      </div>
-      <div id="closing-notices" class="notice-grid" aria-live="polite"></div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head">
-        <h3>최근 공고 카드</h3>
-        <span>서울·인천·경기 최근 공고를 리스트보다 먼저 훑을 수 있습니다.</span>
-      </div>
-      <div id="recent-notices" class="notice-grid" aria-live="polite"></div>
-    </section>
-
-    <section class="panel two-col">
-      <div class="panel-block map-shell">
-        <div class="panel-head panel-head-stack">
-          <h3>수도권 공고 지도</h3>
-          <span>Leaflet 지도와 리스트를 함께 보며 생활권 기준으로 탐색합니다.</span>
-        </div>
-        <div id="home-map" class="map" role="img" aria-label="수도권 주민공람공고 지도"></div>
-        <p class="map-note">위치 신뢰도가 낮은 공고는 원문 도면과 열람 장소를 함께 확인해야 합니다.</p>
-      </div>
-
-      <div class="panel-block">
-        <div class="panel-head panel-head-stack">
-          <h3>내 주변 결과</h3>
-          <span id="nearby-summary">검색 전에는 수도권 주요 공고를 기준으로 지도를 표시합니다.</span>
-        </div>
-        <div id="nearby-results" class="stack-list" aria-live="polite"></div>
-        <a class="text-link" href="map.html">지도 중심 탐색 페이지로 이동</a>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head">
-        <h3>공고 유형별 보기</h3>
-        <span>계획 유형마다 읽는 포인트가 다르므로 유형별로 나눠서 볼 수 있게 했습니다.</span>
-      </div>
-      <div id="type-tabs" class="project-tabs" role="tablist" aria-label="공고 유형 탭">
-        <button class="project-tab active" type="button" data-type-tab="all" aria-selected="true">전체</button>
-        <button class="project-tab" type="button" data-type-tab="도시관리계획" aria-selected="false">도시관리계획</button>
-        <button class="project-tab" type="button" data-type-tab="지구단위계획" aria-selected="false">지구단위계획</button>
-        <button class="project-tab" type="button" data-type-tab="도시계획시설" aria-selected="false">도시계획시설</button>
-        <button class="project-tab" type="button" data-type-tab="공원/도로" aria-selected="false">공원/도로</button>
-        <button class="project-tab" type="button" data-type-tab="정비사업" aria-selected="false">정비/재정비</button>
-        <button class="project-tab" type="button" data-type-tab="공공청사/기반시설" aria-selected="false">공공청사/기반시설</button>
-        <button class="project-tab" type="button" data-type-tab="환경영향" aria-selected="false">환경영향 연계</button>
-      </div>
-      <div id="type-tab-grid" class="notice-grid" aria-live="polite"></div>
-    </section>
-
-    <section class="panel split-grid">
-      <div>
-        <div class="panel-head panel-head-stack">
-          <h3>주민의견청취 제도 설명</h3>
-          <span>공고를 읽기 전에 꼭 알아야 할 기본 질문</span>
-        </div>
-        <div class="notice-wrap two-up">
-          <article>
-            <h4>주민의견청취란?</h4>
-            <p>도시계획과 정비사업, 공원·도로 같은 계획안을 주민에게 공개하고 의견을 받는 단계입니다.</p>
-          </article>
-          <article>
-            <h4>왜 열람기간이 중요한가요?</h4>
-            <p>의견 제출이 가능한 시간 창구이기 때문입니다. 발견보다 마감일 확인이 먼저일 때가 많습니다.</p>
-          </article>
-          <article>
-            <h4>공고문에서 무엇을 봐야 하나요?</h4>
-            <p>위치, 기간, 제출처, 첨부도서, 실제로 무엇이 바뀌는지 순서로 읽는 것이 안전합니다.</p>
-          </article>
-          <article>
-            <h4>의견은 어디에 제출하나요?</h4>
-            <p>시군구 담당 부서, 열람 장소, 우편, 이메일, 토지이음 인터넷 의견청취 등 공고문 기준으로 다릅니다.</p>
-          </article>
-        </div>
-        <div class="button-row compact-actions">
-          <a class="resource-link" href="pages/public-hearing-guide.html">주민의견청취 안내</a>
-          <a class="resource-link" href="pages/how-to-read-notice.html">공고문 읽는 법</a>
-          <a class="resource-link" href="pages/how-to-submit.html">의견 제출 방법</a>
-        </div>
-      </div>
-
-      <div>
-        <div class="panel-head panel-head-stack">
-          <h3>생활영향 해석</h3>
-          <span>행정 용어를 생활 언어로 번역하는 기준</span>
-        </div>
-        <div class="impact-grid">
-          <article class="impact-card"><h4>도로/교통</h4><p>차량 흐름만이 아니라 통학 안전, 버스 접근성, 소음 방향까지 함께 봐야 합니다.</p></article>
-          <article class="impact-card"><h4>공원/녹지</h4><p>산책로 위치, 완충녹지 폭, 야간 보행 체감이 달라질 수 있습니다.</p></article>
-          <article class="impact-card"><h4>학교/통학</h4><p>학교용지 배치와 통학로 계획은 학부모가 가장 먼저 확인해야 하는 항목입니다.</p></article>
-          <article class="impact-card"><h4>주거환경</h4><p>정비사업, 용도지역, 지구단위계획은 장기적으로 생활권의 분위기와 밀도를 바꿀 수 있습니다.</p></article>
-          <article class="impact-card"><h4>상권/동선</h4><p>보행 연결과 공개공지, 도로 접속 변화는 상권 접근성과 체류 시간을 바꿀 수 있습니다.</p></article>
-          <article class="impact-card"><h4>소음/공사 영향</h4><p>실시 단계까지 이어지면 공사 소음, 통행 불편, 생활패턴 변화가 생길 수 있습니다.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head">
-        <h3>공람 이후 진행 추적</h3>
-        <span>고시정보, 결정고시, 실시계획인가까지 한 화면에서 이어서 봅니다.</span>
-      </div>
-      <div id="tracking-timeline-grid" class="card-grid" aria-live="polite"></div>
-      <p class="map-note">공람에서 끝나지 않고, 같은 지역·같은 사업 키워드의 후속 고시를 묶어보는 것이 이 서비스의 핵심 차별점입니다.</p>
-    </section>
-
-    <section class="panel two-col">
-      <div class="panel-block">
-        <div class="panel-head panel-head-stack">
-          <h3>기존 도시계획 포털 자산 흡수</h3>
-          <span>업무 흐름, 원문 우선 원칙, 자료 아카이브 성격을 주민공람 서비스 안으로 흡수했습니다.</span>
-        </div>
-        <ol class="stage-list">
-          <li><strong>발견</strong> 내 주변 공고를 찾고 마감일을 먼저 확인합니다.</li>
-          <li><strong>이해</strong> 무엇이 바뀌는지, 누가 특히 봐야 하는지 쉬운 해설로 읽습니다.</li>
-          <li><strong>행동</strong> 원문 공고의 공식 제출처와 제출 방식을 다시 확인합니다.</li>
-          <li><strong>추적</strong> 후속 결정고시와 실시 단계가 이어지는지 타임라인으로 봅니다.</li>
-          <li><strong>축적</strong> 관심지역과 키워드를 저장해 다음 방문 때 바로 이어봅니다.</li>
-        </ol>
-      </div>
-      <div class="panel-block">
-        <div class="panel-head panel-head-stack">
-          <h3>신뢰성 섹션</h3>
-          <span>정적 정보서비스와 애드센스 심사 방어용 문서 자산을 그대로 유지합니다.</span>
-        </div>
-        <div class="notice-wrap three-up">
-          <article><h4>원문 우선 원칙</h4><p>공고 해설과 지도는 참고용이며, 최종 기준은 원문 공고문과 첨부도서입니다.</p></article>
-          <article><h4>데이터 출처 공개</h4><p>토지이음 공람 목록, 인터넷 주민의견청취, 후속 고시, 공공데이터 보조 소스를 명시합니다.</p></article>
-          <article><h4>공식 제출처 아님</h4><p>이 사이트는 접수처가 아니며, 실제 의견 제출은 공고문 원문에 적힌 절차를 따라야 합니다.</p></article>
-        </div>
-        <div class="button-row compact-actions">
-          <a class="resource-link" href="pages/data-policy.html">편집·출처 정책</a>
-          <a class="resource-link" href="pages/sources.html">데이터 출처</a>
-          <a class="resource-link" href="pages/about.html">사이트 소개</a>
-        </div>
+      <div class="button-row compact-actions">
+        <a class="resource-link" href="pages/public-hearing-guide.html">제도 안내</a>
+        <a class="resource-link" href="pages/how-to-submit.html">의견 제출 방법</a>
+        <a class="resource-link" href="pages/sources.html">데이터 출처</a>
       </div>
     </section>
   </main>
@@ -332,7 +145,6 @@
     <p>© <span data-current-year>2026</span> 주민공람 레이더 | Urban Planning Desk</p>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script type="module" src="main.js"></script>
 </body>
 </html>

@@ -884,6 +884,39 @@ button {
   margin-bottom: 4px;
 }
 
+.home-layout {
+  gap: 16px;
+}
+
+.hero-grid-simple {
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
+}
+
+.hero-copy-compact {
+  align-content: center;
+}
+
+.hero-copy-compact > p {
+  max-width: 44rem;
+}
+
+.current-region-box {
+  display: grid;
+  gap: 12px;
+}
+
+.current-region-box .disclaimer-box {
+  margin: 0;
+}
+
+.toggle-panel[hidden] {
+  display: none !important;
+}
+
+.detail-layout-simple {
+  align-items: start;
+}
+
 @media (max-width: 1080px) {
   .hero-grid,
   .two-col,
