@@ -1049,6 +1049,34 @@ button {
   grid-column: 2;
 }
 
+.detail-layout-simple:not(:has(.detail-aside-bottom > :not([hidden]))) .detail-main-bottom {
+  grid-column: 1 / -1;
+}
+
+.detail-layout-simple:not(:has(.detail-aside-bottom > :not([hidden]))) .detail-aside-bottom {
+  display: none;
+}
+
+.detail-layout-simple:not(:has(.detail-aside-bottom > :not([hidden]))) .detail-main-bottom .page-card > p,
+.detail-layout-simple:not(:has(.detail-aside-bottom > :not([hidden]))) .detail-main-bottom .page-card > ul,
+.detail-layout-simple:not(:has(.detail-aside-bottom > :not([hidden]))) .detail-main-bottom .page-card > ol {
+  max-width: 78ch;
+}
+
+.page-shell > .page-card:only-child > p,
+.page-shell > .page-card:only-child > ul,
+.page-shell > .page-card:only-child > ol,
+.page-shell > .page-card:only-child > .highlight-box,
+.page-shell > .page-card:only-child > .info-banner,
+.page-shell > .page-card:only-child > .disclaimer-box {
+  max-width: 78ch;
+}
+
+.page-shell > .page-card:only-child > ul,
+.page-shell > .page-card:only-child > ol {
+  max-width: 74ch;
+}
+
 @media (max-width: 1080px) {
   .hero-grid,
   .two-col,
