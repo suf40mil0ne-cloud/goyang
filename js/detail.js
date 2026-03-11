@@ -185,21 +185,42 @@ function renderNotice(notice, relatedNotices) {
   if (actions) {
     const primaryLinks = [];
     const primaryOfficial = notice.officialNotices[0];
-    const additionalOfficialNotices = notice.officialNotices.slice(1);
+    const additionalOfficialNotices = notice.directNoticeType === 'official-detail'
+      ? notice.officialNotices.slice(1)
+      : notice.officialNotices;
+    const remainingAttachments = notice.directNoticeType === 'attachment' ? notice.attachmentLinks.slice(1) : notice.attachmentLinks;
 
-    if (primaryOfficial) {
+    if (notice.directNoticeLink) {
+      const directNoticeMeta = {
+        attachment: {
+          label: notice.directNoticeLink.label || '첨부 문서',
+          description: 'PDF, HWP 등 실제 공고문을 바로 읽을 수 있는 첨부 원문입니다.',
+          buttonLabel: '원문공고문 열기',
+        },
+        'official-detail': {
+          label: notice.directNoticeLink.label || '공식 게시판',
+          description: '지자체 고시공고 또는 공식 게시글 상세 화면으로 바로 연결됩니다.',
+          buttonLabel: '원문공고문 열기',
+        },
+        'landuse-detail': {
+          label: notice.directNoticeLink.label || '토지이음 상세',
+          description: '토지이음 상세 화면에서 공고 원문과 열람 정보를 직접 확인합니다.',
+          buttonLabel: '원문공고문 열기',
+        },
+      }[notice.directNoticeType];
+
       primaryLinks.push(renderPrimaryActionCard({
-        title: '공식 공고 원문',
-        label: primaryOfficial.sourceSite || primaryOfficial.matchType || '공식 게시판',
-        description: '지자체 고시공고 또는 공식 게시판에서 연결한 원문입니다. 실제 제출과 법적 효력 판단은 이 링크를 우선 확인해야 합니다.',
-        url: primaryOfficial.url,
-        buttonLabel: '공식 공고 원문 열기',
+        title: '원문공고문',
+        label: directNoticeMeta.label,
+        description: directNoticeMeta.description,
+        url: notice.directNoticeLink.url,
+        buttonLabel: directNoticeMeta.buttonLabel,
       }));
-    } else if (notice.officialNoticeReviewPending) {
+    } else if (notice.officialNoticeReviewPending || primaryOfficial) {
       primaryLinks.push(`
         <article class="source-card source-card-compact">
           <div class="source-card-head">
-            <strong>공식 공고 원문</strong>
+            <strong>원문공고문</strong>
             <span class="subtle-label">확인 중</span>
           </div>
           <p>${notice.officialNoticeReviewReason || '현재 공고번호 또는 연결 신뢰도가 충분히 확인된 공식 원문 링크를 검수 중입니다. 아래 기준 출처와 제출 안내를 먼저 확인해 주세요.'}</p>
@@ -207,7 +228,7 @@ function renderNotice(notice, relatedNotices) {
       `);
     }
 
-    notice.attachmentLinks.forEach((attachment) => {
+    remainingAttachments.forEach((attachment) => {
       primaryLinks.push(renderPrimaryActionCard({
         title: '첨부 공고문',
         label: attachment.fileLabel || '첨부 문서',
@@ -217,7 +238,7 @@ function renderNotice(notice, relatedNotices) {
       }));
     });
 
-    if (notice.sourceDetailLink) {
+    if (notice.sourceDetailLink && notice.directNoticeType !== 'landuse-detail') {
       primaryLinks.push(renderPrimaryActionCard({
         title: notice.sourceDetailLink.title,
         label: notice.sourceDetailLink.sourceSite,

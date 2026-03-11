@@ -40,16 +40,58 @@ function isEumUrl(value = '') {
 function isLikelyHomepageUrl(value = '') {
   if (!isUsableUrl(value)) return false;
   const url = new URL(String(value));
-  return (url.pathname === '/' || url.pathname === '') && !url.search;
+  const pathname = (url.pathname || '').toLowerCase();
+  return (
+    ((pathname === '/' || pathname === '') && !url.search)
+    || /^\/(index(\.[a-z]+)?|main(\.[a-z]+)?|home(\.[a-z]+)?)$/i.test(pathname)
+  );
 }
 
 function classifyUrl(value = '') {
   if (!isUsableUrl(value)) return 'invalid';
-  if (isEumUrl(value)) return 'source-detail';
   const normalizedUrl = normalizeUrl(value).toLowerCase();
   if (/\.(pdf|hwp|hwpx|doc|docx|xls|xlsx|zip)(\?|$)/i.test(normalizedUrl)) return 'document';
   if (isLikelyHomepageUrl(value)) return 'homepage';
+  if (isEumUrl(value)) return 'source-detail';
+  if (isLikelyNoticeListUrl(value)) return 'list';
   return 'detail';
+}
+
+function getQueryKeys(value = '') {
+  if (!isUsableUrl(value)) return [];
+  return [...new URL(String(value)).searchParams.keys()].map((key) => key.toLowerCase());
+}
+
+function hasDirectIdentifier(value = '') {
+  const keys = getQueryKeys(value);
+  return keys.some((key) => ['nttid', 'articleid', 'article_no', 'articleno', 'seq', 'no', 'idx', 'bidx', 'bltnno', 'nttsn', 'nttid', 'noticeid'].includes(key));
+}
+
+function isLikelyNoticeListUrl(value = '') {
+  if (!isUsableUrl(value)) return false;
+  const url = new URL(String(value));
+  const pathWithSearch = `${url.pathname}${url.search}`.toLowerCase();
+  const keys = getQueryKeys(value);
+
+  if (isEumUrl(value) && /list/i.test(pathWithSearch)) return true;
+  if (/archives\/category|boardlist|noticelist|gonggolist|gosilist|\/list\b/i.test(pathWithSearch)) return true;
+  if (/bbs\.do|board\.do|notice\.do/i.test(pathWithSearch) && !hasDirectIdentifier(value)) return true;
+  if (!hasDirectIdentifier(value) && keys.length > 0 && keys.every((key) => ['menuid', 'menuno', 'bbsid', 'pageindex', 'page', 'categoryid', 'searchcnd', 'searchwrd', 'searchcondition', 'searchkeyword'].includes(key))) {
+    return true;
+  }
+  return false;
+}
+
+function isDirectNoticeUrl(value = '') {
+  if (!isUsableUrl(value)) return false;
+  const urlType = classifyUrl(value);
+  if (urlType === 'document') return true;
+  if (urlType === 'homepage' || urlType === 'list' || urlType === 'invalid') return false;
+
+  const pathWithSearch = `${new URL(String(value)).pathname}${new URL(String(value)).search}`.toLowerCase();
+  if (hasDirectIdentifier(value)) return true;
+  if (isEumUrl(value)) return !/list/i.test(pathWithSearch);
+  return /(view|detail|read|gonggo|gosi|notice|bbsview|boardview)/i.test(pathWithSearch);
 }
 
 function normalizeNoticeNumber(value = '') {
@@ -110,12 +152,13 @@ function isLikelyAttachment(item) {
   const normalizedUrl = normalizeUrl(item.url).toLowerCase();
   if (label.includes('대표 페이지')) return false;
   if (/\.(pdf|hwp|hwpx|doc|docx|xls|xlsx|zip)(\?|$)/i.test(normalizedUrl)) return true;
-  return /(첨부|공고문|도면|문서|파일|pdf|hwp|hwpx)/i.test(label);
+  return /(첨부|공고문|도면|문서|파일|pdf|hwp|hwpx)/i.test(label) && isDirectNoticeUrl(item.url);
 }
 
 function buildSourceDetailLink(notice) {
   const sourceUrl = notice.sourceDetailUrl || notice.sourceUrl;
   if (!isUsableUrl(sourceUrl)) return null;
+  if (!isEumUrl(sourceUrl) && !isDirectNoticeUrl(sourceUrl)) return null;
 
   return {
     title: isEumUrl(sourceUrl) ? '토지이음에서 보기' : '기준 출처에서 보기',
@@ -213,6 +256,34 @@ function deriveAttachmentLinks(notice, officialNotices, sourceDetailLink) {
   );
 }
 
+function buildDirectNoticeLink({ officialNotices, attachmentLinks, sourceDetailLink }) {
+  if (attachmentLinks.length) {
+    return {
+      url: attachmentLinks[0].url,
+      type: 'attachment',
+      label: attachmentLinks[0].fileLabel || '첨부 문서',
+    };
+  }
+
+  if (officialNotices.length) {
+    return {
+      url: officialNotices[0].url,
+      type: 'official-detail',
+      label: officialNotices[0].sourceSite || '공식 게시판',
+    };
+  }
+
+  if (sourceDetailLink && sourceDetailLink.title === '토지이음에서 보기' && isDirectNoticeUrl(sourceDetailLink.url)) {
+    return {
+      url: sourceDetailLink.url,
+      type: 'landuse-detail',
+      label: sourceDetailLink.sourceSite || '토지이음 상세',
+    };
+  }
+
+  return null;
+}
+
 function derivePressReleases(enrichment) {
   return normalizeList(enrichment.officialPressReleases);
 }
@@ -275,6 +346,7 @@ export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []
     ? tentativeSourceDetailLink
     : null;
   const attachmentLinks = deriveAttachmentLinks(notice, officialNotices, sourceDetailLink);
+  const directNoticeLink = buildDirectNoticeLink({ officialNotices, attachmentLinks, sourceDetailLink });
   const officialPressReleases = derivePressReleases(enrichment);
   const relatedNews = deriveRelatedNews(enrichment);
   const relatedFollowups = deriveFollowups(notice, relatedGosi);
@@ -287,8 +359,11 @@ export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []
     officialNoticeReviewReason: officialReviewState.reason,
     sourceDetailLink,
     sourceDetailUrl: sourceDetailLink?.url || '',
-    officialNoticeUrl: officialNotices[0]?.url || '',
+    officialNoticeUrl: directNoticeLink?.type === 'official-detail' ? directNoticeLink.url : officialNotices[0]?.url || '',
     officialNoticeLabel: officialNotices[0]?.sourceSite || '',
+    directNoticeLink,
+    directNoticeUrl: directNoticeLink?.url || '',
+    directNoticeType: directNoticeLink?.type || '',
     attachmentLinks,
     attachmentUrls: attachmentLinks.map((item) => item.url),
     linkConfidence: officialNotices[0] ? 'high' : officialReviewState.confidence,
