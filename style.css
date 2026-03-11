@@ -94,13 +94,14 @@ textarea {
   width: 52px;
   height: 52px;
   border-radius: 16px;
-  display: grid;
-  place-items: center;
-  color: #fff;
-  font-size: 0.98rem;
-  font-weight: 800;
-  background: linear-gradient(150deg, var(--accent-3), #2c8be8 62%, #61b5f5 100%);
+  display: block;
+  background: center / cover no-repeat url("assets/jr-radar-mark.svg");
   box-shadow: var(--shadow);
+  color: transparent;
+  font-size: 0;
+  text-indent: -9999px;
+  overflow: hidden;
+  user-select: none;
 }
 
 .brand h1 {
@@ -1133,8 +1134,20 @@ body {
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: linear-gradient(160deg, var(--brand), #305677);
-  font-size: 0.9rem;
+  background: center / cover no-repeat url("assets/jr-radar-mark.svg");
+  box-shadow:
+    0 16px 34px rgba(18, 33, 58, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transform: translateZ(0);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.brand:hover .brand-mark,
+.brand:focus-within .brand-mark {
+  transform: translateY(-1px);
+  box-shadow:
+    0 20px 38px rgba(18, 33, 58, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 .brand h1 {
