@@ -111,9 +111,7 @@ export function getRegionDisplayName({ scope, sido, sigungu }) {
 }
 
 export function getAdjacentDistricts(adjacencyMap, districts, region) {
-  if (!adjacencyMap || !districts?.length || !region?.adminCode) return [];
-  const adjacentCodes = Array.isArray(adjacencyMap[region.adminCode]) ? adjacencyMap[region.adminCode] : [];
-  if (!adjacentCodes.length) return [];
+  if (!adjacencyMap || !districts?.length || !region) return [];
 
   const districtByCode = new Map(
     districts
@@ -121,7 +119,37 @@ export function getAdjacentDistricts(adjacencyMap, districts, region) {
       .map((district) => [district.adminCode, district])
   );
 
-  return adjacentCodes
+  const regionCode = region.adminCode || '';
+  const directAdjacentCodes = regionCode && Array.isArray(adjacencyMap[regionCode]) ? adjacencyMap[regionCode] : [];
+  const reverseAdjacentCodes = regionCode
+    ? Object.entries(adjacencyMap)
+      .filter(([, adjacent]) => Array.isArray(adjacent) && adjacent.includes(regionCode))
+      .map(([code]) => code)
+    : [];
+
+  const exactMatches = [...new Set([...directAdjacentCodes, ...reverseAdjacentCodes])]
     .map((code) => districtByCode.get(code))
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((district) => district.sigungu !== region.sigungu || district.sido !== region.sido);
+
+  if (exactMatches.length) {
+    return exactMatches.sort((a, b) => a.sigungu.localeCompare(b.sigungu, 'ko'));
+  }
+
+  const cityKey = getSharedCityKey(region);
+  if (!cityKey) return [];
+
+  return districts
+    .filter((district) => getSharedCityKey(district) === cityKey)
+    .filter((district) => district.sigungu !== region.sigungu || district.sido !== region.sido)
+    .sort((a, b) => a.sigungu.localeCompare(b.sigungu, 'ko'));
+}
+
+function getSharedCityKey(region) {
+  const sigungu = String(region?.sigungu || '').trim();
+  const sido = String(region?.sido || '').trim();
+  const [firstToken] = sigungu.split(' ');
+
+  if (!sido || !firstToken || !firstToken.endsWith('시') || !sigungu.includes(' ')) return '';
+  return `${sido}::${firstToken}`;
 }
