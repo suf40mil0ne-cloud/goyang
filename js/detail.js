@@ -76,6 +76,19 @@ function renderLinkedSourceCard(item, typeLabel, buttonLabel = '바로가기') {
   `;
 }
 
+function renderPrimaryActionCard({ title, label, description, url, buttonLabel }) {
+  return `
+    <article class="source-card source-card-compact">
+      <div class="source-card-head">
+        <strong>${title}</strong>
+        <span class="subtle-label">${label}</span>
+      </div>
+      <p>${description}</p>
+      <a class="resource-link" href="${url}" target="_blank" rel="noopener noreferrer">${buttonLabel}</a>
+    </article>
+  `;
+}
+
 function renderNotice(notice, relatedNotices) {
   document.title = `${notice.title} | 주민공람 레이더`;
   setMeta('meta[name="description"]', `${notice.easySummary} 실제 제출은 원문 공고 기준으로 진행해야 합니다.`);
@@ -96,6 +109,7 @@ function renderNotice(notice, relatedNotices) {
   const overview = document.getElementById('notice-overview');
   const details = document.getElementById('notice-details');
   const actions = document.getElementById('notice-actions');
+  const officialNoticeSection = document.getElementById('official-notice-section');
   const officialNoticeList = document.getElementById('official-notice-list');
   const officialPressList = document.getElementById('official-press-list');
   const relatedNewsList = document.getElementById('related-news-list');
@@ -167,15 +181,51 @@ function renderNotice(notice, relatedNotices) {
   }
 
   if (actions) {
-    actions.innerHTML = `
-      <article class="source-card source-card-compact">
-        <div class="source-card-head">
-          <strong>토지이음 기준 원문</strong>
-          <span class="subtle-label">${notice.sourceMeta.label}</span>
-        </div>
-        <p>공고의 기준 출처입니다. 실제 제출과 법적 효력 판단은 원문 공고문과 첨부도서를 우선 확인해야 합니다.</p>
-        <a class="resource-link" href="${notice.sourceUrl}" target="_blank" rel="noopener noreferrer">원문 공고 보기</a>
-      </article>
+    const primaryLinks = [];
+    const primaryOfficial = notice.officialNotices[0];
+    const additionalOfficialNotices = notice.officialNotices.slice(1);
+
+    if (primaryOfficial) {
+      primaryLinks.push(renderPrimaryActionCard({
+        title: '공식 공고 원문',
+        label: primaryOfficial.sourceSite || primaryOfficial.matchType || '공식 게시판',
+        description: '지자체 고시공고 또는 공식 게시판에서 연결한 원문입니다. 실제 제출과 법적 효력 판단은 이 링크를 우선 확인해야 합니다.',
+        url: primaryOfficial.url,
+        buttonLabel: '공식 공고 원문 열기',
+      }));
+    } else if (notice.officialNoticeReviewPending) {
+      primaryLinks.push(`
+        <article class="source-card source-card-compact">
+          <div class="source-card-head">
+            <strong>공식 공고 원문</strong>
+            <span class="subtle-label">확인 중</span>
+          </div>
+          <p>현재 공고번호 또는 연결 신뢰도가 충분히 확인된 공식 원문 링크를 검수 중입니다. 아래 기준 출처와 제출 안내를 먼저 확인해 주세요.</p>
+        </article>
+      `);
+    }
+
+    notice.attachmentLinks.forEach((attachment) => {
+      primaryLinks.push(renderPrimaryActionCard({
+        title: '첨부 공고문',
+        label: attachment.fileLabel || '첨부 문서',
+        description: '공식 원문에 연결된 첨부 문서입니다. PDF, HWP 등 실제 문서 파일을 바로 열 수 있는 경우에만 표시합니다.',
+        url: attachment.url,
+        buttonLabel: '첨부 공고문 열기',
+      }));
+    });
+
+    if (notice.sourceDetailLink) {
+      primaryLinks.push(renderPrimaryActionCard({
+        title: notice.sourceDetailLink.title,
+        label: notice.sourceDetailLink.sourceSite,
+        description: notice.sourceDetailLink.description,
+        url: notice.sourceDetailLink.url,
+        buttonLabel: notice.sourceDetailLink.buttonLabel,
+      }));
+    }
+
+    primaryLinks.push(`
       <article class="source-card source-card-compact">
         <div class="source-card-head">
           <strong>의견 제출 안내</strong>
@@ -185,13 +235,19 @@ function renderNotice(notice, relatedNotices) {
         <p>${notice.submissionPlace || notice.viewLocation || '원문 공고문에 적힌 제출처를 확인하세요.'}</p>
         <p>${notice.onlineSubmissionMeta.description}</p>
       </article>
-    `;
-  }
+    `);
 
-  if (officialNoticeList) {
-    officialNoticeList.innerHTML = notice.officialNotices.length
-      ? notice.officialNotices.map((item) => renderLinkedSourceCard(item, item.matchType, '공식 공고 보기')).join('')
-      : '<div class="empty-state">연결된 공식 공고 원문이 아직 없습니다.</div>';
+    actions.innerHTML = primaryLinks.join('');
+
+    if (officialNoticeSection) {
+      officialNoticeSection.hidden = !additionalOfficialNotices.length;
+    }
+
+    if (officialNoticeList) {
+      officialNoticeList.innerHTML = additionalOfficialNotices.length
+        ? additionalOfficialNotices.map((item) => renderLinkedSourceCard(item, item.matchType, '공식 공고 보기')).join('')
+        : '';
+    }
   }
 
   if (officialPressList) {
