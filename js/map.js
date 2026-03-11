@@ -54,6 +54,7 @@ async function ensureMapAssets() {
   if (!assetsPromise) {
     assetsPromise = (async () => {
       ensureStylesheet(MAP_CONFIG.openLayersCssUrl);
+      await loadScript(MAP_CONFIG.jqueryScriptUrl);
       await loadScript(MAP_CONFIG.proj4ScriptUrl);
       await loadScript(MAP_CONFIG.openLayersScriptUrl);
       await loadScript(MAP_CONFIG.ngiiScriptUrl);
@@ -208,10 +209,23 @@ export async function createNoticeMap({
   currentPosition = null,
   hybrid = false,
 }) {
-  await ensureMapAssets();
+  try {
+    await ensureMapAssets();
+  } catch (error) {
+    console.error('[map] Failed to load map assets.', error);
+    throw error;
+  }
 
   const element = document.getElementById(elementId);
-  if (!element || !window.ngii_wmts || !window.ol) return null;
+  if (!element) {
+    console.warn(`[map] Map container #${elementId} was not found.`);
+    return null;
+  }
+
+  if (!window.ngii_wmts || !window.ol) {
+    console.error('[map] NGII or OpenLayers global was not initialized.');
+    throw new Error('Map libraries are not available.');
+  }
 
   const existing = registry.get(element);
   if (existing?.map) {
@@ -219,9 +233,15 @@ export async function createNoticeMap({
   }
   element.innerHTML = '';
 
-  const mapInstance = new window.ngii_wmts.map(elementId, {
-    mapMode: MAP_CONFIG.ngiiMapMode,
-  });
+  let mapInstance;
+  try {
+    mapInstance = new window.ngii_wmts.map(elementId, {
+      mapMode: MAP_CONFIG.ngiiMapMode,
+    });
+  } catch (error) {
+    console.error('[map] NGII map initialization failed.', error);
+    throw error;
+  }
   setHybrid(mapInstance, hybrid);
 
   const map = resolveOlMap(mapInstance);

@@ -26,6 +26,12 @@ function buildRow(notice) {
   `;
 }
 
+function renderMapFallback(message) {
+  const element = document.getElementById('overview-map');
+  if (!element) return;
+  element.innerHTML = `<div class="error-state map-error-state">${message}</div>`;
+}
+
 export async function initMapPage() {
   setCurrentYear();
   const [notices, regions] = await Promise.all([loadNotices(), loadRegions()]);
@@ -93,14 +99,20 @@ export async function initMapPage() {
         : '<div class="empty-state">선택한 조건의 공고가 없습니다.</div>';
     }
 
-    await createNoticeMap({
-      elementId: 'overview-map',
-      notices: scoped,
-      center,
-      zoom,
-      currentPosition: state.currentPosition,
-      hybrid: Boolean(hybridToggle?.checked),
-    });
+    try {
+      await createNoticeMap({
+        elementId: 'overview-map',
+        notices: scoped,
+        center,
+        zoom,
+        currentPosition: state.currentPosition,
+        hybrid: Boolean(hybridToggle?.checked),
+      });
+    } catch (error) {
+      console.error('[map-page] Failed to render map.', error);
+      renderMapFallback('지도를 불러오지 못했습니다. 잠시 후 다시 시도하거나 새로고침해 주세요.');
+      if (helper) helper.textContent = '지도 로딩에 실패했습니다.';
+    }
   }
 
   areaSelect?.addEventListener('change', async () => {

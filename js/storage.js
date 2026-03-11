@@ -134,3 +134,10 @@ export function toggleFavoriteRegion(region) {
   localStorage.setItem(FAVORITE_REGIONS_KEY, JSON.stringify(next));
   return next;
 }
+
+export function clearTransientRegionState() {
+  localStorage.removeItem(PREFERRED_REGION_KEY);
+  localStorage.removeItem(RECENT_REGIONS_KEY);
+  sessionStorage.removeItem(PREFERRED_REGION_KEY);
+  sessionStorage.removeItem(RECENT_REGIONS_KEY);
+}

@@ -915,6 +915,13 @@ button {
   height: 420px;
 }
 
+.map-error-state {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  text-align: center;
+}
+
 .map-popup {
   min-width: 220px;
   max-width: 260px;

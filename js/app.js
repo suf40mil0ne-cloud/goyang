@@ -3,8 +3,9 @@ import { buildDistrictIndex, findDistrictByName, getCurrentPosition, reverseGeoc
 import { loadNotices, loadRegions } from './notices.js';
 import {
   loadFavoriteRegions,
-  loadPreferredRegion,
   loadRecentRegions,
+  clearTransientRegionState,
+  loadPreferredRegion,
   savePreferredRegion,
   toggleFavoriteRegion,
 } from './storage.js';
@@ -20,6 +21,37 @@ const state = {
   selectedLegalDong: '',
   visibleCount: INITIAL_VISIBLE_COUNT,
 };
+
+function resetHomeState() {
+  state.selectedRegion = null;
+  state.selectedLegalDong = '';
+  state.visibleCount = INITIAL_VISIBLE_COUNT;
+  clearTransientRegionState();
+
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
+  const form = document.getElementById('region-form');
+  const panel = document.getElementById('region-picker');
+  const toggleButton = document.getElementById('toggle-region-picker');
+  const secondaryResults = document.getElementById('secondary-results');
+
+  form?.reset();
+  if (panel) panel.hidden = true;
+  if (secondaryResults) secondaryResults.hidden = true;
+  if (toggleButton) toggleButton.setAttribute('aria-expanded', 'false');
+
+  window.scrollTo(0, 0);
+  window.requestAnimationFrame(() => window.scrollTo(0, 0));
+
+  setLocationFeedback({
+    helper: '현재 위치를 확인하지 못했습니다. 위치를 허용하거나 지역을 선택해주세요.',
+    status: '현재 위치를 확인하면 해당 자치구 또는 시군구 기준으로 진행 중 공고를 정리해 보여줍니다.',
+    resolution: '위치 확인 대기 중',
+    selectedLabel: '선택된 지역 없음',
+  });
+}
 
 function setCurrentYear() {
   document.querySelectorAll('[data-current-year]').forEach((element) => {
@@ -456,6 +488,7 @@ function bindRegionForm() {
 }
 
 export async function initHomePage() {
+  resetHomeState();
   setCurrentYear();
   const [notices, regions] = await Promise.all([loadNotices(), loadRegions()]);
 
@@ -469,9 +502,4 @@ export async function initHomePage() {
   bindHeroActions();
   bindRegionForm();
   renderNoticeList();
-
-  const saved = loadPreferredRegion();
-  if (saved) {
-    applyRegion(saved, '최근 본 지역 불러오기');
-  }
 }
