@@ -2,6 +2,7 @@ import { filterByStatus, getDistrictNotices } from './filters.js';
 import { buildDistrictIndex, findDistrictByName, getCurrentPosition, reverseGeocodeDistrict } from './location.js';
 import { createNoticeMap } from './map.js';
 import { loadNotices, loadRegions } from './notices.js';
+import { getNationMeta } from './regions.js';
 import { loadPreferredRegion, savePreferredRegion } from './storage.js';
 
 function setCurrentYear() {
@@ -14,8 +15,9 @@ function buildRow(notice) {
   return `
     <article class="mini-card">
       <strong>${notice.title}</strong>
-      <p>${notice.sido} ${notice.sigungu} ${notice.legalDong} · ${notice.statusLabel}</p>
+      <p>${notice.sido} ${notice.sigungu} ${notice.legalDong || ''} · ${notice.statusLabel}</p>
       <p>${notice.easySummary}</p>
+      <p>${notice.onlineSubmissionMeta.label}</p>
       <div class="button-row compact-actions">
         <a class="text-link" href="notice.html?id=${encodeURIComponent(notice.id)}">상세 보기</a>
         <a class="text-link" href="${notice.sourceUrl}" target="_blank" rel="noopener noreferrer">원문 공고</a>
@@ -28,6 +30,7 @@ export async function initMapPage() {
   setCurrentYear();
   const [notices, regions] = await Promise.all([loadNotices(), loadRegions()]);
   const districts = buildDistrictIndex(regions, notices);
+  const nationMeta = getNationMeta();
   const areaSelect = document.getElementById('map-area');
   const districtSelect = document.getElementById('map-district');
   const statusSelect = document.getElementById('map-status');
@@ -36,12 +39,18 @@ export async function initMapPage() {
   const helper = document.getElementById('map-location-helper');
   const list = document.getElementById('map-notice-list');
   const summary = document.getElementById('map-results-summary');
-  const areaMap = Object.fromEntries(regions.map((region) => [region.area, region]));
   const state = {
     selectedArea: 'all',
     selectedDistrict: '',
     currentPosition: null,
   };
+
+  if (areaSelect) {
+    areaSelect.innerHTML = [
+      '<option value="all">전국 전체</option>',
+      ...regions.map((region) => `<option value="${region.area}">${region.name}</option>`),
+    ].join('');
+  }
 
   function populateDistricts(area, selectedDistrict = '') {
     if (!districtSelect) return;
@@ -53,7 +62,6 @@ export async function initMapPage() {
       '<option value="">전체 시군구</option>',
       ...scopedDistricts.map((district) => `<option value="${district.fullName}">${district.fullName}</option>`),
     ].join('');
-
     districtSelect.value = selectedDistrict;
   }
 
@@ -64,22 +72,27 @@ export async function initMapPage() {
     const selectedDistrict = districtValue
       ? districts.find((district) => district.fullName === districtValue) || null
       : null;
+    const region = regions.find((item) => item.area === area) || nationMeta;
     const scoped = selectedDistrict
       ? getDistrictNotices(notices, selectedDistrict, status)
-      : filterByStatus(area === 'all' ? notices : notices.filter((notice) => notice.areaKey === area), status);
-    const region = areaMap[area] || { center: { lat: 37.5665, lng: 126.978 }, defaultZoom: 10 };
+      : filterByStatus(area === 'all' ? notices : notices.filter((notice) => notice.sido === region.name), status);
     const center = state.currentPosition || selectedDistrict?.center || region.center;
-    const zoom = selectedDistrict ? 12 : area === 'all' ? 9 : region.defaultZoom;
+    const zoom = selectedDistrict ? 12 : area === 'all' ? nationMeta.defaultZoom : region.defaultZoom;
 
     if (summary) {
       summary.textContent = selectedDistrict
         ? `${selectedDistrict.fullName} 기준 공고 ${scoped.length}건`
         : area === 'all'
-          ? `수도권 전체 공고 ${scoped.length}건`
+          ? `전국 공고 ${scoped.length}건`
           : `${region.name} 공고 ${scoped.length}건`;
     }
 
-    if (list) list.innerHTML = scoped.length ? scoped.map(buildRow).join('') : '<div class="empty-state">선택한 조건의 공고가 없습니다.</div>';
+    if (list) {
+      list.innerHTML = scoped.length
+        ? scoped.slice(0, 12).map(buildRow).join('')
+        : '<div class="empty-state">선택한 조건의 공고가 없습니다.</div>';
+    }
+
     await createNoticeMap({
       elementId: 'overview-map',
       notices: scoped,

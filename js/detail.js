@@ -1,4 +1,5 @@
 import { getNoticeById, getRelatedNotices, loadNotices } from './notices.js';
+import { getRegionHref } from './regions.js';
 
 function setCurrentYear() {
   document.querySelectorAll('[data-current-year]').forEach((element) => {
@@ -22,6 +23,11 @@ function setCanonical(url) {
 
 function renderInfoRow(label, value) {
   return `<div class="info-row"><strong>${label}</strong><span>${value}</span></div>`;
+}
+
+function getNoticeRegionLabel(notice) {
+  const base = notice.sigungu === notice.sido ? notice.sido : `${notice.sido} ${notice.sigungu}`;
+  return `${base} ${notice.legalDong || ''}`.trim();
 }
 
 function injectStructuredData(notice) {
@@ -79,6 +85,8 @@ function renderNotice(notice, relatedNotices) {
 
   const title = document.getElementById('notice-title');
   const breadcrumbCurrent = document.getElementById('breadcrumb-current');
+  const breadcrumbSido = document.getElementById('breadcrumb-sido');
+  const breadcrumbSigungu = document.getElementById('breadcrumb-sigungu');
   const summary = document.getElementById('notice-summary');
   const meta = document.getElementById('notice-meta-badges');
   const regionMeta = document.getElementById('notice-region-meta');
@@ -97,8 +105,16 @@ function renderNotice(notice, relatedNotices) {
 
   if (title) title.textContent = notice.title;
   if (breadcrumbCurrent) breadcrumbCurrent.textContent = notice.title;
+  if (breadcrumbSido) {
+    breadcrumbSido.textContent = notice.sido;
+    breadcrumbSido.href = getRegionHref({ scope: 'sido', sido: notice.sido });
+  }
+  if (breadcrumbSigungu) {
+    breadcrumbSigungu.textContent = notice.sigungu;
+    breadcrumbSigungu.href = getRegionHref({ scope: 'sigungu', sido: notice.sido, sigungu: notice.sigungu });
+  }
   if (summary) summary.textContent = notice.easySummary;
-  if (regionMeta) regionMeta.textContent = `지역: ${notice.sido} ${notice.sigungu} ${notice.legalDong}`;
+  if (regionMeta) regionMeta.textContent = `지역: ${getNoticeRegionLabel(notice)}`;
   if (periodMeta) periodMeta.textContent = `열람기간: ${notice.hearingStartDateText} - ${notice.hearingEndDateText}`;
   if (lastVerified) lastVerified.textContent = `마지막 확인: ${notice.lastVerifiedAtText}`;
   if (coverageSummary) {
@@ -137,11 +153,12 @@ function renderNotice(notice, relatedNotices) {
     details.innerHTML = [
       renderInfoRow('공고기관', notice.organization),
       renderInfoRow('공고번호', notice.noticeNumber || '원문 확인 필요'),
-      renderInfoRow('지역', `${notice.sido} ${notice.sigungu} ${notice.legalDong}`),
+      renderInfoRow('지역', getNoticeRegionLabel(notice)),
       renderInfoRow('공고일', notice.postedDateText),
       renderInfoRow('열람기간', `${notice.hearingStartDateText} - ${notice.hearingEndDateText}`),
       renderInfoRow('현재 상태', notice.statusLabel),
       renderInfoRow('한줄 요약', notice.easySummary),
+      renderInfoRow('온라인 제출 여부', notice.onlineSubmissionMeta.label),
       renderInfoRow('의견 제출 방법', notice.submissionMethod),
       renderInfoRow('제출 장소', notice.submissionPlace || notice.viewLocation || '원문 공고문 확인'),
       renderInfoRow('문의처', notice.contact),
@@ -162,10 +179,11 @@ function renderNotice(notice, relatedNotices) {
       <article class="source-card source-card-compact">
         <div class="source-card-head">
           <strong>의견 제출 안내</strong>
-          <span class="subtle-label">공식 제출처 아님</span>
+          <span class="subtle-label">${notice.onlineSubmissionMeta.label}</span>
         </div>
         <p>${notice.submissionMethod}</p>
         <p>${notice.submissionPlace || notice.viewLocation || '원문 공고문에 적힌 제출처를 확인하세요.'}</p>
+        <p>${notice.onlineSubmissionMeta.description}</p>
       </article>
     `;
   }

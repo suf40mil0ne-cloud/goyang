@@ -16,8 +16,22 @@ let relatedGosiCache;
 
 const areaMap = {
   서울특별시: 'seoul',
+  부산광역시: 'busan',
+  대구광역시: 'daegu',
   인천광역시: 'incheon',
+  광주광역시: 'gwangju',
+  대전광역시: 'daejeon',
+  울산광역시: 'ulsan',
+  세종특별자치시: 'sejong',
   경기도: 'gyeonggi',
+  강원특별자치도: 'gangwon',
+  충청북도: 'chungbuk',
+  충청남도: 'chungnam',
+  전북특별자치도: 'jeonbuk',
+  전라남도: 'jeonnam',
+  경상북도: 'gyeongbuk',
+  경상남도: 'gyeongnam',
+  제주특별자치도: 'jeju',
 };
 
 function asDate(value) {
@@ -53,6 +67,25 @@ function getEasySummary(notice) {
   return splitAiSummary(notice.aiSummary)[0] || '';
 }
 
+function getOnlineSubmissionMeta(notice) {
+  const isAvailable = Boolean(notice.onlineSubmissionAvailable);
+  if (isAvailable) {
+    return {
+      available: true,
+      label: '온라인 제출 가능',
+      description: '토지이음 또는 원문 공고에서 온라인 의견제출을 지원하는 공고입니다.',
+      tone: 'submission-available',
+    };
+  }
+
+  return {
+    available: false,
+    label: '온라인 제출 별도 확인',
+    description: '공고 열람과 온라인 제출은 다를 수 있으므로 원문 공고에서 제출 방식을 다시 확인해야 합니다.',
+    tone: 'submission-check',
+  };
+}
+
 function decorateNotice(notice, relatedGosi, noticeLinks) {
   const statusInfo = inferStatus(notice);
   const areaKey = areaMap[notice.sido] || 'gyeonggi';
@@ -61,6 +94,7 @@ function decorateNotice(notice, relatedGosi, noticeLinks) {
   const enrichment = mergeNoticeConnections(notice, noticeLinks?.[notice.id], relatedGosi);
   const locationConfidenceMeta = getLocationConfidenceMeta(normalizedConfidence);
   const statusBadgeText = getStatusBadgeText(statusInfo.key, statusInfo.daysLeft);
+  const onlineSubmissionMeta = getOnlineSubmissionMeta(notice);
   return {
     ...notice,
     areaKey,
@@ -92,11 +126,13 @@ function decorateNotice(notice, relatedGosi, noticeLinks) {
       ...notice,
       ...enrichment,
       locationConfidenceMeta,
+      onlineSubmissionMeta,
     }),
     sourceCoverage: getSourceCoverage({
       ...notice,
       ...enrichment,
     }),
+    onlineSubmissionMeta,
     aiSummaryLines: splitAiSummary(notice.aiSummary),
     changeSummary: notice.shortSummary,
   };

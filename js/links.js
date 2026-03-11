@@ -76,6 +76,9 @@ export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []
 
 export function getNoticeSignalBadges(notice) {
   return [
+    notice.onlineSubmissionMeta
+      ? { tone: notice.onlineSubmissionMeta.tone, label: notice.onlineSubmissionMeta.label }
+      : null,
     notice.officialNotices?.length ? { tone: 'official', label: '지자체 원문 연결' } : null,
     notice.officialPressReleases?.length ? { tone: 'press', label: '설명자료 있음' } : null,
     notice.relatedNews?.length ? { tone: 'news', label: '관련 기사 있음' } : null,

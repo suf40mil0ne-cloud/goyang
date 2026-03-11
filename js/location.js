@@ -1,5 +1,25 @@
 import { haversineKm, normalizeRegionText } from './filters.js';
 
+const sidoAliases = [
+  ['서울', '서울특별시'],
+  ['부산', '부산광역시'],
+  ['대구', '대구광역시'],
+  ['인천', '인천광역시'],
+  ['광주', '광주광역시'],
+  ['대전', '대전광역시'],
+  ['울산', '울산광역시'],
+  ['세종', '세종특별자치시'],
+  ['경기', '경기도'],
+  ['강원', '강원특별자치도'],
+  ['충북', '충청북도'],
+  ['충남', '충청남도'],
+  ['전북', '전북특별자치도'],
+  ['전남', '전라남도'],
+  ['경북', '경상북도'],
+  ['경남', '경상남도'],
+  ['제주', '제주특별자치도'],
+];
+
 function averageCenter(items) {
   if (!items.length) return null;
   const total = items.reduce(
@@ -33,11 +53,8 @@ function buildNoticeCenters(notices) {
 function parseSido(address = {}) {
   const stateText = [address.state, address.region, address.province, address.city]
     .find(Boolean) || '';
-
-  if (stateText.includes('서울')) return '서울특별시';
-  if (stateText.includes('인천')) return '인천광역시';
-  if (stateText.includes('경기')) return '경기도';
-  return stateText;
+  const matched = sidoAliases.find(([alias]) => stateText.includes(alias));
+  return matched ? matched[1] : stateText;
 }
 
 function parseSigungu(address = {}, sido = '') {
@@ -46,17 +63,20 @@ function parseSigungu(address = {}, sido = '') {
   const cityLike = [address.city, address.municipality, address.county]
     .find((value) => /(시|군)$/.test(value || '')) || '';
   const countyLike = address.county || '';
+  const municipalityLike = address.municipality || '';
 
-  if (sido === '서울특별시' || sido === '인천광역시') {
+  if (sido === '세종특별자치시') return '세종특별자치시';
+
+  if (/(특별시|광역시)$/.test(sido)) {
     return districtLike || countyLike || '';
   }
 
-  if (sido === '경기도') {
+  if (/(도)$/.test(sido)) {
     if (cityLike && districtLike) return `${cityLike} ${districtLike}`;
-    return cityLike || countyLike || districtLike || '';
+    return cityLike || countyLike || municipalityLike || districtLike || '';
   }
 
-  return districtLike || cityLike || countyLike || '';
+  return districtLike || cityLike || countyLike || municipalityLike || '';
 }
 
 function parseLegalDong(address = {}) {
@@ -74,9 +94,10 @@ export function buildDistrictIndex(regions, notices = []) {
         area: region.area,
         sido: region.name,
         sigungu: district.sigungu,
-        fullName: `${region.name} ${district.sigungu}`,
+        fullName: district.sigungu === region.name ? region.name : `${region.name} ${district.sigungu}`,
+        adminCode: district.adminCode || '',
         aliases: district.aliases || [],
-        center: centerMap.get(key) || null,
+        center: district.center || centerMap.get(key) || null,
       };
     })
   );

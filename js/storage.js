@@ -1,6 +1,8 @@
 const AREA_KEY = 'upr_saved_areas_v2';
 const KEYWORD_KEY = 'upr_saved_keywords_v1';
 const PREFERRED_REGION_KEY = 'upr_preferred_region_v1';
+const RECENT_REGIONS_KEY = 'upr_recent_regions_v1';
+const FAVORITE_REGIONS_KEY = 'upr_favorite_regions_v1';
 
 export function loadSavedAreas() {
   try {
@@ -68,8 +70,67 @@ export function savePreferredRegion(region) {
   const next = {
     sido: region.sido,
     sigungu: region.sigungu,
+    adminCode: region.adminCode || '',
     fullName: region.fullName || `${region.sido} ${region.sigungu}`,
   };
   localStorage.setItem(PREFERRED_REGION_KEY, JSON.stringify(next));
+  saveRecentRegion(next);
+  return next;
+}
+
+export function loadRecentRegions() {
+  try {
+    const raw = localStorage.getItem(RECENT_REGIONS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+export function saveRecentRegion(region) {
+  if (!region) return [];
+  const current = loadRecentRegions();
+  const next = [
+    {
+      sido: region.sido,
+      sigungu: region.sigungu,
+      adminCode: region.adminCode || '',
+      fullName: region.fullName || `${region.sido} ${region.sigungu}`,
+    },
+    ...current.filter((item) => !(item.sido === region.sido && item.sigungu === region.sigungu)),
+  ].slice(0, 6);
+  localStorage.setItem(RECENT_REGIONS_KEY, JSON.stringify(next));
+  return next;
+}
+
+export function loadFavoriteRegions() {
+  try {
+    const raw = localStorage.getItem(FAVORITE_REGIONS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+export function toggleFavoriteRegion(region) {
+  if (!region) return loadFavoriteRegions();
+  const current = loadFavoriteRegions();
+  const exists = current.some((item) => item.sido === region.sido && item.sigungu === region.sigungu);
+  const next = exists
+    ? current.filter((item) => !(item.sido === region.sido && item.sigungu === region.sigungu))
+    : [
+      {
+        sido: region.sido,
+        sigungu: region.sigungu,
+        adminCode: region.adminCode || '',
+        fullName: region.fullName || `${region.sido} ${region.sigungu}`,
+      },
+      ...current,
+    ].slice(0, 8);
+  localStorage.setItem(FAVORITE_REGIONS_KEY, JSON.stringify(next));
   return next;
 }

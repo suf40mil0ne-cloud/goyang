@@ -60,7 +60,7 @@
           </div>
           <div class="hero-meta">
             <span id="updated-at">마지막 확인 시각 불러오는 중...</span>
-            <span>수도권 시작: 서울특별시 · 인천광역시 · 경기도</span>
+            <span>전국 확장: 17개 시도 · 시군구 단위 탐색</span>
             <span>토지이음 · 지자체 원문 · 관련 기사 연결</span>
           </div>
         </div>
@@ -75,6 +75,11 @@
             <span id="location-resolution">위치 확인 대기 중</span>
             <span id="selected-region-label">선택된 지역 없음</span>
           </div>
+          <div class="button-row compact-actions">
+            <a id="selected-region-hub" class="resource-link" href="region.html?scope=nation" hidden>지역 허브 보기</a>
+            <button id="save-favorite-region" class="ghost-button" type="button" hidden>관심지역 저장</button>
+          </div>
+          <div id="saved-region-list" class="chip-row" aria-live="polite"></div>
         </div>
       </div>
     </section>
@@ -82,7 +87,7 @@
     <section id="region-picker" class="panel panel-tight toggle-panel" hidden>
       <div class="panel-head panel-head-stack">
         <h3>지역 직접 선택</h3>
-        <span>서울특별시, 인천광역시, 경기도에서 현재 확인된 자치구·시군을 선택할 수 있습니다.</span>
+        <span>전국 시도와 시군구 기준으로 현재 연결된 공고를 탐색할 수 있습니다.</span>
       </div>
       <form id="region-form" class="search-form" autocomplete="off">
         <div class="compact-grid">

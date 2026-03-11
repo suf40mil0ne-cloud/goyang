@@ -3,64 +3,884 @@
     "area": "seoul",
     "name": "서울특별시",
     "shortName": "서울",
+    "adminCode": "11",
     "center": {
       "lat": 37.5665,
       "lng": 126.978
     },
-    "description": "서울 자치구별 주민공람공고를 현재 위치 또는 직접 선택으로 빠르게 확인할 수 있습니다.",
-    "aliases": ["서울", "서울특별시"],
+    "description": "서울특별시 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "서울",
+      "서울특별시"
+    ],
     "focus": "자치구 단위 주민공람 탐색",
     "defaultZoom": 11,
     "districts": [
-      { "sigungu": "강서구", "aliases": ["강서", "서울 강서구"] },
-      { "sigungu": "동작구", "aliases": ["동작", "서울 동작구"] },
-      { "sigungu": "서대문구", "aliases": ["서대문", "서울 서대문구"] },
-      { "sigungu": "성동구", "aliases": ["성동", "서울 성동구"] },
-      { "sigungu": "영등포구", "aliases": ["영등포", "서울 영등포구"] },
-      { "sigungu": "은평구", "aliases": ["은평", "서울 은평구"] }
+      {
+        "sigungu": "강서구",
+        "adminCode": "11500",
+        "aliases": [
+          "강서",
+          "서울 강서구"
+        ],
+        "center": {
+          "lat": 37.5509,
+          "lng": 126.8495
+        }
+      },
+      {
+        "sigungu": "동작구",
+        "adminCode": "11590",
+        "aliases": [
+          "동작",
+          "서울 동작구"
+        ],
+        "center": {
+          "lat": 37.5124,
+          "lng": 126.9393
+        }
+      },
+      {
+        "sigungu": "서대문구",
+        "adminCode": "11410",
+        "aliases": [
+          "서대문",
+          "서울 서대문구"
+        ],
+        "center": {
+          "lat": 37.5791,
+          "lng": 126.9368
+        }
+      },
+      {
+        "sigungu": "성동구",
+        "adminCode": "11200",
+        "aliases": [
+          "성동",
+          "서울 성동구"
+        ],
+        "center": {
+          "lat": 37.5633,
+          "lng": 127.0369
+        }
+      },
+      {
+        "sigungu": "영등포구",
+        "adminCode": "11560",
+        "aliases": [
+          "영등포",
+          "서울 영등포구"
+        ],
+        "center": {
+          "lat": 37.5264,
+          "lng": 126.8962
+        }
+      },
+      {
+        "sigungu": "은평구",
+        "adminCode": "11380",
+        "aliases": [
+          "은평",
+          "서울 은평구"
+        ],
+        "center": {
+          "lat": 37.6176,
+          "lng": 126.9227
+        }
+      }
+    ]
+  },
+  {
+    "area": "busan",
+    "name": "부산광역시",
+    "shortName": "부산",
+    "adminCode": "26",
+    "center": {
+      "lat": 35.1796,
+      "lng": 129.0756
+    },
+    "description": "부산광역시 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "부산",
+      "부산광역시"
+    ],
+    "focus": "구·군 단위 주민공람 탐색",
+    "defaultZoom": 11,
+    "districts": [
+      {
+        "sigungu": "수영구",
+        "adminCode": "26500",
+        "aliases": [
+          "수영",
+          "부산 수영구"
+        ],
+        "center": {
+          "lat": 35.1458,
+          "lng": 129.1139
+        }
+      },
+      {
+        "sigungu": "해운대구",
+        "adminCode": "26350",
+        "aliases": [
+          "해운대",
+          "부산 해운대구"
+        ],
+        "center": {
+          "lat": 35.1631,
+          "lng": 129.1636
+        }
+      }
+    ]
+  },
+  {
+    "area": "daegu",
+    "name": "대구광역시",
+    "shortName": "대구",
+    "adminCode": "27",
+    "center": {
+      "lat": 35.8714,
+      "lng": 128.6014
+    },
+    "description": "대구광역시 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "대구",
+      "대구광역시"
+    ],
+    "focus": "구·군 단위 주민공람 탐색",
+    "defaultZoom": 11,
+    "districts": [
+      {
+        "sigungu": "달서구",
+        "adminCode": "27290",
+        "aliases": [
+          "달서",
+          "대구 달서구"
+        ],
+        "center": {
+          "lat": 35.8299,
+          "lng": 128.5326
+        }
+      },
+      {
+        "sigungu": "수성구",
+        "adminCode": "27260",
+        "aliases": [
+          "수성",
+          "대구 수성구"
+        ],
+        "center": {
+          "lat": 35.8584,
+          "lng": 128.6306
+        }
+      }
     ]
   },
   {
     "area": "incheon",
     "name": "인천광역시",
     "shortName": "인천",
+    "adminCode": "28",
     "center": {
       "lat": 37.4563,
       "lng": 126.7052
     },
-    "description": "인천 구·군 단위 주민공람공고를 현재 위치 기준으로 확인할 수 있습니다.",
-    "aliases": ["인천", "인천광역시"],
+    "description": "인천광역시 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "인천",
+      "인천광역시"
+    ],
     "focus": "구·군 단위 주민공람 탐색",
     "defaultZoom": 11,
     "districts": [
-      { "sigungu": "계양구", "aliases": ["계양", "인천 계양구"] },
-      { "sigungu": "부평구", "aliases": ["부평", "인천 부평구"] },
-      { "sigungu": "서구", "aliases": ["검단", "인천 서구"] },
-      { "sigungu": "연수구", "aliases": ["송도", "연수", "인천 연수구"] }
+      {
+        "sigungu": "계양구",
+        "adminCode": "28245",
+        "aliases": [
+          "계양",
+          "인천 계양구"
+        ],
+        "center": {
+          "lat": 37.5371,
+          "lng": 126.7378
+        }
+      },
+      {
+        "sigungu": "부평구",
+        "adminCode": "28237",
+        "aliases": [
+          "부평",
+          "인천 부평구"
+        ],
+        "center": {
+          "lat": 37.5071,
+          "lng": 126.7218
+        }
+      },
+      {
+        "sigungu": "서구",
+        "adminCode": "28260",
+        "aliases": [
+          "인천 서구",
+          "서구"
+        ],
+        "center": {
+          "lat": 37.5454,
+          "lng": 126.6758
+        }
+      },
+      {
+        "sigungu": "연수구",
+        "adminCode": "28185",
+        "aliases": [
+          "연수",
+          "인천 연수구",
+          "송도"
+        ],
+        "center": {
+          "lat": 37.4103,
+          "lng": 126.6788
+        }
+      }
+    ]
+  },
+  {
+    "area": "gwangju",
+    "name": "광주광역시",
+    "shortName": "광주",
+    "adminCode": "29",
+    "center": {
+      "lat": 35.1595,
+      "lng": 126.8526
+    },
+    "description": "광주광역시 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "광주",
+      "광주광역시"
+    ],
+    "focus": "구 단위 주민공람 탐색",
+    "defaultZoom": 11,
+    "districts": [
+      {
+        "sigungu": "광산구",
+        "adminCode": "29200",
+        "aliases": [
+          "광주 광산구",
+          "광산구"
+        ],
+        "center": {
+          "lat": 35.1392,
+          "lng": 126.7935
+        }
+      },
+      {
+        "sigungu": "북구",
+        "adminCode": "29170",
+        "aliases": [
+          "광주 북구",
+          "북구"
+        ],
+        "center": {
+          "lat": 35.174,
+          "lng": 126.9119
+        }
+      }
+    ]
+  },
+  {
+    "area": "daejeon",
+    "name": "대전광역시",
+    "shortName": "대전",
+    "adminCode": "30",
+    "center": {
+      "lat": 36.3504,
+      "lng": 127.3845
+    },
+    "description": "대전광역시 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "대전",
+      "대전광역시"
+    ],
+    "focus": "구 단위 주민공람 탐색",
+    "defaultZoom": 11,
+    "districts": [
+      {
+        "sigungu": "서구",
+        "adminCode": "30170",
+        "aliases": [
+          "대전 서구",
+          "대전 서구청"
+        ],
+        "center": {
+          "lat": 36.3555,
+          "lng": 127.3839
+        }
+      },
+      {
+        "sigungu": "유성구",
+        "adminCode": "30200",
+        "aliases": [
+          "대전 유성구",
+          "유성"
+        ],
+        "center": {
+          "lat": 36.3622,
+          "lng": 127.3568
+        }
+      }
+    ]
+  },
+  {
+    "area": "ulsan",
+    "name": "울산광역시",
+    "shortName": "울산",
+    "adminCode": "31",
+    "center": {
+      "lat": 35.5384,
+      "lng": 129.3114
+    },
+    "description": "울산광역시 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "울산",
+      "울산광역시"
+    ],
+    "focus": "구·군 단위 주민공람 탐색",
+    "defaultZoom": 11,
+    "districts": [
+      {
+        "sigungu": "남구",
+        "adminCode": "31140",
+        "aliases": [
+          "울산 남구",
+          "남구"
+        ],
+        "center": {
+          "lat": 35.5438,
+          "lng": 129.3301
+        }
+      },
+      {
+        "sigungu": "중구",
+        "adminCode": "31110",
+        "aliases": [
+          "울산 중구",
+          "중구"
+        ],
+        "center": {
+          "lat": 35.5694,
+          "lng": 129.332
+        }
+      }
+    ]
+  },
+  {
+    "area": "sejong",
+    "name": "세종특별자치시",
+    "shortName": "세종",
+    "adminCode": "36",
+    "center": {
+      "lat": 36.48,
+      "lng": 127.289
+    },
+    "description": "세종특별자치시 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "세종",
+      "세종특별자치시"
+    ],
+    "focus": "단일 행정구역 주민공람 탐색",
+    "defaultZoom": 11,
+    "districts": [
+      {
+        "sigungu": "세종특별자치시",
+        "adminCode": "36110",
+        "aliases": [
+          "세종",
+          "세종시"
+        ],
+        "center": {
+          "lat": 36.48,
+          "lng": 127.289
+        }
+      }
     ]
   },
   {
     "area": "gyeonggi",
     "name": "경기도",
     "shortName": "경기",
+    "adminCode": "41",
     "center": {
       "lat": 37.4138,
       "lng": 127.5183
     },
-    "description": "경기도 시·군·구 단위 주민공람공고를 위치 중심으로 보여줍니다.",
-    "aliases": ["경기", "경기도"],
+    "description": "경기도 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "경기",
+      "경기도"
+    ],
     "focus": "시·군·구 단위 주민공람 탐색",
     "defaultZoom": 9,
     "districts": [
-      { "sigungu": "고양시 덕양구", "aliases": ["고양", "덕양", "고양시 덕양구"] },
-      { "sigungu": "구리시", "aliases": ["구리", "구리시"] },
-      { "sigungu": "남양주시", "aliases": ["남양주", "남양주시"] },
-      { "sigungu": "부천시", "aliases": ["부천", "부천시"] },
-      { "sigungu": "성남시 수정구", "aliases": ["성남", "수정", "성남시 수정구"] },
-      { "sigungu": "수원시 권선구", "aliases": ["수원 권선", "권선", "수원시 권선구"] },
-      { "sigungu": "수원시 영통구", "aliases": ["수원 영통", "영통", "수원시 영통구"] },
-      { "sigungu": "안양시 동안구", "aliases": ["안양", "동안", "안양시 동안구"] },
-      { "sigungu": "화성시", "aliases": ["화성", "화성시"] }
+      {
+        "sigungu": "고양시 덕양구",
+        "adminCode": "41281",
+        "aliases": [
+          "고양",
+          "덕양",
+          "고양시 덕양구"
+        ],
+        "center": {
+          "lat": 37.6375,
+          "lng": 126.8329
+        }
+      },
+      {
+        "sigungu": "구리시",
+        "adminCode": "41310",
+        "aliases": [
+          "구리",
+          "구리시"
+        ],
+        "center": {
+          "lat": 37.5943,
+          "lng": 127.1296
+        }
+      },
+      {
+        "sigungu": "남양주시",
+        "adminCode": "41360",
+        "aliases": [
+          "남양주",
+          "남양주시"
+        ],
+        "center": {
+          "lat": 37.636,
+          "lng": 127.2165
+        }
+      },
+      {
+        "sigungu": "부천시",
+        "adminCode": "41190",
+        "aliases": [
+          "부천",
+          "부천시"
+        ],
+        "center": {
+          "lat": 37.5034,
+          "lng": 126.766
+        }
+      },
+      {
+        "sigungu": "성남시 수정구",
+        "adminCode": "41131",
+        "aliases": [
+          "성남 수정",
+          "수정구",
+          "성남시 수정구"
+        ],
+        "center": {
+          "lat": 37.4494,
+          "lng": 127.1459
+        }
+      },
+      {
+        "sigungu": "수원시 권선구",
+        "adminCode": "41113",
+        "aliases": [
+          "수원 권선",
+          "권선구",
+          "수원시 권선구"
+        ],
+        "center": {
+          "lat": 37.2577,
+          "lng": 126.9707
+        }
+      },
+      {
+        "sigungu": "수원시 영통구",
+        "adminCode": "41117",
+        "aliases": [
+          "수원 영통",
+          "영통구",
+          "수원시 영통구"
+        ],
+        "center": {
+          "lat": 37.2596,
+          "lng": 127.0465
+        }
+      },
+      {
+        "sigungu": "안양시 동안구",
+        "adminCode": "41173",
+        "aliases": [
+          "안양 동안",
+          "동안구",
+          "안양시 동안구"
+        ],
+        "center": {
+          "lat": 37.3925,
+          "lng": 126.9568
+        }
+      },
+      {
+        "sigungu": "화성시",
+        "adminCode": "41590",
+        "aliases": [
+          "화성",
+          "화성시"
+        ],
+        "center": {
+          "lat": 37.1995,
+          "lng": 126.831
+        }
+      }
+    ]
+  },
+  {
+    "area": "gangwon",
+    "name": "강원특별자치도",
+    "shortName": "강원",
+    "adminCode": "42",
+    "center": {
+      "lat": 37.8228,
+      "lng": 128.1555
+    },
+    "description": "강원특별자치도 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "강원",
+      "강원특별자치도"
+    ],
+    "focus": "시·군 단위 주민공람 탐색",
+    "defaultZoom": 9,
+    "districts": [
+      {
+        "sigungu": "원주시",
+        "adminCode": "42130",
+        "aliases": [
+          "원주",
+          "원주시"
+        ],
+        "center": {
+          "lat": 37.3422,
+          "lng": 127.9202
+        }
+      },
+      {
+        "sigungu": "춘천시",
+        "adminCode": "42110",
+        "aliases": [
+          "춘천",
+          "춘천시"
+        ],
+        "center": {
+          "lat": 37.8813,
+          "lng": 127.7298
+        }
+      }
+    ]
+  },
+  {
+    "area": "chungbuk",
+    "name": "충청북도",
+    "shortName": "충북",
+    "adminCode": "43",
+    "center": {
+      "lat": 36.6358,
+      "lng": 127.4914
+    },
+    "description": "충청북도 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "충북",
+      "충청북도"
+    ],
+    "focus": "시·군 단위 주민공람 탐색",
+    "defaultZoom": 9,
+    "districts": [
+      {
+        "sigungu": "청주시 흥덕구",
+        "adminCode": "43113",
+        "aliases": [
+          "청주 흥덕",
+          "흥덕구",
+          "청주시 흥덕구"
+        ],
+        "center": {
+          "lat": 36.6424,
+          "lng": 127.429
+        }
+      },
+      {
+        "sigungu": "충주시",
+        "adminCode": "43130",
+        "aliases": [
+          "충주",
+          "충주시"
+        ],
+        "center": {
+          "lat": 36.991,
+          "lng": 127.9259
+        }
+      }
+    ]
+  },
+  {
+    "area": "chungnam",
+    "name": "충청남도",
+    "shortName": "충남",
+    "adminCode": "44",
+    "center": {
+      "lat": 36.6588,
+      "lng": 126.6728
+    },
+    "description": "충청남도 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "충남",
+      "충청남도"
+    ],
+    "focus": "시·군 단위 주민공람 탐색",
+    "defaultZoom": 9,
+    "districts": [
+      {
+        "sigungu": "아산시",
+        "adminCode": "44200",
+        "aliases": [
+          "아산",
+          "아산시"
+        ],
+        "center": {
+          "lat": 36.7899,
+          "lng": 127.0025
+        }
+      },
+      {
+        "sigungu": "천안시 서북구",
+        "adminCode": "44133",
+        "aliases": [
+          "천안 서북",
+          "서북구",
+          "천안시 서북구"
+        ],
+        "center": {
+          "lat": 36.8151,
+          "lng": 127.1139
+        }
+      }
+    ]
+  },
+  {
+    "area": "jeonbuk",
+    "name": "전북특별자치도",
+    "shortName": "전북",
+    "adminCode": "45",
+    "center": {
+      "lat": 35.8201,
+      "lng": 127.1089
+    },
+    "description": "전북특별자치도 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "전북",
+      "전북특별자치도"
+    ],
+    "focus": "시·군 단위 주민공람 탐색",
+    "defaultZoom": 9,
+    "districts": [
+      {
+        "sigungu": "익산시",
+        "adminCode": "45140",
+        "aliases": [
+          "익산",
+          "익산시"
+        ],
+        "center": {
+          "lat": 35.9483,
+          "lng": 126.9577
+        }
+      },
+      {
+        "sigungu": "전주시 완산구",
+        "adminCode": "45111",
+        "aliases": [
+          "전주 완산",
+          "완산구",
+          "전주시 완산구"
+        ],
+        "center": {
+          "lat": 35.8242,
+          "lng": 127.146
+        }
+      }
+    ]
+  },
+  {
+    "area": "jeonnam",
+    "name": "전라남도",
+    "shortName": "전남",
+    "adminCode": "46",
+    "center": {
+      "lat": 34.8161,
+      "lng": 126.463
+    },
+    "description": "전라남도 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "전남",
+      "전라남도"
+    ],
+    "focus": "시·군 단위 주민공람 탐색",
+    "defaultZoom": 9,
+    "districts": [
+      {
+        "sigungu": "목포시",
+        "adminCode": "46110",
+        "aliases": [
+          "목포",
+          "목포시"
+        ],
+        "center": {
+          "lat": 34.8118,
+          "lng": 126.3922
+        }
+      },
+      {
+        "sigungu": "순천시",
+        "adminCode": "46150",
+        "aliases": [
+          "순천",
+          "순천시"
+        ],
+        "center": {
+          "lat": 34.9507,
+          "lng": 127.4875
+        }
+      }
+    ]
+  },
+  {
+    "area": "gyeongbuk",
+    "name": "경상북도",
+    "shortName": "경북",
+    "adminCode": "47",
+    "center": {
+      "lat": 36.4919,
+      "lng": 128.8889
+    },
+    "description": "경상북도 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "경북",
+      "경상북도"
+    ],
+    "focus": "시·군 단위 주민공람 탐색",
+    "defaultZoom": 9,
+    "districts": [
+      {
+        "sigungu": "구미시",
+        "adminCode": "47190",
+        "aliases": [
+          "구미",
+          "구미시"
+        ],
+        "center": {
+          "lat": 36.1195,
+          "lng": 128.3446
+        }
+      },
+      {
+        "sigungu": "포항시 남구",
+        "adminCode": "47111",
+        "aliases": [
+          "포항 남구",
+          "포항시 남구"
+        ],
+        "center": {
+          "lat": 36.019,
+          "lng": 129.3435
+        }
+      }
+    ]
+  },
+  {
+    "area": "gyeongnam",
+    "name": "경상남도",
+    "shortName": "경남",
+    "adminCode": "48",
+    "center": {
+      "lat": 35.4606,
+      "lng": 128.2132
+    },
+    "description": "경상남도 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "경남",
+      "경상남도"
+    ],
+    "focus": "시·군 단위 주민공람 탐색",
+    "defaultZoom": 9,
+    "districts": [
+      {
+        "sigungu": "김해시",
+        "adminCode": "48250",
+        "aliases": [
+          "김해",
+          "김해시"
+        ],
+        "center": {
+          "lat": 35.2281,
+          "lng": 128.8894
+        }
+      },
+      {
+        "sigungu": "창원시 성산구",
+        "adminCode": "48123",
+        "aliases": [
+          "창원 성산",
+          "창원시 성산구"
+        ],
+        "center": {
+          "lat": 35.1984,
+          "lng": 128.7028
+        }
+      }
+    ]
+  },
+  {
+    "area": "jeju",
+    "name": "제주특별자치도",
+    "shortName": "제주",
+    "adminCode": "50",
+    "center": {
+      "lat": 33.4996,
+      "lng": 126.5312
+    },
+    "description": "제주특별자치도 시군구 기준으로 진행 중인 주민공람공고를 확인할 수 있습니다.",
+    "aliases": [
+      "제주",
+      "제주특별자치도"
+    ],
+    "focus": "시 단위 주민공람 탐색",
+    "defaultZoom": 10,
+    "districts": [
+      {
+        "sigungu": "서귀포시",
+        "adminCode": "50130",
+        "aliases": [
+          "서귀포",
+          "서귀포시"
+        ],
+        "center": {
+          "lat": 33.2541,
+          "lng": 126.56
+        }
+      },
+      {
+        "sigungu": "제주시",
+        "adminCode": "50110",
+        "aliases": [
+          "제주 시내",
+          "제주시"
+        ],
+        "center": {
+          "lat": 33.4996,
+          "lng": 126.5312
+        }
+      }
     ]
   }
 ]

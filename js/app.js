@@ -1,7 +1,14 @@
 import { getDistrictNotices, haversineKm, normalizeRegionText } from './filters.js';
 import { buildDistrictIndex, findDistrictByName, getCurrentPosition, reverseGeocodeDistrict } from './location.js';
 import { loadNotices, loadRegions } from './notices.js';
-import { loadPreferredRegion, savePreferredRegion } from './storage.js';
+import {
+  loadFavoriteRegions,
+  loadPreferredRegion,
+  loadRecentRegions,
+  savePreferredRegion,
+  toggleFavoriteRegion,
+} from './storage.js';
+import { getRegionHref } from './regions.js';
 
 const INITIAL_VISIBLE_COUNT = 5;
 
@@ -28,7 +35,13 @@ function setUpdatedTime() {
 }
 
 function getRegionLabel(region) {
-  return region ? `${region.sido} ${region.sigungu}` : '선택된 지역 없음';
+  if (!region) return '선택된 지역 없음';
+  return region.sigungu === region.sido ? region.sido : `${region.sido} ${region.sigungu}`;
+}
+
+function getNoticeRegionLabel(notice) {
+  const base = notice.sigungu === notice.sido ? notice.sido : `${notice.sido} ${notice.sigungu}`;
+  return `${base} ${notice.legalDong || ''}`.trim();
 }
 
 function setLocationFeedback({
@@ -66,7 +79,7 @@ function populateSigunguOptions(sido) {
 
   select.innerHTML = options.length
     ? options.map((sigungu) => `<option value="${sigungu}">${sigungu}</option>`).join('')
-    : '<option value="">선택 가능한 지역이 없습니다.</option>';
+    : '<option value="">선택 가능한 시군구가 없습니다.</option>';
 }
 
 function syncSelectorWithRegion(region) {
@@ -80,7 +93,7 @@ function syncSelectorWithRegion(region) {
 }
 
 function buildNoticeCard(notice) {
-  const officialLabel = notice.hearingType === '인터넷 주민의견청취' ? '공식 제출처' : '원문 공고';
+  const officialLabel = notice.hearingType === '인터넷 주민의견청취' ? '원문·제출처 확인' : '원문 공고';
   const signalMarkup = (notice.signalBadges || [])
     .slice(0, 4)
     .map((badge) => `<span class="signal-badge ${badge.tone}">${badge.label}</span>`)
@@ -99,10 +112,10 @@ function buildNoticeCard(notice) {
       <h4><a href="notice.html?id=${encodeURIComponent(notice.id)}">${notice.title}</a></h4>
       <p class="notice-summary">${notice.easySummary}</p>
       <dl class="notice-facts">
-        <div><dt>지역</dt><dd>${notice.sido} ${notice.sigungu} ${notice.legalDong}</dd></div>
-        <div><dt>공고기관</dt><dd>${notice.organization}</dd></div>
+        <div><dt>지역</dt><dd>${getNoticeRegionLabel(notice)}</dd></div>
+        <div><dt>기관</dt><dd>${notice.organization}</dd></div>
         <div><dt>열람기간</dt><dd>${notice.hearingStartDateText} - ${notice.hearingEndDateText}</dd></div>
-        <div><dt>의견 제출</dt><dd>${notice.submissionMethod}</dd></div>
+        <div><dt>제출 여부</dt><dd>${notice.onlineSubmissionMeta.label}</dd></div>
       </dl>
       <div class="notice-card-footer button-row compact-actions">
         <a class="resource-link" href="notice.html?id=${encodeURIComponent(notice.id)}">상세보기</a>
@@ -140,7 +153,6 @@ function getCurrentRegionNotices(filterKey = 'active') {
 
 function getAdjacentRegionNotices() {
   if (!state.selectedRegion) return [];
-
   const current = state.districts.find((district) =>
     normalizeRegionText(district.sido) === normalizeRegionText(state.selectedRegion.sido) &&
     normalizeRegionText(district.sigungu) === normalizeRegionText(state.selectedRegion.sigungu)
@@ -148,7 +160,7 @@ function getAdjacentRegionNotices() {
 
   const nearbyDistricts = state.districts
     .filter((district) =>
-      normalizeRegionText(district.sido) === normalizeRegionText(state.selectedRegion.sido) &&
+      normalizeRegionText(district.sido) !== normalizeRegionText(state.selectedRegion.sido) ||
       normalizeRegionText(district.sigungu) !== normalizeRegionText(state.selectedRegion.sigungu)
     )
     .map((district) => ({
@@ -162,12 +174,63 @@ function getAdjacentRegionNotices() {
     .slice(0, 6);
 }
 
+function renderSavedRegions() {
+  const container = document.getElementById('saved-region-list');
+  if (!container) return;
+
+  const recent = loadRecentRegions().slice(0, 3);
+  const favorites = loadFavoriteRegions().slice(0, 3);
+  const merged = [...favorites, ...recent.filter((item) => !favorites.some((fav) => fav.sido === item.sido && fav.sigungu === item.sigungu))];
+
+  if (!merged.length) {
+    container.innerHTML = '<span class="subtle-label">최근 본 지역과 관심지역이 아직 없습니다.</span>';
+    return;
+  }
+
+  container.innerHTML = merged
+    .map((region) => `
+      <button class="tag-button" type="button" data-region-chip="${region.sido}::${region.sigungu}">
+        ${getRegionLabel(region)}
+      </button>
+    `)
+    .join('');
+}
+
+function syncRegionLinks() {
+  const hubLink = document.getElementById('selected-region-hub');
+  const favoriteButton = document.getElementById('save-favorite-region');
+
+  if (hubLink) {
+    if (state.selectedRegion) {
+      hubLink.hidden = false;
+      hubLink.href = getRegionHref({
+        scope: 'sigungu',
+        sido: state.selectedRegion.sido,
+        sigungu: state.selectedRegion.sigungu,
+      });
+    } else {
+      hubLink.hidden = true;
+    }
+  }
+
+  if (favoriteButton) {
+    if (!state.selectedRegion) {
+      favoriteButton.hidden = true;
+      return;
+    }
+    const favorites = loadFavoriteRegions();
+    const isSaved = favorites.some((item) => item.sido === state.selectedRegion.sido && item.sigungu === state.selectedRegion.sigungu);
+    favoriteButton.hidden = false;
+    favoriteButton.textContent = isSaved ? '관심지역 해제' : '관심지역 저장';
+  }
+}
+
 function renderEmptyState(region) {
   return `
     <div class="empty-state">
       <p>현재 ${region.sigungu}에서 확인된 진행 중 주민공람공고가 없습니다.</p>
       <div class="button-row compact-actions">
-        <button class="ghost-button" type="button" data-empty-action="nearby">인접 지역 보기</button>
+        <button class="ghost-button" type="button" data-empty-action="nearby">인접 시군구 보기</button>
         <button class="ghost-button" type="button" data-empty-action="ended">최근 종료 공고 보기</button>
         <button class="ghost-button" type="button" data-empty-action="picker">다른 지역 선택</button>
       </div>
@@ -182,10 +245,12 @@ function renderNoticeList() {
   if (!container || !summary || !actions) return;
 
   hideSecondaryResults();
+  syncRegionLinks();
+  renderSavedRegions();
 
   if (!state.selectedRegion) {
-    summary.textContent = '현재 위치를 확인하거나 지역을 직접 선택하면 해당 자치구의 진행 중 공고를 보여줍니다.';
-    container.innerHTML = '<div class="loading-state">위치 확인 또는 지역 선택 후 내 지역 공고를 확인하세요.</div>';
+    summary.textContent = '현재 위치를 확인하거나 시도와 시군구를 직접 선택하면 해당 지역의 진행 중 공고를 먼저 보여줍니다.';
+    container.innerHTML = '<div class="loading-state">위치 확인 또는 지역 선택 후 내 시군구 공고를 확인하세요.</div>';
     actions.hidden = true;
     return;
   }
@@ -220,7 +285,8 @@ function applyRegion(region, sourceLabel, legalDong = '') {
   state.selectedRegion = {
     sido: region.sido,
     sigungu: region.sigungu,
-    fullName: region.fullName || `${region.sido} ${region.sigungu}`,
+    adminCode: region.adminCode || '',
+    fullName: region.fullName || getRegionLabel(region),
   };
   state.selectedLegalDong = legalDong;
   state.visibleCount = INITIAL_VISIBLE_COUNT;
@@ -233,11 +299,11 @@ function applyRegion(region, sourceLabel, legalDong = '') {
     ? (legalDong
       ? `현재 위치: ${state.selectedRegion.sido} ${state.selectedRegion.sigungu} ${legalDong}`
       : `현재 위치: ${state.selectedRegion.sido} ${state.selectedRegion.sigungu}`)
-    : `선택 지역: ${state.selectedRegion.sido} ${state.selectedRegion.sigungu}`;
+    : `선택 지역: ${getRegionLabel(state.selectedRegion)}`;
 
   setLocationFeedback({
     helper,
-    status: `${state.selectedRegion.sigungu} 진행 중 공고를 먼저 보여줍니다.`,
+    status: `${state.selectedRegion.sigungu} 기준으로 진행 중 공고를 먼저 보여줍니다.`,
     resolution: sourceLabel,
     selectedLabel: `선택 지역: ${getRegionLabel(state.selectedRegion)}`,
   });
@@ -246,7 +312,7 @@ function applyRegion(region, sourceLabel, legalDong = '') {
 async function handleDetectLocation() {
   setLocationFeedback({
     helper: '현재 위치를 확인하는 중입니다.',
-    status: '브라우저 위치 권한을 허용하면 해당 자치구를 식별합니다.',
+    status: '브라우저 위치 권한을 허용하면 전국 시군구 중 현재 지역을 식별합니다.',
     resolution: 'GPS 확인 중',
     selectedLabel: state.selectedRegion ? `선택 지역: ${getRegionLabel(state.selectedRegion)}` : '선택된 지역 없음',
   });
@@ -259,9 +325,7 @@ async function handleDetectLocation() {
     };
     const matched = await reverseGeocodeDistrict(coords, state.districts);
 
-    if (!matched?.region) {
-      throw new Error('지역을 식별하지 못했습니다.');
-    }
+    if (!matched?.region) throw new Error('지역을 식별하지 못했습니다.');
 
     const sourceLabel = matched.matchSource === 'nearest-district'
       ? 'GPS -> 가까운 행정구역으로 추정'
@@ -284,6 +348,8 @@ function bindHeroActions() {
   const toggleButton = document.getElementById('toggle-region-picker');
   const loadMoreButton = document.getElementById('load-more-notices');
   const savedButton = document.getElementById('use-saved-region');
+  const favoriteButton = document.getElementById('save-favorite-region');
+  const savedRegionList = document.getElementById('saved-region-list');
 
   detectButton?.addEventListener('click', handleDetectLocation);
 
@@ -310,6 +376,23 @@ function bindHeroActions() {
 
     applyRegion(saved, '최근 본 지역 불러오기');
   });
+
+  favoriteButton?.addEventListener('click', () => {
+    if (!state.selectedRegion) return;
+    toggleFavoriteRegion(state.selectedRegion);
+    syncRegionLinks();
+    renderSavedRegions();
+  });
+
+  savedRegionList?.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const token = target.getAttribute('data-region-chip');
+    if (!token) return;
+    const [sido, sigungu] = token.split('::');
+    const matched = findDistrictByName(state.districts, sido, sigungu);
+    if (matched) applyRegion(matched, '저장한 지역 불러오기');
+  });
 }
 
 function bindRegionForm() {
@@ -331,7 +414,7 @@ function bindRegionForm() {
     const matched = findDistrictByName(state.districts, sido, sigungu) || {
       sido,
       sigungu,
-      fullName: `${sido} ${sigungu}`,
+      fullName: sigungu === sido ? sido : `${sido} ${sigungu}`,
     };
 
     applyRegion(matched, '직접 선택한 지역');
@@ -363,8 +446,8 @@ function bindRegionForm() {
     if (action === 'nearby') {
       const nearby = getAdjacentRegionNotices();
       renderSecondaryResults(
-        '인접 지역 진행 중 공고',
-        `${state.selectedRegion.sido} 안에서 가까운 다른 자치구 공고를 보여줍니다.`,
+        '인접 시군구 진행 중 공고',
+        `${state.selectedRegion.sido} 안팎에서 가까운 다른 지역 공고를 보여줍니다.`,
         nearby,
         '표시할 인접 지역 공고가 없습니다.'
       );

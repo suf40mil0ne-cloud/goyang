@@ -1,0 +1,206 @@
+[
+  {
+    "sido": "서울특별시",
+    "shortName": "서울",
+    "area": "seoul",
+    "adminCode": "11",
+    "centerLat": 37.5665,
+    "centerLng": 126.978,
+    "aliases": [
+      "서울",
+      "서울특별시"
+    ]
+  },
+  {
+    "sido": "부산광역시",
+    "shortName": "부산",
+    "area": "busan",
+    "adminCode": "26",
+    "centerLat": 35.1796,
+    "centerLng": 129.0756,
+    "aliases": [
+      "부산",
+      "부산광역시"
+    ]
+  },
+  {
+    "sido": "대구광역시",
+    "shortName": "대구",
+    "area": "daegu",
+    "adminCode": "27",
+    "centerLat": 35.8714,
+    "centerLng": 128.6014,
+    "aliases": [
+      "대구",
+      "대구광역시"
+    ]
+  },
+  {
+    "sido": "인천광역시",
+    "shortName": "인천",
+    "area": "incheon",
+    "adminCode": "28",
+    "centerLat": 37.4563,
+    "centerLng": 126.7052,
+    "aliases": [
+      "인천",
+      "인천광역시"
+    ]
+  },
+  {
+    "sido": "광주광역시",
+    "shortName": "광주",
+    "area": "gwangju",
+    "adminCode": "29",
+    "centerLat": 35.1595,
+    "centerLng": 126.8526,
+    "aliases": [
+      "광주",
+      "광주광역시"
+    ]
+  },
+  {
+    "sido": "대전광역시",
+    "shortName": "대전",
+    "area": "daejeon",
+    "adminCode": "30",
+    "centerLat": 36.3504,
+    "centerLng": 127.3845,
+    "aliases": [
+      "대전",
+      "대전광역시"
+    ]
+  },
+  {
+    "sido": "울산광역시",
+    "shortName": "울산",
+    "area": "ulsan",
+    "adminCode": "31",
+    "centerLat": 35.5384,
+    "centerLng": 129.3114,
+    "aliases": [
+      "울산",
+      "울산광역시"
+    ]
+  },
+  {
+    "sido": "세종특별자치시",
+    "shortName": "세종",
+    "area": "sejong",
+    "adminCode": "36",
+    "centerLat": 36.48,
+    "centerLng": 127.289,
+    "aliases": [
+      "세종",
+      "세종특별자치시"
+    ]
+  },
+  {
+    "sido": "경기도",
+    "shortName": "경기",
+    "area": "gyeonggi",
+    "adminCode": "41",
+    "centerLat": 37.4138,
+    "centerLng": 127.5183,
+    "aliases": [
+      "경기",
+      "경기도"
+    ]
+  },
+  {
+    "sido": "강원특별자치도",
+    "shortName": "강원",
+    "area": "gangwon",
+    "adminCode": "42",
+    "centerLat": 37.8228,
+    "centerLng": 128.1555,
+    "aliases": [
+      "강원",
+      "강원특별자치도"
+    ]
+  },
+  {
+    "sido": "충청북도",
+    "shortName": "충북",
+    "area": "chungbuk",
+    "adminCode": "43",
+    "centerLat": 36.6358,
+    "centerLng": 127.4914,
+    "aliases": [
+      "충북",
+      "충청북도"
+    ]
+  },
+  {
+    "sido": "충청남도",
+    "shortName": "충남",
+    "area": "chungnam",
+    "adminCode": "44",
+    "centerLat": 36.6588,
+    "centerLng": 126.6728,
+    "aliases": [
+      "충남",
+      "충청남도"
+    ]
+  },
+  {
+    "sido": "전북특별자치도",
+    "shortName": "전북",
+    "area": "jeonbuk",
+    "adminCode": "45",
+    "centerLat": 35.8201,
+    "centerLng": 127.1089,
+    "aliases": [
+      "전북",
+      "전북특별자치도"
+    ]
+  },
+  {
+    "sido": "전라남도",
+    "shortName": "전남",
+    "area": "jeonnam",
+    "adminCode": "46",
+    "centerLat": 34.8161,
+    "centerLng": 126.463,
+    "aliases": [
+      "전남",
+      "전라남도"
+    ]
+  },
+  {
+    "sido": "경상북도",
+    "shortName": "경북",
+    "area": "gyeongbuk",
+    "adminCode": "47",
+    "centerLat": 36.4919,
+    "centerLng": 128.8889,
+    "aliases": [
+      "경북",
+      "경상북도"
+    ]
+  },
+  {
+    "sido": "경상남도",
+    "shortName": "경남",
+    "area": "gyeongnam",
+    "adminCode": "48",
+    "centerLat": 35.4606,
+    "centerLng": 128.2132,
+    "aliases": [
+      "경남",
+      "경상남도"
+    ]
+  },
+  {
+    "sido": "제주특별자치도",
+    "shortName": "제주",
+    "area": "jeju",
+    "adminCode": "50",
+    "centerLat": 33.4996,
+    "centerLng": 126.5312,
+    "aliases": [
+      "제주",
+      "제주특별자치도"
+    ]
+  }
+]

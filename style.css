@@ -1589,3 +1589,77 @@ button {
     padding: var(--space-4);
   }
 }
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(22, 40, 72, 0.12);
+  background: #fff;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.tag-button:hover,
+.tag-button.is-active {
+  border-color: rgba(21, 82, 185, 0.24);
+  background: rgba(21, 82, 185, 0.08);
+  color: #0f3d8a;
+}
+
+.region-link-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.region-link-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(18, 33, 58, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 44px rgba(17, 30, 54, 0.06);
+  text-decoration: none;
+  color: inherit;
+}
+
+.region-link-card strong {
+  font-size: 1rem;
+}
+
+.region-link-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.region-link-card span {
+  color: #0f3d8a;
+  font-weight: 700;
+}
+
+.signal-badge.submission-available {
+  background: rgba(29, 122, 67, 0.12);
+  color: #1d7a43;
+}
+
+.signal-badge.submission-check {
+  background: rgba(162, 108, 8, 0.12);
+  color: #855b03;
+}

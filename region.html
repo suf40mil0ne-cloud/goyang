@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
   <title>지역 허브 | 주민공람 레이더</title>
-  <meta name="description" content="서울, 인천, 경기 지역별 주민공람공고와 자주 나오는 유형, 지역별 체크포인트를 확인하세요." />
+  <meta name="description" content="전국, 시도, 시군구 단위로 진행 중인 주민공람공고를 정리해 보여주는 지역 허브입니다." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://goyang.pages.dev/region.html" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
@@ -18,66 +18,67 @@
     <div class="brand">
       <span class="brand-mark">JR</span>
       <div>
-        <p class="brand-sub">Urban Planning Desk</p>
+        <p class="brand-sub">내 주변 진행 중인 주민공람공고 찾기</p>
         <h1>주민공람 레이더</h1>
       </div>
     </div>
     <nav class="main-nav" aria-label="주요 메뉴">
       <a href="index.html">홈</a>
-      <a href="map.html">지도 보기</a>
-      <a href="region.html?area=seoul" aria-current="page">지역 허브</a>
-      <a href="pages/public-hearing-guide.html">제도 안내</a>
-      <a href="pages/how-to-submit.html">의견 제출 안내</a>
-      <a href="pages/how-to-read-notice.html">공고문 읽는 법</a>
-      <a href="pages/sources.html">데이터 출처</a>
+      <a href="pages/about.html">서비스 소개</a>
       <a href="pages/contact.html">문의</a>
     </nav>
   </header>
 
   <main class="page-shell">
     <section class="hero page-hero">
-      <div class="breadcrumbs">
-        <a href="index.html">홈</a>
-        <span>/</span>
-        <span>지역 허브</span>
-      </div>
-      <div id="region-links" class="project-tabs"></div>
+      <div id="region-breadcrumbs" class="breadcrumbs"></div>
+      <div id="region-scope-links" class="chip-row"></div>
       <h2 id="region-title">지역 허브</h2>
-      <p id="region-summary">지역별 최근 공고와 자주 나오는 유형, 주민이 먼저 확인할 질문을 함께 보여줍니다.</p>
+      <p id="region-summary">전국, 시도, 시군구 기준으로 진행 중 공고와 마감 임박 공고를 정리합니다.</p>
       <div class="hero-meta">
         <span id="region-count">등록 공고 0건</span>
-        <span>시군구별 허브 확장 전 단계</span>
+        <span id="region-submeta">전국 지역 허브 준비 중</span>
       </div>
     </section>
 
     <section class="page-card">
-      <h2>지역 핵심 지표</h2>
+      <div class="panel-head panel-head-stack">
+        <h2>상태 요약</h2>
+        <span id="region-guide-copy">마감 임박 공고와 온라인 제출 가능 여부를 먼저 확인하세요.</span>
+      </div>
       <div id="region-stats" class="metrics-grid"></div>
     </section>
 
-    <section class="page-two-col">
-      <section class="page-card">
-        <h2>지역 지도</h2>
-        <div id="region-map" class="map" role="img" aria-label="지역별 주민공람공고 지도"></div>
-        <p class="map-note">지역 허브는 시도 기준 진입 페이지이며, 실제 생활권과 거리는 상세 페이지에서 다시 확인해야 합니다.</p>
-      </section>
-      <section class="page-card">
-        <h2>이 지역에서 자주 보는 질문</h2>
-        <div id="region-faq" class="faq-grid"></div>
-      </section>
-    </section>
-
     <section class="page-card">
-      <div class="panel-head">
-        <h2>자주 나오는 유형</h2>
-        <span>지역마다 반복되는 계획 유형이 다릅니다.</span>
+      <div class="panel-head panel-head-stack">
+        <h2 id="region-entry-title">지역 진입</h2>
+        <span id="region-entry-summary">다음 단계 지역으로 이동해 해당 범위의 공고를 볼 수 있습니다.</span>
       </div>
-      <div id="region-types" class="card-grid"></div>
+      <div id="region-entry-list" class="region-link-grid"></div>
     </section>
 
     <section class="page-card">
-      <h2>지역 공고 목록</h2>
-      <div id="region-notices" class="notice-grid"></div>
+      <div class="panel-head panel-head-stack">
+        <h2 id="active-list-title">진행 중 공고</h2>
+        <span id="active-list-summary">현재 범위에서 진행 중 또는 마감 임박 공고를 우선 보여줍니다.</span>
+      </div>
+      <div id="region-active-notices" class="stack-list"></div>
+    </section>
+
+    <section class="page-card">
+      <div class="panel-head panel-head-stack">
+        <h2 id="ended-list-title">최근 종료 공고</h2>
+        <span id="ended-list-summary">후속 고시나 결정고시를 추적할 때 참고할 수 있습니다.</span>
+      </div>
+      <div id="region-ended-notices" class="stack-list"></div>
+    </section>
+
+    <section class="page-card">
+      <div class="panel-head panel-head-stack">
+        <h2>이 지역에서 보는 방법</h2>
+        <span>공고 확인과 실제 제출은 다를 수 있으므로 원문 공고문을 함께 확인해야 합니다.</span>
+      </div>
+      <div id="region-body-copy" class="detail-stack"></div>
     </section>
   </main>
 
