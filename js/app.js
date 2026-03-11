@@ -81,23 +81,30 @@ function syncSelectorWithRegion(region) {
 
 function buildNoticeCard(notice) {
   const officialLabel = notice.hearingType === '인터넷 주민의견청취' ? '공식 제출처' : '원문 공고';
+  const signalMarkup = (notice.signalBadges || [])
+    .slice(0, 4)
+    .map((badge) => `<span class="signal-badge ${badge.tone}">${badge.label}</span>`)
+    .join('');
 
   return `
-    <article class="notice-card">
-      <div class="resource-meta">
-        <span class="status-badge ${notice.statusKey}">${notice.statusLabel}</span>
-        <span class="badge">${notice.sigungu}</span>
-        <span class="badge">${notice.organization}</span>
+    <article class="notice-card notice-card-rich">
+      <div class="notice-card-head">
+        <div class="resource-meta">
+          <span class="status-badge ${notice.statusKey}">${notice.statusBadgeText}</span>
+          <span class="badge">${notice.sigungu}</span>
+        </div>
+        <span class="subtle-label">${notice.matchingConfidenceMeta.label}</span>
       </div>
+      ${signalMarkup ? `<div class="signal-row">${signalMarkup}</div>` : ''}
       <h4><a href="notice.html?id=${encodeURIComponent(notice.id)}">${notice.title}</a></h4>
-      <p>${notice.shortSummary}</p>
-      <ul class="notice-meta-list">
-        <li>지역: ${notice.sido} ${notice.sigungu} ${notice.legalDong}</li>
-        <li>공고기관: ${notice.organization}</li>
-        <li>열람기간: ${notice.hearingStartDateText} - ${notice.hearingEndDateText}</li>
-        <li>의견 제출: ${notice.submissionMethod}</li>
-      </ul>
-      <div class="button-row compact-actions">
+      <p class="notice-summary">${notice.easySummary}</p>
+      <dl class="notice-facts">
+        <div><dt>지역</dt><dd>${notice.sido} ${notice.sigungu} ${notice.legalDong}</dd></div>
+        <div><dt>공고기관</dt><dd>${notice.organization}</dd></div>
+        <div><dt>열람기간</dt><dd>${notice.hearingStartDateText} - ${notice.hearingEndDateText}</dd></div>
+        <div><dt>의견 제출</dt><dd>${notice.submissionMethod}</dd></div>
+      </dl>
+      <div class="notice-card-footer button-row compact-actions">
         <a class="resource-link" href="notice.html?id=${encodeURIComponent(notice.id)}">상세보기</a>
         <a class="resource-link" href="${notice.sourceUrl}" target="_blank" rel="noopener noreferrer">${officialLabel}</a>
       </div>
@@ -178,7 +185,7 @@ function renderNoticeList() {
 
   if (!state.selectedRegion) {
     summary.textContent = '현재 위치를 확인하거나 지역을 직접 선택하면 해당 자치구의 진행 중 공고를 보여줍니다.';
-    container.innerHTML = '<div class="empty-state">위치 확인 또는 지역 선택 후 내 지역 공고를 확인하세요.</div>';
+    container.innerHTML = '<div class="loading-state">위치 확인 또는 지역 선택 후 내 지역 공고를 확인하세요.</div>';
     actions.hidden = true;
     return;
   }

@@ -1,7 +1,10 @@
 import { getLocationConfidenceMeta, normalizeLocationConfidence } from './geocode.js';
+import { getMatchingConfidenceMeta, getNoticeSignalBadges, getSourceCoverage, mergeNoticeConnections } from './links.js';
 import { getSourceMeta } from './sources.js';
+import { getStatusBadgeText, inferStatus, statusLabels } from './status.js';
 
 const noticesUrl = new URL('../data/notices.json', import.meta.url);
+const noticeLinksUrl = new URL('../data/notice-links.json', import.meta.url);
 const regionsUrl = new URL('../data/regions.json', import.meta.url);
 const guidesUrl = new URL('../data/guides.json', import.meta.url);
 const relatedGosiUrl = new URL('../data/related-gosi.json', import.meta.url);
@@ -15,13 +18,6 @@ const areaMap = {
   서울특별시: 'seoul',
   인천광역시: 'incheon',
   경기도: 'gyeonggi',
-};
-
-const statusLabels = {
-  active: '진행 중',
-  'closing-soon': '마감 임박',
-  ended: '종료 공고',
-  recent: '최근 공고',
 };
 
 function asDate(value) {
@@ -57,35 +53,20 @@ function getEasySummary(notice) {
   return splitAiSummary(notice.aiSummary)[0] || '';
 }
 
-function inferStatus(notice, now = new Date()) {
-  const today = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
-  const endDate = asDate(notice.hearingEndDate);
-  const startDate = asDate(notice.hearingStartDate);
-  const daysLeft = daysBetween(today, endDate);
-  const recentDays = Math.max(0, daysBetween(asDate(notice.postedDate), today));
-
-  if (endDate < today) {
-    return { key: 'ended', label: statusLabels.ended, daysLeft, isRecent: recentDays <= 10 };
-  }
-  if (daysLeft <= 3) {
-    return { key: 'closing-soon', label: statusLabels['closing-soon'], daysLeft, isRecent: recentDays <= 10 };
-  }
-  if (today >= startDate) {
-    return { key: 'active', label: statusLabels.active, daysLeft, isRecent: recentDays <= 10 };
-  }
-  return { key: 'active', label: statusLabels.active, daysLeft, isRecent: recentDays <= 10 };
-}
-
-function decorateNotice(notice) {
+function decorateNotice(notice, relatedGosi, noticeLinks) {
   const statusInfo = inferStatus(notice);
   const areaKey = areaMap[notice.sido] || 'gyeonggi';
   const normalizedConfidence = normalizeLocationConfidence(notice);
   const sourceMeta = getSourceMeta(notice.sourceType);
+  const enrichment = mergeNoticeConnections(notice, noticeLinks?.[notice.id], relatedGosi);
+  const locationConfidenceMeta = getLocationConfidenceMeta(normalizedConfidence);
+  const statusBadgeText = getStatusBadgeText(statusInfo.key, statusInfo.daysLeft);
   return {
     ...notice,
     areaKey,
     sourceMeta,
     easySummary: getEasySummary(notice),
+    ...enrichment,
     statusKey: statusInfo.key,
     statusLabel: statusInfo.label,
     daysLeft: statusInfo.daysLeft,
@@ -103,9 +84,19 @@ function decorateNotice(notice) {
       timeStyle: 'short',
       timeZone: 'Asia/Seoul',
     }).format(new Date(notice.lastFetchedAt)),
-    statusBadgeText: statusInfo.key === 'closing-soon' ? `${Math.max(statusInfo.daysLeft, 0)}일 남음` : statusInfo.label,
+    statusBadgeText,
     locationConfidence: normalizedConfidence,
-    locationConfidenceMeta: getLocationConfidenceMeta(normalizedConfidence),
+    locationConfidenceMeta,
+    matchingConfidenceMeta: getMatchingConfidenceMeta(enrichment.matchingConfidence),
+    signalBadges: getNoticeSignalBadges({
+      ...notice,
+      ...enrichment,
+      locationConfidenceMeta,
+    }),
+    sourceCoverage: getSourceCoverage({
+      ...notice,
+      ...enrichment,
+    }),
     aiSummaryLines: splitAiSummary(notice.aiSummary),
     changeSummary: notice.shortSummary,
   };
@@ -118,7 +109,16 @@ async function fetchJson(url) {
 }
 
 export async function loadNotices() {
-  if (!noticesCache) noticesCache = fetchJson(noticesUrl).then((items) => items.map(decorateNotice));
+  if (!noticesCache) {
+    noticesCache = Promise.all([
+      fetchJson(noticesUrl),
+      fetchJson(relatedGosiUrl),
+      fetchJson(noticeLinksUrl),
+    ]).then(([items, relatedGosi, noticeLinks]) => {
+      relatedGosiCache = Promise.resolve(relatedGosi);
+      return items.map((item) => decorateNotice(item, relatedGosi, noticeLinks));
+    });
+  }
   return noticesCache;
 }
 

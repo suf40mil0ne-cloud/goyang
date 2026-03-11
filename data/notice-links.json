@@ -1,0 +1,268 @@
+{
+  "gg-2026-001": {
+    "noticeNumber": "고양시 공고 제2026-321호",
+    "normalizedTitle": "창릉천변 도시계획시설 공원 결정안 주민공람",
+    "matchingConfidence": 0.95,
+    "officialNotices": [
+      {
+        "id": "gg-2026-001-official-1",
+        "title": "창릉천변 도시계획시설(공원) 결정(안) 주민공람 고시공고",
+        "organization": "경기도 고양시청",
+        "noticeNumber": "고양시 공고 제2026-321호",
+        "postedDate": "2026-03-03",
+        "url": "https://www.goyang.go.kr/",
+        "sourceSite": "고양시청 고시공고",
+        "matchType": "공고번호+기관",
+        "confidence": 0.96
+      }
+    ],
+    "officialPressReleases": [
+      {
+        "id": "gg-2026-001-press-1",
+        "title": "창릉천변 공원 연결축 정비 관련 설명자료",
+        "organization": "경기도 고양시청",
+        "postedDate": "2026-03-05",
+        "url": "https://www.goyang.go.kr/",
+        "sourceSite": "고양시청 보도자료",
+        "matchType": "기관+사업명",
+        "confidence": 0.84
+      }
+    ],
+    "relatedNews": [
+      {
+        "id": "gg-2026-001-news-1",
+        "title": "고양 창릉천변 공원 계획, 보행 연결이 쟁점",
+        "publisher": "경인일보",
+        "publishedAt": "2026-03-06",
+        "url": "https://www.kyeongin.com/",
+        "snippet": "공원 조성과 보행 동선 정비가 함께 논의되고 있다는 지역 보도입니다.",
+        "relevanceScore": 0.81,
+        "sourceType": "regional-news"
+      }
+    ]
+  },
+  "gg-2026-004": {
+    "noticeNumber": "안양시 공고 제2026-441호",
+    "normalizedTitle": "평촌신도시 지구단위계획 재정비 주민공람",
+    "matchingConfidence": 0.92,
+    "officialNotices": [
+      {
+        "id": "gg-2026-004-official-1",
+        "title": "평촌신도시 지구단위계획 재정비(안) 주민공람 공고",
+        "organization": "경기도 안양시청",
+        "noticeNumber": "안양시 공고 제2026-441호",
+        "postedDate": "2026-03-07",
+        "url": "https://www.anyang.go.kr/",
+        "sourceSite": "안양시청 고시공고",
+        "matchType": "기관+사업명",
+        "confidence": 0.93
+      }
+    ],
+    "officialPressReleases": [
+      {
+        "id": "gg-2026-004-press-1",
+        "title": "평촌신도시 생활권 재정비안 주요 변경점 안내",
+        "organization": "경기도 안양시청",
+        "postedDate": "2026-03-09",
+        "url": "https://www.anyang.go.kr/",
+        "sourceSite": "안양시청 설명자료",
+        "matchType": "기관+사업명",
+        "confidence": 0.82
+      }
+    ],
+    "relatedNews": [
+      {
+        "id": "gg-2026-004-news-1",
+        "title": "평촌신도시 재정비안 공개, 보행·공개공지 관심",
+        "publisher": "경기일보",
+        "publishedAt": "2026-03-10",
+        "url": "https://www.kyeonggi.com/",
+        "snippet": "상권과 주거지 경계부의 보행환경과 공개공지 변화 가능성을 다룬 기사입니다.",
+        "relevanceScore": 0.79,
+        "sourceType": "regional-news"
+      }
+    ]
+  },
+  "gg-2026-007": {
+    "noticeNumber": "수원시 공고 제2026-512호",
+    "matchingConfidence": 0.89,
+    "officialPressReleases": [
+      {
+        "id": "gg-2026-007-press-1",
+        "title": "광교 공공청사 예정부지 활용 방향 설명자료",
+        "organization": "경기도 수원시청",
+        "postedDate": "2026-03-09",
+        "url": "https://www.suwon.go.kr/",
+        "sourceSite": "수원시청 보도자료",
+        "matchType": "기관+사업명",
+        "confidence": 0.8
+      }
+    ],
+    "relatedNews": [
+      {
+        "id": "gg-2026-007-news-1",
+        "title": "광교 공공청사 부지 활용안, 주민 열람 시작",
+        "publisher": "경기신문",
+        "publishedAt": "2026-03-10",
+        "url": "https://www.kgnews.co.kr/",
+        "snippet": "예정부지 활용 방향과 생활편의 기능 배치를 다룬 지역 기사입니다.",
+        "relevanceScore": 0.76,
+        "sourceType": "regional-news"
+      }
+    ]
+  },
+  "gg-2026-008": {
+    "noticeNumber": "화성시 인터넷 의견청취 2026-18호",
+    "matchingConfidence": 0.9,
+    "officialPressReleases": [
+      {
+        "id": "gg-2026-008-press-1",
+        "title": "동탄2 학교 통학로 안전시설 의견청취 안내",
+        "organization": "경기도 화성시청",
+        "postedDate": "2026-03-06",
+        "url": "https://www.hscity.go.kr/",
+        "sourceSite": "화성시청 보도자료",
+        "matchType": "기관+사업명",
+        "confidence": 0.79
+      }
+    ],
+    "relatedNews": [
+      {
+        "id": "gg-2026-008-news-1",
+        "title": "동탄2 통학로 개선안 공개, 학부모 의견 모은다",
+        "publisher": "뉴시스",
+        "publishedAt": "2026-03-07",
+        "url": "https://www.newsis.com/",
+        "snippet": "보행안전시설과 횡단시설 조정 방향을 소개한 보도입니다.",
+        "relevanceScore": 0.74,
+        "sourceType": "news"
+      }
+    ]
+  },
+  "ic-2026-001": {
+    "noticeNumber": "인천광역시 공고 제2026-228호",
+    "matchingConfidence": 0.94,
+    "officialNotices": [
+      {
+        "id": "ic-2026-001-official-1",
+        "title": "검단신도시 연결도로 도시계획시설 결정(안) 주민공람",
+        "organization": "인천광역시 도시계획국",
+        "noticeNumber": "인천광역시 공고 제2026-228호",
+        "postedDate": "2026-03-04",
+        "url": "https://www.incheon.go.kr/",
+        "sourceSite": "인천광역시 고시공고",
+        "matchType": "공고번호+기관",
+        "confidence": 0.95
+      }
+    ],
+    "officialPressReleases": [
+      {
+        "id": "ic-2026-001-press-1",
+        "title": "검단 연결도로 계획안 주민열람 주요 내용",
+        "organization": "인천광역시",
+        "postedDate": "2026-03-05",
+        "url": "https://www.incheon.go.kr/",
+        "sourceSite": "인천시 보도자료",
+        "matchType": "기관+사업명",
+        "confidence": 0.83
+      }
+    ],
+    "relatedNews": [
+      {
+        "id": "ic-2026-001-news-1",
+        "title": "검단신도시 연결도로 공람, 교통분산 효과 주목",
+        "publisher": "인천일보",
+        "publishedAt": "2026-03-06",
+        "url": "https://www.incheonilbo.com/",
+        "snippet": "연결도로 계획이 검단 생활권 이동에 줄 영향을 정리한 기사입니다.",
+        "relevanceScore": 0.8,
+        "sourceType": "regional-news"
+      }
+    ]
+  },
+  "ic-2026-004": {
+    "noticeNumber": "IFEZ 인터넷 의견청취 2026-11호",
+    "matchingConfidence": 0.87,
+    "officialPressReleases": [
+      {
+        "id": "ic-2026-004-press-1",
+        "title": "송도 학교용지 배치 조정 관련 설명자료",
+        "organization": "인천광역시 경제자유구역청",
+        "postedDate": "2026-03-07",
+        "url": "https://www.ifez.go.kr/",
+        "sourceSite": "IFEZ 설명자료",
+        "matchType": "기관+사업명",
+        "confidence": 0.78
+      }
+    ],
+    "relatedNews": [
+      {
+        "id": "ic-2026-004-news-1",
+        "title": "송도 학교용지 배치안 공개, 학부모 관심 집중",
+        "publisher": "경기일보",
+        "publishedAt": "2026-03-08",
+        "url": "https://www.kyeonggi.com/",
+        "snippet": "학교용지 위치와 통학 동선 조정 가능성을 설명한 기사입니다.",
+        "relevanceScore": 0.73,
+        "sourceType": "regional-news"
+      }
+    ]
+  },
+  "sr-2026-001": {
+    "noticeNumber": "서대문구 공고 제2026-177호",
+    "matchingConfidence": 0.93,
+    "officialNotices": [
+      {
+        "id": "sr-2026-001-official-1",
+        "title": "북가좌동 도시관리계획(도로) 결정(변경)(안) 주민열람공고",
+        "organization": "서울특별시 서대문구청",
+        "noticeNumber": "서대문구 공고 제2026-177호",
+        "postedDate": "2026-03-05",
+        "url": "https://www.sdm.go.kr/",
+        "sourceSite": "서대문구청 고시공고",
+        "matchType": "공고번호+기관",
+        "confidence": 0.94
+      }
+    ],
+    "relatedNews": [
+      {
+        "id": "sr-2026-001-news-1",
+        "title": "북가좌동 도로계획 변경안 열람, 생활도로 안전성 관심",
+        "publisher": "아시아경제",
+        "publishedAt": "2026-03-06",
+        "url": "https://www.asiae.co.kr/",
+        "snippet": "교차로 구조와 통학로 영향 가능성을 짚은 지역 뉴스입니다.",
+        "relevanceScore": 0.77,
+        "sourceType": "news"
+      }
+    ]
+  },
+  "sr-2026-004": {
+    "noticeNumber": "성동구 공고 제2026-244호",
+    "matchingConfidence": 0.9,
+    "officialPressReleases": [
+      {
+        "id": "sr-2026-004-press-1",
+        "title": "성수전략정비구역 주변 도로체계 개선안 설명자료",
+        "organization": "서울특별시 성동구청",
+        "postedDate": "2026-03-09",
+        "url": "https://www.sd.go.kr/",
+        "sourceSite": "성동구청 보도자료",
+        "matchType": "기관+사업명",
+        "confidence": 0.81
+      }
+    ],
+    "relatedNews": [
+      {
+        "id": "sr-2026-004-news-1",
+        "title": "성수 전략정비구역 일대 도로 개선안 주민공람",
+        "publisher": "서울경제",
+        "publishedAt": "2026-03-10",
+        "url": "https://www.sedaily.com/",
+        "snippet": "성수 일대 차량 흐름과 보행 연결 재편 가능성을 다룬 기사입니다.",
+        "relevanceScore": 0.78,
+        "sourceType": "news"
+      }
+    ]
+  }
+}
