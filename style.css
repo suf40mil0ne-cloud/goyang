@@ -911,6 +911,32 @@ button {
   align-items: end;
 }
 
+.map-mode-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.map-mode-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.map-mode-copy strong {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.map-mode-copy p {
+  margin: 0;
+}
+
+.map-mode-actions {
+  width: auto;
+}
+
 .map-large {
   height: 420px;
 }
@@ -1984,5 +2010,9 @@ body {
     max-width: none;
     padding: 12px 14px;
     line-height: 1.42;
+  }
+
+  .map-mode-actions {
+    width: 100%;
   }
 }

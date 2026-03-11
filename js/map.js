@@ -41,6 +41,7 @@ function loadScript(url) {
     const script = document.createElement('script');
     script.src = url;
     script.async = true;
+    script.crossOrigin = 'anonymous';
     script.addEventListener('load', () => {
       script.dataset.loaded = 'true';
       resolve();
@@ -58,6 +59,9 @@ async function ensureMapAssets() {
       await loadScript(MAP_CONFIG.proj4ScriptUrl);
       await loadScript(MAP_CONFIG.openLayersScriptUrl);
       await loadScript(MAP_CONFIG.ngiiScriptUrl);
+      if (!window.ngii_wmts?.map) {
+        throw new Error('NGII script loaded but ngii_wmts.map is unavailable. The preview environment may be blocking the external script.');
+      }
       registerProjection();
     })();
   }
@@ -220,6 +224,11 @@ export async function createNoticeMap({
   if (!element) {
     console.warn(`[map] Map container #${elementId} was not found.`);
     return null;
+  }
+
+  const { width, height } = element.getBoundingClientRect();
+  if (!width || !height) {
+    console.warn(`[map] Map container #${elementId} has invalid size: ${width}x${height}.`);
   }
 
   if (!window.ngii_wmts || !window.ol) {

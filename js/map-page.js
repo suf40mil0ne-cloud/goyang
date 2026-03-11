@@ -1,4 +1,4 @@
-import { filterByStatus, getDistrictNotices } from './filters.js';
+import { filterByStatus, getDistrictNotices, sortForCards } from './filters.js';
 import { buildDistrictIndex, findDistrictByName, getCurrentPosition, reverseGeocodeDistrict } from './location.js';
 import { createNoticeMap } from './map.js';
 import { loadNotices, loadRegions } from './notices.js';
@@ -29,7 +29,10 @@ function buildRow(notice) {
 function renderMapFallback(message) {
   const element = document.getElementById('overview-map');
   if (!element) return;
-  element.innerHTML = `<div class="error-state map-error-state">${message}</div>`;
+  const previewNote = window.self !== window.top
+    ? '<p class="small-note">Firebase Studio 미리보기에서는 외부 지도 스크립트가 차단될 수 있습니다. 새 탭에서 다시 확인해 보세요.</p>'
+    : '';
+  element.innerHTML = `<div class="error-state map-error-state"><p>${message}</p>${previewNote}</div>`;
 }
 
 export async function initMapPage() {
@@ -42,6 +45,10 @@ export async function initMapPage() {
   const statusSelect = document.getElementById('map-status');
   const hybridToggle = document.getElementById('map-hybrid');
   const detectButton = document.getElementById('map-detect-location');
+  const applyExtentButton = document.getElementById('map-apply-extent');
+  const resetRegionButton = document.getElementById('map-reset-region');
+  const modeLabel = document.getElementById('map-mode-label');
+  const modeSummary = document.getElementById('map-mode-summary');
   const helper = document.getElementById('map-location-helper');
   const list = document.getElementById('map-notice-list');
   const summary = document.getElementById('map-results-summary');
@@ -49,6 +56,11 @@ export async function initMapPage() {
     selectedArea: 'all',
     selectedDistrict: '',
     currentPosition: null,
+    listMode: 'region',
+    baseScoped: [],
+    pendingExtent: null,
+    mapProjection: '',
+    mapReady: false,
   };
 
   if (areaSelect) {
@@ -71,7 +83,7 @@ export async function initMapPage() {
     districtSelect.value = selectedDistrict;
   }
 
-  async function render() {
+  function getBaseScopedNotices() {
     const area = areaSelect?.value || 'all';
     const status = statusSelect?.value || 'active';
     const districtValue = districtSelect?.value || '';
@@ -81,26 +93,63 @@ export async function initMapPage() {
     const region = regions.find((item) => item.area === area) || nationMeta;
     const scoped = selectedDistrict
       ? getDistrictNotices(notices, selectedDistrict, status)
-      : filterByStatus(area === 'all' ? notices : notices.filter((notice) => notice.sido === region.name), status);
-    const center = state.currentPosition || selectedDistrict?.center || region.center;
-    const zoom = selectedDistrict ? 12 : area === 'all' ? nationMeta.defaultZoom : region.defaultZoom;
+      : sortForCards(filterByStatus(area === 'all' ? notices : notices.filter((notice) => notice.sido === region.name), status));
+    return { area, selectedDistrict, region, scoped };
+  }
+
+  function getNoticesInMapExtent() {
+    if (!state.pendingExtent || !window.ol?.extent?.containsCoordinate || !state.mapProjection) return [];
+    return sortForCards(
+      state.baseScoped.filter((notice) => {
+        if (!Number.isFinite(notice.latitude) || !Number.isFinite(notice.longitude)) return false;
+        const point = window.ol.proj.transform([notice.longitude, notice.latitude], 'EPSG:4326', state.mapProjection);
+        return window.ol.extent.containsCoordinate(state.pendingExtent, point);
+      })
+    );
+  }
+
+  function updateListUi(selectedDistrict, region, scoped) {
+    const isExtentMode = state.listMode === 'map-extent';
+    const visibleNotices = isExtentMode ? getNoticesInMapExtent() : scoped;
+
+    if (modeLabel) modeLabel.textContent = isExtentMode ? '지도 범위 기준' : '내 지역 기준';
+    if (modeSummary) {
+      modeSummary.textContent = isExtentMode
+        ? '현재 화면에 보이는 지도 범위 안의 공고만 리스트에 표시합니다.'
+        : '선택한 시도 또는 시군구 기준으로 공고 리스트를 보여줍니다.';
+    }
 
     if (summary) {
-      summary.textContent = selectedDistrict
-        ? `${selectedDistrict.fullName} 기준 공고 ${scoped.length}건`
-        : area === 'all'
-          ? `전국 공고 ${scoped.length}건`
-          : `${region.name} 공고 ${scoped.length}건`;
+      summary.textContent = isExtentMode
+        ? `현재 지도 범위 공고 ${visibleNotices.length}건`
+        : selectedDistrict
+          ? `${selectedDistrict.fullName} 기준 공고 ${visibleNotices.length}건`
+          : region.area === 'all'
+            ? `전국 공고 ${visibleNotices.length}건`
+            : `${region.name} 공고 ${visibleNotices.length}건`;
     }
 
     if (list) {
-      list.innerHTML = scoped.length
-        ? scoped.slice(0, 12).map(buildRow).join('')
-        : '<div class="empty-state">선택한 조건의 공고가 없습니다.</div>';
+      list.innerHTML = visibleNotices.length
+        ? visibleNotices.slice(0, 12).map(buildRow).join('')
+        : isExtentMode
+          ? '<div class="empty-state">현재 지도 범위에서 확인된 공고가 없습니다. 지도를 이동하거나 내 지역 기준으로 돌아가세요.</div>'
+          : '<div class="empty-state">선택한 조건의 공고가 없습니다.</div>';
     }
 
+    if (applyExtentButton) applyExtentButton.disabled = !state.mapReady || !state.pendingExtent;
+    if (resetRegionButton) resetRegionButton.disabled = state.listMode === 'region';
+  }
+
+  async function render() {
+    const { area, selectedDistrict, region, scoped } = getBaseScopedNotices();
+    state.baseScoped = scoped;
+    const center = state.currentPosition || selectedDistrict?.center || region.center;
+    const zoom = selectedDistrict ? 12 : area === 'all' ? nationMeta.defaultZoom : region.defaultZoom;
+    updateListUi(selectedDistrict, region, scoped);
+
     try {
-      await createNoticeMap({
+      const map = await createNoticeMap({
         elementId: 'overview-map',
         notices: scoped,
         center,
@@ -108,27 +157,64 @@ export async function initMapPage() {
         currentPosition: state.currentPosition,
         hybrid: Boolean(hybridToggle?.checked),
       });
+      state.mapReady = Boolean(map);
+      if (map) {
+        state.mapProjection = map.getView().getProjection()?.getCode?.() || 'EPSG:5179';
+        state.pendingExtent = map.getView().calculateExtent(map.getSize());
+        map.on('moveend', () => {
+          state.pendingExtent = map.getView().calculateExtent(map.getSize());
+          if (state.listMode === 'map-extent') {
+            updateListUi(selectedDistrict, region, scoped);
+          } else if (applyExtentButton) {
+            applyExtentButton.disabled = false;
+          }
+        });
+      }
+      updateListUi(selectedDistrict, region, scoped);
     } catch (error) {
       console.error('[map-page] Failed to render map.', error);
       renderMapFallback('지도를 불러오지 못했습니다. 잠시 후 다시 시도하거나 새로고침해 주세요.');
       if (helper) helper.textContent = '지도 로딩에 실패했습니다.';
+      state.mapReady = false;
+      state.pendingExtent = null;
+      updateListUi(selectedDistrict, region, scoped);
     }
   }
 
   areaSelect?.addEventListener('change', async () => {
     state.selectedArea = areaSelect.value;
     state.selectedDistrict = '';
+    state.listMode = 'region';
     populateDistricts(state.selectedArea);
     await render();
   });
 
   districtSelect?.addEventListener('change', async () => {
     state.selectedDistrict = districtSelect.value;
+    state.listMode = 'region';
     await render();
   });
 
-  statusSelect?.addEventListener('change', render);
+  statusSelect?.addEventListener('change', () => {
+    state.listMode = 'region';
+    render();
+  });
   hybridToggle?.addEventListener('change', render);
+
+  applyExtentButton?.addEventListener('click', () => {
+    if (!state.mapReady || !state.pendingExtent) return;
+    state.listMode = 'map-extent';
+    const { selectedDistrict, region, scoped } = getBaseScopedNotices();
+    state.baseScoped = scoped;
+    updateListUi(selectedDistrict, region, scoped);
+  });
+
+  resetRegionButton?.addEventListener('click', () => {
+    state.listMode = 'region';
+    const { selectedDistrict, region, scoped } = getBaseScopedNotices();
+    state.baseScoped = scoped;
+    updateListUi(selectedDistrict, region, scoped);
+  });
 
   detectButton?.addEventListener('click', async () => {
     if (helper) helper.textContent = '현재 위치를 확인하는 중입니다.';
@@ -154,6 +240,7 @@ export async function initMapPage() {
       } else if (helper) {
         helper.textContent = '현재 위치를 행정구역으로 변환하지 못했습니다.';
       }
+      state.listMode = 'region';
       await render();
     } catch (error) {
       if (helper) helper.textContent = '현재 위치를 확인하지 못했습니다.';
