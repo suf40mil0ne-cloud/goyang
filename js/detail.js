@@ -1,6 +1,6 @@
 import { getNoticeById, getRelatedNotices, loadNotices } from './notices.js';
 import { getRegionHref } from './regions.js';
-import { isDirectNoticeUrl, resolveDirectLink } from './links.js';
+import { isDirectNoticePostUrl, isDirectNoticeUrl, resolveDirectLink } from './links.js';
 
 function setCurrentYear() {
   document.querySelectorAll('[data-current-year]').forEach((element) => {
@@ -216,62 +216,57 @@ function renderNotice(notice, relatedNotices) {
 
   if (actions) {
     const primaryLinks = [];
-    const primaryOfficial = notice.officialNotices[0];
+    const officialPostCandidates = notice.officialNotices.filter((item) => isDirectNoticePostUrl(item.url, { ...notice, ...item }));
+    const primaryOfficialPost = notice.directNoticeLink
+      ? officialPostCandidates.find((item) => item.url === notice.directNoticeLink.url) || null
+      : null;
     const additionalOfficialNotices = notice.directNoticeType === 'official-detail'
-      ? notice.officialNotices.slice(1)
-      : notice.officialNotices;
-    const renderableOfficialNotices = additionalOfficialNotices.filter((item) => isDirectNoticeUrl(item.url));
-    const remainingAttachments = notice.directNoticeType === 'attachment' ? notice.attachmentLinks.slice(1) : notice.attachmentLinks;
+      ? officialPostCandidates.filter((item) => item.url !== notice.directNoticeLink.url)
+      : officialPostCandidates;
+    const renderableOfficialNotices = additionalOfficialNotices.filter((item) => isDirectNoticePostUrl(item.url, { ...notice, ...item }));
+    const remainingAttachments = notice.attachmentLinks;
 
     if (notice.directNoticeLink) {
       const directNoticeMeta = {
-        attachment: {
-          label: notice.directNoticeLink.label || '첨부 문서',
-          description: 'PDF, HWP 등 실제 공고문을 바로 읽을 수 있는 첨부 원문입니다.',
-          buttonLabel: '원문공고문 열기',
-        },
         'official-detail': {
           label: notice.directNoticeLink.label || '공식 게시판',
           description: '지자체 고시공고 또는 공식 게시글 상세 화면으로 바로 연결됩니다.',
-          buttonLabel: '원문공고문 열기',
-        },
-        'landuse-detail': {
-          label: notice.directNoticeLink.label || '토지이음 상세',
-          description: '토지이음 상세 화면에서 공고 원문과 열람 정보를 직접 확인합니다.',
-          buttonLabel: '원문공고문 열기',
+          buttonLabel: '원문공고 열기',
         },
       }[notice.directNoticeType];
 
-      primaryLinks.push(renderPrimaryActionCard({
-        title: '원문공고문',
-        label: directNoticeMeta.label,
-        description: directNoticeMeta.description,
-        url: notice.directNoticeLink.url,
-        buttonLabel: directNoticeMeta.buttonLabel,
-      }));
-    } else if (notice.officialNoticeReviewPending || primaryOfficial) {
+      if (directNoticeMeta) {
+        primaryLinks.push(renderPrimaryActionCard({
+          title: '원문공고',
+          label: directNoticeMeta.label,
+          description: directNoticeMeta.description,
+          url: notice.directNoticeLink.url,
+          buttonLabel: directNoticeMeta.buttonLabel,
+        }));
+      }
+    } else if (notice.officialNoticeReviewPending || primaryOfficialPost) {
       primaryLinks.push(`
         <article class="source-card source-card-compact">
           <div class="source-card-head">
-            <strong>원문공고문</strong>
+            <strong>원문공고</strong>
             <span class="subtle-label">확인 중</span>
           </div>
-          <p>${notice.officialNoticeReviewReason || '현재 공고번호 또는 연결 신뢰도가 충분히 확인된 공식 원문 링크를 검수 중입니다. 아래 기준 출처와 제출 안내를 먼저 확인해 주세요.'}</p>
+          <p>${notice.officialNoticeReviewReason || '현재 공고번호 또는 연결 신뢰도가 충분히 확인된 공식 게시글 링크를 검수 중입니다. 아래 첨부 문서나 토지이음 상세를 먼저 확인해 주세요.'}</p>
         </article>
       `);
     }
 
     remainingAttachments.forEach((attachment) => {
       primaryLinks.push(renderPrimaryActionCard({
-        title: '첨부 공고문',
+        title: '공고문 파일',
         label: attachment.fileLabel || '첨부 문서',
         description: '공식 원문에 연결된 첨부 문서입니다. PDF, HWP 등 실제 문서 파일을 바로 열 수 있는 경우에만 표시합니다.',
         url: attachment.url,
-        buttonLabel: '첨부 공고문 열기',
+        buttonLabel: '공고문 파일 열기',
       }));
     });
 
-    if (notice.sourceDetailLink && notice.directNoticeType !== 'landuse-detail') {
+    if (notice.sourceDetailLink) {
       primaryLinks.push(renderPrimaryActionCard({
         title: notice.sourceDetailLink.title,
         label: notice.sourceDetailLink.sourceSite,

@@ -127,6 +127,29 @@ export function isDirectNoticeUrl(value = '') {
   return /(view|detail|read|gonggo|gosi|notice|bbsview|boardview)/i.test(pathWithSearch);
 }
 
+export function isDirectAttachmentUrl(value = '') {
+  return classifyUrl(value) === 'document';
+}
+
+export function isDirectNoticePostUrl(value = '', metadata = {}) {
+  if (!isUsableUrl(value)) return false;
+  if (isEumUrl(value) || isDirectAttachmentUrl(value)) return false;
+  if (classifyUrl(value) !== 'detail' || !isDirectNoticeUrl(value)) return false;
+
+  const pathWithSearch = getPathWithSearch(value);
+  const normalizedTitle = normalizeTitle(metadata.title);
+  const normalizedNoticeNumber = normalizeNoticeNumber(metadata.noticeNumber);
+
+  if (hasDirectIdentifier(value)) return true;
+  if (normalizedNoticeNumber && pathWithSearch.includes(normalizedNoticeNumber)) return true;
+  if (normalizedTitle) {
+    const titleTokens = normalizedTitle.split(' ').filter((token) => token.length >= 2).slice(0, 3);
+    if (titleTokens.length && titleTokens.some((token) => pathWithSearch.includes(token))) return true;
+  }
+
+  return /(view|detail|read|gonggo|gosi|notice|bbsview|boardview)/i.test(pathWithSearch);
+}
+
 export function isDirectDocumentUrl(value = '') {
   if (!isUsableUrl(value)) return false;
   const urlType = classifyUrl(value);
@@ -194,15 +217,13 @@ export function resolveDirectLink(url = '', kind = 'document') {
 
 export function getPreferredNoticeActionLink(notice) {
   const directNoticeLink = notice?.directNoticeLink;
-  if (directNoticeLink?.url && isDirectNoticeUrl(directNoticeLink.url)) {
+  if (directNoticeLink?.url && isDirectNoticePostUrl(directNoticeLink.url, notice)) {
     return {
       url: directNoticeLink.url,
       type: directNoticeLink.type || 'notice',
-      label: directNoticeLink.type === 'landuse-detail'
-        ? '토지이음에서 보기'
-        : notice?.hearingType === '인터넷 주민의견청취'
-          ? '원문·제출처 확인'
-          : '원문 공고',
+      label: notice?.hearingType === '인터넷 주민의견청취'
+        ? '원문·제출처 확인'
+        : '원문 공고',
     };
   }
 
@@ -380,27 +401,12 @@ function deriveAttachmentLinks(notice, officialNotices, sourceDetailLink) {
 }
 
 function buildDirectNoticeLink({ officialNotices, attachmentLinks, sourceDetailLink }) {
-  if (attachmentLinks.length) {
+  const officialDetail = officialNotices.find((item) => isDirectNoticePostUrl(item.url, item));
+  if (officialDetail) {
     return {
-      url: attachmentLinks[0].url,
-      type: 'attachment',
-      label: attachmentLinks[0].fileLabel || '첨부 문서',
-    };
-  }
-
-  if (officialNotices.length) {
-    return {
-      url: officialNotices[0].url,
+      url: officialDetail.url,
       type: 'official-detail',
-      label: officialNotices[0].sourceSite || '공식 게시판',
-    };
-  }
-
-  if (sourceDetailLink && sourceDetailLink.title === '토지이음에서 보기' && isDirectNoticeUrl(sourceDetailLink.url)) {
-    return {
-      url: sourceDetailLink.url,
-      type: 'landuse-detail',
-      label: sourceDetailLink.sourceSite || '토지이음 상세',
+      label: officialDetail.sourceSite || '공식 게시판',
     };
   }
 
@@ -472,6 +478,7 @@ function deriveFollowups(notice, relatedGosi) {
 
 export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []) {
   const officialNotices = deriveOfficialNotices(notice, enrichment);
+  const primaryOfficialPost = officialNotices.find((item) => isDirectNoticePostUrl(item.url, { ...notice, ...item })) || null;
   const officialReviewState = getOfficialReviewState(notice, enrichment);
   const tentativeSourceDetailLink = buildSourceDetailLink(notice);
   const sourceDetailLink = tentativeSourceDetailLink
@@ -492,8 +499,8 @@ export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []
     officialNoticeReviewReason: officialReviewState.reason,
     sourceDetailLink,
     sourceDetailUrl: sourceDetailLink?.url || '',
-    officialNoticeUrl: directNoticeLink?.type === 'official-detail' ? directNoticeLink.url : officialNotices[0]?.url || '',
-    officialNoticeLabel: officialNotices[0]?.sourceSite || '',
+    officialNoticeUrl: primaryOfficialPost?.url || '',
+    officialNoticeLabel: primaryOfficialPost?.sourceSite || '',
     directNoticeLink,
     directNoticeUrl: directNoticeLink?.url || '',
     directNoticeType: directNoticeLink?.type || '',
