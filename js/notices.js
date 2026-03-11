@@ -51,6 +51,12 @@ function splitAiSummary(text) {
     .slice(0, 3);
 }
 
+function getEasySummary(notice) {
+  if (notice.easySummary) return notice.easySummary;
+  if (notice.shortSummary) return notice.shortSummary;
+  return splitAiSummary(notice.aiSummary)[0] || '';
+}
+
 function inferStatus(notice, now = new Date()) {
   const today = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
   const endDate = asDate(notice.hearingEndDate);
@@ -79,6 +85,7 @@ function decorateNotice(notice) {
     ...notice,
     areaKey,
     sourceMeta,
+    easySummary: getEasySummary(notice),
     statusKey: statusInfo.key,
     statusLabel: statusInfo.label,
     daysLeft: statusInfo.daysLeft,

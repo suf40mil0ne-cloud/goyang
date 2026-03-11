@@ -90,7 +90,7 @@ export async function initRegionPage() {
 
   if (list) list.innerHTML = areaNotices.map(buildCard).join('');
 
-  createNoticeMap({
+  await createNoticeMap({
     elementId: 'region-map',
     notices: areaNotices,
     center: region.center,

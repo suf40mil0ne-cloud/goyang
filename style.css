@@ -875,13 +875,64 @@ button {
   margin: 0;
 }
 
-.leaflet-popup-content {
-  line-height: 1.45;
+.map-toolbar {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: end;
 }
 
-.leaflet-popup-content strong {
+.toolbar-check {
+  display: grid;
+  gap: 6px;
+}
+
+.toolbar-check input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+.toolbar-action {
+  display: flex;
+  align-items: end;
+}
+
+.map-large {
+  height: 420px;
+}
+
+.map-popup {
+  min-width: 220px;
+  max-width: 260px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow);
+  padding: 12px 14px;
+}
+
+.map-popup strong,
+.map-popup span,
+.map-popup a {
   display: block;
-  margin-bottom: 4px;
+}
+
+.map-popup strong {
+  margin-bottom: 6px;
+}
+
+.map-popup span {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.map-popup a {
+  margin-top: 8px;
+  color: var(--accent-3);
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .home-layout {
@@ -943,6 +994,10 @@ button {
   .detail-layout {
     grid-template-columns: 1fr;
   }
+
+  .map-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
@@ -979,6 +1034,10 @@ button {
   .kpi-grid,
   .hero-bullets,
   .split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-toolbar {
     grid-template-columns: 1fr;
   }
 
