@@ -8,6 +8,7 @@ import {
   getRegionHref,
   parseRegionQuery,
 } from './regions.js';
+import { getPreferredNoticeActionLink } from './links.js';
 
 function setCurrentYear() {
   document.querySelectorAll('[data-current-year]').forEach((element) => {
@@ -16,6 +17,7 @@ function setCurrentYear() {
 }
 
 function buildNoticeCard(notice) {
+  const actionLink = getPreferredNoticeActionLink(notice);
   return `
     <article class="notice-card notice-card-rich">
       <div class="notice-card-head">
@@ -33,7 +35,7 @@ function buildNoticeCard(notice) {
       </dl>
       <div class="button-row compact-actions">
         <a class="resource-link" href="notice.html?id=${encodeURIComponent(notice.id)}">상세보기</a>
-        <a class="resource-link" href="${notice.sourceUrl}" target="_blank" rel="noopener noreferrer">원문 공고</a>
+        ${actionLink ? `<a class="resource-link" href="${actionLink.url}" target="_blank" rel="noopener noreferrer">${actionLink.label || '원문 공고'}</a>` : ''}
       </div>
     </article>
   `;

@@ -4,6 +4,7 @@ import { createNoticeMap } from './map.js';
 import { loadNotices, loadRegions } from './notices.js';
 import { getNationMeta } from './regions.js';
 import { loadPreferredRegion, savePreferredRegion } from './storage.js';
+import { getPreferredNoticeActionLink } from './links.js';
 
 function setCurrentYear() {
   document.querySelectorAll('[data-current-year]').forEach((element) => {
@@ -12,6 +13,7 @@ function setCurrentYear() {
 }
 
 function buildRow(notice) {
+  const actionLink = getPreferredNoticeActionLink(notice);
   return `
     <article class="mini-card">
       <strong>${notice.title}</strong>
@@ -20,7 +22,7 @@ function buildRow(notice) {
       <p>${notice.onlineSubmissionMeta.label}</p>
       <div class="button-row compact-actions">
         <a class="text-link" href="notice.html?id=${encodeURIComponent(notice.id)}">상세 보기</a>
-        <a class="text-link" href="${notice.sourceDetailLink?.url || notice.sourceUrl}" target="_blank" rel="noopener noreferrer">${notice.sourceDetailLink ? '토지이음에서 보기' : '기준 출처 보기'}</a>
+        ${actionLink ? `<a class="text-link" href="${actionLink.url}" target="_blank" rel="noopener noreferrer">${actionLink.label}</a>` : ''}
       </div>
     </article>
   `;

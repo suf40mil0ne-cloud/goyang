@@ -1,5 +1,6 @@
 import { getNoticeById, getRelatedNotices, loadNotices } from './notices.js';
 import { getRegionHref } from './regions.js';
+import { isDirectNoticeUrl, resolveDirectLink } from './links.js';
 
 function setCurrentYear() {
   document.querySelectorAll('[data-current-year]').forEach((element) => {
@@ -55,7 +56,7 @@ function buildSummaryLines(notice) {
   ].filter(Boolean).slice(0, 3);
 }
 
-function renderLinkedSourceCard(item, typeLabel, buttonLabel = '바로가기') {
+function renderLinkedSourceCard(item, typeLabel, buttonLabel = '바로가기', directUrl = '') {
   return `
     <article class="source-card">
       <div class="source-card-body">
@@ -73,9 +74,15 @@ function renderLinkedSourceCard(item, typeLabel, buttonLabel = '바로가기') {
         </div>
         ${item.snippet ? `<p>${item.snippet}</p>` : ''}
       </div>
-      <div class="source-card-actions">
-        <a class="resource-link" href="${item.url}" target="_blank" rel="noopener noreferrer">${buttonLabel}</a>
-      </div>
+      ${directUrl ? `
+        <div class="source-card-actions">
+          <a class="resource-link" href="${directUrl}" target="_blank" rel="noopener noreferrer">${buttonLabel}</a>
+        </div>
+      ` : `
+        <div class="source-card-actions">
+          <span class="small-note">직접 링크 확인 중</span>
+        </div>
+      `}
     </article>
   `;
 }
@@ -95,6 +102,21 @@ function renderPrimaryActionCard({ title, label, description, url, buttonLabel }
       </div>
     </article>
   `;
+}
+
+function getRenderableResourceItems(items, kind) {
+  return items
+    .map((item) => {
+      const resolved = resolveDirectLink(item?.directUrl || item?.url, kind);
+      return resolved
+        ? {
+            ...item,
+            renderUrl: resolved.url,
+            renderConfidence: resolved.confidence,
+          }
+        : null;
+    })
+    .filter(Boolean);
 }
 
 function renderNotice(notice, relatedNotices) {
@@ -126,6 +148,8 @@ function renderNotice(notice, relatedNotices) {
   const followupList = document.getElementById('followup-list');
   const relatedSection = document.getElementById('related-notices-section');
   const relatedContainer = document.getElementById('related-notices');
+  const renderablePressReleases = getRenderableResourceItems(notice.officialPressReleases, 'document');
+  const renderableNews = getRenderableResourceItems(notice.relatedNews, 'article');
 
   if (title) title.textContent = notice.title;
   if (breadcrumbCurrent) breadcrumbCurrent.textContent = notice.title;
@@ -196,6 +220,7 @@ function renderNotice(notice, relatedNotices) {
     const additionalOfficialNotices = notice.directNoticeType === 'official-detail'
       ? notice.officialNotices.slice(1)
       : notice.officialNotices;
+    const renderableOfficialNotices = additionalOfficialNotices.filter((item) => isDirectNoticeUrl(item.url));
     const remainingAttachments = notice.directNoticeType === 'attachment' ? notice.attachmentLinks.slice(1) : notice.attachmentLinks;
 
     if (notice.directNoticeLink) {
@@ -271,25 +296,25 @@ function renderNotice(notice, relatedNotices) {
     actions.innerHTML = primaryLinks.join('');
 
     if (officialNoticeSection) {
-      officialNoticeSection.hidden = !additionalOfficialNotices.length;
+      officialNoticeSection.hidden = !renderableOfficialNotices.length;
     }
 
     if (officialNoticeList) {
-      officialNoticeList.innerHTML = additionalOfficialNotices.length
-        ? additionalOfficialNotices.map((item) => renderLinkedSourceCard(item, item.matchType, '공식 공고 보기')).join('')
+      officialNoticeList.innerHTML = renderableOfficialNotices.length
+        ? renderableOfficialNotices.map((item) => renderLinkedSourceCard(item, item.matchType, '공식 공고 보기', item.url)).join('')
         : '';
     }
   }
 
   if (officialPressList) {
-    officialPressList.innerHTML = notice.officialPressReleases.length
-      ? notice.officialPressReleases.map((item) => renderLinkedSourceCard(item, '공식 설명자료', '자료 보기')).join('')
+    officialPressList.innerHTML = renderablePressReleases.length
+      ? renderablePressReleases.map((item) => renderLinkedSourceCard(item, '공식 설명자료', '자료 보기', item.renderUrl)).join('')
       : '<div class="empty-state">연결된 지자체 설명자료가 아직 없습니다.</div>';
   }
 
   if (relatedNewsList) {
-    relatedNewsList.innerHTML = notice.relatedNews.length
-      ? notice.relatedNews.map((item) => renderLinkedSourceCard(item, item.publisher, '기사 보기')).join('')
+    relatedNewsList.innerHTML = renderableNews.length
+      ? renderableNews.map((item) => renderLinkedSourceCard(item, item.publisher, '기사 보기', item.renderUrl)).join('')
       : '<div class="empty-state">연결된 관련 기사가 아직 없습니다.</div>';
   }
 
@@ -312,7 +337,9 @@ function renderNotice(notice, relatedNotices) {
   }
 
   if (followupList) {
-    const reliableFollowups = notice.relatedFollowups.filter((item) => (item.confidence ?? 0) >= 0.82);
+    const reliableFollowups = notice.relatedFollowups
+      .filter((item) => (item.confidence ?? 0) >= 0.82)
+      .filter((item) => isDirectNoticeUrl(item.url));
     if (followupSection) {
       followupSection.hidden = !reliableFollowups.length;
     }

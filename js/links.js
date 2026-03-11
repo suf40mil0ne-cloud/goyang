@@ -47,6 +47,39 @@ function isLikelyHomepageUrl(value = '') {
   );
 }
 
+function getPathWithSearch(value = '') {
+  if (!isUsableUrl(value)) return '';
+  const url = new URL(String(value));
+  return `${url.pathname}${url.search}`.toLowerCase();
+}
+
+function getLastPathSegment(value = '') {
+  if (!isUsableUrl(value)) return '';
+  const segments = new URL(String(value)).pathname.split('/').filter(Boolean);
+  return (segments[segments.length - 1] || '').toLowerCase();
+}
+
+function isLikelySearchUrl(value = '') {
+  const pathWithSearch = getPathWithSearch(value);
+  if (!pathWithSearch) return false;
+  return /(^|\/)(search|srch|totalsearch)(\/|\.|$)|search(keyword|word|query|q)=/i.test(pathWithSearch);
+}
+
+function isLikelyLandingUrl(value = '') {
+  if (!isUsableUrl(value)) return false;
+  if (isLikelyHomepageUrl(value) || isLikelySearchUrl(value) || isLikelyNoticeListUrl(value)) return true;
+  const pathWithSearch = getPathWithSearch(value);
+  const lastSegment = getLastPathSegment(value);
+
+  if (/\/(login|intro|sitemap|portal)(\/|$)/i.test(pathWithSearch)) return true;
+  if (/(^|\/)(category|section|tag|archive|archives)(\/|$)/i.test(pathWithSearch)) return true;
+  if (/(^|\/)(news|press|article|notice|gonggo|gosi|bbs|board)(\/|$)/i.test(pathWithSearch) && !hasDirectIdentifier(value)) {
+    return ['news', 'press', 'article', 'notice', 'gonggo', 'gosi', 'bbs', 'board', 'list'].includes(lastSegment);
+  }
+
+  return false;
+}
+
 function classifyUrl(value = '') {
   if (!isUsableUrl(value)) return 'invalid';
   const normalizedUrl = normalizeUrl(value).toLowerCase();
@@ -82,16 +115,106 @@ function isLikelyNoticeListUrl(value = '') {
   return false;
 }
 
-function isDirectNoticeUrl(value = '') {
+export function isDirectNoticeUrl(value = '') {
   if (!isUsableUrl(value)) return false;
   const urlType = classifyUrl(value);
   if (urlType === 'document') return true;
-  if (urlType === 'homepage' || urlType === 'list' || urlType === 'invalid') return false;
+  if (urlType === 'homepage' || urlType === 'list' || urlType === 'invalid' || isLikelySearchUrl(value) || isLikelyLandingUrl(value)) return false;
 
   const pathWithSearch = `${new URL(String(value)).pathname}${new URL(String(value)).search}`.toLowerCase();
   if (hasDirectIdentifier(value)) return true;
   if (isEumUrl(value)) return !/list/i.test(pathWithSearch);
   return /(view|detail|read|gonggo|gosi|notice|bbsview|boardview)/i.test(pathWithSearch);
+}
+
+export function isDirectDocumentUrl(value = '') {
+  if (!isUsableUrl(value)) return false;
+  const urlType = classifyUrl(value);
+  if (urlType === 'document') return true;
+  if (urlType === 'homepage' || urlType === 'list' || urlType === 'invalid' || urlType === 'source-detail') return false;
+  if (isLikelyLandingUrl(value)) return false;
+
+  const pathWithSearch = getPathWithSearch(value);
+  if (hasDirectIdentifier(value)) return true;
+  return /(view|detail|read|download|viewer|file|doc|pdf|hwp|hwpx|dataView|articleView|boardview|bbsview|gonggo|gosi|notice)/i.test(pathWithSearch);
+}
+
+export function isDirectArticleUrl(value = '') {
+  if (!isUsableUrl(value)) return false;
+  const urlType = classifyUrl(value);
+  if (urlType === 'homepage' || urlType === 'list' || urlType === 'invalid' || urlType === 'document' || urlType === 'source-detail') return false;
+  if (isLikelyLandingUrl(value)) return false;
+
+  const pathWithSearch = getPathWithSearch(value);
+  const lastSegment = getLastPathSegment(value);
+  if (hasDirectIdentifier(value)) return true;
+  if (/(article|articleview|newsview|story|view|detail|read|newsarticle)/i.test(pathWithSearch)) return true;
+
+  const segments = new URL(String(value)).pathname.split('/').filter(Boolean);
+  if (segments.length < 2) return false;
+  if (['news', 'press', 'article', 'articles', 'section', 'category', 'tag', 'list'].includes(lastSegment)) return false;
+  return lastSegment.length >= 8;
+}
+
+function getDirectLinkConfidence(url = '', kind = 'document') {
+  if (!isUsableUrl(url)) return 'low';
+  if (kind === 'article') {
+    if (isDirectArticleUrl(url)) return hasDirectIdentifier(url) ? 'high' : 'medium';
+    return 'low';
+  }
+  if (kind === 'document') {
+    if (classifyUrl(url) === 'document') return 'high';
+    if (isDirectDocumentUrl(url)) return hasDirectIdentifier(url) ? 'high' : 'medium';
+    return 'low';
+  }
+  if (kind === 'notice') {
+    if (classifyUrl(url) === 'document') return 'high';
+    if (isDirectNoticeUrl(url)) return hasDirectIdentifier(url) ? 'high' : 'medium';
+    return 'low';
+  }
+  return 'low';
+}
+
+export function resolveDirectLink(url = '', kind = 'document') {
+  if (!isUsableUrl(url)) return null;
+  const direct = kind === 'article'
+    ? isDirectArticleUrl(url)
+    : kind === 'notice'
+      ? isDirectNoticeUrl(url)
+      : isDirectDocumentUrl(url);
+
+  if (!direct) return null;
+
+  return {
+    url,
+    type: kind,
+    confidence: getDirectLinkConfidence(url, kind),
+  };
+}
+
+export function getPreferredNoticeActionLink(notice) {
+  const directNoticeLink = notice?.directNoticeLink;
+  if (directNoticeLink?.url && isDirectNoticeUrl(directNoticeLink.url)) {
+    return {
+      url: directNoticeLink.url,
+      type: directNoticeLink.type || 'notice',
+      label: directNoticeLink.type === 'landuse-detail'
+        ? '토지이음에서 보기'
+        : notice?.hearingType === '인터넷 주민의견청취'
+          ? '원문·제출처 확인'
+          : '원문 공고',
+    };
+  }
+
+  if (notice?.sourceDetailLink?.url && isDirectNoticeUrl(notice.sourceDetailLink.url)) {
+    return {
+      url: notice.sourceDetailLink.url,
+      type: 'source-detail',
+      label: notice.sourceDetailLink.buttonLabel || '출처 보기',
+    };
+  }
+
+  return null;
 }
 
 function normalizeNoticeNumber(value = '') {
@@ -285,7 +408,15 @@ function buildDirectNoticeLink({ officialNotices, attachmentLinks, sourceDetailL
 }
 
 function derivePressReleases(enrichment) {
-  return normalizeList(enrichment.officialPressReleases);
+  return normalizeList(enrichment.officialPressReleases)
+    .map((item) => {
+      const resolvedLink = resolveDirectLink(item?.url, 'document');
+      return {
+        ...item,
+        directUrl: resolvedLink?.url || '',
+        linkConfidence: resolvedLink?.confidence || 'low',
+      };
+    });
 }
 
 function deriveRelatedNews(enrichment) {
@@ -295,8 +426,10 @@ function deriveRelatedNews(enrichment) {
     publisher: compactPublisher(item.publisher),
     publishedAt: item.publishedAt,
     url: item.url,
+    directUrl: resolveDirectLink(item.url, 'article')?.url || '',
     snippet: item.snippet,
     relevanceScore: item.relevanceScore ?? 0.5,
+    linkConfidence: resolveDirectLink(item.url, 'article')?.confidence || 'low',
     sourceType: item.sourceType || 'news',
   }));
 }

@@ -10,6 +10,7 @@ import {
   toggleFavoriteRegion,
 } from './storage.js';
 import { getAdjacentDistricts, getRegionHref, loadRegionAdjacency } from './regions.js';
+import { getPreferredNoticeActionLink } from './links.js';
 
 const INITIAL_VISIBLE_COUNT = 5;
 
@@ -127,6 +128,7 @@ function syncSelectorWithRegion(region) {
 
 function buildNoticeCard(notice) {
   const officialLabel = notice.hearingType === '인터넷 주민의견청취' ? '원문·제출처 확인' : '원문 공고';
+  const actionLink = getPreferredNoticeActionLink(notice);
   const signalMarkup = (notice.signalBadges || [])
     .slice(0, 4)
     .map((badge) => `<span class="signal-badge ${badge.tone}">${badge.label}</span>`)
@@ -152,7 +154,7 @@ function buildNoticeCard(notice) {
       </dl>
       <div class="notice-card-footer button-row compact-actions">
         <a class="resource-link" href="notice.html?id=${encodeURIComponent(notice.id)}">상세보기</a>
-        <a class="resource-link" href="${notice.sourceUrl}" target="_blank" rel="noopener noreferrer">${officialLabel}</a>
+        ${actionLink ? `<a class="resource-link" href="${actionLink.url}" target="_blank" rel="noopener noreferrer">${actionLink.label || officialLabel}</a>` : ''}
       </div>
     </article>
   `;
