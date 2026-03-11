@@ -1017,13 +1017,18 @@ button {
 
 .detail-layout-simple {
   align-items: start;
+  grid-template-columns: minmax(0, 1.38fr) minmax(300px, 0.82fr);
 }
 
 .detail-top-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr);
-  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1.95fr) minmax(340px, 1.2fr);
+  gap: var(--space-5);
   align-items: start;
+}
+
+.detail-reference-block {
+  margin-top: var(--space-4);
 }
 
 @media (max-width: 1080px) {
