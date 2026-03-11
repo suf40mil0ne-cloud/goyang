@@ -1676,3 +1676,273 @@ button {
   background: rgba(162, 108, 8, 0.12);
   color: #855b03;
 }
+
+/* Readability Patch */
+
+body {
+  line-height: 1.72;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:where(h1, h2, h3, h4, p, li, dt, dd, label, blockquote) {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+.hero h2,
+.page-hero h2,
+.detail-title,
+.page-card h2,
+.page-card h3,
+.panel-head h3,
+.notice-card h4,
+.summary-card h4,
+.source-card strong,
+.mini-card strong {
+  line-break: auto;
+  text-wrap: balance;
+}
+
+.hero-copy-compact {
+  gap: var(--space-5);
+}
+
+.hero-copy-compact h2,
+.page-hero h2 {
+  max-width: 13.6em;
+  line-height: 1.34;
+  letter-spacing: -0.025em;
+}
+
+.hero-copy-compact > p,
+.detail-subtitle {
+  max-width: 36rem;
+  line-height: 1.78;
+}
+
+.hero-kicker,
+.brand-sub,
+.panel-head span,
+.helper-text,
+.map-note,
+.caption,
+.small-note,
+.subtle-label,
+.notice-facts dt,
+.info-row strong {
+  line-height: 1.6;
+}
+
+.page-card h2,
+.panel-head h3 {
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+
+.page-card h3 {
+  margin: 28px 0 14px;
+  line-height: 1.48;
+}
+
+.page-card > p,
+.page-card > ul,
+.page-card > ol,
+.page-card > .highlight-box,
+.page-card > .info-banner,
+.page-card > .disclaimer-box {
+  max-width: 68ch;
+}
+
+.page-card p,
+.notice-card p,
+.mini-card p,
+.summary-card p,
+.source-card p,
+.panel p,
+.page-card li,
+.detail-list li,
+.notice-meta-list li,
+.timeline-list li,
+.info-row span,
+.info-row a,
+.empty-state,
+.loading-state,
+.error-state {
+  line-height: 1.78;
+}
+
+.page-card p + p,
+.page-card p + ul,
+.page-card p + ol,
+.page-card ul + p,
+.page-card ol + p,
+.page-card .highlight-box + h3,
+.page-card p + .highlight-box,
+.page-card p + .info-banner,
+.page-card p + .disclaimer-box {
+  margin-top: 16px;
+}
+
+.page-card ul,
+.page-card ol,
+.stage-list,
+.detail-list,
+.notice-meta-list,
+.timeline-list {
+  display: grid;
+  gap: 10px;
+  padding-left: 1.2rem;
+}
+
+.notice-card {
+  gap: var(--space-5);
+}
+
+.notice-card h4 {
+  line-height: 1.5;
+  max-width: 24ch;
+}
+
+.notice-summary {
+  max-width: 39ch;
+  line-height: 1.76;
+}
+
+.notice-facts {
+  gap: 12px;
+}
+
+.notice-facts div {
+  gap: 6px;
+  padding-top: 12px;
+}
+
+.notice-facts dd {
+  line-height: 1.62;
+}
+
+.detail-title {
+  max-width: 15em;
+  line-height: 1.34;
+}
+
+.detail-subtitle {
+  margin-top: 16px;
+}
+
+.info-table {
+  gap: 14px;
+}
+
+.info-row {
+  gap: 8px;
+  padding-bottom: 14px;
+}
+
+.summary-card,
+.mini-card,
+.source-card {
+  gap: var(--space-3);
+}
+
+.summary-card p,
+.mini-card p,
+.source-card p {
+  max-width: 52ch;
+}
+
+.search-form,
+.field-grid,
+.stack-list,
+.saved-area-list,
+.detail-stack,
+.source-list {
+  gap: 14px;
+}
+
+.panel-head {
+  margin-bottom: var(--space-5);
+}
+
+.resource-meta,
+.hero-meta,
+.meta-line {
+  row-gap: 10px;
+}
+
+@media (min-width: 960px) {
+  .page-card > p,
+  .page-card > ul,
+  .page-card > ol,
+  .page-card > .highlight-box,
+  .page-card > .info-banner,
+  .page-card > .disclaimer-box {
+    max-width: 66ch;
+  }
+
+  .detail-main .page-card > p,
+  .detail-main .page-card > ul,
+  .detail-main .page-card > ol {
+    max-width: 64ch;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-copy-compact h2,
+  .page-hero h2,
+  .detail-title {
+    max-width: 14.2em;
+  }
+
+  .hero-copy-compact > p,
+  .detail-subtitle,
+  .notice-summary,
+  .summary-card p,
+  .mini-card p,
+  .source-card p {
+    max-width: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero h2,
+  .page-hero h2,
+  .detail-title {
+    font-size: clamp(1.62rem, 6.8vw, 2.02rem);
+    line-height: 1.38;
+    max-width: 12.8em;
+  }
+
+  .hero-copy-compact {
+    gap: var(--space-4);
+  }
+
+  .hero-copy-compact > p,
+  .detail-subtitle,
+  .page-card > p,
+  .page-card > ul,
+  .page-card > ol {
+    max-width: none;
+  }
+
+  .page-card,
+  .panel,
+  .hero,
+  .panel-block {
+    padding: 20px;
+  }
+
+  .page-card h3 {
+    margin-top: 24px;
+  }
+
+  .page-card ul,
+  .page-card ol,
+  .stage-list,
+  .detail-list,
+  .notice-meta-list,
+  .timeline-list {
+    gap: 8px;
+  }
+}
