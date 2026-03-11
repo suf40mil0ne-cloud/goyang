@@ -1025,7 +1025,7 @@ button {
 
 .detail-layout-simple {
   align-items: start;
-  --detail-column-template: minmax(0, 1.38fr) minmax(300px, 0.82fr);
+  --detail-column-template: minmax(0, 1.46fr) minmax(320px, 0.9fr);
   grid-template-columns: var(--detail-column-template);
 }
 
@@ -2020,12 +2020,27 @@ body {
 }
 
 .detail-title {
-  max-width: 18em;
-  line-height: 1.34;
+  max-width: 24em;
+  line-height: 1.32;
 }
 
 .detail-subtitle {
   margin-top: 16px;
+}
+
+.detail-hero .detail-subtitle,
+.detail-hero .hero-meta,
+.detail-hero .resource-meta {
+  max-width: 62rem;
+}
+
+.detail-main-top .summary-grid {
+  grid-template-columns: 1fr;
+}
+
+.detail-main-top .summary-card p,
+.detail-main-top .summary-card li {
+  max-width: none;
 }
 
 .info-table {
@@ -2089,7 +2104,7 @@ body {
   .hero-copy-compact h2,
   .page-hero h2,
   .detail-title {
-    max-width: 14.2em;
+    max-width: 16em;
   }
 
   .notice-facts {
@@ -2117,7 +2132,7 @@ body {
   .detail-title {
     font-size: clamp(1.62rem, 6.8vw, 2.02rem);
     line-height: 1.38;
-    max-width: 12.8em;
+    max-width: 14.2em;
   }
 
   .hero-copy-compact {
