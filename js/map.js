@@ -3,6 +3,7 @@ import { MAP_CONFIG } from './config.js';
 const registry = new WeakMap();
 let assetsPromise;
 let projectionReady = false;
+const BOOTSTRAP_TAG = '[MAP_BOOTSTRAP]';
 
 function escapeHtml(text) {
   return String(text)
@@ -19,12 +20,21 @@ function colorForStatus(statusKey) {
   return '#0c5ecf';
 }
 
+function logInfo(message, detail) {
+  console.info(`${BOOTSTRAP_TAG} ${message}`, detail || '');
+}
+
+function logError(message, detail) {
+  console.error(`${BOOTSTRAP_TAG} ${message}`, detail || '');
+}
+
 function ensureStylesheet(url) {
-  if (document.querySelector(`link[href="${url}"]`)) return;
+  if (document.querySelector(`link[href="${url}"]`)) return true;
   const link = document.createElement('link');
   link.rel = 'stylesheet';
   link.href = url;
   document.head.appendChild(link);
+  return true;
 }
 
 function loadScript(url) {
@@ -50,21 +60,67 @@ function loadScript(url) {
   });
 }
 
+async function waitFor(check, label, timeoutMs = 3000) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    if (check()) return true;
+    await new Promise((resolve) => window.setTimeout(resolve, 50));
+  }
+  throw new Error(`${label} did not become available in time.`);
+}
+
+function removeScript(url) {
+  document.querySelector(`script[src="${url}"]`)?.remove();
+}
+
+async function loadScriptCandidates(urls, label, check) {
+  let lastError;
+  for (const url of urls) {
+    try {
+      logInfo(`Loading ${label}`, url);
+      await loadScript(url);
+      await waitFor(check, label);
+      logInfo(`${label} ready`, url);
+      return url;
+    } catch (error) {
+      lastError = error;
+      logError(`${label} failed`, { url, error: error.message });
+      removeScript(url);
+    }
+  }
+  throw lastError || new Error(`${label} failed to load.`);
+}
+
+function ensureStylesheetCandidates(urls, label) {
+  for (const url of urls) {
+    try {
+      ensureStylesheet(url);
+      logInfo(`Attached ${label}`, url);
+      return url;
+    } catch (error) {
+      logError(`${label} attach failed`, { url, error: error.message });
+    }
+  }
+  return '';
+}
+
 async function ensureMapAssets() {
   if (!assetsPromise) {
     assetsPromise = (async () => {
-      ensureStylesheet(MAP_CONFIG.openLayersCssUrl);
-      await loadScript(MAP_CONFIG.jqueryScriptUrl);
-      if (!window.jQuery) throw new Error('jQuery did not initialize after loading.');
-      await loadScript(MAP_CONFIG.proj4ScriptUrl);
-      if (!window.proj4) throw new Error('proj4 did not initialize after loading.');
-      await loadScript(MAP_CONFIG.openLayersScriptUrl);
-      if (!window.ol?.Map) throw new Error('OpenLayers did not initialize after loading.');
-      await loadScript(MAP_CONFIG.ngiiScriptUrl);
-      if (!window.ngii_wmts?.map) {
-        throw new Error('NGII script loaded but ngii_wmts.map is unavailable. The preview environment may be blocking the external script.');
+      if (window.self !== window.top) {
+        logInfo('Running inside preview iframe. External scripts may be blocked by the preview environment.');
       }
+      ensureStylesheetCandidates(MAP_CONFIG.openLayersCssUrls, 'OpenLayers stylesheet');
+      await loadScriptCandidates(MAP_CONFIG.jqueryScriptUrls, 'jQuery', () => Boolean(window.jQuery));
+      await loadScriptCandidates(MAP_CONFIG.openLayersScriptUrls, 'OpenLayers', () => Boolean(window.ol?.Map));
+      await loadScriptCandidates(MAP_CONFIG.proj4ScriptUrls, 'proj4', () => Boolean(window.proj4));
       registerProjection();
+      if (!projectionReady) throw new Error('EPSG:5179 projection registration failed.');
+      await loadScriptCandidates(
+        MAP_CONFIG.ngiiScriptUrls,
+        'NGII script',
+        () => Boolean(window.ngii_wmts?.map)
+      );
       if (!projectionReady) throw new Error('EPSG:5179 projection registration failed.');
     })().catch((error) => {
       assetsPromise = null;
@@ -77,12 +133,21 @@ async function ensureMapAssets() {
 
 function registerProjection() {
   if (projectionReady || !window.ol || !window.proj4) return;
-  window.proj4.defs(
-    MAP_CONFIG.projectionCode,
-    '+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs'
-  );
-  window.ol.proj.proj4.register(window.proj4);
-  projectionReady = true;
+  if (!window.ol?.proj?.proj4?.register) {
+    logError('OpenLayers proj4 bridge is missing.');
+    return;
+  }
+  try {
+    window.proj4.defs(
+      MAP_CONFIG.projectionCode,
+      '+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +units=m +no_defs'
+    );
+    window.ol.proj.proj4.register(window.proj4);
+    projectionReady = true;
+    logInfo('Registered projection', MAP_CONFIG.projectionCode);
+  } catch (error) {
+    logError('Projection registration failed', error.message);
+  }
 }
 
 function resolveOlMap(mapInstance) {
@@ -222,13 +287,13 @@ export async function createNoticeMap({
   try {
     await ensureMapAssets();
   } catch (error) {
-    console.error('[map] Failed to load map assets.', error);
+    logError('Map assets failed to load', error.message);
     throw error;
   }
 
   const element = document.getElementById(elementId);
   if (!element) {
-    console.warn(`[map] Map container #${elementId} was not found.`);
+    logError(`Map container #${elementId} was not found.`);
     return null;
   }
 
@@ -240,12 +305,13 @@ export async function createNoticeMap({
     ({ width, height } = element.getBoundingClientRect());
   }
   if (!width || !height) {
-    console.error(`[map] Map container #${elementId} has invalid size: ${width}x${height}.`);
+    logError(`Map container #${elementId} has invalid size`, { width, height });
     throw new Error('Map container size is invalid.');
   }
+  logInfo('Map container size confirmed', { width, height, elementId });
 
   if (!window.ngii_wmts || !window.ol) {
-    console.error('[map] NGII or OpenLayers global was not initialized.');
+    logError('NGII or OpenLayers global was not initialized.');
     throw new Error('Map libraries are not available.');
   }
 
@@ -257,19 +323,31 @@ export async function createNoticeMap({
 
   let mapInstance;
   try {
-    mapInstance = new window.ngii_wmts.map(elementId, {
-      mapMode: MAP_CONFIG.ngiiMapMode,
-    });
+    try {
+      mapInstance = new window.ngii_wmts.map(elementId, {
+        mapMode: MAP_CONFIG.ngiiMapMode,
+      });
+    } catch (error) {
+      if (!/constructor/i.test(String(error))) throw error;
+      logInfo('NGII map did not behave like a constructor. Retrying without new.');
+      mapInstance = window.ngii_wmts.map(elementId, {
+        mapMode: MAP_CONFIG.ngiiMapMode,
+      });
+    }
   } catch (error) {
-    console.error('[map] NGII map initialization failed.', error);
+    logError('NGII map initialization failed', error.message);
     throw error;
   }
   setHybrid(mapInstance, hybrid);
 
   const map = resolveOlMap(mapInstance);
-  if (!map) throw new Error('NGII OpenLayers map instance could not be resolved.');
+  if (!map) {
+    logError('NGII map wrapper did not expose an OpenLayers instance.');
+    throw new Error('NGII OpenLayers map instance could not be resolved.');
+  }
 
   const projection = map.getView().getProjection()?.getCode?.() || MAP_CONFIG.projectionCode;
+  logInfo('Map projection resolved', projection);
   const featureLayer = createFeatureLayer({
     notices,
     projection,
@@ -310,5 +388,6 @@ export async function createNoticeMap({
   registry.set(element, { map, mapInstance, featureLayer, overlay });
   window.setTimeout(() => map.updateSize(), 0);
   window.setTimeout(() => map.updateSize(), 180);
+  logInfo('Map render completed', { projection, notices: notices.length });
   return map;
 }
