@@ -1496,6 +1496,7 @@ button {
   margin: 0;
   font-size: clamp(1.02rem, 2vw, 1.16rem);
   line-height: 1.42;
+  max-width: 30ch;
 }
 
 .notice-card h4 a {
@@ -1504,6 +1505,7 @@ button {
 
 .notice-summary {
   font-size: 0.98rem;
+  max-width: 52ch;
 }
 
 .signal-row {
@@ -1557,26 +1559,31 @@ button {
 
 .notice-facts {
   display: grid;
-  gap: 10px;
+  gap: 10px 14px;
   margin: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .notice-facts div {
   display: grid;
-  gap: 4px;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px;
   padding-top: 10px;
   border-top: 1px solid rgba(24, 33, 43, 0.07);
+  align-items: baseline;
 }
 
 .notice-facts dt {
   color: var(--ink-faint);
   font-size: 0.78rem;
+  white-space: nowrap;
 }
 
 .notice-facts dd {
   margin: 0;
   color: var(--ink);
   line-height: 1.5;
+  min-width: 0;
 }
 
 .notice-card-footer {
@@ -1606,8 +1613,8 @@ button {
 }
 
 .source-card-head {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: var(--space-3);
   align-items: flex-start;
   margin-bottom: var(--space-2);
@@ -1616,6 +1623,8 @@ button {
 .source-card strong {
   font-size: 1rem;
   line-height: 1.45;
+  min-width: 0;
+  max-width: 34ch;
 }
 
 .source-card-body {
@@ -1678,7 +1687,7 @@ button {
 }
 
 .info-row {
-  grid-template-columns: 160px minmax(0, 1fr);
+  grid-template-columns: 136px minmax(0, 1fr);
   gap: 12px;
   align-items: start;
   border-bottom-color: rgba(24, 33, 43, 0.08);
@@ -1898,7 +1907,7 @@ body {
 
 .hero-copy-compact h2,
 .page-hero h2 {
-  max-width: 13.6em;
+  max-width: 15.5em;
   line-height: 1.34;
   letter-spacing: -0.025em;
 }
@@ -1989,11 +1998,11 @@ body {
 
 .notice-card h4 {
   line-height: 1.5;
-  max-width: 24ch;
+  max-width: 30ch;
 }
 
 .notice-summary {
-  max-width: 39ch;
+  max-width: 52ch;
   line-height: 1.76;
 }
 
@@ -2011,7 +2020,7 @@ body {
 }
 
 .detail-title {
-  max-width: 15em;
+  max-width: 18em;
   line-height: 1.34;
 }
 
@@ -2081,6 +2090,15 @@ body {
   .page-hero h2,
   .detail-title {
     max-width: 14.2em;
+  }
+
+  .notice-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .notice-facts div {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 
   .hero-copy-compact > p,
