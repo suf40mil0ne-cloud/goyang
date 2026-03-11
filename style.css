@@ -1019,6 +1019,13 @@ button {
   align-items: start;
 }
 
+.detail-top-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
 @media (max-width: 1080px) {
   .hero-grid,
   .two-col,
@@ -1042,7 +1049,8 @@ button {
   .hero-grid,
   .two-col,
   .page-two-col,
-  .detail-layout {
+  .detail-layout,
+  .detail-top-grid {
     grid-template-columns: 1fr;
   }
 
