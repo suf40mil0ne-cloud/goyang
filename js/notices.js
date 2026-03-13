@@ -5,6 +5,7 @@ import { getStatusBadgeText, inferStatus, statusLabels } from './status.js';
 
 const noticesUrl = new URL('../data/notices.json', import.meta.url);
 const noticeLinksUrl = new URL('../data/notice-links.json', import.meta.url);
+const eumDetailOverridesUrl = new URL('../data/eum-detail-overrides.json', import.meta.url);
 const regionsUrl = new URL('../data/regions.json', import.meta.url);
 const guidesUrl = new URL('../data/guides.json', import.meta.url);
 const relatedGosiUrl = new URL('../data/related-gosi.json', import.meta.url);
@@ -155,6 +156,22 @@ function getOnlineSubmissionMeta(notice) {
   };
 }
 
+function applyEumDetailOverrides(notice, overrides = {}) {
+  const override = overrides?.[notice.id];
+  if (!override) return notice;
+
+  return {
+    ...notice,
+    ...override,
+    sourceDetailUrl: override.sourceDetailUrl ?? notice.sourceDetailUrl ?? '',
+    seq: override.seq ?? notice.seq ?? '',
+    pnncCd: override.pnncCd ?? override.pnnc_cd ?? notice.pnncCd ?? notice.pnnc_cd ?? '',
+    noticeNumber: override.noticeNumber ?? notice.noticeNumber ?? '',
+    eumDirectUrl: override.eumDirectUrl ?? notice.eumDirectUrl ?? '',
+    eumSourceType: override.eumSourceType ?? notice.eumSourceType ?? '',
+  };
+}
+
 function decorateNotice(notice, relatedGosi, noticeLinks) {
   const statusInfo = inferStatus(notice);
   const areaKey = areaMap[notice.sido] || 'gyeonggi';
@@ -219,9 +236,12 @@ export async function loadNotices() {
       fetchJson(noticesUrl),
       fetchJson(relatedGosiUrl),
       fetchJson(noticeLinksUrl),
-    ]).then(([items, relatedGosi, noticeLinks]) => {
+      fetchJson(eumDetailOverridesUrl),
+    ]).then(([items, relatedGosi, noticeLinks, eumDetailOverrides]) => {
       relatedGosiCache = Promise.resolve(relatedGosi);
-      return items.map((item) => decorateNotice(item, relatedGosi, noticeLinks));
+      return items
+        .map((item) => applyEumDetailOverrides(item, eumDetailOverrides))
+        .map((item) => decorateNotice(item, relatedGosi, noticeLinks));
     });
   }
   return noticesCache;
