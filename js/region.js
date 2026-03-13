@@ -35,7 +35,7 @@ function buildNoticeCard(notice) {
       </dl>
       <div class="button-row compact-actions">
         <a class="resource-link" href="notice.html?id=${encodeURIComponent(notice.id)}">상세보기</a>
-        ${actionLink ? `<a class="resource-link" href="${actionLink.url}" target="_blank" rel="noopener noreferrer">${actionLink.label || '원문 공고'}</a>` : ''}
+        ${actionLink ? `<a class="resource-link" href="${actionLink.url}" target="_blank" rel="noopener noreferrer">${actionLink.label || '원문 공고 보기'}</a>` : ''}
       </div>
     </article>
   `;
@@ -171,7 +171,7 @@ export async function initRegionPage() {
   renderGuidance(query, scopedNotices);
 
   if (query.scope === 'nation') {
-    document.title = '전국 지역 허브 | 주민공람 레이더';
+    document.title = '전국 지역 허브 | 공람콕';
     if (title) title.textContent = '전국 지역 허브';
     if (summary) summary.textContent = '전국 시도 기준으로 현재 진행 중인 주민공람공고와 마감 임박 공고를 빠르게 찾을 수 있습니다.';
     if (count) count.textContent = `전국 등록 공고 ${scopedNotices.length}건`;
@@ -192,7 +192,7 @@ export async function initRegionPage() {
       }).join('');
     }
   } else if (query.scope === 'sido' && regionMeta) {
-    document.title = `${regionMeta.name} 지역 허브 | 주민공람 레이더`;
+    document.title = `${regionMeta.name} 지역 허브 | 공람콕`;
     if (title) title.textContent = `${regionMeta.name} 지역 허브`;
     if (summary) summary.textContent = `${regionMeta.name} 시군구 기준으로 진행 중 공고를 정리합니다. 먼저 시군구를 고르면 내 지역 공고만 더 좁혀서 볼 수 있습니다.`;
     if (count) count.textContent = `${regionMeta.name} 등록 공고 ${scopedNotices.length}건`;
@@ -212,18 +212,18 @@ export async function initRegionPage() {
       }).join('');
     }
   } else if (query.scope === 'sigungu' && districtMeta) {
-    document.title = `${districtMeta.fullName} 공고 허브 | 주민공람 레이더`;
+    document.title = `${districtMeta.fullName} 공고 허브 | 공람콕`;
     if (title) title.textContent = `${districtMeta.fullName} 공고 허브`;
     if (summary) summary.textContent = `${districtMeta.fullName} 기준으로 진행 중 공고와 최근 종료 공고를 한눈에 정리합니다.`;
     if (count) count.textContent = `${districtMeta.fullName} 등록 공고 ${scopedNotices.length}건`;
     if (submeta) submeta.textContent = `행정코드 ${districtMeta.adminCode || '미기재'}`;
     if (guideCopy) guideCopy.textContent = '마감 임박 공고와 온라인 제출 가능 여부를 먼저 확인한 뒤, 상세 페이지에서 원문과 제출처를 다시 보세요.';
     if (entryTitle) entryTitle.textContent = '관련 이동';
-    if (entrySummary) entrySummary.textContent = '시도 허브와 지도 보기로 바로 이동할 수 있습니다.';
+    if (entrySummary) entrySummary.textContent = '시도 허브와 지도에서 보기로 바로 이동할 수 있습니다.';
     if (entryList) {
       entryList.innerHTML = [
         buildRegionLinkCard(districtMeta.sido, `${districtMeta.sido} 전체 허브로 돌아갑니다.`, getRegionHref({ scope: 'sido', sido: districtMeta.sido }), '시도 전체 보기'),
-        buildRegionLinkCard('지도 보기', `${districtMeta.fullName} 주변 공고를 NGII 지도에서 보조적으로 확인합니다.`, 'map.html', '지도 페이지 이동'),
+        buildRegionLinkCard('지도에서 보기', `${districtMeta.fullName} 주변 공람을 NGII 지도에서 보조적으로 확인합니다.`, 'map.html', '지도 페이지 이동'),
       ].join('');
     }
   }
@@ -234,7 +234,7 @@ export async function initRegionPage() {
     const activeNotices = filterByStatus(scopedNotices, 'active').slice(0, 8);
     activeList.innerHTML = activeNotices.length
       ? activeNotices.map(buildNoticeCard).join('')
-      : '<div class="empty-state">현재 이 범위에서 확인된 진행 중 주민공람공고가 없습니다.</div>';
+      : '<div class="empty-state">현재 확인된 주변 공람정보가 없습니다.</div>';
   }
 
   if (endedSummary) endedSummary.textContent = `${getRegionDisplayName(query)} 범위의 최근 종료 공고입니다.`;

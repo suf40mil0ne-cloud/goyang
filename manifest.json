@@ -1,10 +1,18 @@
 {
-  "name": "주민공람 레이더",
-  "short_name": "주민공람 레이더",
+  "name": "공람콕",
+  "short_name": "공람콕",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#f5fbff",
   "theme_color": "#0c5ecf",
-  "description": "내 주변 주민공람공고를 쉽게 찾고 이해하는 도시변화 탐색 서비스",
+  "description": "공람콕은 주민공람, 인터넷 의견청취, 도시계획 공고를 현재 위치 중심으로 지도에서 쉽게 확인할 수 있는 서비스입니다.",
+  "icons": [
+    {
+      "src": "assets/jr-radar-mark.svg",
+      "sizes": "256x256",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
   "lang": "ko"
 }

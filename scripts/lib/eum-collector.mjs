@@ -166,7 +166,7 @@ export async function fetchDecodedHtml(url, { fetchImpl = fetch, headers = {}, s
   const response = await fetchImpl(url, {
     headers: {
       'accept-language': 'ko-KR,ko;q=0.9,en;q=0.7',
-      'user-agent': 'Mozilla/5.0 (compatible; GoyangUrbanBoardBot/1.0; +https://goyang-urbanboard.example)',
+      'user-agent': 'Mozilla/5.0 (compatible; GongramKokBot/1.0; +https://gongramkok.example)',
       ...headers,
     },
     redirect: 'follow',

@@ -396,7 +396,7 @@ export function getPreferredNoticeActionLink(notice) {
       type: directNoticeLink.type || 'notice',
       label: notice?.hearingType === '인터넷 주민의견청취'
         ? '원문·제출처 확인'
-        : '원문 공고',
+        : '원문 공고 보기',
     };
   }
 

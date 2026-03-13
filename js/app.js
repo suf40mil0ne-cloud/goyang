@@ -127,7 +127,7 @@ function syncSelectorWithRegion(region) {
 }
 
 function buildNoticeCard(notice) {
-  const officialLabel = notice.hearingType === '인터넷 주민의견청취' ? '원문·제출처 확인' : '원문 공고';
+  const officialLabel = notice.hearingType === '인터넷 주민의견청취' ? '원문·제출처 확인' : '원문 공고 보기';
   const actionLink = getPreferredNoticeActionLink(notice);
   const signalMarkup = (notice.signalBadges || [])
     .slice(0, 4)
@@ -249,9 +249,9 @@ function syncRegionLinks() {
 function renderEmptyState(region) {
   return `
     <div class="empty-state">
-      <p>현재 ${region.sigungu}에서 확인된 진행 중 주민공람공고가 없습니다.</p>
+      <p>현재 확인된 주변 공람정보가 없습니다.</p>
       <div class="button-row compact-actions">
-        <button class="ghost-button" type="button" data-empty-action="nearby">인접 시군구 보기</button>
+        <button class="ghost-button" type="button" data-empty-action="nearby">주변 공람 보기</button>
         <button class="ghost-button" type="button" data-empty-action="ended">최근 종료 공고 보기</button>
         <button class="ghost-button" type="button" data-empty-action="picker">다른 지역 선택</button>
       </div>
@@ -270,7 +270,7 @@ function renderNoticeList() {
   renderSavedRegions();
 
   if (!state.selectedRegion) {
-    summary.textContent = '현재 위치를 확인하거나 시도와 시군구를 직접 선택하면 해당 지역의 진행 중 공고를 먼저 보여줍니다.';
+    summary.textContent = '내 위치를 확인하거나 시도와 시군구를 직접 선택하면 해당 지역의 진행 중 공람 정보를 먼저 보여줍니다.';
     container.innerHTML = '<div class="loading-state">위치 확인 또는 지역 선택 후 내 시군구 공고를 확인하세요.</div>';
     actions.hidden = true;
     return;

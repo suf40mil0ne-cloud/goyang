@@ -4,15 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
-  <title>주민공람 레이더 | 내 위치 기준 진행 중 주민공람공고</title>
-  <meta name="description" content="내 위치를 기준으로 지금 진행 중인 주민공람공고와 주민의견청취 공고를 빠르게 확인하는 서비스입니다." />
+  <title>공람콕 | 내 주변 주민공람 정보를 지도에서 콕</title>
+  <meta name="description" content="공람콕은 주민공람, 인터넷 의견청취, 도시계획 공고를 현재 위치 중심으로 지도에서 쉽게 확인할 수 있는 서비스입니다." />
   <meta name="robots" content="index,follow" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="주민공람 레이더 | 내 위치 기준 진행 중 주민공람공고" />
-  <meta property="og:description" content="현재 위치 또는 지역 선택으로 내 자치구의 진행 중 주민공람공고를 바로 확인하세요." />
+  <meta property="og:title" content="공람콕 | 내 주변 주민공람 정보를 지도에서 콕" />
+  <meta property="og:description" content="주민공람, 인터넷 의견청취, 도시계획 공고를 현재 위치 중심으로 쉽고 빠르게 확인하세요." />
   <meta property="og:url" content="https://goyang.pages.dev/" />
-  <meta property="og:site_name" content="주민공람 레이더" />
+  <meta property="og:site_name" content="공람콕" />
   <link rel="canonical" href="https://goyang.pages.dev/" />
+  <link rel="icon" href="assets/jr-radar-mark.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
@@ -22,10 +23,10 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "주민공람 레이더",
-      "alternateName": "Urban Planning Desk",
+      "name": "공람콕",
+      "alternateName": "내 주변 주민공람 정보를 지도에서 콕",
       "url": "https://goyang.pages.dev/",
-      "description": "내 위치를 기준으로 진행 중인 주민공람공고를 빠르게 보여주는 서비스"
+      "description": "공람콕은 주민공람, 인터넷 의견청취, 도시계획 공고를 현재 위치 중심으로 지도에서 쉽게 확인할 수 있는 서비스입니다."
     }
   </script>
 </head>
@@ -33,11 +34,11 @@
   <div class="bg-layer" aria-hidden="true"></div>
 
   <header class="topbar">
-    <a class="brand brand-link" href="index.html" aria-label="주민공람 레이더 홈으로 이동">
-      <span class="brand-mark">JR</span>
+    <a class="brand brand-link" href="index.html" aria-label="공람콕 홈으로 이동">
+      <span class="brand-mark">공람콕</span>
       <div>
-        <p class="brand-sub">내 주변 진행 중인 주민공람공고 찾기</p>
-        <h1>주민공람 레이더</h1>
+        <p class="brand-sub">내 주변 주민공람 정보를 지도에서 콕</p>
+        <h1>공람콕</h1>
       </div>
     </a>
     <nav class="main-nav" aria-label="주요 메뉴">
@@ -51,14 +52,14 @@
     <section class="hero hero-home">
       <div class="hero-grid hero-grid-simple">
         <div class="hero-copy hero-copy-compact">
-          <p class="hero-kicker">내 위치를 기준으로 지금 진행 중인 주민공람공고를 빠르게 확인하는 서비스</p>
-          <h2>내 위치 기준으로 지금 진행 중인 주민공람공고를 확인하세요.</h2>
+          <p class="hero-kicker">내 주변 주민공람 정보를 지도에서 콕</p>
+          <h2>내 주변 주민공람, 인터넷 의견청취, 도시계획 공고를 빠르게 확인하세요.</h2>
           <p class="hero-kicker hero-kicker-emphasis">내 의견이 우리 동네의 계획 변화에 반영될 수 있습니다.</p>
-          <p>첫 화면에서는 내 자치구 또는 행정구의 진행 중 공고만 우선 보여줍니다. 토지이음 원문, 지자체 공고, 관련 설명자료와 기사 맥락은 상세에서 함께 확인할 수 있습니다.</p>
+          <p>공람콕은 내 주변에서 진행 중인 주민공람, 인터넷 의견청취, 도시계획 관련 공고를 지도 기반으로 쉽고 빠르게 확인할 수 있는 서비스입니다. 복잡한 공고문을 일일이 찾지 않아도, 위치 중심으로 필요한 정보만 한눈에 볼 수 있습니다.</p>
           <div class="button-row">
-            <button id="detect-location" class="primary-button" type="button">현재 위치로 찾기</button>
+            <button id="detect-location" class="primary-button" type="button">내 위치로 보기</button>
             <button id="toggle-region-picker" class="ghost-button" type="button" aria-expanded="false" aria-controls="region-picker">지역 직접 선택</button>
-            <a class="ghost-button" href="map.html" aria-label="지도 페이지로 이동">지도보기</a>
+            <a class="ghost-button" href="map.html" aria-label="지도 페이지로 이동">지도에서 보기</a>
           </div>
         </div>
 
@@ -98,7 +99,7 @@
           </div>
         </div>
         <div class="button-row compact-actions">
-          <button class="primary-button" type="submit">이 지역 공고 보기</button>
+          <button class="primary-button" type="submit">주변 공람 보기</button>
           <button id="use-saved-region" class="ghost-button" type="button">최근 본 지역 불러오기</button>
         </div>
       </form>
@@ -151,7 +152,7 @@
       <a href="pages/terms.html">이용약관</a>
       <a href="pages/contact.html">문의</a>
     </nav>
-    <p>© <span data-current-year>2026</span> 주민공람 레이더 | Urban Planning Desk</p>
+    <p>© <span data-current-year>2026</span> 공람콕 | 내 주변 주민공람 정보를 지도에서 콕</p>
   </footer>
 
   <script type="module" src="main.js"></script>

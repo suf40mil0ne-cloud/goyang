@@ -41,7 +41,7 @@ function injectStructuredData(notice) {
     description: notice.shortSummary,
     datePublished: notice.postedDate,
     dateModified: notice.lastVerifiedAt,
-    author: { '@type': 'Organization', name: '주민공람 레이더' },
+    author: { '@type': 'Organization', name: '공람콕' },
     mainEntityOfPage: `https://goyang.pages.dev/notice.html?id=${notice.id}`,
   });
   document.head.appendChild(articleScript);
@@ -120,7 +120,7 @@ function getRenderableResourceItems(items, kind) {
 }
 
 function renderNotice(notice, relatedNotices) {
-  document.title = `${notice.title} | 주민공람 레이더`;
+  document.title = `${notice.title} | 공람콕`;
   setMeta('meta[name="description"]', `${notice.easySummary} 실제 제출은 원문 공고 기준으로 진행해야 합니다.`);
   setMeta('meta[property="og:title"]', document.title);
   setMeta('meta[property="og:description"]', notice.easySummary);
@@ -231,7 +231,7 @@ function renderNotice(notice, relatedNotices) {
         'official-detail': {
           label: notice.directNoticeLink.label || '공식 게시판',
           description: '지자체 고시공고 또는 공식 게시글 상세 화면으로 바로 연결됩니다.',
-          buttonLabel: '원문공고 열기',
+          buttonLabel: '원문 공고 보기',
         },
       }[notice.directNoticeType];
 

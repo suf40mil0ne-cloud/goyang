@@ -1,6 +1,6 @@
-# Goyang Urban Board
+# 공람콕
 
-고양시 도시정보 공유용 정적 웹사이트입니다.
+내 주변 주민공람 정보를 지도에서 콕 확인하는 정적 웹사이트입니다.
 
 ## 페이지 구성
 - `/index.html`: 메인 대시보드(실시간 기상/대기 + 도시 해설)
@@ -12,7 +12,7 @@
 
 ## AdSense 심사 전 확인
 1. 도메인과 Search Console 소유권 인증
-2. `contact@goyang-urbanboard.example`를 실제 운영 메일로 변경
+2. `contact@gongramkok.example`를 실제 운영 메일로 변경
 3. AdSense 승인 후 `ads.txt`에 발급된 `pub-` 라인 입력
 4. 사이트에 정책 페이지 링크가 정상 동작하는지 확인
 5. 충분한 독창 콘텐츠(해설 문서) 지속 추가
