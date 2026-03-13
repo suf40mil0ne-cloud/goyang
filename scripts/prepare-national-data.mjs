@@ -762,6 +762,31 @@ function isEumListUrl(value = '') {
   return isEumUrl(value) && /\/(ih\/ihHearingList|hr\/hrPeopleHearList)\.jsp$/i.test(new URL(String(value)).pathname);
 }
 
+function isHomepageUrl(value = '') {
+  if (!isUsableUrl(value)) return false;
+  const url = new URL(String(value));
+  const pathname = url.pathname.replace(/\/+$/u, '') || '/';
+  return pathname === '/' || /^\/(index(\.[a-z0-9]+)?)$/iu.test(pathname);
+}
+
+function isDirectDocumentUrl(value = '') {
+  if (!isUsableUrl(value)) return false;
+  const url = new URL(String(value));
+  return /\.(pdf|hwp|hwpx|doc|docx|xls|xlsx|zip)$/iu.test(url.pathname);
+}
+
+function isOfficialDetailUrl(value = '') {
+  if (!isUsableUrl(value)) return false;
+  if (isEumUrl(value) || isHomepageUrl(value)) return false;
+  const url = new URL(String(value));
+  const pathname = url.pathname.toLowerCase();
+  return pathname.length > 1;
+}
+
+function hasValue(value) {
+  return Boolean(String(value || '').trim());
+}
+
 function isEumNotice(notice = {}) {
   const sourceType = String(notice.sourceType || '').toLowerCase();
   const eumSourceType = String(notice.eumSourceType || '').toLowerCase();
@@ -836,6 +861,71 @@ function buildEumDetailUrl(notice = {}) {
   return '';
 }
 
+function evaluateVerification(notice) {
+  const hasRequiredMetadata = hasValue(notice.title)
+    && hasValue(notice.organization)
+    && hasValue(notice.sourceType)
+    && (hasValue(notice.postedDate) || (hasValue(notice.hearingStartDate) && hasValue(notice.hearingEndDate)));
+  const isLegacySeed = String(notice.sourceNoticeId || '').startsWith('LEGACY-');
+  const hasEumDetail = isEumDetailUrl(notice.sourceDetailUrl) || isEumDetailUrl(notice.eumDirectUrl);
+  const hasOfficialDetail = isOfficialDetailUrl(notice.officialNoticeUrl);
+  const hasOfficialAttachment = Array.isArray(notice.attachmentUrls) && notice.attachmentUrls.length > 0;
+
+  if (isLegacySeed) {
+    return {
+      verificationStatus: 'rejected',
+      verificationReason: '개발용 LEGACY seed 데이터는 노출 대상에서 제거합니다.',
+      sourceConfidence: 'low',
+    };
+  }
+
+  if (!hasRequiredMetadata) {
+    return {
+      verificationStatus: 'rejected',
+      verificationReason: '제목·기관·공고일/열람기간·sourceType 필수 메타데이터가 부족합니다.',
+      sourceConfidence: 'low',
+    };
+  }
+
+  if (hasEumDetail) {
+    return {
+      verificationStatus: 'verified',
+      verificationReason: '토지이음 상세 공고문과 직접 연결됩니다.',
+      sourceConfidence: 'high',
+    };
+  }
+
+  if (hasOfficialDetail) {
+    return {
+      verificationStatus: 'verified',
+      verificationReason: '지자체 공식 게시글 상세 URL이 직접 확인됩니다.',
+      sourceConfidence: 'high',
+    };
+  }
+
+  if (hasOfficialAttachment) {
+    return {
+      verificationStatus: 'verified',
+      verificationReason: '공식 첨부 공고문 파일이 직접 확인됩니다.',
+      sourceConfidence: 'medium',
+    };
+  }
+
+  if (isEumNotice(notice) && hasValue(notice.noticeNumber)) {
+    return {
+      verificationStatus: 'partial',
+      verificationReason: '토지이음 검색 메타데이터만 확보됐고 상세 공고문은 아직 직접 확인되지 않았습니다.',
+      sourceConfidence: 'medium',
+    };
+  }
+
+  return {
+    verificationStatus: 'rejected',
+    verificationReason: '토지이음 상세 또는 지자체 공식 원문이 직접 확인되지 않았습니다.',
+    sourceConfidence: 'low',
+  };
+}
+
 function decorateNotice(notice) {
   const regionKey = `${notice.sido}::${notice.sigungu}`;
   const region = sigunguByKey.get(regionKey);
@@ -843,7 +933,9 @@ function decorateNotice(notice) {
     ? notice.onlineSubmissionAvailable
     : notice.hearingType?.includes('인터넷') || notice.sourceType === 'land-internet';
   const attachmentUrls = Array.isArray(notice.attachments)
-    ? notice.attachments.map((item) => item.url).filter(Boolean)
+    ? notice.attachments
+      .map((item) => item.url)
+      .filter((value) => isDirectDocumentUrl(value))
     : [];
   const eumIdentifiers = extractEumIdentifiers(notice.sourceDetailUrl, notice.sourceUrl, notice.eumDirectUrl);
   const seq = String(notice.seq || eumIdentifiers.seq || '').trim();
@@ -859,6 +951,8 @@ function decorateNotice(notice) {
     ? ''
     : notice.sourceDetailUrl || notice.sourceUrl || '';
 
+  const officialNoticeUrl = isOfficialDetailUrl(notice.officialNoticeUrl) ? notice.officialNoticeUrl : '';
+
   return {
     ...notice,
     adminCode: notice.adminCode || region?.adminCode || '',
@@ -868,19 +962,29 @@ function decorateNotice(notice) {
     ...(eumSourceType ? { eumSourceType } : {}),
     sourceDetailUrl,
     eumDirectUrl: isEumDetailUrl(notice.eumDirectUrl) ? notice.eumDirectUrl : (eumDirectUrl || ''),
-    officialNoticeUrl: notice.officialNoticeUrl || '',
+    officialNoticeUrl,
     attachmentUrls,
-    hasOfficialNotice: Boolean(notice.officialNoticeUrl),
+    hasOfficialNotice: Boolean(officialNoticeUrl),
     hasAttachment: attachmentUrls.length > 0,
     linkVerifiedAt: notice.linkVerifiedAt || notice.lastVerifiedAt,
   };
 }
 
-const currentNotices = readJson('notices.json');
-const mergedNotices = [
-  ...currentNotices.map(decorateNotice),
-  ...nationalNoticeSeeds.map(decorateNotice).filter((seed) => !currentNotices.some((item) => item.id === seed.id)),
-].sort((a, b) => new Date(b.hearingEndDate) - new Date(a.hearingEndDate));
+function readSourceNotices() {
+  const auditPath = path.join(dataDir, 'notices-audit.json');
+  if (fs.existsSync(auditPath)) return readJson('notices-audit.json');
+  return readJson('notices.json');
+}
+
+const sourceNotices = readSourceNotices();
+const auditedNotices = sourceNotices
+  .map(decorateNotice)
+  .map((notice) => ({
+    ...notice,
+    ...evaluateVerification(notice),
+  }))
+  .sort((a, b) => new Date(b.hearingEndDate) - new Date(a.hearingEndDate));
+const mergedNotices = auditedNotices.filter((notice) => notice.verificationStatus === 'verified');
 
 const regions = sidoCatalog.map((sido) => {
   const districts = sigunguCatalog
@@ -932,10 +1036,12 @@ const sigunguJson = sigunguCatalog.map((item) => ({
   aliases: item.aliases,
 }));
 
+writeJson('notices-audit.json', auditedNotices);
 writeJson('notices.json', mergedNotices);
 writeJson('regions.json', regions);
 writeJson('sido.json', sidoJson);
 writeJson('sigungu.json', sigunguJson);
 
-console.log(`Updated notices: ${mergedNotices.length}`);
+console.log(`Updated audited notices: ${auditedNotices.length}`);
+console.log(`Updated verified notices: ${mergedNotices.length}`);
 console.log(`Updated regions: ${regions.length}`);

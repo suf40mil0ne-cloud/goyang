@@ -156,6 +156,77 @@ function getOnlineSubmissionMeta(notice) {
   };
 }
 
+function hasValue(value) {
+  return Boolean(String(value || '').trim());
+}
+
+function evaluateVerification(notice, enrichment) {
+  const hasRequiredMetadata = hasValue(notice.title)
+    && hasValue(notice.organization)
+    && hasValue(notice.sourceType)
+    && (hasValue(notice.postedDate) || (hasValue(notice.hearingStartDate) && hasValue(notice.hearingEndDate)));
+  const isLegacySeed = String(notice.sourceNoticeId || '').startsWith('LEGACY-');
+  const hasEumDetail = enrichment.sourceDetailLink?.kind === 'eum'
+    && enrichment.sourceDetailLink?.mode === 'detail'
+    && hasValue(enrichment.sourceDetailLink?.url);
+  const hasOfficialDetail = enrichment.directNoticeType === 'official-detail' && hasValue(enrichment.directNoticeUrl);
+  const hasOfficialAttachment = Array.isArray(enrichment.attachmentLinks) && enrichment.attachmentLinks.length > 0;
+
+  if (isLegacySeed) {
+    return {
+      verificationStatus: 'rejected',
+      verificationReason: '개발용 LEGACY seed 데이터는 노출 대상에서 제거합니다.',
+      sourceConfidence: 'low',
+    };
+  }
+
+  if (!hasRequiredMetadata) {
+    return {
+      verificationStatus: 'rejected',
+      verificationReason: '제목·기관·공고일/열람기간·sourceType 필수 메타데이터가 부족합니다.',
+      sourceConfidence: 'low',
+    };
+  }
+
+  if (hasEumDetail) {
+    return {
+      verificationStatus: 'verified',
+      verificationReason: '토지이음 상세 공고문과 직접 연결됩니다.',
+      sourceConfidence: 'high',
+    };
+  }
+
+  if (hasOfficialDetail) {
+    return {
+      verificationStatus: 'verified',
+      verificationReason: '지자체 공식 게시글 상세 URL이 직접 확인됩니다.',
+      sourceConfidence: 'high',
+    };
+  }
+
+  if (hasOfficialAttachment) {
+    return {
+      verificationStatus: 'verified',
+      verificationReason: '공식 첨부 공고문 파일이 직접 확인됩니다.',
+      sourceConfidence: 'medium',
+    };
+  }
+
+  if (enrichment.sourceDetailLink?.kind === 'eum' && enrichment.sourceDetailLink?.mode === 'search-number') {
+    return {
+      verificationStatus: 'partial',
+      verificationReason: '토지이음 목록 검색까지만 확보됐고 상세 공고문이 직접 확인되지 않았습니다.',
+      sourceConfidence: 'medium',
+    };
+  }
+
+  return {
+    verificationStatus: 'rejected',
+    verificationReason: '토지이음 상세 또는 지자체 공식 원문이 직접 확인되지 않았습니다.',
+    sourceConfidence: 'low',
+  };
+}
+
 function applyEumDetailOverrides(notice, overrides = {}) {
   const override = overrides?.[notice.id];
   if (!override) return notice;
@@ -178,6 +249,7 @@ function decorateNotice(notice, relatedGosi, noticeLinks) {
   const normalizedConfidence = normalizeLocationConfidence(notice);
   const sourceMeta = getSourceMeta(notice.sourceType);
   const enrichment = mergeNoticeConnections(notice, noticeLinks?.[notice.id], relatedGosi);
+  const verification = evaluateVerification(notice, enrichment);
   const locationConfidenceMeta = getLocationConfidenceMeta(normalizedConfidence);
   const statusBadgeText = getStatusBadgeText(statusInfo.key, statusInfo.daysLeft);
   const onlineSubmissionMeta = getOnlineSubmissionMeta(notice);
@@ -187,6 +259,7 @@ function decorateNotice(notice, relatedGosi, noticeLinks) {
     sourceMeta,
     easySummary: getEasySummary(notice),
     ...enrichment,
+    ...verification,
     statusKey: statusInfo.key,
     statusLabel: statusInfo.label,
     daysLeft: statusInfo.daysLeft,
@@ -241,7 +314,8 @@ export async function loadNotices() {
       relatedGosiCache = Promise.resolve(relatedGosi);
       return items
         .map((item) => applyEumDetailOverrides(item, eumDetailOverrides))
-        .map((item) => decorateNotice(item, relatedGosi, noticeLinks));
+        .map((item) => decorateNotice(item, relatedGosi, noticeLinks))
+        .filter((item) => item.verificationStatus === 'verified');
     });
   }
   return noticesCache;
