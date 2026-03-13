@@ -1727,6 +1727,20 @@ button {
   border: 1px dashed rgba(24, 33, 43, 0.12);
   background: var(--surface-muted);
   color: var(--ink-soft);
+  display: grid;
+  gap: var(--space-4);
+}
+
+.empty-state > .button-row,
+.empty-state > .compact-actions {
+  margin-top: 0;
+}
+
+.panel > .stack-list + .button-row,
+.panel > .stack-list + .compact-actions,
+.panel > .empty-state + .button-row,
+.panel > .empty-state + .compact-actions {
+  margin-top: var(--space-4);
 }
 
 .loading-state {
