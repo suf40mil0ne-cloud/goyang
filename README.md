@@ -25,6 +25,10 @@
 - `node scripts/fetch-eum-batch.mjs --types=hr,ih --max-pages=3`
   - 토지이음 hr/ih 목록을 배치로 수집하고 상세 식별자(`seq`, `pnnc_cd`) 기준으로 상세를 저장합니다.
   - 한글 디코딩은 응답 헤더, meta charset, `euc-kr`/`cp949` fallback 순서로 처리합니다.
+  - `--official-source=data/municipality-source.json`
+    - 지자체 공식 고시공고/공보/첨부 원문 보강 소스를 exact match 우선으로 병합합니다.
+  - `--ih-public-source=data/ih-public-source.json`
+    - 인터넷 주민의견청취 공공데이터 보조 메타를 검증/보정 축으로 병합합니다.
 - `node scripts/prepare-national-data.mjs`
-  - `data/eum-source.json`과 `data/municipality-source.json`이 있으면 그것만 읽어 `data/notices-audit.json`과 `data/notices.json`을 다시 생성합니다.
+  - `data/eum-source.json`과 `data/municipality-source.json`만 source-of-truth로 읽어 `data/notices-audit.json`과 `data/notices.json`을 다시 생성합니다.
   - 공개용 `data/notices.json`에는 `verified` 공고만 남습니다.

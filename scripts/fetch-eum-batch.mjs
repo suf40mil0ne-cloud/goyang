@@ -30,11 +30,20 @@ function writeJson(targetPath, value) {
   fs.writeFileSync(targetPath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
+function readJsonIfExists(targetPath) {
+  if (!fs.existsSync(targetPath)) return [];
+  return JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+}
+
 async function main() {
   const types = getTypesArg();
   const maxPages = getNumberArg('max-pages', 3);
   const detailDelayMs = getNumberArg('detail-delay-ms', 250);
   const outputPath = path.resolve(rootDir.pathname, getArgValue('output', 'data/eum-source.json'));
+  const officialSourcePath = path.resolve(rootDir.pathname, getArgValue('official-source', 'data/municipality-source.json'));
+  const ihPublicSourcePath = path.resolve(rootDir.pathname, getArgValue('ih-public-source', 'data/ih-public-source.json'));
+  const officialSources = readJsonIfExists(officialSourcePath);
+  const ihPublicSources = readJsonIfExists(ihPublicSourcePath);
 
   if (!types.length) {
     throw new Error('At least one source type is required. Use --types=hr,ih');
@@ -44,6 +53,8 @@ async function main() {
     types,
     maxPages,
     detailDelayMs,
+    officialSources,
+    ihPublicSources,
     onProgress(event) {
       if (event.stage === 'list') {
         console.log(`[${event.sourceType}] list page ${event.pageNo}: ${event.identifiers} identifiers`);
@@ -57,6 +68,7 @@ async function main() {
   writeJson(outputPath, payload);
 
   console.log(`Saved ${payload.length} EUM notices to ${outputPath}`);
+  console.log(`Supplement sources: official ${officialSources.length} / ih-public ${ihPublicSources.length}`);
 }
 
 main().catch((error) => {
