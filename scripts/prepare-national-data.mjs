@@ -819,30 +819,6 @@ function normalizeSigunguCode(value = '') {
   return '';
 }
 
-function normalizeNoticeNumber(value = '') {
-  return String(value || '')
-    .replace(/\s+/g, '')
-    .replace(/[()\-]/g, '')
-    .toLowerCase();
-}
-
-function normalizeMergeTitle(value = '') {
-  return String(value || '')
-    .replace(/\[[^\]]+\]|\([^)]+\)/g, ' ')
-    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toLowerCase();
-}
-
-function normalizeMergeOrganization(value = '') {
-  return String(value || '')
-    .replace(/도시관리국|도시계획국|도시정책국|도시계획과|도시관리과|도시정비과|도시디자인과/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .toLowerCase();
-}
-
 function deriveTargetAreaText(...values) {
   for (const value of values) {
     const text = String(value || '').replace(/\s+/g, ' ').trim();
@@ -876,7 +852,7 @@ function resolveNoticeRegion(notice = {}) {
     };
   }
 
-  const targetRegion = resolveRegionFromText(notice.targetAreaText, notice.locationText, notice.title);
+  const targetRegion = resolveRegionFromText(notice.targetAreaText, notice.locationText, notice.rawText, notice.title);
   if (targetRegion) {
     return {
       region: targetRegion,
@@ -1040,74 +1016,6 @@ function evaluateVerification(notice) {
   };
 }
 
-function mergeAttachmentUrls(...lists) {
-  return [...new Set(
-    lists
-      .flat()
-      .filter(Boolean)
-      .map((value) => String(value).trim())
-      .filter(Boolean)
-  )];
-}
-
-function buildMergeKey(notice = {}) {
-  const noticeNumber = normalizeNoticeNumber(notice.noticeNumber);
-  if (noticeNumber) return `number:${noticeNumber}`;
-
-  const organization = normalizeMergeOrganization(notice.organization);
-  const title = normalizeMergeTitle(notice.title);
-  const postedDate = String(notice.postedDate || '').trim();
-  if (organization && title && postedDate) {
-    return `meta:${organization}:${postedDate}:${title}`;
-  }
-
-  return '';
-}
-
-function mergeNoticePair(baseNotice, incomingNotice) {
-  if (!baseNotice) return incomingNotice;
-
-  return {
-    ...baseNotice,
-    ...incomingNotice,
-    sourceType: baseNotice.sourceType === 'municipality' && incomingNotice.sourceType !== 'municipality'
-      ? incomingNotice.sourceType
-      : (baseNotice.sourceType || incomingNotice.sourceType),
-    sourceDetailUrl: baseNotice.sourceDetailUrl || incomingNotice.sourceDetailUrl || '',
-    seq: baseNotice.seq || incomingNotice.seq || '',
-    pnncCd: baseNotice.pnncCd || incomingNotice.pnncCd || incomingNotice.pnnc_cd || '',
-    noticeNumber: baseNotice.noticeNumber || incomingNotice.noticeNumber || '',
-    organization: baseNotice.organization || incomingNotice.organization || '',
-    postedDate: baseNotice.postedDate || incomingNotice.postedDate || '',
-    hearingStartDate: baseNotice.hearingStartDate || incomingNotice.hearingStartDate || '',
-    hearingEndDate: baseNotice.hearingEndDate || incomingNotice.hearingEndDate || '',
-    sigunguCode: baseNotice.sigunguCode || incomingNotice.sigunguCode || incomingNotice.adminCode || '',
-    targetAreaText: baseNotice.targetAreaText || incomingNotice.targetAreaText || incomingNotice.locationText || '',
-    officialNoticeUrl: baseNotice.officialNoticeUrl || incomingNotice.officialNoticeUrl || '',
-    attachmentUrls: mergeAttachmentUrls(baseNotice.attachmentUrls || [], incomingNotice.attachmentUrls || []),
-    sourceUrl: baseNotice.sourceUrl || incomingNotice.sourceUrl || '',
-    lastFetchedAt: incomingNotice.lastFetchedAt || baseNotice.lastFetchedAt,
-    lastVerifiedAt: incomingNotice.lastVerifiedAt || baseNotice.lastVerifiedAt,
-  };
-}
-
-function mergeSourceNotices(notices = []) {
-  const mergedByKey = new Map();
-  const unkeyed = [];
-
-  notices.forEach((notice) => {
-    const key = buildMergeKey(notice);
-    if (!key) {
-      unkeyed.push(notice);
-      return;
-    }
-
-    mergedByKey.set(key, mergeNoticePair(mergedByKey.get(key), notice));
-  });
-
-  return [...mergedByKey.values(), ...unkeyed];
-}
-
 function decorateNotice(notice) {
   const normalizedSourceType = normalizeSourceType(notice.sourceType || getEumKind(notice));
   const targetAreaText = notice.targetAreaText || deriveTargetAreaText(notice.locationText, notice.rawText, notice.title);
@@ -1174,9 +1082,12 @@ function readSourceNotices() {
     .filter((filename) => fs.existsSync(path.join(dataDir, filename)));
 
   if (collectedFiles.length > 0) {
-    return mergeSourceNotices(collectedFiles.flatMap((filename) => readJson(filename)));
+    return collectedFiles.flatMap((filename) => readJson(filename));
   }
-  return [];
+
+  const auditPath = path.join(dataDir, 'notices-audit.json');
+  if (fs.existsSync(auditPath)) return readJson('notices-audit.json');
+  return readJson('notices.json');
 }
 
 const sourceNotices = readSourceNotices();

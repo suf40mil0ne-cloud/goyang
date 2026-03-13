@@ -1,9 +1,3 @@
-import { execFile } from 'node:child_process';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { promisify } from 'node:util';
-
 export const EUM_ENDPOINTS = {
   hr: {
     list: 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp',
@@ -27,38 +21,11 @@ const EUM_KEYWORDS = [
   '토지이음',
 ];
 
-const BROKEN_TEXT_PATTERN = /�|Ã|Ð|¤|þ|¿/;
-const execFileAsync = promisify(execFile);
-
 function compactText(value = '') {
   return String(value)
     .replace(/&nbsp;/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-}
-
-function normalizeTitle(value = '') {
-  return compactText(
-    String(value)
-      .replace(/\[[^\]]+\]/g, ' ')
-      .replace(/\([^)]+\)/g, ' ')
-      .replace(/[^\p{L}\p{N}\s]/gu, ' ')
-  ).toLowerCase();
-}
-
-function normalizeNoticeNumber(value = '') {
-  return String(value || '')
-    .replace(/\s+/g, '')
-    .replace(/[()\-]/g, '')
-    .toLowerCase();
-}
-
-function normalizeOrganization(value = '') {
-  return compactText(
-    String(value || '')
-      .replace(/도시관리국|도시계획국|도시정책국|도시계획과|도시관리과|도시정비과|도시디자인과/g, ' ')
-      .replace(/\s+/g, ' ')
-  ).toLowerCase();
 }
 
 function isUsableUrl(value = '') {
@@ -80,18 +47,6 @@ function isLikelyHomepageUrl(value = '') {
   );
 }
 
-function isLikelyListUrl(value = '') {
-  if (!isUsableUrl(value)) return false;
-  const url = new URL(String(value));
-  const pathname = (url.pathname || '').toLowerCase();
-  const pathWithSearch = `${url.pathname}${url.search}`.toLowerCase();
-  return (
-    /(?:list|search)\.jsp$/i.test(pathname)
-    || /(?:list|search)\.do$/i.test(pathname)
-    || /(boardlist|noticelist|gosilist|gonggolist)/i.test(pathWithSearch)
-  );
-}
-
 function hasDirectIdentifier(value = '') {
   if (!isUsableUrl(value)) return false;
   const keys = [...new URL(String(value)).searchParams.keys()].map((key) => key.toLowerCase());
@@ -103,15 +58,11 @@ function isDirectAttachmentUrl(value = '') {
 }
 
 function isDirectNoticePostUrl(value = '') {
-  if (!isUsableUrl(value) || isLikelyHomepageUrl(value) || isLikelyListUrl(value) || isDirectAttachmentUrl(value)) return false;
+  if (!isUsableUrl(value) || isLikelyHomepageUrl(value) || isDirectAttachmentUrl(value)) return false;
   const url = new URL(String(value));
   const pathWithSearch = `${url.pathname}${url.search}`.toLowerCase();
   if (hasDirectIdentifier(value)) return true;
-  return /(view|detail|read|bbsview|boardview|gonggo|gosi)/i.test(pathWithSearch);
-}
-
-function hasBrokenText(value = '') {
-  return BROKEN_TEXT_PATTERN.test(String(value || ''));
+  return /(view|detail|read|gonggo|gosi|notice|bbsview|boardview)/i.test(pathWithSearch);
 }
 
 function decodeHtmlEntities(value = '') {
@@ -176,12 +127,6 @@ function getDecodedScore(text) {
   return score;
 }
 
-function wait(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
 export function decodeHtmlBuffer(buffer, { contentType = '' } = {}) {
   const charsetCandidates = [
     parseCharsetFromContentType(contentType),
@@ -217,143 +162,30 @@ export function decodeHtmlBuffer(buffer, { contentType = '' } = {}) {
   };
 }
 
-function parseHeaderBlock(headerText = '') {
-  const lines = String(headerText).split(/\r?\n/).filter(Boolean);
-  const statusLine = lines.shift() || '';
-  const statusMatch = statusLine.match(/^HTTP\/\d(?:\.\d)?\s+(\d{3})/i);
-  const headers = {};
+export async function fetchDecodedHtml(url, { fetchImpl = fetch, headers = {}, signal } = {}) {
+  const response = await fetchImpl(url, {
+    headers: {
+      'accept-language': 'ko-KR,ko;q=0.9,en;q=0.7',
+      'user-agent': 'Mozilla/5.0 (compatible; GongramKokBot/1.0; +https://gongramkok.example)',
+      ...headers,
+    },
+    redirect: 'follow',
+    signal,
+  });
 
-  lines.forEach((line) => {
-    const separatorIndex = line.indexOf(':');
-    if (separatorIndex < 0) return;
-    const key = line.slice(0, separatorIndex).trim().toLowerCase();
-    const value = line.slice(separatorIndex + 1).trim();
-    if (!key) return;
-    headers[key] = value;
+  const arrayBuffer = await response.arrayBuffer();
+  const { html, detectedCharset } = decodeHtmlBuffer(arrayBuffer, {
+    contentType: response.headers.get('content-type') || '',
   });
 
   return {
-    status: Number(statusMatch?.[1] || 0),
-    headers,
+    ok: response.ok,
+    status: response.status,
+    url: response.url || url,
+    html,
+    detectedCharset,
+    headers: Object.fromEntries(response.headers.entries()),
   };
-}
-
-function parseCurlHeaderText(headerText = '') {
-  const blocks = String(headerText)
-    .split(/\r?\n\r?\n/)
-    .map((block) => block.trim())
-    .filter((block) => /^HTTP\/\d/i.test(block));
-  const lastBlock = blocks[blocks.length - 1] || '';
-  return parseHeaderBlock(lastBlock);
-}
-
-function shellEscape(value = '') {
-  return `'${String(value).replace(/'/g, `'\"'\"'`)}'`;
-}
-
-async function fetchDecodedHtmlViaCurl(url, { headers = {} } = {}) {
-  const tempDir = await mkdtemp(join(tmpdir(), 'gongramkok-eum-'));
-  const headerPath = join(tempDir, 'headers.txt');
-  const bodyPath = join(tempDir, 'body.html');
-  const args = ['--http1.1', '-L', '-sS', '-D', headerPath, '-o', bodyPath];
-  Object.entries(headers).forEach(([key, value]) => {
-    if (!value) return;
-    args.push('-H', `${key}: ${value}`);
-  });
-  args.push(url);
-
-  try {
-    await execFileAsync('/bin/bash', ['-lc', `curl ${args.map(shellEscape).join(' ')}`], {
-      maxBuffer: 16 * 1024 * 1024,
-    });
-    const [headerText, body] = await Promise.all([
-      readFile(headerPath, 'latin1'),
-      readFile(bodyPath),
-    ]);
-    const { status, headers: responseHeaders } = parseCurlHeaderText(headerText);
-    const { html, detectedCharset } = decodeHtmlBuffer(body, {
-      contentType: responseHeaders['content-type'] || '',
-    });
-
-    return {
-      ok: status >= 200 && status < 300,
-      status,
-      url,
-      html,
-      detectedCharset,
-      headers: responseHeaders,
-    };
-  } finally {
-    await rm(tempDir, { recursive: true, force: true });
-  }
-}
-
-async function fetchDecodedHtmlOnce(url, { fetchImpl = fetch, headers = {}, signal } = {}) {
-  const requestHeaders = {
-    'accept-language': 'ko-KR,ko;q=0.9,en;q=0.7',
-    'user-agent': 'Mozilla/5.0 (compatible; GongramKokBot/1.0; +https://gongramkok.example)',
-    ...headers,
-  };
-
-  try {
-    const response = await fetchImpl(url, {
-      headers: requestHeaders,
-      redirect: 'follow',
-      signal,
-    });
-
-    const arrayBuffer = await response.arrayBuffer();
-    const { html, detectedCharset } = decodeHtmlBuffer(arrayBuffer, {
-      contentType: response.headers.get('content-type') || '',
-    });
-
-    return {
-      ok: response.ok,
-      status: response.status,
-      url: response.url || url,
-      html,
-      detectedCharset,
-      headers: Object.fromEntries(response.headers.entries()),
-    };
-  } catch (error) {
-    return fetchDecodedHtmlViaCurl(url, { headers: requestHeaders, signal, cause: error });
-  }
-}
-
-export async function fetchDecodedHtml(url, {
-  fetchImpl = fetch,
-  headers = {},
-  signal,
-  maxAttempts = 3,
-  retryDelayMs = 300,
-} = {}) {
-  let lastError;
-
-  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    try {
-      return await fetchDecodedHtmlOnce(url, { fetchImpl, headers, signal });
-    } catch (error) {
-      lastError = error;
-      if (attempt >= maxAttempts) break;
-      await wait(retryDelayMs * attempt);
-    }
-  }
-
-  throw lastError || new Error(`Failed to fetch ${url}`);
-}
-
-function buildNoticeMatchKey(item = {}) {
-  const noticeNumber = normalizeNoticeNumber(item.noticeNumber);
-  if (noticeNumber) return `number:${noticeNumber}`;
-
-  const organization = normalizeOrganization(item.organization);
-  const title = normalizeTitle(item.title);
-  const postedDate = compactText(item.postedDate);
-  if (organization && title && postedDate) {
-    return `meta:${organization}:${postedDate}:${title}`;
-  }
-
-  return '';
 }
 
 function getDetailConfig(sourceType) {
@@ -412,12 +244,8 @@ function extractCells(tagName, rowHtml) {
   return [...rowHtml.matchAll(pattern)].map((match) => stripHtml(match[1]));
 }
 
-function escapeRegex(value = '') {
-  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
 function normalizeLabel(value = '') {
-  return compactText(String(value).replace(/[()/:]/g, '').replace(/\s+/g, ''));
+  return compactText(String(value).replace(/[()/:]/g, ''));
 }
 
 function normalizeDate(value = '') {
@@ -512,65 +340,8 @@ function extractTitleFromHtml(html) {
   return stripHtml((html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || '');
 }
 
-function extractClassContent(html, className) {
-  return stripHtml(
-    (html.match(new RegExp(`<([a-z0-9]+)[^>]*class=["'][^"']*\\b${escapeRegex(className)}\\b[^"']*["'][^>]*>([\\s\\S]*?)<\\/\\1>`, 'i')) || [])[2] || ''
-  );
-}
-
-function extractParagraphClassContent(html, className) {
-  return stripHtml(
-    (html.match(new RegExp(`<p[^>]*class=["'][^"']*\\b${escapeRegex(className)}\\b[^"']*["'][^>]*>([\\s\\S]*?)<\\/p>`, 'i')) || [])[1] || ''
-  );
-}
-
-function extractLabeledCellValue(html, labels) {
-  for (const label of labels) {
-    const escapedLabel = escapeRegex(label);
-    const patterns = [
-      new RegExp(`<th\\b[^>]*>\\s*${escapedLabel}\\s*<\\/th>\\s*<td\\b[^>]*>([\\s\\S]*?)<\\/td>`, 'i'),
-      new RegExp(`<td\\b[^>]*>\\s*${escapedLabel}\\s*<\\/td>\\s*<td\\b[^>]*>([\\s\\S]*?)<\\/td>`, 'i'),
-    ];
-    for (const pattern of patterns) {
-      const match = html.match(pattern);
-      const value = stripHtml(match?.[1] || '');
-      if (value) return value;
-    }
-  }
-  return '';
-}
-
-function extractNoticeNumberText(html) {
-  return extractClassContent(html, 'number');
-}
-
-function extractSigunguCode(sourceType, identifier, html, detailUrl, rawText) {
-  if (sourceType === 'ih') {
-    const pnncPrefixMatch = String(identifier || '').match(/^(\d{5})/);
-    if (pnncPrefixMatch?.[1]) return pnncPrefixMatch[1];
-  }
-
-  const explicitCode = extractLabeledCellValue(html, ['시군구코드', '행정구역코드', '법정동코드']);
-  const explicitMatch = explicitCode.match(/\b(\d{5})/);
-  if (explicitMatch?.[1]) return explicitMatch[1];
-
-  const urlCode = extractSigunguCodeFromText(detailUrl);
-  if (urlCode) return urlCode;
-  return '';
-}
-
-function pickOfficialLinks(anchors, title, detailUrl) {
-  const detailHref = isUsableUrl(detailUrl) ? new URL(String(detailUrl)) : null;
-  const officialNotice = anchors.find((item) => {
-    if (!isDirectNoticePostUrl(item.url, { title })) return false;
-    if (!detailHref || !isUsableUrl(item.url)) return true;
-    const candidate = new URL(String(item.url));
-    return !(
-      candidate.origin === detailHref.origin
-      && candidate.pathname === detailHref.pathname
-      && candidate.search === detailHref.search
-    );
-  })?.url || '';
+function pickOfficialLinks(anchors, title) {
+  const officialNotice = anchors.find((item) => isDirectNoticePostUrl(item.url, { title }))?.url || '';
   const attachmentUrls = [...new Set(
     anchors
       .filter((item) => isDirectAttachmentUrl(item.url))
@@ -582,96 +353,30 @@ function pickOfficialLinks(anchors, title, detailUrl) {
   };
 }
 
-function mergeAttachmentUrls(...lists) {
-  return [...new Set(
-    lists
-      .flat()
-      .filter(Boolean)
-      .map((value) => String(value).trim())
-      .filter(Boolean)
-  )];
-}
-
-function mergeNoticeSources(primary, supplement = {}) {
-  if (!supplement || typeof supplement !== 'object') return primary;
-  return {
-    ...primary,
-    noticeNumber: primary.noticeNumber || supplement.noticeNumber || '',
-    title: primary.title || supplement.title || '',
-    organization: primary.organization || supplement.organization || '',
-    postedDate: primary.postedDate || supplement.postedDate || '',
-    hearingStartDate: primary.hearingStartDate || supplement.hearingStartDate || '',
-    hearingEndDate: primary.hearingEndDate || supplement.hearingEndDate || '',
-    sigunguCode: primary.sigunguCode || supplement.sigunguCode || supplement.adminCode || '',
-    targetAreaText: primary.targetAreaText || supplement.targetAreaText || supplement.locationText || '',
-    officialNoticeUrl: primary.officialNoticeUrl || supplement.officialNoticeUrl || '',
-    attachmentUrls: mergeAttachmentUrls(primary.attachmentUrls || [], supplement.attachmentUrls || []),
-    sourceConfidence: primary.sourceConfidence === 'high' ? 'high' : (supplement.sourceConfidence || primary.sourceConfidence || 'medium'),
-  };
-}
-
-export function mergeSupplementSources(notices, {
-  officialSources = [],
-  ihPublicSources = [],
-} = {}) {
-  const officialByKey = new Map(
-    officialSources
-      .map((item) => [buildNoticeMatchKey(item), item])
-      .filter(([key]) => key)
-  );
-  const ihByKey = new Map(
-    ihPublicSources
-      .map((item) => [buildNoticeMatchKey(item), item])
-      .filter(([key]) => key)
-  );
-
-  return notices.map((notice) => {
-    const key = buildNoticeMatchKey(notice);
-    const officialMatch = key ? officialByKey.get(key) : null;
-    const ihMatch = notice.sourceType === 'ih' && key ? ihByKey.get(key) : null;
-
-    return mergeNoticeSources(
-      mergeNoticeSources(notice, officialMatch || {}),
-      ihMatch || {}
-    );
-  });
-}
-
 export function parseEumDetailHtml(html, { sourceType, identifier, detailUrl, listUrl }) {
   const tableMap = buildTableMap(html);
   const rawText = stripHtml(html);
-  const bodyText = extractClassContent(html, 'content') || extractClassContent(html, 'edit_view');
-  const title = pickValue(tableMap, ['공고명', '공람명', '제목', '건명'])
-    || extractParagraphClassContent(html, 'title')
-    || extractClassContent(html, 'title')
-    || extractLabeledCellValue(html, ['공고명', '공람명', '제목', '건명'])
-    || extractTitleFromHtml(html);
-  const organization = pickValue(tableMap, ['공고기관', '공고 기관', '기관명', '담당기관', '열람기관', '시행기관'])
-    || extractLabeledCellValue(html, ['공고기관', '공고 기관', '기관명', '담당기관', '열람기관', '시행기관']);
-  const noticeNumber = pickValue(tableMap, ['공고번호', '고시번호', '공람번호'])
-    || extractParagraphClassContent(html, 'number')
-    || extractNoticeNumberText(html);
-  const postedDate = normalizeDate(
-    pickValue(tableMap, ['공고일', '공고일자', '게시일', '등록일'])
-    || extractLabeledCellValue(html, ['공고일', '공고일자', '게시일', '등록일'])
-  );
-  const hearingPeriod = pickValue(tableMap, ['열람기간', '공람기간', '의견청취기간', '의견제출기간', '청취기간', '청취 기간'])
-    || extractLabeledCellValue(html, ['열람기간', '공람기간', '의견청취기간', '의견제출기간', '청취기간', '청취 기간']);
+  const title = pickValue(tableMap, ['공고명', '공람명', '제목', '건명']) || extractTitleFromHtml(html);
+  const organization = pickValue(tableMap, ['공고기관', '기관명', '담당기관', '열람기관', '시행기관']);
+  const noticeNumber = pickValue(tableMap, ['공고번호', '고시번호', '공람번호']);
+  const postedDate = normalizeDate(pickValue(tableMap, ['공고일', '공고일자', '게시일', '등록일']));
+  const hearingPeriod = pickValue(tableMap, ['열람기간', '공람기간', '의견청취기간', '의견제출기간']);
   const { start: hearingStartDate, end: hearingEndDate } = extractDateRange(hearingPeriod);
   const targetAreaText = pickValue(tableMap, ['대상지', '대상지역', '사업위치', '위치', '소재지', '주소'])
-    || extractLabeledCellValue(html, ['대상지', '대상지역', '사업위치', '위치', '소재지', '주소', '열람 및 의견서 제출장소', '열람장소', '의견서 제출장소'])
     || extractTargetAreaText(
       pickValue(tableMap, ['비고', '주요내용', '공고내용']),
-      bodyText,
       rawText,
       title
     );
-  const sigunguCode = extractSigunguCode(sourceType, identifier, html, detailUrl, rawText);
+  const sigunguCode = extractSigunguCodeFromText(
+    [
+      pickValue(tableMap, ['시군구코드', '행정구역코드', '법정동코드']),
+      detailUrl,
+      rawText,
+    ].join(' ')
+  );
   const anchors = extractAnchors(html, detailUrl);
-  const { officialNoticeUrl, attachmentUrls } = pickOfficialLinks(anchors, title, detailUrl);
-
-  const hasRequiredFields = title && organization && (postedDate || hearingStartDate || hearingEndDate);
-  const hasValidEncoding = !hasBrokenText(title) && !hasBrokenText(organization);
+  const { officialNoticeUrl, attachmentUrls } = pickOfficialLinks(anchors, title);
 
   return {
     id: buildId(sourceType, identifier),
@@ -693,10 +398,7 @@ export function parseEumDetailHtml(html, { sourceType, identifier, detailUrl, li
     rawHtml: html,
     classificationConfidence: sigunguCode ? 'high' : targetAreaText ? 'medium' : 'low',
     sourceConfidence: title && organization ? 'high' : 'low',
-    verificationStatus: hasRequiredFields && hasValidEncoding ? 'verified' : hasValidEncoding ? 'partial' : 'rejected',
-    verificationReason: hasValidEncoding
-      ? (hasRequiredFields ? '토지이음 상세 공고문을 직접 수집했습니다.' : '토지이음 상세는 수집했지만 필수 메타데이터가 부족합니다.')
-      : '한글 디코딩이 깨진 응답이라 상세 공고문으로 확정하지 않았습니다.',
+    verificationStatus: title && organization && (postedDate || hearingStartDate || hearingEndDate) ? 'verified' : 'partial',
     lastFetchedAt: new Date().toISOString(),
     lastVerifiedAt: new Date().toISOString(),
   };
@@ -707,8 +409,6 @@ export async function collectEumType(sourceType, {
   maxPages = 1,
   detailDelayMs = 0,
   onProgress = () => {},
-  officialSources = [],
-  ihPublicSources = [],
 } = {}) {
   const notices = [];
   const seenIds = new Set();
@@ -753,10 +453,7 @@ export async function collectEumType(sourceType, {
     }
   }
 
-  return mergeSupplementSources(notices, {
-    officialSources,
-    ihPublicSources,
-  });
+  return notices;
 }
 
 export async function collectEumDataset(options = {}) {
