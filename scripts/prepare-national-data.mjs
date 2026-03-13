@@ -732,6 +732,24 @@ const nationalNoticeSeeds = [
 ];
 
 const sigunguByKey = new Map(sigunguCatalog.map((item) => [`${item.sido}::${item.sigungu}`, item]));
+const sigunguByCode = new Map(sigunguCatalog.map((item) => [item.adminCode, item]));
+const sigunguTextIndex = sigunguCatalog
+  .flatMap((item) => {
+    const aliases = new Set([
+      item.sigungu,
+      `${item.sido} ${item.sigungu}`,
+      ...(item.aliases || []),
+    ]);
+
+    return [...aliases]
+      .filter(Boolean)
+      .map((alias) => ({
+        alias,
+        normalizedAlias: alias.replace(/\s+/g, ''),
+        region: item,
+      }));
+  })
+  .sort((a, b) => b.normalizedAlias.length - a.normalizedAlias.length);
 
 function readJson(filename) {
   return JSON.parse(fs.readFileSync(path.join(dataDir, filename), 'utf8'));
@@ -787,8 +805,80 @@ function hasValue(value) {
   return Boolean(String(value || '').trim());
 }
 
+function normalizeSourceType(value = '') {
+  const normalized = String(value || '').trim().toLowerCase();
+  if (normalized === 'hr' || normalized === 'land-hearing') return 'hr';
+  if (normalized === 'ih' || normalized === 'internet-hearing' || normalized === 'land-internet') return 'ih';
+  if (normalized === 'municipality') return 'municipality';
+  return String(value || '').trim();
+}
+
+function normalizeSigunguCode(value = '') {
+  const digits = String(value || '').replace(/\D/g, '');
+  if (digits.length >= 5) return digits.slice(0, 5);
+  return '';
+}
+
+function deriveTargetAreaText(...values) {
+  for (const value of values) {
+    const text = String(value || '').replace(/\s+/g, ' ').trim();
+    if (!text) continue;
+    const sentenceMatch = text.match(/([가-힣0-9\s]+(?:시|군|구|동|읍|면|리|가)[가-힣0-9\s]*(?:일원|일대|일부))/);
+    if (sentenceMatch?.[1]) return sentenceMatch[1].trim();
+    if (/(일원|일대|일부|지구|동|가)/.test(text)) return text;
+  }
+  return '';
+}
+
+function resolveRegionFromText(...values) {
+  const haystack = values
+    .map((value) => String(value || '').replace(/\s+/g, ''))
+    .filter(Boolean)
+    .join(' ');
+
+  if (!haystack) return null;
+
+  const match = sigunguTextIndex.find((item) => item.normalizedAlias.length >= 2 && haystack.includes(item.normalizedAlias));
+  return match?.region || null;
+}
+
+function resolveNoticeRegion(notice = {}) {
+  const sigunguCode = normalizeSigunguCode(notice.sigunguCode || notice.adminCode);
+  if (sigunguCode && sigunguByCode.has(sigunguCode)) {
+    return {
+      region: sigunguByCode.get(sigunguCode),
+      sigunguCode,
+      classificationConfidence: 'high',
+    };
+  }
+
+  const targetRegion = resolveRegionFromText(notice.targetAreaText, notice.locationText, notice.rawText, notice.title);
+  if (targetRegion) {
+    return {
+      region: targetRegion,
+      sigunguCode: targetRegion.adminCode,
+      classificationConfidence: 'medium',
+    };
+  }
+
+  const organizationRegion = resolveRegionFromText(notice.organization);
+  if (organizationRegion) {
+    return {
+      region: organizationRegion,
+      sigunguCode: organizationRegion.adminCode,
+      classificationConfidence: 'low',
+    };
+  }
+
+  return {
+    region: null,
+    sigunguCode,
+    classificationConfidence: notice.classificationConfidence || 'low',
+  };
+}
+
 function isEumNotice(notice = {}) {
-  const sourceType = String(notice.sourceType || '').toLowerCase();
+  const sourceType = normalizeSourceType(notice.sourceType);
   const eumSourceType = String(notice.eumSourceType || '').toLowerCase();
   if (sourceType === 'hr' || sourceType === 'ih' || eumSourceType === 'hr' || eumSourceType === 'ih') return true;
   return [notice.sourceDetailUrl, notice.sourceUrl, notice.eumDirectUrl].some((value) => isEumUrl(value));
@@ -796,7 +886,7 @@ function isEumNotice(notice = {}) {
 
 function getEumKind(notice = {}) {
   const sourceUrl = notice.sourceDetailUrl || notice.sourceUrl || '';
-  const sourceType = String(notice.sourceType || '').toLowerCase();
+  const sourceType = normalizeSourceType(notice.sourceType);
   const eumSourceType = String(notice.eumSourceType || '').toLowerCase();
   const pathname = isUsableUrl(sourceUrl) ? new URL(String(sourceUrl)).pathname.toLowerCase() : '';
 
@@ -927,35 +1017,52 @@ function evaluateVerification(notice) {
 }
 
 function decorateNotice(notice) {
+  const normalizedSourceType = normalizeSourceType(notice.sourceType || getEumKind(notice));
+  const targetAreaText = notice.targetAreaText || deriveTargetAreaText(notice.locationText, notice.rawText, notice.title);
+  const regionMatch = resolveNoticeRegion({
+    ...notice,
+    sourceType: normalizedSourceType,
+    targetAreaText,
+  });
   const regionKey = `${notice.sido}::${notice.sigungu}`;
-  const region = sigunguByKey.get(regionKey);
+  const seededRegion = sigunguByKey.get(regionKey);
+  const region = regionMatch.region || seededRegion;
+  const sigunguCode = regionMatch.sigunguCode || normalizeSigunguCode(notice.sigunguCode || notice.adminCode || region?.adminCode);
   const onlineSubmissionAvailable = typeof notice.onlineSubmissionAvailable === 'boolean'
     ? notice.onlineSubmissionAvailable
-    : notice.hearingType?.includes('인터넷') || notice.sourceType === 'land-internet';
-  const attachmentUrls = Array.isArray(notice.attachments)
-    ? notice.attachments
-      .map((item) => item.url)
-      .filter((value) => isDirectDocumentUrl(value))
-    : [];
+    : notice.hearingType?.includes('인터넷') || normalizedSourceType === 'ih';
+  const attachmentUrls = [
+    ...(Array.isArray(notice.attachmentUrls) ? notice.attachmentUrls : []),
+    ...(Array.isArray(notice.attachments) ? notice.attachments.map((item) => item.url) : []),
+  ].filter((value, index, items) => isDirectDocumentUrl(value) && items.indexOf(value) === index);
   const eumIdentifiers = extractEumIdentifiers(notice.sourceDetailUrl, notice.sourceUrl, notice.eumDirectUrl);
   const seq = String(notice.seq || eumIdentifiers.seq || '').trim();
   const pnncCd = String(notice.pnncCd || notice.pnnc_cd || eumIdentifiers.pnncCd || '').trim();
   const eumSourceType = getEumKind(notice);
   const eumDirectUrl = buildEumDetailUrl({
     ...notice,
+    sourceType: normalizedSourceType,
     seq,
     pnncCd,
     eumSourceType,
   });
-  const sourceDetailUrl = isEumListUrl(notice.sourceDetailUrl)
-    ? ''
-    : notice.sourceDetailUrl || notice.sourceUrl || '';
+  const sourceDetailUrl = isEumDetailUrl(notice.sourceDetailUrl)
+    ? notice.sourceDetailUrl
+    : isEumDetailUrl(notice.sourceUrl)
+      ? notice.sourceUrl
+      : '';
 
   const officialNoticeUrl = isOfficialDetailUrl(notice.officialNoticeUrl) ? notice.officialNoticeUrl : '';
 
   return {
     ...notice,
-    adminCode: notice.adminCode || region?.adminCode || '',
+    sourceType: normalizedSourceType || notice.sourceType,
+    adminCode: notice.adminCode || sigunguCode || region?.adminCode || '',
+    sigunguCode,
+    sido: notice.sido || region?.sido || '',
+    sigungu: notice.sigungu || region?.sigungu || '',
+    targetAreaText,
+    classificationConfidence: notice.classificationConfidence || regionMatch.classificationConfidence,
     onlineSubmissionAvailable,
     seq,
     pnncCd,
@@ -971,6 +1078,13 @@ function decorateNotice(notice) {
 }
 
 function readSourceNotices() {
+  const collectedFiles = ['eum-source.json', 'municipality-source.json']
+    .filter((filename) => fs.existsSync(path.join(dataDir, filename)));
+
+  if (collectedFiles.length > 0) {
+    return collectedFiles.flatMap((filename) => readJson(filename));
+  }
+
   const auditPath = path.join(dataDir, 'notices-audit.json');
   if (fs.existsSync(auditPath)) return readJson('notices-audit.json');
   return readJson('notices.json');

@@ -160,6 +160,13 @@ function hasValue(value) {
   return Boolean(String(value || '').trim());
 }
 
+function normalizeSourceType(value = '') {
+  const normalized = String(value || '').trim().toLowerCase();
+  if (normalized === 'land-hearing') return 'hr';
+  if (normalized === 'internet-hearing' || normalized === 'land-internet') return 'ih';
+  return normalized;
+}
+
 function evaluateVerification(notice, enrichment) {
   const hasRequiredMetadata = hasValue(notice.title)
     && hasValue(notice.organization)
@@ -244,10 +251,11 @@ function applyEumDetailOverrides(notice, overrides = {}) {
 }
 
 function decorateNotice(notice, relatedGosi, noticeLinks) {
+  const normalizedSourceType = normalizeSourceType(notice.sourceType || notice.eumSourceType);
   const statusInfo = inferStatus(notice);
   const areaKey = areaMap[notice.sido] || 'gyeonggi';
   const normalizedConfidence = normalizeLocationConfidence(notice);
-  const sourceMeta = getSourceMeta(notice.sourceType);
+  const sourceMeta = getSourceMeta(normalizedSourceType || notice.sourceType);
   const enrichment = mergeNoticeConnections(notice, noticeLinks?.[notice.id], relatedGosi);
   const verification = evaluateVerification(notice, enrichment);
   const locationConfidenceMeta = getLocationConfidenceMeta(normalizedConfidence);
@@ -255,6 +263,7 @@ function decorateNotice(notice, relatedGosi, noticeLinks) {
   const onlineSubmissionMeta = getOnlineSubmissionMeta(notice);
   return {
     ...notice,
+    sourceType: normalizedSourceType || notice.sourceType,
     areaKey,
     sourceMeta,
     easySummary: getEasySummary(notice),

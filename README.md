@@ -20,3 +20,11 @@
 ## 데이터 출처
 - Open-Meteo API
 - 고양시청 / KOSIS / 경기도 교통·버스 포털
+
+## 배치 수집
+- `node scripts/fetch-eum-batch.mjs --types=hr,ih --max-pages=3`
+  - 토지이음 hr/ih 목록을 배치로 수집하고 상세 식별자(`seq`, `pnnc_cd`) 기준으로 상세를 저장합니다.
+  - 한글 디코딩은 응답 헤더, meta charset, `euc-kr`/`cp949` fallback 순서로 처리합니다.
+- `node scripts/prepare-national-data.mjs`
+  - `data/eum-source.json`과 `data/municipality-source.json`이 있으면 그것만 읽어 `data/notices-audit.json`과 `data/notices.json`을 다시 생성합니다.
+  - 공개용 `data/notices.json`에는 `verified` 공고만 남습니다.

@@ -1,4 +1,14 @@
 export const sourceCatalog = {
+  hr: {
+    label: '토지이음 주민의견청취 공람',
+    url: 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp',
+    description: '토지이음의 주민의견청취 공람 목록입니다.',
+  },
+  ih: {
+    label: '토지이음 인터넷 주민의견청취',
+    url: 'https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp',
+    description: '토지이음의 인터넷 주민의견청취 목록입니다.',
+  },
   'land-hearing': {
     label: '토지이음 주민의견청취 공람',
     url: 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp',
@@ -18,6 +28,11 @@ export const sourceCatalog = {
     label: '공공데이터포털 보조 데이터',
     url: 'https://www.data.go.kr/',
     description: '국토교통부 인터넷 주민의견청취 공고 등 보조 정규화 기준입니다.',
+  },
+  municipality: {
+    label: '지자체 공식 고시공고',
+    url: '',
+    description: '지자체 공식 게시글 상세 또는 첨부 원문입니다.',
   },
 };
 
