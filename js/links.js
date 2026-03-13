@@ -62,9 +62,16 @@ function isEumDetailUrl(value = '') {
   return /\/(ih\/ihhearingdet|hr\/hrpeopleheardet)\.jsp$/.test(pathname);
 }
 
+function isEumListUrl(value = '') {
+  if (!isUsableUrl(value) || !isEumUrl(value)) return false;
+  const pathname = new URL(String(value)).pathname.toLowerCase();
+  return /\/(ih\/ihhearinglist|hr\/hrpeoplehearlist)\.jsp$/.test(pathname);
+}
+
 function isEumNotice(notice = {}, sourceUrl = '') {
   const sourceType = compactText(notice.sourceType || '').toLowerCase();
-  if (sourceType === 'hr' || sourceType === 'ih') return true;
+  const eumSourceType = compactText(notice.eumSourceType || '').toLowerCase();
+  if (sourceType === 'hr' || sourceType === 'ih' || eumSourceType === 'hr' || eumSourceType === 'ih') return true;
   return [sourceUrl, notice.sourceDetailUrl, notice.sourceUrl, notice.eumDirectUrl].some((value) => isEumUrl(value));
 }
 
@@ -78,11 +85,13 @@ function getEumListPath(notice = {}, sourceUrl = '') {
 
 function getEumDetailKind(notice = {}, sourceUrl = '') {
   const sourceType = compactText(notice.sourceType || '').toLowerCase();
+  const eumSourceType = compactText(notice.eumSourceType || '').toLowerCase();
   const path = isUsableUrl(sourceUrl) ? new URL(String(sourceUrl)).pathname.toLowerCase() : '';
   if (
     /\/ih\//i.test(path)
     || path.includes('ihhearing')
     || sourceType === 'ih'
+    || eumSourceType === 'ih'
   ) {
     return 'ih';
   }
@@ -91,6 +100,7 @@ function getEumDetailKind(notice = {}, sourceUrl = '') {
     /\/hr\//i.test(path)
     || path.includes('hrpeoplehear')
     || sourceType === 'hr'
+    || eumSourceType === 'hr'
   ) {
     return 'hr';
   }
@@ -170,7 +180,8 @@ function buildEumTitleSearchUrl(notice, sourceUrl = '') {
   return url.toString();
 }
 
-function resolveEumDirectUrl(notice, sourceUrl = '') {
+function resolveEumDirectUrl(notice, sourceUrl = '', options = {}) {
+  const { allowTitleFallback = false } = options;
   if (!isEumNotice(notice, sourceUrl) && !isUsableUrl(sourceUrl)) return { url: '', mode: 'none' };
 
   const directSourceUrl = [notice.sourceDetailUrl, notice.eumDirectUrl, sourceUrl, notice.sourceUrl]
@@ -189,9 +200,11 @@ function resolveEumDirectUrl(notice, sourceUrl = '') {
     return { url: noticeNumberSearchUrl, mode: 'search-number' };
   }
 
-  const titleSearchUrl = buildEumTitleSearchUrl(notice, sourceUrl);
-  if (titleSearchUrl) {
-    return { url: titleSearchUrl, mode: 'search-title' };
+  if (allowTitleFallback) {
+    const titleSearchUrl = buildEumTitleSearchUrl(notice, sourceUrl);
+    if (titleSearchUrl) {
+      return { url: titleSearchUrl, mode: 'search-title' };
+    }
   }
 
   return { url: '', mode: 'none' };
@@ -462,7 +475,7 @@ function isLikelyAttachment(item) {
 function buildSourceDetailLink(notice) {
   const sourceUrl = notice.sourceDetailUrl || notice.sourceUrl;
   if (isEumNotice(notice, sourceUrl) || isEumUrl(sourceUrl) || isEumUrl(notice.eumDirectUrl)) {
-    const eumTarget = resolveEumDirectUrl(notice, sourceUrl);
+    const eumTarget = resolveEumDirectUrl(notice, sourceUrl, { allowTitleFallback: false });
     if (!eumTarget.url) return null;
 
     return {
@@ -474,7 +487,7 @@ function buildSourceDetailLink(notice) {
         ? '현재 공고의 토지이음 상세 화면으로 바로 이동합니다.'
         : eumTarget.mode === 'search-number'
           ? '공고번호가 반영된 토지이음 검색 결과로 이동합니다.'
-          : '상세 식별자가 없을 때만 공고명 검색 결과로 이동합니다.',
+          : '상세 식별자가 확인되지 않아 토지이음 링크를 노출하지 않습니다.',
       sourceSite: notice.sourceMeta?.label || notice.rawSourceName || '토지이음',
       buttonLabel: '토지이음에서 보기',
     };
@@ -677,6 +690,7 @@ export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []
     ? sourceDetailLink.url
     : notice.sourceDetailUrl || notice.sourceUrl || '';
   const eumDirectUrl = sourceDetailLink?.kind === 'eum'
+    && sourceDetailLink.mode === 'detail'
     ? sourceDetailLink.url
     : compactText(notice.eumDirectUrl || '');
 

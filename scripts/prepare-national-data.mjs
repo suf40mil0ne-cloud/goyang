@@ -754,21 +754,32 @@ function isEumUrl(value = '') {
   return isUsableUrl(value) && new URL(String(value)).hostname.toLowerCase().includes('eum.go.kr');
 }
 
+function isEumDetailUrl(value = '') {
+  return isEumUrl(value) && /\/(ih\/ihHearingDet|hr\/hrPeopleHearDet)\.jsp$/i.test(new URL(String(value)).pathname);
+}
+
+function isEumListUrl(value = '') {
+  return isEumUrl(value) && /\/(ih\/ihHearingList|hr\/hrPeopleHearList)\.jsp$/i.test(new URL(String(value)).pathname);
+}
+
 function isEumNotice(notice = {}) {
   const sourceType = String(notice.sourceType || '').toLowerCase();
-  if (sourceType === 'hr' || sourceType === 'ih') return true;
+  const eumSourceType = String(notice.eumSourceType || '').toLowerCase();
+  if (sourceType === 'hr' || sourceType === 'ih' || eumSourceType === 'hr' || eumSourceType === 'ih') return true;
   return [notice.sourceDetailUrl, notice.sourceUrl, notice.eumDirectUrl].some((value) => isEumUrl(value));
 }
 
 function getEumKind(notice = {}) {
   const sourceUrl = notice.sourceDetailUrl || notice.sourceUrl || '';
   const sourceType = String(notice.sourceType || '').toLowerCase();
+  const eumSourceType = String(notice.eumSourceType || '').toLowerCase();
   const pathname = isUsableUrl(sourceUrl) ? new URL(String(sourceUrl)).pathname.toLowerCase() : '';
 
   if (
     pathname.includes('/ih/')
     || pathname.includes('ihhearing')
     || sourceType === 'ih'
+    || eumSourceType === 'ih'
   ) {
     return 'ih';
   }
@@ -777,6 +788,7 @@ function getEumKind(notice = {}) {
     pathname.includes('/hr/')
     || pathname.includes('hrpeoplehear')
     || sourceType === 'hr'
+    || eumSourceType === 'hr'
   ) {
     return 'hr';
   }
@@ -809,10 +821,10 @@ function buildEumDetailUrl(notice = {}) {
   const seq = String(notice.seq || identifiers.seq || '').trim();
   const pnncCd = String(notice.pnncCd || notice.pnnc_cd || identifiers.pnncCd || '').trim();
 
-  if (isEumUrl(notice.sourceDetailUrl) && /\/(ih\/ihHearingDet|hr\/hrPeopleHearDet)\.jsp$/i.test(new URL(String(notice.sourceDetailUrl)).pathname)) {
+  if (isEumDetailUrl(notice.sourceDetailUrl)) {
     return notice.sourceDetailUrl;
   }
-  if (isEumUrl(notice.eumDirectUrl) && /\/(ih\/ihHearingDet|hr\/hrPeopleHearDet)\.jsp$/i.test(new URL(String(notice.eumDirectUrl)).pathname)) {
+  if (isEumDetailUrl(notice.eumDirectUrl)) {
     return notice.eumDirectUrl;
   }
   if (kind === 'hr' && seq) {
@@ -836,11 +848,16 @@ function decorateNotice(notice) {
   const eumIdentifiers = extractEumIdentifiers(notice.sourceDetailUrl, notice.sourceUrl, notice.eumDirectUrl);
   const seq = String(notice.seq || eumIdentifiers.seq || '').trim();
   const pnncCd = String(notice.pnncCd || notice.pnnc_cd || eumIdentifiers.pnncCd || '').trim();
+  const eumSourceType = getEumKind(notice);
   const eumDirectUrl = buildEumDetailUrl({
     ...notice,
     seq,
     pnncCd,
+    eumSourceType,
   });
+  const sourceDetailUrl = isEumListUrl(notice.sourceDetailUrl)
+    ? ''
+    : notice.sourceDetailUrl || notice.sourceUrl || '';
 
   return {
     ...notice,
@@ -848,8 +865,9 @@ function decorateNotice(notice) {
     onlineSubmissionAvailable,
     seq,
     pnncCd,
-    sourceDetailUrl: notice.sourceDetailUrl || notice.sourceUrl || '',
-    eumDirectUrl: notice.eumDirectUrl || eumDirectUrl || '',
+    ...(eumSourceType ? { eumSourceType } : {}),
+    sourceDetailUrl,
+    eumDirectUrl: isEumDetailUrl(notice.eumDirectUrl) ? notice.eumDirectUrl : (eumDirectUrl || ''),
     officialNoticeUrl: notice.officialNoticeUrl || '',
     attachmentUrls,
     hasOfficialNotice: Boolean(notice.officialNoticeUrl),

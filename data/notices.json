@@ -55,7 +55,7 @@
     "timelineKey": "jingwan-pedestrian-axis",
     "sourceNoticeId": "EUM-IH-SEO-2026-005",
     "onlineSubmissionAvailable": true,
-    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
+    "sourceDetailUrl": "",
     "officialNoticeUrl": "",
     "attachmentUrls": [
       "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
@@ -63,7 +63,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T09:05:00+09:00"
+    "linkVerifiedAt": "2026-03-10T09:05:00+09:00",
+    "eumSourceType": "ih"
   },
   {
     "id": "gg-2026-007",
@@ -122,7 +123,7 @@
     "timelineKey": "gwanggyo-public-site",
     "sourceNoticeId": "EUM-HR-GG-2026-007",
     "onlineSubmissionAvailable": false,
-    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "sourceDetailUrl": "",
     "officialNoticeUrl": "",
     "attachmentUrls": [
       "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
@@ -131,7 +132,8 @@
     "hasOfficialNotice": false,
     "hasAttachment": true,
     "linkVerifiedAt": "2026-03-10T09:20:00+09:00",
-    "noticeNumber": "수원시 공고 제2026-512호"
+    "noticeNumber": "수원시 공고 제2026-512호",
+    "eumSourceType": "hr"
   },
   {
     "id": "sr-2026-004",
@@ -192,7 +194,7 @@
     "timelineKey": "seongsu-road-improvement",
     "sourceNoticeId": "EUM-HR-SEO-2026-004",
     "onlineSubmissionAvailable": false,
-    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "sourceDetailUrl": "",
     "officialNoticeUrl": "",
     "attachmentUrls": [
       "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
@@ -201,7 +203,8 @@
     "hasOfficialNotice": false,
     "hasAttachment": true,
     "linkVerifiedAt": "2026-03-10T09:00:00+09:00",
-    "noticeNumber": "성동구 공고 제2026-244호"
+    "noticeNumber": "성동구 공고 제2026-244호",
+    "eumSourceType": "hr"
   },
   {
     "id": "dj-2026-001",
@@ -762,7 +765,7 @@
     "timelineKey": "songdo-school-site",
     "sourceNoticeId": "EUM-IH-INC-2026-004",
     "onlineSubmissionAvailable": true,
-    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
+    "sourceDetailUrl": "",
     "officialNoticeUrl": "",
     "attachmentUrls": [
       "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
@@ -771,7 +774,8 @@
     "hasOfficialNotice": false,
     "hasAttachment": true,
     "linkVerifiedAt": "2026-03-10T09:10:00+09:00",
-    "noticeNumber": "IFEZ 인터넷 의견청취 2026-11호"
+    "noticeNumber": "IFEZ 인터넷 의견청취 2026-11호",
+    "eumSourceType": "ih"
   },
   {
     "id": "bs-2026-001",
@@ -1199,7 +1203,7 @@
     "timelineKey": "dongtan-school-route",
     "sourceNoticeId": "EUM-IH-GG-2026-008",
     "onlineSubmissionAvailable": true,
-    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
+    "sourceDetailUrl": "",
     "officialNoticeUrl": "",
     "attachmentUrls": [
       "https://www.eum.go.kr/web/cp/ih/ihHearingList.jsp",
@@ -1208,7 +1212,8 @@
     "hasOfficialNotice": false,
     "hasAttachment": true,
     "linkVerifiedAt": "2026-03-10T09:24:00+09:00",
-    "noticeNumber": "화성시 인터넷 의견청취 2026-18호"
+    "noticeNumber": "화성시 인터넷 의견청취 2026-18호",
+    "eumSourceType": "ih"
   },
   {
     "id": "gj-2026-001",
@@ -1328,7 +1333,7 @@
     "timelineKey": "cheongna-public-complex",
     "sourceNoticeId": "EUM-HR-INC-2026-005",
     "onlineSubmissionAvailable": false,
-    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "sourceDetailUrl": "",
     "officialNoticeUrl": "",
     "attachmentUrls": [
       "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
@@ -1336,7 +1341,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T09:14:00+09:00"
+    "linkVerifiedAt": "2026-03-10T09:14:00+09:00",
+    "eumSourceType": "hr"
   },
   {
     "id": "cb-2026-001",
@@ -1520,7 +1526,7 @@
     "timelineKey": "yeouido-finance-plan",
     "sourceNoticeId": "EUM-HR-SEO-2026-006",
     "onlineSubmissionAvailable": false,
-    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "sourceDetailUrl": "",
     "officialNoticeUrl": "",
     "attachmentUrls": [
       "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
@@ -1528,7 +1534,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T09:08:00+09:00"
+    "linkVerifiedAt": "2026-03-10T09:08:00+09:00",
+    "eumSourceType": "hr"
   },
   {
     "id": "us-2026-001",
@@ -1959,7 +1966,7 @@
     "timelineKey": "galmae-station-plan",
     "sourceNoticeId": "EUM-HR-GG-2026-009",
     "onlineSubmissionAvailable": false,
-    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "sourceDetailUrl": "",
     "officialNoticeUrl": "",
     "attachmentUrls": [
       "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
@@ -1967,7 +1974,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T09:28:00+09:00"
+    "linkVerifiedAt": "2026-03-10T09:28:00+09:00",
+    "eumSourceType": "hr"
   },
   {
     "id": "ic-2026-006",
@@ -2024,7 +2032,7 @@
     "timelineKey": "gyeyang-greenbelt-buffer",
     "sourceNoticeId": "EUM-HR-INC-2026-006",
     "onlineSubmissionAvailable": false,
-    "sourceDetailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
+    "sourceDetailUrl": "",
     "officialNoticeUrl": "",
     "attachmentUrls": [
       "https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp",
@@ -2032,7 +2040,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T09:17:00+09:00"
+    "linkVerifiedAt": "2026-03-10T09:17:00+09:00",
+    "eumSourceType": "hr"
   },
   {
     "sourceType": "land-hearing",
