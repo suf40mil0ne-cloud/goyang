@@ -741,6 +741,89 @@ function writeJson(filename, value) {
   fs.writeFileSync(path.join(dataDir, filename), `${JSON.stringify(value, null, 2)}\n`);
 }
 
+function isUsableUrl(value = '') {
+  try {
+    new URL(String(value));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function isEumUrl(value = '') {
+  return isUsableUrl(value) && new URL(String(value)).hostname.toLowerCase().includes('eum.go.kr');
+}
+
+function isEumNotice(notice = {}) {
+  const sourceType = String(notice.sourceType || '').toLowerCase();
+  if (sourceType === 'hr' || sourceType === 'ih') return true;
+  return [notice.sourceDetailUrl, notice.sourceUrl, notice.eumDirectUrl].some((value) => isEumUrl(value));
+}
+
+function getEumKind(notice = {}) {
+  const sourceUrl = notice.sourceDetailUrl || notice.sourceUrl || '';
+  const sourceType = String(notice.sourceType || '').toLowerCase();
+  const pathname = isUsableUrl(sourceUrl) ? new URL(String(sourceUrl)).pathname.toLowerCase() : '';
+
+  if (
+    pathname.includes('/ih/')
+    || pathname.includes('ihhearing')
+    || sourceType === 'ih'
+  ) {
+    return 'ih';
+  }
+
+  if (
+    pathname.includes('/hr/')
+    || pathname.includes('hrpeoplehear')
+    || sourceType === 'hr'
+  ) {
+    return 'hr';
+  }
+
+  if (isEumNotice(notice)) {
+    if (sourceType.includes('internet') || sourceType.includes('land-internet')) return 'ih';
+    if (sourceType.includes('land-hearing')) return 'hr';
+  }
+
+  return '';
+}
+
+function extractEumIdentifiers(...values) {
+  const result = { seq: '', pnncCd: '' };
+
+  values.forEach((value) => {
+    if (!isUsableUrl(value)) return;
+    const url = new URL(String(value));
+    if (!result.seq) result.seq = (url.searchParams.get('seq') || '').trim();
+    if (!result.pnncCd) result.pnncCd = (url.searchParams.get('pnnc_cd') || url.searchParams.get('pnncCd') || '').trim();
+  });
+
+  return result;
+}
+
+function buildEumDetailUrl(notice = {}) {
+  const sourceUrl = notice.sourceDetailUrl || notice.sourceUrl || '';
+  const kind = getEumKind(notice);
+  const identifiers = extractEumIdentifiers(notice.eumDirectUrl, notice.sourceDetailUrl, notice.sourceUrl);
+  const seq = String(notice.seq || identifiers.seq || '').trim();
+  const pnncCd = String(notice.pnncCd || notice.pnnc_cd || identifiers.pnncCd || '').trim();
+
+  if (isEumUrl(notice.sourceDetailUrl) && /\/(ih\/ihHearingDet|hr\/hrPeopleHearDet)\.jsp$/i.test(new URL(String(notice.sourceDetailUrl)).pathname)) {
+    return notice.sourceDetailUrl;
+  }
+  if (isEumUrl(notice.eumDirectUrl) && /\/(ih\/ihHearingDet|hr\/hrPeopleHearDet)\.jsp$/i.test(new URL(String(notice.eumDirectUrl)).pathname)) {
+    return notice.eumDirectUrl;
+  }
+  if (kind === 'hr' && seq) {
+    return `https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=${encodeURIComponent(seq)}`;
+  }
+  if (kind === 'ih' && pnncCd) {
+    return `https://www.eum.go.kr/web/cp/ih/ihHearingDet.jsp?pnnc_cd=${encodeURIComponent(pnncCd)}`;
+  }
+  return '';
+}
+
 function decorateNotice(notice) {
   const regionKey = `${notice.sido}::${notice.sigungu}`;
   const region = sigunguByKey.get(regionKey);
@@ -750,12 +833,23 @@ function decorateNotice(notice) {
   const attachmentUrls = Array.isArray(notice.attachments)
     ? notice.attachments.map((item) => item.url).filter(Boolean)
     : [];
+  const eumIdentifiers = extractEumIdentifiers(notice.sourceDetailUrl, notice.sourceUrl, notice.eumDirectUrl);
+  const seq = String(notice.seq || eumIdentifiers.seq || '').trim();
+  const pnncCd = String(notice.pnncCd || notice.pnnc_cd || eumIdentifiers.pnncCd || '').trim();
+  const eumDirectUrl = buildEumDetailUrl({
+    ...notice,
+    seq,
+    pnncCd,
+  });
 
   return {
     ...notice,
     adminCode: notice.adminCode || region?.adminCode || '',
     onlineSubmissionAvailable,
+    seq,
+    pnncCd,
     sourceDetailUrl: notice.sourceDetailUrl || notice.sourceUrl || '',
+    eumDirectUrl: notice.eumDirectUrl || eumDirectUrl || '',
     officialNoticeUrl: notice.officialNoticeUrl || '',
     attachmentUrls,
     hasOfficialNotice: Boolean(notice.officialNoticeUrl),

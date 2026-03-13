@@ -130,7 +130,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T09:20:00+09:00"
+    "linkVerifiedAt": "2026-03-10T09:20:00+09:00",
+    "noticeNumber": "수원시 공고 제2026-512호"
   },
   {
     "id": "sr-2026-004",
@@ -199,7 +200,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T09:00:00+09:00"
+    "linkVerifiedAt": "2026-03-10T09:00:00+09:00",
+    "noticeNumber": "성동구 공고 제2026-244호"
   },
   {
     "id": "dj-2026-001",
@@ -324,7 +326,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T08:45:00+09:00"
+    "linkVerifiedAt": "2026-03-10T08:45:00+09:00",
+    "noticeNumber": "안양시 공고 제2026-441호"
   },
   {
     "sourceType": "land-hearing",
@@ -577,7 +580,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T08:00:00+09:00"
+    "linkVerifiedAt": "2026-03-10T08:00:00+09:00",
+    "noticeNumber": "서대문구 공고 제2026-177호"
   },
   {
     "id": "gb-2026-001",
@@ -766,7 +770,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T09:10:00+09:00"
+    "linkVerifiedAt": "2026-03-10T09:10:00+09:00",
+    "noticeNumber": "IFEZ 인터넷 의견청취 2026-11호"
   },
   {
     "id": "bs-2026-001",
@@ -890,7 +895,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T08:20:00+09:00"
+    "linkVerifiedAt": "2026-03-10T08:20:00+09:00",
+    "noticeNumber": "인천광역시 공고 제2026-228호"
   },
   {
     "id": "gw-2026-001",
@@ -1013,7 +1019,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T08:30:00+09:00"
+    "linkVerifiedAt": "2026-03-10T08:30:00+09:00",
+    "noticeNumber": "고양시 공고 제2026-321호"
   },
   {
     "id": "jn-2026-001",
@@ -1200,7 +1207,8 @@
     ],
     "hasOfficialNotice": false,
     "hasAttachment": true,
-    "linkVerifiedAt": "2026-03-10T09:24:00+09:00"
+    "linkVerifiedAt": "2026-03-10T09:24:00+09:00",
+    "noticeNumber": "화성시 인터넷 의견청취 2026-18호"
   },
   {
     "id": "gj-2026-001",

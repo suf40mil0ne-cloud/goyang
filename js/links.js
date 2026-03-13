@@ -56,35 +56,78 @@ function isEumUrl(value = '') {
   return normalizeUrl(value).includes('eum.go.kr');
 }
 
+function isEumDetailUrl(value = '') {
+  if (!isUsableUrl(value) || !isEumUrl(value)) return false;
+  const pathname = new URL(String(value)).pathname.toLowerCase();
+  return /\/(ih\/ihhearingdet|hr\/hrpeopleheardet)\.jsp$/.test(pathname);
+}
+
+function isEumNotice(notice = {}, sourceUrl = '') {
+  const sourceType = compactText(notice.sourceType || '').toLowerCase();
+  if (sourceType === 'hr' || sourceType === 'ih') return true;
+  return [sourceUrl, notice.sourceDetailUrl, notice.sourceUrl, notice.eumDirectUrl].some((value) => isEumUrl(value));
+}
+
 function getEumListPath(notice = {}, sourceUrl = '') {
-  const path = isUsableUrl(sourceUrl) ? new URL(String(sourceUrl)).pathname.toLowerCase() : '';
-  if (/\/ih\//i.test(path) || /internet|ih/.test(notice.sourceType || '')) {
+  const kind = getEumDetailKind(notice, sourceUrl);
+  if (kind === 'ih') {
     return '/web/cp/ih/ihHearingList.jsp';
   }
   return '/web/cp/hr/hrPeopleHearList.jsp';
 }
 
 function getEumDetailKind(notice = {}, sourceUrl = '') {
+  const sourceType = compactText(notice.sourceType || '').toLowerCase();
   const path = isUsableUrl(sourceUrl) ? new URL(String(sourceUrl)).pathname.toLowerCase() : '';
-  if (/\/ih\//i.test(path) || /internet|ih/.test(notice.sourceType || '')) return 'ih';
-  return 'hr';
-}
-
-function extractEumDetailIdentifiers(sourceUrl = '') {
-  if (!isUsableUrl(sourceUrl)) {
-    return { seq: '', pnncCd: '' };
+  if (
+    /\/ih\//i.test(path)
+    || path.includes('ihhearing')
+    || sourceType === 'ih'
+  ) {
+    return 'ih';
   }
 
-  const url = new URL(String(sourceUrl));
-  return {
-    seq: compactText(url.searchParams.get('seq') || ''),
-    pnncCd: compactText(url.searchParams.get('pnnc_cd') || url.searchParams.get('pnncCd') || ''),
-  };
+  if (
+    /\/hr\//i.test(path)
+    || path.includes('hrpeoplehear')
+    || sourceType === 'hr'
+  ) {
+    return 'hr';
+  }
+
+  if (isEumNotice(notice, sourceUrl)) {
+    if (sourceType.includes('internet') || sourceType.includes('land-internet')) return 'ih';
+    if (sourceType.includes('land-hearing')) return 'hr';
+  }
+
+  return '';
+}
+
+function extractEumDetailIdentifiers(...sourceUrls) {
+  const identifiers = { seq: '', pnncCd: '' };
+
+  sourceUrls.forEach((sourceUrl) => {
+    if (!isUsableUrl(sourceUrl)) return;
+    const url = new URL(String(sourceUrl));
+    if (!identifiers.seq) {
+      identifiers.seq = compactText(url.searchParams.get('seq') || '');
+    }
+    if (!identifiers.pnncCd) {
+      identifiers.pnncCd = compactText(url.searchParams.get('pnnc_cd') || url.searchParams.get('pnncCd') || '');
+    }
+  });
+
+  return identifiers;
 }
 
 function buildEumDetailUrl(notice, sourceUrl = '') {
   const kind = getEumDetailKind(notice, sourceUrl);
-  const parsed = extractEumDetailIdentifiers(sourceUrl);
+  const parsed = extractEumDetailIdentifiers(
+    notice.eumDirectUrl,
+    notice.sourceDetailUrl,
+    sourceUrl,
+    notice.sourceUrl
+  );
   const seq = compactText(notice.seq || parsed.seq);
   const pnncCd = compactText(notice.pnncCd || notice.pnnc_cd || parsed.pnncCd);
 
@@ -99,12 +142,10 @@ function buildEumDetailUrl(notice, sourceUrl = '') {
   return '';
 }
 
-function buildEumSearchUrl(notice, sourceUrl = '') {
+function buildEumNoticeNumberSearchUrl(notice, sourceUrl = '') {
   const noticeNumber = compactText(notice.noticeNumber);
   const organization = normalizeSearchOrganization(notice.organization);
-  const hasSearchTerm = Boolean(noticeNumber);
-
-  if (!hasSearchTerm) return '';
+  if (!noticeNumber) return '';
 
   const url = new URL(`https://www.eum.go.kr${getEumListPath(notice, sourceUrl)}`);
   url.searchParams.set('gosino', noticeNumber);
@@ -115,11 +156,27 @@ function buildEumSearchUrl(notice, sourceUrl = '') {
   return url.toString();
 }
 
-function resolveEumSourceUrl(notice, sourceUrl = '') {
-  if (!isUsableUrl(sourceUrl)) return { url: '', mode: 'none' };
+function buildEumTitleSearchUrl(notice, sourceUrl = '') {
+  const title = normalizeSearchTitle(notice.normalizedTitle || notice.title);
+  const organization = normalizeSearchOrganization(notice.organization);
+  if (!title) return '';
 
-  if (isDirectNoticeUrl(sourceUrl)) {
-    return { url: sourceUrl, mode: 'detail' };
+  const url = new URL(`https://www.eum.go.kr${getEumListPath(notice, sourceUrl)}`);
+  url.searchParams.set('zonenm', title);
+  if (organization) url.searchParams.set('chrgorg', organization);
+  if (notice.postedDate) url.searchParams.set('startdt', notice.postedDate);
+  if (notice.hearingEndDate) url.searchParams.set('enddt', notice.hearingEndDate);
+  if (notice.adminCode) url.searchParams.set('selSggCd', String(notice.adminCode).slice(0, 5));
+  return url.toString();
+}
+
+function resolveEumDirectUrl(notice, sourceUrl = '') {
+  if (!isEumNotice(notice, sourceUrl) && !isUsableUrl(sourceUrl)) return { url: '', mode: 'none' };
+
+  const directSourceUrl = [notice.sourceDetailUrl, notice.eumDirectUrl, sourceUrl, notice.sourceUrl]
+    .find((value) => isEumDetailUrl(value));
+  if (directSourceUrl) {
+    return { url: directSourceUrl, mode: 'detail' };
   }
 
   const detailUrl = buildEumDetailUrl(notice, sourceUrl);
@@ -127,9 +184,14 @@ function resolveEumSourceUrl(notice, sourceUrl = '') {
     return { url: detailUrl, mode: 'detail' };
   }
 
-  const searchUrl = buildEumSearchUrl(notice, sourceUrl);
-  if (searchUrl) {
-    return { url: searchUrl, mode: 'search-number' };
+  const noticeNumberSearchUrl = buildEumNoticeNumberSearchUrl(notice, sourceUrl);
+  if (noticeNumberSearchUrl) {
+    return { url: noticeNumberSearchUrl, mode: 'search-number' };
+  }
+
+  const titleSearchUrl = buildEumTitleSearchUrl(notice, sourceUrl);
+  if (titleSearchUrl) {
+    return { url: titleSearchUrl, mode: 'search-title' };
   }
 
   return { url: '', mode: 'none' };
@@ -399,27 +461,35 @@ function isLikelyAttachment(item) {
 
 function buildSourceDetailLink(notice) {
   const sourceUrl = notice.sourceDetailUrl || notice.sourceUrl;
-  if (!isUsableUrl(sourceUrl)) return null;
-  if (!isEumUrl(sourceUrl) && !isDirectNoticeUrl(sourceUrl)) return null;
-  const eumTarget = isEumUrl(sourceUrl) ? resolveEumSourceUrl(notice, sourceUrl) : null;
-  const resolvedSourceUrl = isEumUrl(sourceUrl) ? eumTarget?.url : sourceUrl;
+  if (isEumNotice(notice, sourceUrl) || isEumUrl(sourceUrl) || isEumUrl(notice.eumDirectUrl)) {
+    const eumTarget = resolveEumDirectUrl(notice, sourceUrl);
+    if (!eumTarget.url) return null;
 
-  if (!resolvedSourceUrl) return null;
+    return {
+      kind: 'eum',
+      mode: eumTarget.mode,
+      title: '토지이음에서 보기',
+      url: eumTarget.url,
+      description: eumTarget.mode === 'detail'
+        ? '현재 공고의 토지이음 상세 화면으로 바로 이동합니다.'
+        : eumTarget.mode === 'search-number'
+          ? '공고번호가 반영된 토지이음 검색 결과로 이동합니다.'
+          : '상세 식별자가 없을 때만 공고명 검색 결과로 이동합니다.',
+      sourceSite: notice.sourceMeta?.label || notice.rawSourceName || '토지이음',
+      buttonLabel: '토지이음에서 보기',
+    };
+  }
+
+  if (!isUsableUrl(sourceUrl) || !isDirectNoticeUrl(sourceUrl)) return null;
 
   return {
-    title: isEumUrl(sourceUrl) ? '토지이음에서 보기' : '기준 출처에서 보기',
-    url: resolvedSourceUrl,
-    description: isEumUrl(sourceUrl)
-      ? (
-          eumTarget?.mode === 'detail'
-            ? '현재 공고의 토지이음 상세 화면으로 바로 이동합니다.'
-            : eumTarget?.mode === 'search-number'
-              ? '공고번호가 반영된 토지이음 검색 결과로 이동합니다.'
-              : '토지이음 검색 결과에서 현재 공고를 확인할 수 있습니다.'
-        )
-      : '수집 기준이 된 출처 화면입니다. 실제 제출과 법적 효력 판단은 공식 공고 원문을 우선 확인해야 합니다.',
+    kind: 'source',
+    mode: 'detail',
+    title: '기준 출처에서 보기',
+    url: sourceUrl,
+    description: '수집 기준이 된 출처 화면입니다. 실제 제출과 법적 효력 판단은 공식 공고 원문을 우선 확인해야 합니다.',
     sourceSite: notice.sourceMeta?.label || notice.rawSourceName || '기준 출처',
-    buttonLabel: isEumUrl(sourceUrl) ? '토지이음에서 보기' : '출처 보기',
+    buttonLabel: '출처 보기',
   };
 }
 
@@ -588,7 +658,12 @@ export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []
   const officialNotices = deriveOfficialNotices(notice, enrichment);
   const primaryOfficialPost = officialNotices.find((item) => isDirectNoticePostUrl(item.url, { ...notice, ...item })) || null;
   const officialReviewState = getOfficialReviewState(notice, enrichment);
-  const tentativeSourceDetailLink = buildSourceDetailLink(notice);
+  const linkContext = {
+    ...notice,
+    normalizedTitle: enrichment.normalizedTitle || notice.title,
+    noticeNumber: enrichment.noticeNumber || notice.noticeNumber || '',
+  };
+  const tentativeSourceDetailLink = buildSourceDetailLink(linkContext);
   const sourceDetailLink = tentativeSourceDetailLink
     && !officialNotices.some((item) => normalizeUrl(item.url) === normalizeUrl(tentativeSourceDetailLink.url))
     ? tentativeSourceDetailLink
@@ -598,6 +673,12 @@ export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []
   const officialPressReleases = derivePressReleases(enrichment);
   const relatedNews = deriveRelatedNews(enrichment);
   const relatedFollowups = deriveFollowups(notice, relatedGosi);
+  const normalizedSourceDetailUrl = sourceDetailLink?.kind === 'eum' && sourceDetailLink.mode === 'detail'
+    ? sourceDetailLink.url
+    : notice.sourceDetailUrl || notice.sourceUrl || '';
+  const eumDirectUrl = sourceDetailLink?.kind === 'eum'
+    ? sourceDetailLink.url
+    : compactText(notice.eumDirectUrl || '');
 
   return {
     normalizedTitle: enrichment.normalizedTitle || notice.title,
@@ -606,8 +687,8 @@ export function mergeNoticeConnections(notice, enrichment = {}, relatedGosi = []
     officialNoticeReviewPending: officialReviewState.pending,
     officialNoticeReviewReason: officialReviewState.reason,
     sourceDetailLink,
-    sourceDetailUrl: sourceDetailLink?.url || '',
-    eumDirectUrl: sourceDetailLink?.url || '',
+    sourceDetailUrl: normalizedSourceDetailUrl,
+    eumDirectUrl,
     officialNoticeUrl: primaryOfficialPost?.url || '',
     officialNoticeLabel: primaryOfficialPost?.sourceSite || '',
     directNoticeLink,
