@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   Bell,
@@ -213,6 +213,7 @@ function MetricCard({ icon: Icon, label, value, accent = 'bg-[#ffffff]' }) {
 }
 
 export default function App() {
+  const hasRequestedInitialLocation = useRef(false);
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedSido, setSelectedSido] = useState(initialSido);
   const [selectedSigungu, setSelectedSigungu] = useState(getInitialRegion()?.sigungu || '');
@@ -263,6 +264,15 @@ export default function App() {
     };
   }, [selectedRegion?.sido, selectedRegion?.sigungu]);
 
+  useEffect(() => {
+    if (hasRequestedInitialLocation.current) {
+      return;
+    }
+
+    hasRequestedInitialLocation.current = true;
+    handleDetectLocation();
+  }, []);
+
   const filteredNotices = useMemo(() => {
     if (!selectedRegion) {
       return notices.slice(0, 8);
@@ -305,6 +315,8 @@ export default function App() {
   async function handleDetectLocation() {
     setIsDetecting(true);
     setError('');
+    setLocationResolution('현재 위치 확인 중');
+    setLocationMessage('접속 직후 현재 위치를 확인하고 있습니다. 브라우저 위치 권한을 허용해주세요.');
 
     try {
       const coords = await getCurrentPosition();
