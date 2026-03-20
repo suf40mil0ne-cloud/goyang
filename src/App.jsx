@@ -678,21 +678,10 @@ export default function App() {
           </section>
 
           <section id="overview-grid" className="grid grid-cols-1 gap-6 md:grid-cols-12">
-            <aside className="md:col-span-4 rounded-[24px] bg-[#e6e8ea] p-6 text-center shadow-sm">
-              <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#3f4850]">Live Sources</span>
-              <div className="mx-auto mt-5 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm">
-                <Radar className="h-7 w-7 text-[#006194]" />
-              </div>
-              <h4 className="mt-4 text-sm font-bold text-[#191c1e]">국토교통부 공식 OpenAPI</h4>
-              <p className="mt-2 text-xs leading-6 text-[#3f4850]">
-                기존 스타일은 유지하고, 첫 화면의 정보 우선순위만 위치 기반으로 재정렬했습니다.
-              </p>
-            </aside>
-
             <section
               id="region-picker"
               ref={regionPickerRef}
-              className={`md:col-span-4 rounded-[24px] bg-white p-8 shadow-sm ${isPickerOpen ? 'block' : 'hidden md:block'}`}
+              className={`md:col-span-6 rounded-[24px] bg-white p-8 shadow-sm ${isPickerOpen ? 'block' : 'hidden md:block'}`}
             >
               <div className="space-y-2">
                 <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#3f4850]">지역 직접 선택</span>
@@ -740,7 +729,7 @@ export default function App() {
               </form>
             </section>
 
-            <article className="md:col-span-4 rounded-[24px] bg-white p-8 shadow-sm">
+            <article className="md:col-span-6 rounded-[24px] bg-white p-8 shadow-sm">
               <div className="space-y-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#3f4850]">현재 자치구 상태</span>
                 <MetricCard icon={Map} label="진행중" value={`${currentOngoingHearings.length}건`} />
