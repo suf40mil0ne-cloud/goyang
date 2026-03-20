@@ -193,6 +193,7 @@ function MetricCard({ icon: Icon, label, value }) {
 
 export default function App() {
   const hasRequestedInitialLocation = useRef(false);
+  const regionPickerRef = useRef(null);
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedSido, setSelectedSido] = useState(initialSido);
   const [selectedSigungu, setSelectedSigungu] = useState(getInitialRegion()?.sigungu || '');
@@ -383,6 +384,16 @@ export default function App() {
     );
   }
 
+  function handleOpenRegionPicker() {
+    setIsPickerOpen(true);
+    window.requestAnimationFrame(() => {
+      regionPickerRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+  }
+
   function toggleAdjacentCode(code) {
     setSelectedAdjacentCodes((current) =>
       current.includes(code)
@@ -459,7 +470,7 @@ export default function App() {
             id="toggle-region-picker"
             type="button"
             className="rail-link text-left"
-            onClick={() => setIsPickerOpen((value) => !value)}
+            onClick={handleOpenRegionPicker}
             aria-expanded={isPickerOpen}
             aria-controls="region-picker"
           >
@@ -502,7 +513,7 @@ export default function App() {
                     {isDetecting ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <Compass className="h-5 w-5" />}
                     내 위치로 찾기
                   </button>
-                  <button type="button" onClick={() => setIsPickerOpen(true)} className="hero-button-secondary w-full justify-center sm:w-auto">
+                  <button type="button" onClick={handleOpenRegionPicker} className="hero-button-secondary w-full justify-center sm:w-auto">
                     <ChevronDown className="h-4 w-4" />
                     지역 직접 선택
                   </button>
@@ -680,6 +691,7 @@ export default function App() {
 
             <section
               id="region-picker"
+              ref={regionPickerRef}
               className={`md:col-span-4 rounded-[24px] bg-white p-8 shadow-sm ${isPickerOpen ? 'block' : 'hidden md:block'}`}
             >
               <div className="space-y-2">
