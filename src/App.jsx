@@ -1,15 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  Building2,
+  ArrowRight,
+  Bell,
   CalendarRange,
   ChevronDown,
+  Compass,
   ExternalLink,
+  FileText,
+  Info,
   LoaderCircle,
   LocateFixed,
+  Map,
   MapPin,
+  Megaphone,
   Radar,
   RotateCcw,
-  Sparkles,
+  ShieldAlert,
+  UserRound,
 } from 'lucide-react';
 import { getNationalMockNotices } from './lib/national-notices';
 import { formatRegionLabel, getDistrictsForSido, getRegions, matchRegionFromAddress } from './lib/region-utils';
@@ -63,67 +70,145 @@ function getCurrentPosition() {
   });
 }
 
+function getSourceBadgeClasses(notice) {
+  if (notice.isMock) {
+    return 'bg-[#ffdcc0] text-[#6b3b00]';
+  }
+
+  if (notice.source === 'seoul-open-api') {
+    return 'bg-[#c1e0ff] text-[#004b73]';
+  }
+
+  return 'bg-[#e0e3e5] text-[#3f4850]';
+}
+
 function NoticeCard({ notice }) {
   return (
-    <article className="group rounded-[28px] border border-white/12 bg-white/6 p-5 shadow-[0_24px_70px_rgba(3,10,30,0.45)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-cyan-300/50 hover:bg-white/8">
-      <div className="flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-[0.28em] text-cyan-200/80">
-        <span className="rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1">
-          {notice.sourceLabel}
-        </span>
-        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
-          {notice.type}
-        </span>
-        {notice.isMock ? (
-          <span className="rounded-full border border-fuchsia-300/30 bg-fuchsia-400/10 px-3 py-1 text-fuchsia-100">
-            Mock
+    <article className="feed-card group">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] ${getSourceBadgeClasses(notice)}`}>
+            {notice.sourceLabel}
           </span>
-        ) : null}
+          <span className="rounded-full bg-[#f2f4f6] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#43617c]">
+            {notice.type}
+          </span>
+        </div>
+        <MapPin className="h-4 w-4 text-[#006194]" />
       </div>
 
-      <h3 className="mt-4 text-lg font-semibold leading-snug text-white">
+      <h3 className="mt-4 text-lg font-bold leading-tight text-[#191c1e]">
         {notice.title}
       </h3>
 
-      <div className="mt-4 grid gap-3 text-sm text-slate-200/80 sm:grid-cols-2">
-        <div className="glass-fact">
-          <CalendarRange className="h-4 w-4 text-cyan-300" />
-          <span>{notice.period}</span>
+      <div className="mt-5 grid gap-3 text-sm text-[#3f4850] sm:grid-cols-2">
+        <div className="rounded-xl bg-[#f7f9fb] px-4 py-3">
+          <div className="flex items-center gap-2 text-[#006194]">
+            <CalendarRange className="h-4 w-4" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">기간</span>
+          </div>
+          <p className="mt-2 leading-6">{notice.period}</p>
         </div>
-        <div className="glass-fact">
-          <MapPin className="h-4 w-4 text-cyan-300" />
-          <span>{notice.regionLabel}</span>
-        </div>
-        <div className="glass-fact">
-          <Building2 className="h-4 w-4 text-cyan-300" />
-          <span>{notice.department}</span>
-        </div>
-        <div className="glass-fact">
-          <Sparkles className="h-4 w-4 text-cyan-300" />
-          <span>{notice.place}</span>
+        <div className="rounded-xl bg-[#f7f9fb] px-4 py-3">
+          <div className="flex items-center gap-2 text-[#006194]">
+            <Map className="h-4 w-4" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">지역</span>
+          </div>
+          <p className="mt-2 leading-6">{notice.regionLabel}</p>
         </div>
       </div>
 
-      <p className="mt-4 line-clamp-3 text-sm leading-6 text-slate-300/88">
+      <p className="mt-4 text-sm leading-7 text-[#3f4850]">
         {notice.excerpt}
       </p>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3">
+      <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
+        <span className="rounded-full bg-[#f2f4f6] px-3 py-2 font-medium text-[#3f4850]">
+          {notice.department}
+        </span>
         <a
           href={notice.link}
           target="_blank"
           rel="noreferrer noopener"
-          className="inline-flex items-center gap-2 rounded-full border border-cyan-300/40 bg-cyan-400/12 px-4 py-2 text-sm font-medium text-cyan-100 transition hover:border-cyan-200 hover:bg-cyan-300/18"
+          className="inline-flex items-center gap-2 font-bold text-[#006194] transition group-hover:gap-3"
         >
           원문 링크
           <ExternalLink className="h-4 w-4" />
         </a>
-        {notice.attachments?.length > 1 ? (
-          <span className="text-xs text-slate-400">
-            첨부 {notice.attachments.length}건
-          </span>
-        ) : null}
       </div>
     </article>
+  );
+}
+
+function FeaturedNotice({ notice }) {
+  if (!notice) {
+    return (
+      <article className="rounded-[24px] bg-white p-8 shadow-sm">
+        <div className="space-y-4">
+          <span className="section-pill">데이터 없음</span>
+          <h2 className="text-2xl font-extrabold leading-tight text-[#191c1e]">
+            표시할 공고가 아직 없습니다.
+          </h2>
+          <p className="text-sm leading-7 text-[#3f4850]">
+            위치를 감지하거나 지역을 선택하면 해당 시군구 기준으로 공고를 정리해 보여줍니다.
+          </p>
+        </div>
+      </article>
+    );
+  }
+
+  return (
+    <article className="rounded-[24px] bg-white p-8 shadow-sm transition-shadow hover:shadow-md">
+      <div className="mb-10 flex flex-wrap items-start justify-between gap-4">
+        <div className="space-y-3">
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#006194]">
+            {notice.sourceLabel}
+          </span>
+          <h2 className="max-w-2xl text-2xl font-extrabold leading-tight text-[#191c1e]">
+            {notice.title}
+          </h2>
+        </div>
+        <span className={`rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] ${getSourceBadgeClasses(notice)}`}>
+          {notice.isMock ? 'Mock Data' : 'Live Feed'}
+        </span>
+      </div>
+
+      <div className="flex flex-wrap items-end justify-between gap-6">
+        <div className="flex flex-wrap items-center gap-5 text-[#3f4850]">
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">기간</span>
+            <span className="mt-1 text-sm font-medium">{notice.period}</span>
+          </div>
+          <div className="h-8 w-px bg-[#dfe4ea]" />
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">지역</span>
+            <span className="mt-1 text-sm font-medium">{notice.regionLabel}</span>
+          </div>
+        </div>
+
+        <a
+          href={notice.link}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="inline-flex items-center gap-2 font-bold text-[#006194] transition hover:gap-3"
+        >
+          View Details
+          <ArrowRight className="h-4 w-4" />
+        </a>
+      </div>
+    </article>
+  );
+}
+
+function MetricCard({ icon: Icon, label, value, accent = 'bg-[#ffffff]' }) {
+  return (
+    <div className={`rounded-[20px] p-6 shadow-sm ${accent}`}>
+      <div className="flex items-center gap-3 text-[#006194]">
+        <Icon className="h-5 w-5" />
+        <span className="text-[10px] font-bold uppercase tracking-[0.14em]">{label}</span>
+      </div>
+      <p className="mt-4 text-2xl font-extrabold text-[#191c1e]">{value}</p>
+    </div>
   );
 }
 
@@ -193,6 +278,11 @@ export default function App() {
     [selectedSido]
   );
 
+  const featuredNotice = filteredNotices[0] || null;
+  const spotlightNotices = filteredNotices.slice(1, 4);
+  const seoulNoticeCount = notices.filter((notice) => notice.source === 'seoul-open-api').length;
+  const mockNoticeCount = notices.filter((notice) => notice.isMock).length;
+
   function applyRegion(region, resolutionText) {
     setSelectedRegion(region);
     setSelectedSido(region.sido);
@@ -245,250 +335,337 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030712] text-white">
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.2),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(99,102,241,0.16),_transparent_26%),radial-gradient(circle_at_bottom,_rgba(34,211,238,0.08),_transparent_38%)]" />
-        <div className="absolute left-1/2 top-24 h-80 w-80 -translate-x-1/2 rounded-full bg-cyan-400/10 blur-[120px]" />
-      </div>
-
-      <div className="relative mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-12 pt-5 sm:px-6 lg:px-8">
-        <header className="topbar">
-          <button
-            type="button"
-            onClick={handleReset}
-            className="brand-link"
-            aria-label="공람콕 홈으로 초기화"
-          >
-            <span className="brand-mark">
-              <Radar className="h-6 w-6 text-cyan-200" />
-            </span>
-            <span>
-              <span className="brand-sub">SEOUL OPEN API + EUM</span>
-              <span className="brand-title">공람콕</span>
-            </span>
-          </button>
-
-          <nav className="flex flex-wrap items-center gap-2 text-sm text-slate-200/80">
-            <a className="nav-pill" href="#notice-list">공고 리스트</a>
-            <a className="nav-pill" href="#region-picker">지역 선택</a>
-            <button type="button" className="nav-pill" onClick={handleReset}>
-              <RotateCcw className="h-4 w-4" />
-              초기화
+    <div className="min-h-screen bg-[#f7f9fb] text-[#191c1e]">
+      <nav className="top-app-bar">
+        <div className="mx-auto flex h-20 max-w-[1600px] items-center justify-between gap-4 px-4 sm:px-8">
+          <div className="flex items-center gap-8">
+            <button
+              type="button"
+              onClick={handleReset}
+              className="brand-button"
+              aria-label="공람콕 홈으로 초기화"
+            >
+              <span className="brand-symbol">
+                <Radar className="h-5 w-5" />
+              </span>
+              <span className="text-left">
+                <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-[#006194]">
+                  Your Civic Feed
+                </span>
+                <span className="block text-2xl font-extrabold tracking-tight text-[#191c1e]">공람콕</span>
+              </span>
             </button>
-          </nav>
-        </header>
 
-        <main className="mt-6 grid gap-6">
-          <section className="glass-panel overflow-hidden rounded-[36px] p-6 sm:p-8">
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)]">
-              <div className="space-y-6">
-                <p className="kicker">위치 기반 도시계획 공고 탐색</p>
-                <div className="space-y-4">
-                  <h1 className="max-w-3xl text-4xl font-semibold leading-tight tracking-[-0.03em] text-white sm:text-5xl">
-                    서울시 최신 도시계획 공고와 전국 토지이음 흐름을 한 화면에서 확인합니다.
-                  </h1>
-                  <p className="max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-                    서울 지역은 실제 서울시 Open API XML 응답을 브라우저에서 JSON으로 변환해 카드로 렌더링하고,
-                    전국 지역은 토지이음 수집 구조와 목업 데이터를 함께 제공하는 데모입니다.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-3">
-                  <button
-                    id="detect-location"
-                    type="button"
-                    onClick={handleDetectLocation}
-                    className="primary-cta"
-                    disabled={isDetecting}
-                  >
-                    {isDetecting ? (
-                      <LoaderCircle className="h-5 w-5 animate-spin" />
-                    ) : (
-                      <LocateFixed className="h-5 w-5" />
-                    )}
-                    detect-location
-                  </button>
-                  <button
-                    id="toggle-region-picker"
-                    type="button"
-                    className="secondary-cta"
-                    onClick={() => setIsPickerOpen((value) => !value)}
-                    aria-expanded={isPickerOpen}
-                    aria-controls="region-picker"
-                  >
-                    지역 직접 선택
-                    <ChevronDown className={`h-4 w-4 transition ${isPickerOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                </div>
-
-                <div className="flex flex-wrap gap-2 text-sm text-slate-300/80">
-                  <span className="info-chip">React 19</span>
-                  <span className="info-chip">Vite</span>
-                  <span className="info-chip">Tailwind CSS 4</span>
-                  <span className="info-chip">Lucide-react</span>
-                </div>
-              </div>
-
-              <aside className="glass-panel rounded-[30px] border border-cyan-300/20 p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm uppercase tracking-[0.24em] text-cyan-200/75">위치 확인 결과</p>
-                    <h2 className="mt-2 text-2xl font-semibold text-white">
-                      {selectedRegion ? formatRegionLabel(selectedRegion) : '메인 홈 화면'}
-                    </h2>
-                  </div>
-                  <span className="rounded-full border border-cyan-300/25 bg-cyan-400/12 px-3 py-1 text-xs text-cyan-100">
-                    {selectedRegion ? '필터 적용됨' : '대기 중'}
-                  </span>
-                </div>
-
-                <div className="mt-5 space-y-4 text-sm leading-6 text-slate-300">
-                  <div className="glass-fact">
-                    <MapPin className="h-4 w-4 text-cyan-300" />
-                    <span>{locationMessage}</span>
-                  </div>
-                  <div className="glass-fact">
-                    <Sparkles className="h-4 w-4 text-cyan-300" />
-                    <span>{locationResolution}</span>
-                  </div>
-                  <div className="glass-fact">
-                    <CalendarRange className="h-4 w-4 text-cyan-300" />
-                    <span>{updatedAt ? `마지막 동기화: ${updatedAt}` : '마지막 동기화 대기 중'}</span>
-                  </div>
-                </div>
-
-                <div className="mt-6 rounded-[24px] border border-fuchsia-300/18 bg-fuchsia-400/8 p-4 text-sm leading-6 text-slate-200/88">
-                  서울 데이터는 서울시 Open API 실응답을 파싱합니다. 서울 외 지역은 토지이음 실수집 전 단계라서
-                  현재는 목업 데이터와 수집기 구조를 함께 제공합니다.
-                </div>
-              </aside>
+            <div className="hidden items-center gap-6 md:flex">
+              <a className="nav-tab nav-tab-active" href="#notice-list">Map Explorer</a>
+              <a className="nav-tab" href="#notice-list">Local Notices</a>
+              <a className="nav-tab" href="#overview-grid">Regional Alerts</a>
             </div>
-          </section>
+          </div>
 
-          <section
-            id="region-picker"
-            className={`glass-panel rounded-[32px] p-6 transition ${isPickerOpen ? 'block' : 'hidden'}`}
+          <div className="flex items-center gap-3">
+            <button type="button" className="icon-shell" aria-label="알림">
+              <Bell className="h-5 w-5" />
+            </button>
+            <button type="button" className="icon-shell" onClick={handleDetectLocation} aria-label="현재 위치 감지">
+              {isDetecting ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <LocateFixed className="h-5 w-5" />}
+            </button>
+            <div className="hidden h-9 w-9 items-center justify-center rounded-full bg-[#c1e0ff] text-[#45647f] sm:flex">
+              <UserRound className="h-4 w-4" />
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <aside className="left-rail">
+        <div className="mb-8">
+          <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">Your Civic Feed</p>
+          <p className="mt-1 text-xs text-[#3f4850]">
+            {selectedRegion ? formatRegionLabel(selectedRegion) : 'Based on Current Location'}
+          </p>
+        </div>
+
+        <nav className="flex flex-col gap-1">
+          <a className="rail-link rail-link-active" href="#hero">
+            <Map className="h-4 w-4" />
+            <span>Map Explorer</span>
+          </a>
+          <a className="rail-link" href="#notice-list">
+            <FileText className="h-4 w-4" />
+            <span>Local Notices</span>
+          </a>
+          <a className="rail-link" href="#overview-grid">
+            <Megaphone className="h-4 w-4" />
+            <span>Regional Alerts</span>
+          </a>
+          <button
+            id="toggle-region-picker"
+            type="button"
+            className="rail-link text-left"
+            onClick={() => setIsPickerOpen((value) => !value)}
+            aria-expanded={isPickerOpen}
+            aria-controls="region-picker"
           >
-            <div className="flex flex-col gap-2">
-              <p className="kicker">지역 직접 선택</p>
-              <h2 className="text-2xl font-semibold text-white">시도와 시군구를 선택해 즉시 필터링</h2>
-              <p className="text-sm leading-6 text-slate-300">
-                앱 실행 시와 지역이 바뀔 때마다 서울시 Open API를 재호출하고, 선택한 시군구 기준으로 `#notice-list`를 갱신합니다.
+            <Info className="h-4 w-4" />
+            <span>Filters</span>
+            <ChevronDown className={`ml-auto h-4 w-4 transition ${isPickerOpen ? 'rotate-180' : ''}`} />
+          </button>
+        </nav>
+
+        <button
+          type="button"
+          onClick={handleDetectLocation}
+          className="hero-button mt-auto w-full justify-center"
+          id="detect-location"
+        >
+          {isDetecting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <LocateFixed className="h-4 w-4" />}
+          Update Location
+        </button>
+      </aside>
+
+      <main className="pb-28 pt-24 lg:ml-72 lg:pb-12">
+        <div className="mx-auto max-w-7xl space-y-10 px-4 sm:px-8">
+          <section id="hero" className="relative overflow-hidden rounded-[28px] bg-[#e8f3ff] shadow-sm">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(0,97,148,0.18),_transparent_32%),linear-gradient(135deg,_rgba(0,97,148,0.92),_rgba(0,123,185,0.72))]" />
+            <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(255,255,255,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.22)_1px,transparent_1px)] [background-size:36px_36px]" />
+
+            <div className="relative flex min-h-[420px] items-center justify-center px-4 py-10 sm:px-10">
+              <div className="max-w-xl rounded-[28px] bg-white/90 p-8 text-center shadow-2xl backdrop-blur-xl sm:p-10">
+                <span className="inline-flex rounded-full bg-[#c1e0ff] px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[#004b73]">
+                  Live Discovery
+                </span>
+                <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-[#191c1e] sm:text-5xl">
+                  내 주변 공람과 공고를 한 번에 찾습니다.
+                </h1>
+                <p className="mt-4 text-lg leading-8 text-[#3f4850]">
+                  서울시 실데이터와 전국 토지이음 흐름을 현재 위치 또는 직접 선택한 시군구 기준으로 정리합니다.
+                </p>
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+                  <button type="button" onClick={handleDetectLocation} className="hero-button">
+                    {isDetecting ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <Compass className="h-5 w-5" />}
+                    Detect My Location
+                  </button>
+                  <button type="button" onClick={handleReset} className="hero-button-secondary">
+                    <RotateCcw className="h-4 w-4" />
+                    Reset Feed
+                  </button>
+                </div>
+                <div className="mt-6 flex flex-wrap justify-center gap-2">
+                  <span className="status-chip">{selectedRegion ? formatRegionLabel(selectedRegion) : '메인 홈 화면'}</span>
+                  <span className="status-chip">{updatedAt ? `업데이트 ${updatedAt}` : '업데이트 대기 중'}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="overview-grid" className="grid grid-cols-1 gap-6 md:grid-cols-12">
+            <div className="md:col-span-8">
+              <FeaturedNotice notice={featuredNotice} />
+            </div>
+
+            <article className="md:col-span-4 rounded-[24px] bg-[#894d00] p-8 text-white shadow-sm">
+              <div className="space-y-4">
+                <ShieldAlert className="h-8 w-8 text-[#ffdcc0]" />
+                <h3 className="text-xl font-bold leading-tight">
+                  {error ? '지역 확인이 필요합니다.' : selectedRegion ? '선택 지역 기준으로 필터 적용 중' : '위치 감지 또는 지역 선택 필요'}
+                </h3>
+              </div>
+              <div className="pt-6">
+                <p className="mb-4 text-sm leading-7 text-[#ffdcc0]">
+                  {error || locationMessage}
+                </p>
+                <button type="button" onClick={() => setIsPickerOpen((value) => !value)} className="text-sm font-bold underline underline-offset-4">
+                  필터 열기
+                </button>
+              </div>
+            </article>
+
+            <aside className="md:col-span-4 rounded-[24px] bg-[#e6e8ea] p-6 text-center shadow-sm">
+              <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#3f4850]">Live Sources</span>
+              <div className="mx-auto mt-5 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm">
+                <Radar className="h-7 w-7 text-[#006194]" />
+              </div>
+              <h4 className="mt-4 text-sm font-bold text-[#191c1e]">서울 실데이터 + 전국 목업</h4>
+              <p className="mt-2 text-xs leading-6 text-[#3f4850]">
+                서울은 Open API, 전국은 토지이음 수집 구조와 목업 데이터로 이어집니다.
               </p>
-            </div>
-
-            <form onSubmit={handleRegionSubmit} className="mt-5 grid gap-4 md:grid-cols-[1fr_1fr_auto]">
-              <label className="space-y-2 text-sm text-slate-200">
-                <span>시도</span>
-                <select
-                  value={selectedSido}
-                  onChange={(event) => {
-                    const nextSido = event.target.value;
-                    const nextDistrict = getDistrictsForSido(nextSido)[0]?.sigungu || '';
-                    setSelectedSido(nextSido);
-                    setSelectedSigungu(nextDistrict);
-                  }}
-                  className="form-select"
-                >
-                  {regions.map((region) => (
-                    <option key={region.name} value={region.name}>
-                      {region.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="space-y-2 text-sm text-slate-200">
-                <span>시군구</span>
-                <select
-                  value={selectedSigungu}
-                  onChange={(event) => setSelectedSigungu(event.target.value)}
-                  className="form-select"
-                >
-                  {districtOptions.map((district) => (
-                    <option key={district.sigungu} value={district.sigungu}>
-                      {district.sigungu}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <button type="submit" className="primary-cta self-end md:min-w-40">
-                선택 지역 적용
+              <button type="button" onClick={handleReset} className="mt-5 rounded-xl border border-[#006194]/20 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#006194] transition hover:bg-[#006194]/5">
+                Home Reset
               </button>
-            </form>
+            </aside>
+
+            <article className="md:col-span-4 rounded-[24px] bg-white p-8 shadow-sm">
+              <div className="space-y-2">
+                <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#3f4850]">지역 상태</span>
+                <h2 className="text-xl font-bold leading-tight text-[#191c1e]">
+                  {selectedRegion ? formatRegionLabel(selectedRegion) : '위치를 확인해 지역 피드를 활성화하세요'}
+                </h2>
+              </div>
+              <p className="mt-4 text-sm leading-7 text-[#3f4850]">{locationResolution}</p>
+              <div className="mt-8 border-t border-[#e0e3e5] pt-6">
+                <button type="button" onClick={handleDetectLocation} className="inline-flex items-center gap-2 text-sm font-bold text-[#006194]">
+                  위치 다시 확인
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+            </article>
+
+            <section
+              id="region-picker"
+              className={`md:col-span-4 rounded-[24px] bg-white p-8 shadow-sm ${isPickerOpen ? 'block' : 'hidden md:block'}`}
+            >
+              <div className="space-y-2">
+                <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#3f4850]">Filters</span>
+                <h2 className="text-xl font-bold leading-tight text-[#191c1e]">시도와 시군구를 직접 선택</h2>
+              </div>
+              <form onSubmit={handleRegionSubmit} className="mt-5 space-y-4">
+                <label className="block text-sm font-medium text-[#3f4850]">
+                  <span className="mb-2 block">시도</span>
+                  <select
+                    value={selectedSido}
+                    onChange={(event) => {
+                      const nextSido = event.target.value;
+                      const nextDistrict = getDistrictsForSido(nextSido)[0]?.sigungu || '';
+                      setSelectedSido(nextSido);
+                      setSelectedSigungu(nextDistrict);
+                    }}
+                    className="form-select"
+                  >
+                    {regions.map((region) => (
+                      <option key={region.name} value={region.name}>
+                        {region.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="block text-sm font-medium text-[#3f4850]">
+                  <span className="mb-2 block">시군구</span>
+                  <select
+                    value={selectedSigungu}
+                    onChange={(event) => setSelectedSigungu(event.target.value)}
+                    className="form-select"
+                  >
+                    {districtOptions.map((district) => (
+                      <option key={district.sigungu} value={district.sigungu}>
+                        {district.sigungu}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <button type="submit" className="hero-button w-full justify-center">
+                  선택 지역 적용
+                </button>
+              </form>
+            </section>
+
+            <article className="md:col-span-4 rounded-[24px] bg-white p-8 shadow-sm">
+              <div className="space-y-4">
+                <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#3f4850]">Feed Metrics</span>
+                <MetricCard icon={Map} label="서울 실데이터" value={`${seoulNoticeCount}건`} accent="bg-[#f7f9fb]" />
+                <MetricCard icon={Megaphone} label="전국 목업" value={`${mockNoticeCount}건`} accent="bg-[#f7f9fb]" />
+              </div>
+            </article>
           </section>
 
-          <section className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_340px]">
-            <div className="glass-panel rounded-[32px] p-6">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <p className="kicker">Notice Feed</p>
-                  <h2 className="text-2xl font-semibold text-white">내 지역 진행 중 공고</h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-300">
-                    {selectedRegion
-                      ? `${formatRegionLabel(selectedRegion)} 기준으로 필터링된 공고입니다.`
-                      : '메인 홈 화면에서는 최신 서울 공고와 전국 목업 샘플을 함께 보여줍니다.'}
-                  </p>
-                </div>
-                <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300">
-                  총 {filteredNotices.length}건
-                </div>
+          <section className="space-y-6">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">Spotlight</p>
+                <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">상단 주요 공고</h2>
               </div>
-
-              {error ? (
-                <div className="mt-5 rounded-[24px] border border-rose-300/20 bg-rose-400/10 p-4 text-sm text-rose-100">
-                  {error}
-                </div>
-              ) : null}
-
-              <div id="notice-list" className="mt-6 grid gap-4 md:grid-cols-2">
-                {isLoading ? (
-                  <div className="col-span-full flex min-h-60 items-center justify-center rounded-[28px] border border-white/10 bg-white/5">
-                    <div className="flex items-center gap-3 text-slate-300">
-                      <LoaderCircle className="h-5 w-5 animate-spin text-cyan-300" />
-                      데이터를 불러오는 중입니다.
-                    </div>
-                  </div>
-                ) : filteredNotices.length ? (
-                  filteredNotices.map((notice) => <NoticeCard key={notice.id} notice={notice} />)
-                ) : (
-                  <div className="col-span-full rounded-[28px] border border-white/10 bg-white/5 p-8 text-center text-slate-300">
-                    선택한 지역에 연결된 공고가 없습니다. 로고를 클릭해 홈으로 초기화하거나 다른 시군구를 선택하세요.
-                  </div>
-                )}
+              <div className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#3f4850] shadow-sm">
+                총 {filteredNotices.length}건
               </div>
             </div>
 
-            <aside className="grid gap-6">
-              <section className="glass-panel rounded-[32px] p-6">
-                <p className="kicker">Data Sources</p>
-                <h2 className="text-2xl font-semibold text-white">연동 상태</h2>
-                <div className="mt-5 space-y-3 text-sm leading-6 text-slate-300">
-                  <div className="rounded-[24px] border border-cyan-300/20 bg-cyan-400/10 p-4">
-                    <p className="font-medium text-cyan-100">서울시 Open API</p>
-                    <p className="mt-2">`TbWcmBoardB0414` XML 응답을 브라우저에서 JSON 객체로 변환해 카드 목록에 반영합니다.</p>
-                  </div>
-                  <div className="rounded-[24px] border border-fuchsia-300/20 bg-fuchsia-400/10 p-4">
-                    <p className="font-medium text-fuchsia-100">토지이음 전국 데이터</p>
-                    <p className="mt-2">실데이터가 없을 때는 목업을 쓰고, 백엔드 수집 스크립트 구조는 `scripts/collect-eum-notices.mjs`에 분리합니다.</p>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              {spotlightNotices.length ? (
+                spotlightNotices.map((notice) => <NoticeCard key={`spotlight-${notice.id}`} notice={notice} />)
+              ) : (
+                <div className="md:col-span-3 rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
+                  선택한 지역에 표시할 추가 공고가 없습니다.
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section className="space-y-6">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">Local Notices</p>
+                <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">전체 공고 목록</h2>
+                <p className="mt-2 text-sm leading-7 text-[#3f4850]">
+                  {selectedRegion
+                    ? `${formatRegionLabel(selectedRegion)} 기준 공고 목록입니다.`
+                    : '홈 화면에서는 서울 최신 공고와 전국 목업 샘플을 함께 보여줍니다.'}
+                </p>
+              </div>
+            </div>
+
+            {error ? (
+              <div className="rounded-[20px] bg-[#ffdad6] px-5 py-4 text-sm text-[#93000a] shadow-sm">
+                {error}
+              </div>
+            ) : null}
+
+            <div id="notice-list" className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              {isLoading ? (
+                <div className="lg:col-span-2 rounded-[24px] bg-white px-6 py-16 text-center shadow-sm">
+                  <div className="inline-flex items-center gap-3 text-[#3f4850]">
+                    <LoaderCircle className="h-5 w-5 animate-spin text-[#006194]" />
+                    데이터를 불러오는 중입니다.
                   </div>
                 </div>
-              </section>
-
-              <section className="glass-panel rounded-[32px] p-6">
-                <p className="kicker">UX Rules</p>
-                <h2 className="text-2xl font-semibold text-white">필수 동작</h2>
-                <ul className="mt-5 space-y-3 text-sm leading-6 text-slate-300">
-                  <li>상단 공람콕 로고 클릭 시 검색 결과, 선택 지역, 상태 메시지를 모두 초기화합니다.</li>
-                  <li>`detect-location` 버튼은 GPS와 역지오코딩으로 시군구를 추론합니다.</li>
-                  <li>반응형 카드 레이아웃으로 모바일에서도 1열, 데스크톱에서는 2열 이상으로 확장됩니다.</li>
-                </ul>
-              </section>
-            </aside>
+              ) : filteredNotices.length ? (
+                filteredNotices.map((notice) => <NoticeCard key={notice.id} notice={notice} />)
+              ) : (
+                <div className="lg:col-span-2 rounded-[24px] bg-white px-6 py-16 text-center text-[#3f4850] shadow-sm">
+                  선택한 지역에 연결된 공고가 없습니다. 로고를 눌러 홈으로 돌아가거나 다른 시군구를 선택하세요.
+                </div>
+              )}
+            </div>
           </section>
-        </main>
-      </div>
+        </div>
+      </main>
+
+      <footer className="mt-auto border-t border-[#e0e3e5] bg-[#f2f4f6] px-6 py-10 md:px-8 lg:ml-72">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+          <div className="flex flex-col gap-2">
+            <span className="font-bold text-[#191c1e]">공람콕</span>
+            <p className="text-xs text-[#3f4850]">© 2026 공람콕. 서울 Open API와 토지이음 흐름을 정리하는 로컬 피드.</p>
+          </div>
+          <div className="flex flex-wrap gap-6 text-xs text-[#3f4850]">
+            <a href="#hero" className="transition hover:text-[#006194]">홈</a>
+            <a href="#notice-list" className="transition hover:text-[#006194]">공고</a>
+            <a href="#region-picker" className="transition hover:text-[#006194]">필터</a>
+            <a href="#overview-grid" className="transition hover:text-[#006194]">정보</a>
+          </div>
+        </div>
+      </footer>
+
+      <nav className="mobile-nav md:hidden">
+        <a href="#hero" className="mobile-nav-item mobile-nav-item-active">
+          <Map className="h-5 w-5" />
+          <span>Explore</span>
+        </a>
+        <a href="#notice-list" className="mobile-nav-item">
+          <FileText className="h-5 w-5" />
+          <span>Notices</span>
+        </a>
+        <button type="button" className="mobile-nav-center" onClick={handleDetectLocation}>
+          {isDetecting ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <LocateFixed className="h-5 w-5" />}
+        </button>
+        <a href="#overview-grid" className="mobile-nav-item">
+          <Megaphone className="h-5 w-5" />
+          <span>Alerts</span>
+        </a>
+        <button type="button" className="mobile-nav-item" onClick={handleReset}>
+          <RotateCcw className="h-5 w-5" />
+          <span>Reset</span>
+        </button>
+      </nav>
     </div>
   );
 }
