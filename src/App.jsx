@@ -487,27 +487,27 @@ export default function App() {
             <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(rgba(255,255,255,0.22)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.22)_1px,transparent_1px)] [background-size:36px_36px]" />
 
             <div className="relative flex min-h-[360px] items-center justify-center px-4 py-10 sm:px-10">
-              <div className="max-w-xl rounded-[28px] bg-white/90 p-8 text-center shadow-2xl backdrop-blur-xl sm:p-10">
+              <div className="max-w-[46rem] rounded-[28px] bg-white/90 px-6 py-8 text-center shadow-2xl backdrop-blur-xl sm:px-10 sm:py-10">
                 <span className="inline-flex rounded-full bg-[#c1e0ff] px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[#004b73]">
                   위치 기반 탐색
                 </span>
-                <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-[#191c1e] sm:text-5xl">
+                <h1 className="hero-title mt-5 text-[#191c1e]">
                   내 주변 도시계획 공고 찾기
                 </h1>
-                <p className="mt-4 text-lg leading-8 text-[#3f4850]">
+                <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#52606d] sm:text-[1.05rem]">
                   현재 위치를 기반으로 내 자치구 및 인접 자치구의 주민의견청취 공고를 우선 보여줍니다.
                 </p>
-                <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-                  <button type="button" onClick={handleDetectLocation} className="hero-button">
+                <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+                  <button type="button" onClick={handleDetectLocation} className="hero-button w-full justify-center sm:w-auto">
                     {isDetecting ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <Compass className="h-5 w-5" />}
                     내 위치로 찾기
                   </button>
-                  <button type="button" onClick={() => setIsPickerOpen(true)} className="hero-button-secondary">
+                  <button type="button" onClick={() => setIsPickerOpen(true)} className="hero-button-secondary w-full justify-center sm:w-auto">
                     <ChevronDown className="h-4 w-4" />
                     지역 직접 선택
                   </button>
                 </div>
-                <div className="mt-6 flex flex-wrap justify-center gap-2">
+                <div className="mt-7 flex flex-wrap justify-center gap-2.5">
                   <span className="status-chip">{selectedRegion ? formatRegionLabel(selectedRegion) : '위치 권한 전에는 공고를 표시하지 않습니다.'}</span>
                   <span className="status-chip">{updatedAt ? `업데이트 ${updatedAt.slice(0, 19).replace('T', ' ')}` : '지역 선택 후 공고를 불러옵니다.'}</span>
                 </div>
