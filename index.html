@@ -4,157 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-7104324664246128" />
-  <title>공람콕 | 내 주변 주민공람 정보를 지도에서 콕</title>
-  <meta name="description" content="공람콕은 주민공람, 인터넷 의견청취, 도시계획 공고를 현재 위치 중심으로 지도에서 쉽게 확인할 수 있는 서비스입니다." />
+  <title>공람콕 | 서울시 Open API + 토지이음 연동</title>
+  <meta
+    name="description"
+    content="공람콕은 서울시 Open API와 토지이음 데이터를 바탕으로 내 주변 주민공람, 인터넷 의견청취, 도시계획 공고를 한눈에 보여줍니다."
+  />
   <meta name="robots" content="index,follow" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="공람콕 | 내 주변 주민공람 정보를 지도에서 콕" />
-  <meta property="og:description" content="주민공람, 인터넷 의견청취, 도시계획 공고를 현재 위치 중심으로 쉽고 빠르게 확인하세요." />
+  <meta property="og:title" content="공람콕 | 서울시 Open API + 토지이음 연동" />
+  <meta
+    property="og:description"
+    content="위치 기반으로 서울 도시계획 공고와 전국 주민공람 목업 데이터를 탐색하는 공람콕 데모입니다."
+  />
   <meta property="og:url" content="https://goyang.pages.dev/" />
   <meta property="og:site_name" content="공람콕" />
   <link rel="canonical" href="https://goyang.pages.dev/" />
-  <link rel="icon" href="assets/jr-radar-mark.svg" type="image/svg+xml" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-  <link href="style.css" rel="stylesheet" />
+  <link rel="icon" href="/assets/jr-radar-mark.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Pretendard:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7104324664246128" crossorigin="anonymous"></script>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "공람콕",
-      "alternateName": "내 주변 주민공람 정보를 지도에서 콕",
-      "url": "https://goyang.pages.dev/",
-      "description": "공람콕은 주민공람, 인터넷 의견청취, 도시계획 공고를 현재 위치 중심으로 지도에서 쉽게 확인할 수 있는 서비스입니다."
-    }
-  </script>
 </head>
-<body data-page="home">
-  <div class="bg-layer" aria-hidden="true"></div>
-
-  <header class="topbar">
-    <a class="brand brand-link" href="index.html" aria-label="공람콕 홈으로 이동">
-      <span class="brand-mark">공람콕</span>
-      <div>
-        <p class="brand-sub">내 주변 주민공람 정보를 지도에서 콕</p>
-        <h1>공람콕</h1>
-      </div>
-    </a>
-    <nav class="main-nav" aria-label="주요 메뉴">
-      <a href="index.html" aria-current="page">홈</a>
-      <a href="pages/about.html">서비스 소개</a>
-      <a href="pages/contact.html">문의</a>
-    </nav>
-  </header>
-
-  <main class="layout home-layout">
-    <section class="hero hero-home">
-      <div class="hero-grid hero-grid-simple">
-        <div class="hero-copy hero-copy-compact">
-          <p class="hero-kicker">내 주변 주민공람 정보를 지도에서 콕</p>
-          <h2>내 주변 주민공람, 인터넷 의견청취, 도시계획 공고를 빠르게 확인하세요.</h2>
-          <p class="hero-kicker hero-kicker-emphasis">내 의견이 우리 동네의 계획 변화에 반영될 수 있습니다.</p>
-          <p>공람콕은 내 주변에서 진행 중인 주민공람, 인터넷 의견청취, 도시계획 관련 공고를 지도 기반으로 쉽고 빠르게 확인할 수 있는 서비스입니다. 복잡한 공고문을 일일이 찾지 않아도, 위치 중심으로 필요한 정보만 한눈에 볼 수 있습니다.</p>
-          <div class="button-row">
-            <button id="detect-location" class="primary-button" type="button">내 위치로 보기</button>
-            <button id="toggle-region-picker" class="ghost-button" type="button" aria-expanded="false" aria-controls="region-picker">지역 직접 선택</button>
-            <a class="ghost-button" href="map.html" aria-label="지도 페이지로 이동">지도에서 보기</a>
-          </div>
-        </div>
-
-        <div class="panel panel-tight current-region-box">
-          <div class="panel-head panel-head-stack">
-            <h3>위치 확인 결과</h3>
-            <span id="location-helper">현재 위치를 확인하지 못했습니다. 위치를 허용하거나 지역을 선택해주세요.</span>
-          </div>
-          <div id="current-region-status" class="disclaimer-box">현재 위치를 확인하면 해당 자치구 또는 시군구 기준으로 진행 중 공고를 정리해 보여줍니다.</div>
-          <div class="meta-line">
-            <span id="location-resolution">위치 확인 대기 중</span>
-            <span id="selected-region-label">선택된 지역 없음</span>
-          </div>
-          <div class="button-row compact-actions">
-            <a id="selected-region-hub" class="resource-link" href="region.html?scope=nation" hidden>지역 허브 보기</a>
-            <button id="save-favorite-region" class="ghost-button" type="button" hidden>관심지역 저장</button>
-          </div>
-          <div id="saved-region-list" class="chip-row" aria-live="polite"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="region-picker" class="panel panel-tight toggle-panel" hidden>
-      <div class="panel-head panel-head-stack">
-        <h3>지역 직접 선택</h3>
-        <span>전국 시도와 시군구 기준으로 현재 연결된 공고를 탐색할 수 있습니다.</span>
-      </div>
-      <form id="region-form" class="search-form" autocomplete="off">
-        <div class="compact-grid">
-          <div>
-            <label for="sido-select">시도</label>
-            <select id="sido-select" name="sido"></select>
-          </div>
-          <div>
-            <label for="sigungu-select">자치구 / 시군구</label>
-            <select id="sigungu-select" name="sigungu"></select>
-          </div>
-        </div>
-        <div class="button-row compact-actions">
-          <button class="primary-button" type="submit">주변 공람 보기</button>
-          <button id="use-saved-region" class="ghost-button" type="button">최근 본 지역 불러오기</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head panel-head-stack">
-        <h3>내 지역 진행 중 공고</h3>
-        <span id="notice-section-summary">위치 확인 후 해당 자치구의 진행 중 공고를 최대 5건까지 먼저 보여줍니다.</span>
-      </div>
-      <div id="notice-list" class="stack-list" aria-live="polite"></div>
-      <div id="notice-list-actions" class="button-row compact-actions" hidden>
-        <button id="load-more-notices" class="ghost-button" type="button">더 보기</button>
-      </div>
-    </section>
-
-    <section id="secondary-results" class="panel panel-tight toggle-panel" hidden>
-      <div class="panel-head panel-head-stack">
-        <h3 id="secondary-results-title">보조 보기</h3>
-        <span id="secondary-results-summary"></span>
-      </div>
-      <div id="secondary-results-list" class="stack-list" aria-live="polite"></div>
-    </section>
-
-    <section class="panel panel-tight">
-      <div class="panel-head panel-head-stack">
-        <h3>간단히 안내</h3>
-        <span>주민공람공고는 도시계획, 도로, 공원, 정비사업 등과 관련해 주민 의견을 받기 위해 공개되는 절차입니다.</span>
-      </div>
-      <div class="button-row compact-actions">
-        <a class="resource-link" href="pages/public-hearing-guide.html">제도 안내</a>
-        <a class="resource-link" href="pages/how-to-submit.html">의견 제출 방법</a>
-        <a class="resource-link" href="pages/sources.html">데이터 출처</a>
-      </div>
-    </section>
-
-    <section class="home-supporting-info" aria-label="업데이트 및 데이터 안내">
-      <p id="updated-at">마지막 확인 시각 불러오는 중...</p>
-      <p>전국 확장: 17개 시도 · 시군구 단위 탐색</p>
-      <p>토지이음 · 지자체 원문 · 관련 기사 연결</p>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <nav class="footer-nav" aria-label="푸터 메뉴">
-      <a href="index.html">홈</a>
-      <a href="pages/about.html">사이트 소개</a>
-      <a href="pages/data-policy.html">편집·출처 정책</a>
-      <a href="pages/privacy.html">개인정보처리방침</a>
-      <a href="pages/terms.html">이용약관</a>
-      <a href="pages/contact.html">문의</a>
-    </nav>
-    <p>© <span data-current-year>2026</span> 공람콕 | 내 주변 주민공람 정보를 지도에서 콕</p>
-  </footer>
-
-  <script type="module" src="main.js"></script>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
