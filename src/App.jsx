@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ArrowRight,
   Bell,
   CalendarRange,
   ChevronDown,
   Compass,
-  ExternalLink,
   FileText,
   Info,
   LoaderCircle,
@@ -18,9 +16,9 @@ import {
   ShieldAlert,
   UserRound,
 } from 'lucide-react';
-import { getNationalMockNotices } from './lib/national-notices';
+import { findSigunguCodeByRegion } from '../shared/region-codes';
+import { filterAndSortPublicHearings, fetchPublicHearings } from './lib/public-hearings-client';
 import { formatRegionLabel, getDistrictsForSido, getRegions, matchRegionFromAddress } from './lib/region-utils';
-import { fetchSeoulUrbanPlanningNotices } from './lib/seoul-api';
 
 const regions = getRegions();
 const initialSido = regions[0]?.name || '';
@@ -70,71 +68,86 @@ function getCurrentPosition() {
   });
 }
 
-function getSourceBadgeClasses(notice) {
-  if (notice.isMock) {
-    return 'bg-[#ffdcc0] text-[#6b3b00]';
+function getStatusMeta(status) {
+  switch (status) {
+    case 'ongoing':
+      return { label: '진행중', classes: 'bg-[#c1e0ff] text-[#004b73]' };
+    case 'upcoming':
+      return { label: '진행예정', classes: 'bg-[#ffdcc0] text-[#6b3b00]' };
+    default:
+      return { label: '종료', classes: 'bg-[#e0e3e5] text-[#3f4850]' };
   }
+}
 
-  if (notice.source === 'seoul-open-api') {
-    return 'bg-[#c1e0ff] text-[#004b73]';
-  }
-
-  return 'bg-[#e0e3e5] text-[#3f4850]';
+function formatPeriod(notice) {
+  const start = notice.viewStartDate || '-';
+  const end = notice.viewEndDate || '-';
+  return `${start} ~ ${end}`;
 }
 
 function NoticeCard({ notice }) {
+  const statusMeta = getStatusMeta(notice.status);
+
   return (
     <article className="feed-card group">
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
-          <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] ${getSourceBadgeClasses(notice)}`}>
-            {notice.sourceLabel}
-          </span>
           <span className="rounded-full bg-[#f2f4f6] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#43617c]">
-            {notice.type}
+            국토교통부 공식 API
+          </span>
+          <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] ${statusMeta.classes}`}>
+            {statusMeta.label}
           </span>
         </div>
         <MapPin className="h-4 w-4 text-[#006194]" />
       </div>
 
       <h3 className="mt-4 text-lg font-bold leading-tight text-[#191c1e]">
-        {notice.title}
+        {notice.title || '공고 제목 없음'}
       </h3>
 
       <div className="mt-5 grid gap-3 text-sm text-[#3f4850] sm:grid-cols-2">
         <div className="rounded-xl bg-[#f7f9fb] px-4 py-3">
           <div className="flex items-center gap-2 text-[#006194]">
-            <CalendarRange className="h-4 w-4" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">기간</span>
+            <FileText className="h-4 w-4" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">공고번호</span>
           </div>
-          <p className="mt-2 leading-6">{notice.period}</p>
+          <p className="mt-2 leading-6">{notice.noticeNumber || '공고번호 없음'}</p>
+        </div>
+        <div className="rounded-xl bg-[#f7f9fb] px-4 py-3">
+          <div className="flex items-center gap-2 text-[#006194]">
+            <CalendarRange className="h-4 w-4" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">공고일자</span>
+          </div>
+          <p className="mt-2 leading-6">{notice.noticeDate || '-'}</p>
+        </div>
+        <div className="rounded-xl bg-[#f7f9fb] px-4 py-3">
+          <div className="flex items-center gap-2 text-[#006194]">
+            <CalendarRange className="h-4 w-4" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">열람기간</span>
+          </div>
+          <p className="mt-2 leading-6">{formatPeriod(notice)}</p>
         </div>
         <div className="rounded-xl bg-[#f7f9fb] px-4 py-3">
           <div className="flex items-center gap-2 text-[#006194]">
             <Map className="h-4 w-4" />
             <span className="text-[10px] font-bold uppercase tracking-[0.12em]">지역</span>
           </div>
-          <p className="mt-2 leading-6">{notice.regionLabel}</p>
+          <p className="mt-2 leading-6">{notice.regionLabel || notice.sigunguCode || '지역 정보 없음'}</p>
         </div>
       </div>
 
       <p className="mt-4 text-sm leading-7 text-[#3f4850]">
-        {notice.excerpt}
+        {notice.content || '공고 내용이 제공되지 않았습니다.'}
       </p>
 
       <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
         <span className="rounded-full bg-[#f2f4f6] px-3 py-2 font-medium text-[#3f4850]">
-          {notice.department}
+          문의처: {notice.contact || '-'}
         </span>
-        <a
-          href={notice.link}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="inline-flex items-center gap-2 font-bold text-[#006194] transition group-hover:gap-3"
-        >
-          원문 링크
-          <ExternalLink className="h-4 w-4" />
-        </a>
+        <span className="rounded-full bg-[#f2f4f6] px-3 py-2 font-medium text-[#3f4850]">
+          첨부파일: {notice.fileName ? `${notice.fileName}${notice.fileExt ? `.${notice.fileExt}` : ''}` : '없음'}
+        </span>
       </div>
     </article>
   );
@@ -147,54 +160,58 @@ function FeaturedNotice({ notice }) {
         <div className="space-y-4">
           <span className="section-pill">데이터 없음</span>
           <h2 className="text-2xl font-extrabold leading-tight text-[#191c1e]">
-            표시할 공고가 아직 없습니다.
+            표시할 주민의견청취 공고가 없습니다.
           </h2>
           <p className="text-sm leading-7 text-[#3f4850]">
-            위치를 감지하거나 지역을 선택하면 해당 시군구 기준으로 공고를 정리해 보여줍니다.
+            위치를 감지하거나 지역을 선택하면 해당 시군구 기준으로 주민의견청취 공고를 보여줍니다.
           </p>
         </div>
       </article>
     );
   }
 
+  const statusMeta = getStatusMeta(notice.status);
+
   return (
     <article className="rounded-[24px] bg-white p-8 shadow-sm transition-shadow hover:shadow-md">
       <div className="mb-10 flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-3">
           <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#006194]">
-            {notice.sourceLabel}
+            국토교통부 인터넷 주민의견청취 공고
           </span>
           <h2 className="max-w-2xl text-2xl font-extrabold leading-tight text-[#191c1e]">
-            {notice.title}
+            {notice.title || '공고 제목 없음'}
           </h2>
+          <p className="max-w-2xl text-sm leading-7 text-[#3f4850]">
+            {notice.content || '공고 내용이 제공되지 않았습니다.'}
+          </p>
         </div>
-        <span className={`rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] ${getSourceBadgeClasses(notice)}`}>
-          {notice.isMock ? 'Mock Data' : 'Live Feed'}
+        <span className={`rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] ${statusMeta.classes}`}>
+          {statusMeta.label}
         </span>
       </div>
 
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div className="flex flex-wrap items-center gap-5 text-[#3f4850]">
           <div className="flex flex-col">
-            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">기간</span>
-            <span className="mt-1 text-sm font-medium">{notice.period}</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">공고번호</span>
+            <span className="mt-1 text-sm font-medium">{notice.noticeNumber || '공고번호 없음'}</span>
           </div>
           <div className="h-8 w-px bg-[#dfe4ea]" />
           <div className="flex flex-col">
-            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">지역</span>
-            <span className="mt-1 text-sm font-medium">{notice.regionLabel}</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">열람기간</span>
+            <span className="mt-1 text-sm font-medium">{formatPeriod(notice)}</span>
+          </div>
+          <div className="h-8 w-px bg-[#dfe4ea]" />
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">문의처</span>
+            <span className="mt-1 text-sm font-medium">{notice.contact || '-'}</span>
           </div>
         </div>
 
-        <a
-          href={notice.link}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="inline-flex items-center gap-2 font-bold text-[#006194] transition hover:gap-3"
-        >
-          View Details
-          <ArrowRight className="h-4 w-4" />
-        </a>
+        <div className="rounded-full bg-[#f2f4f6] px-4 py-2 text-sm font-medium text-[#3f4850]">
+          첨부파일: {notice.fileName ? `${notice.fileName}${notice.fileExt ? `.${notice.fileExt}` : ''}` : '없음'}
+        </div>
       </div>
     </article>
   );
@@ -223,34 +240,50 @@ export default function App() {
   const [error, setError] = useState('');
   const [locationMessage, setLocationMessage] = useState('현재 위치를 확인하지 못했습니다. 위치를 허용하거나 지역을 선택해주세요.');
   const [locationResolution, setLocationResolution] = useState('위치 확인 대기 중');
-  const [notices, setNotices] = useState([]);
+  const [hearings, setHearings] = useState([]);
   const [updatedAt, setUpdatedAt] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [fallbackMessage, setFallbackMessage] = useState('');
 
   useEffect(() => {
     let ignore = false;
 
-    async function loadNotices() {
+    async function loadHearings() {
       setIsLoading(true);
       setError('');
+      setFallbackMessage('');
 
       try {
-        const [seoulNotices, nationalNotices] = await Promise.all([
-          fetchSeoulUrbanPlanningNotices(),
-          Promise.resolve(getNationalMockNotices()),
-        ]);
+        const payload = await fetchPublicHearings({
+          page: 1,
+          perPage: 100,
+          sido: selectedRegion?.sido,
+          sigungu: selectedRegion?.sigungu,
+        });
 
-        if (ignore) return;
+        if (ignore) {
+          return;
+        }
 
-        const merged = [...seoulNotices, ...nationalNotices].sort((a, b) =>
-          String(b.period).localeCompare(String(a.period), 'ko')
-        );
+        setHearings(payload.items);
+        setUpdatedAt(payload.meta.fetchedAt || new Date().toISOString());
 
-        setNotices(merged);
-        setUpdatedAt(new Date().toLocaleString('ko-KR'));
+        const selectedSigunguCode = selectedRegion
+          ? findSigunguCodeByRegion(selectedRegion.sido, selectedRegion.sigungu)
+          : '';
+
+        if (selectedRegion && !selectedSigunguCode) {
+          setFallbackMessage(`${formatRegionLabel(selectedRegion)}의 시군구코드 매핑이 아직 충분하지 않아 전체 결과를 보여줍니다.`);
+        } else {
+          setFallbackMessage(payload.meta.fallbackMessage || '');
+        }
       } catch (loadError) {
-        if (ignore) return;
-        setError('서울시 Open API 호출에 실패했습니다. 잠시 후 다시 시도해주세요.');
-        setNotices(getNationalMockNotices());
+        if (ignore) {
+          return;
+        }
+
+        setError('공고 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+        setHearings([]);
       } finally {
         if (!ignore) {
           setIsLoading(false);
@@ -258,7 +291,7 @@ export default function App() {
       }
     }
 
-    loadNotices();
+    loadHearings();
     return () => {
       ignore = true;
     };
@@ -273,32 +306,28 @@ export default function App() {
     handleDetectLocation();
   }, []);
 
-  const filteredNotices = useMemo(() => {
-    if (!selectedRegion) {
-      return notices.slice(0, 8);
-    }
-
-    return notices.filter((notice) =>
-      notice.sido === selectedRegion.sido && notice.sigungu === selectedRegion.sigungu
-    );
-  }, [notices, selectedRegion]);
+  const filteredHearings = useMemo(
+    () => filterAndSortPublicHearings(hearings, searchQuery),
+    [hearings, searchQuery]
+  );
 
   const districtOptions = useMemo(
     () => getDistrictsForSido(selectedSido),
     [selectedSido]
   );
 
-  const featuredNotice = filteredNotices[0] || null;
-  const spotlightNotices = filteredNotices.slice(1, 4);
-  const seoulNoticeCount = notices.filter((notice) => notice.source === 'seoul-open-api').length;
-  const mockNoticeCount = notices.filter((notice) => notice.isMock).length;
+  const featuredNotice = filteredHearings[0] || null;
+  const spotlightNotices = filteredHearings.slice(1, 4);
+  const ongoingCount = hearings.filter((item) => item.status === 'ongoing').length;
+  const upcomingCount = hearings.filter((item) => item.status === 'upcoming').length;
+  const closedCount = hearings.filter((item) => item.status === 'closed').length;
 
   function applyRegion(region, resolutionText) {
     setSelectedRegion(region);
     setSelectedSido(region.sido);
     setSelectedSigungu(region.sigungu);
     setLocationResolution(resolutionText);
-    setLocationMessage(`${formatRegionLabel(region)} 기준으로 공고를 필터링했습니다.`);
+    setLocationMessage(`${formatRegionLabel(region)} 기준으로 주민의견청취 공고를 우선 필터링합니다.`);
   }
 
   function handleReset() {
@@ -306,6 +335,8 @@ export default function App() {
     setSelectedSido(initialSido);
     setSelectedSigungu(getInitialRegion()?.sigungu || '');
     setIsPickerOpen(false);
+    setSearchQuery('');
+    setFallbackMessage('');
     setLocationResolution('위치 확인 대기 중');
     setLocationMessage('현재 위치를 확인하지 못했습니다. 위치를 허용하거나 지역을 선택해주세요.');
     setError('');
@@ -329,7 +360,8 @@ export default function App() {
 
       applyRegion(region, 'GPS + 역지오코딩으로 시군구 확인');
     } catch (detectError) {
-      setError('현재 위치에서 시군구를 판별하지 못했습니다. 지역 직접 선택을 사용해주세요.');
+      setLocationMessage('현재 위치에서 시군구를 판별하지 못했습니다. 지역 직접 선택을 사용해주세요.');
+      setLocationResolution('위치 자동 확인 실패');
     } finally {
       setIsDetecting(false);
     }
@@ -362,7 +394,7 @@ export default function App() {
               </span>
               <span className="text-left">
                 <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-[#006194]">
-                  Your Civic Feed
+                  Public Hearing Feed
                 </span>
                 <span className="block text-2xl font-extrabold tracking-tight text-[#191c1e]">공람콕</span>
               </span>
@@ -444,13 +476,13 @@ export default function App() {
             <div className="relative flex min-h-[420px] items-center justify-center px-4 py-10 sm:px-10">
               <div className="max-w-xl rounded-[28px] bg-white/90 p-8 text-center shadow-2xl backdrop-blur-xl sm:p-10">
                 <span className="inline-flex rounded-full bg-[#c1e0ff] px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[#004b73]">
-                  Live Discovery
+                  Official OpenAPI
                 </span>
                 <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-[#191c1e] sm:text-5xl">
-                  내 주변 공람과 공고를 한 번에 찾습니다.
+                  인터넷 주민의견청취 공고를 안정적으로 보여줍니다.
                 </h1>
                 <p className="mt-4 text-lg leading-8 text-[#3f4850]">
-                  서울시 실데이터와 전국 토지이음 흐름을 현재 위치 또는 직접 선택한 시군구 기준으로 정리합니다.
+                  국토교통부 공식 OpenAPI를 서버 프록시로 받아 시군구 기준으로 정렬, 필터, 검색합니다.
                 </p>
                 <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                   <button type="button" onClick={handleDetectLocation} className="hero-button">
@@ -464,7 +496,7 @@ export default function App() {
                 </div>
                 <div className="mt-6 flex flex-wrap justify-center gap-2">
                   <span className="status-chip">{selectedRegion ? formatRegionLabel(selectedRegion) : '메인 홈 화면'}</span>
-                  <span className="status-chip">{updatedAt ? `업데이트 ${updatedAt}` : '업데이트 대기 중'}</span>
+                  <span className="status-chip">{updatedAt ? `업데이트 ${updatedAt.slice(0, 19).replace('T', ' ')}` : '업데이트 대기 중'}</span>
                 </div>
               </div>
             </div>
@@ -479,12 +511,12 @@ export default function App() {
               <div className="space-y-4">
                 <ShieldAlert className="h-8 w-8 text-[#ffdcc0]" />
                 <h3 className="text-xl font-bold leading-tight">
-                  {error ? '지역 확인이 필요합니다.' : selectedRegion ? '선택 지역 기준으로 필터 적용 중' : '위치 감지 또는 지역 선택 필요'}
+                  {error ? '데이터 확인이 필요합니다.' : selectedRegion ? '선택 지역 기준으로 필터 적용 중' : '위치 감지 또는 지역 선택 필요'}
                 </h3>
               </div>
               <div className="pt-6">
                 <p className="mb-4 text-sm leading-7 text-[#ffdcc0]">
-                  {error || locationMessage}
+                  {error || fallbackMessage || locationMessage}
                 </p>
                 <button type="button" onClick={() => setIsPickerOpen((value) => !value)} className="text-sm font-bold underline underline-offset-4">
                   필터 열기
@@ -497,9 +529,9 @@ export default function App() {
               <div className="mx-auto mt-5 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm">
                 <Radar className="h-7 w-7 text-[#006194]" />
               </div>
-              <h4 className="mt-4 text-sm font-bold text-[#191c1e]">서울 실데이터 + 전국 목업</h4>
+              <h4 className="mt-4 text-sm font-bold text-[#191c1e]">국토교통부 공식 OpenAPI</h4>
               <p className="mt-2 text-xs leading-6 text-[#3f4850]">
-                서울은 Open API, 전국은 토지이음 수집 구조와 목업 데이터로 이어집니다.
+                기본 데이터 경로는 공식 OpenAPI이며, 서비스 키는 서버 환경변수에서만 읽습니다.
               </p>
               <button type="button" onClick={handleReset} className="mt-5 rounded-xl border border-[#006194]/20 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#006194] transition hover:bg-[#006194]/5">
                 Home Reset
@@ -517,7 +549,6 @@ export default function App() {
               <div className="mt-8 border-t border-[#e0e3e5] pt-6">
                 <button type="button" onClick={handleDetectLocation} className="inline-flex items-center gap-2 text-sm font-bold text-[#006194]">
                   위치 다시 확인
-                  <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
             </article>
@@ -575,8 +606,9 @@ export default function App() {
             <article className="md:col-span-4 rounded-[24px] bg-white p-8 shadow-sm">
               <div className="space-y-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#3f4850]">Feed Metrics</span>
-                <MetricCard icon={Map} label="서울 실데이터" value={`${seoulNoticeCount}건`} accent="bg-[#f7f9fb]" />
-                <MetricCard icon={Megaphone} label="전국 목업" value={`${mockNoticeCount}건`} accent="bg-[#f7f9fb]" />
+                <MetricCard icon={Map} label="진행중" value={`${ongoingCount}건`} accent="bg-[#f7f9fb]" />
+                <MetricCard icon={Megaphone} label="진행예정" value={`${upcomingCount}건`} accent="bg-[#f7f9fb]" />
+                <MetricCard icon={FileText} label="종료" value={`${closedCount}건`} accent="bg-[#f7f9fb]" />
               </div>
             </article>
           </section>
@@ -588,7 +620,7 @@ export default function App() {
                 <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">상단 주요 공고</h2>
               </div>
               <div className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#3f4850] shadow-sm">
-                총 {filteredNotices.length}건
+                총 {filteredHearings.length}건
               </div>
             </div>
 
@@ -597,24 +629,41 @@ export default function App() {
                 spotlightNotices.map((notice) => <NoticeCard key={`spotlight-${notice.id}`} notice={notice} />)
               ) : (
                 <div className="md:col-span-3 rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                  선택한 지역에 표시할 추가 공고가 없습니다.
+                  현재 조건에 맞는 주민의견청취 공고가 없습니다.
                 </div>
               )}
             </div>
           </section>
 
           <section className="space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">Local Notices</p>
                 <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">전체 공고 목록</h2>
                 <p className="mt-2 text-sm leading-7 text-[#3f4850]">
                   {selectedRegion
-                    ? `${formatRegionLabel(selectedRegion)} 기준 공고 목록입니다.`
-                    : '홈 화면에서는 서울 최신 공고와 전국 목업 샘플을 함께 보여줍니다.'}
+                    ? `${formatRegionLabel(selectedRegion)} 기준 주민의견청취 공고 목록입니다.`
+                    : '공식 OpenAPI 데이터를 기준으로 주민의견청취 공고를 보여줍니다.'}
                 </p>
               </div>
+
+              <label className="flex w-full max-w-sm flex-col gap-2 text-sm text-[#3f4850]">
+                <span className="font-medium">검색</span>
+                <input
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  className="form-select"
+                  placeholder="제목, 내용, 문의처, 공고번호 검색"
+                  type="search"
+                />
+              </label>
             </div>
+
+            {fallbackMessage ? (
+              <div className="rounded-[20px] bg-[#fff4e5] px-5 py-4 text-sm text-[#6b3b00] shadow-sm">
+                {fallbackMessage}
+              </div>
+            ) : null}
 
             {error ? (
               <div className="rounded-[20px] bg-[#ffdad6] px-5 py-4 text-sm text-[#93000a] shadow-sm">
@@ -627,14 +676,14 @@ export default function App() {
                 <div className="lg:col-span-2 rounded-[24px] bg-white px-6 py-16 text-center shadow-sm">
                   <div className="inline-flex items-center gap-3 text-[#3f4850]">
                     <LoaderCircle className="h-5 w-5 animate-spin text-[#006194]" />
-                    데이터를 불러오는 중입니다.
+                    주민의견청취 공고를 불러오는 중입니다...
                   </div>
                 </div>
-              ) : filteredNotices.length ? (
-                filteredNotices.map((notice) => <NoticeCard key={notice.id} notice={notice} />)
+              ) : filteredHearings.length ? (
+                filteredHearings.map((notice) => <NoticeCard key={notice.id} notice={notice} />)
               ) : (
                 <div className="lg:col-span-2 rounded-[24px] bg-white px-6 py-16 text-center text-[#3f4850] shadow-sm">
-                  선택한 지역에 연결된 공고가 없습니다. 로고를 눌러 홈으로 돌아가거나 다른 시군구를 선택하세요.
+                  현재 조건에 맞는 주민의견청취 공고가 없습니다.
                 </div>
               )}
             </div>
@@ -646,7 +695,7 @@ export default function App() {
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div className="flex flex-col gap-2">
             <span className="font-bold text-[#191c1e]">공람콕</span>
-            <p className="text-xs text-[#3f4850]">© 2026 공람콕. 서울 Open API와 토지이음 흐름을 정리하는 로컬 피드.</p>
+            <p className="text-xs text-[#3f4850]">© 2026 공람콕. 국토교통부 인터넷 주민의견청취 공고를 공식 API로 정리하는 로컬 피드.</p>
           </div>
           <div className="flex flex-wrap gap-6 text-xs text-[#3f4850]">
             <a href="#hero" className="transition hover:text-[#006194]">홈</a>
