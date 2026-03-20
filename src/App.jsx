@@ -207,7 +207,6 @@ export default function App() {
   const [locationResolution, setLocationResolution] = useState('위치 확인 대기 중');
   const [hearings, setHearings] = useState([]);
   const [updatedAt, setUpdatedAt] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
   const [fallbackMessage, setFallbackMessage] = useState('');
 
   const currentSigunguCode = useMemo(
@@ -316,8 +315,8 @@ export default function App() {
   }, [currentHearings, currentSigunguCode, hearings, selectedAdjacentCodes, selectedRegion]);
 
   const visibleSelectedAreaHearings = useMemo(
-    () => filterAndSortPublicHearings(selectedAreaHearings, searchQuery),
-    [selectedAreaHearings, searchQuery]
+    () => filterAndSortPublicHearings(selectedAreaHearings, ''),
+    [selectedAreaHearings]
   );
 
   const currentOngoingHearings = currentHearings.filter((notice) => notice.status === 'ongoing');
@@ -339,7 +338,6 @@ export default function App() {
     setIsPickerOpen(false);
     setIsNearbyExpanded(false);
     setSelectedAdjacentCodes([]);
-    setSearchQuery('');
     setHearings([]);
     setUpdatedAt('');
     setFallbackMessage('');
@@ -635,17 +633,6 @@ export default function App() {
                     : '먼저 내 위치 또는 지역을 선택하면 선택 지역의 공고 요약 리스트가 열립니다.'}
                 </p>
               </div>
-
-              <label className="flex w-full max-w-sm flex-col gap-2 text-sm text-[#3f4850]">
-                <span className="font-medium">제목/내용 검색</span>
-                <input
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  className="form-select"
-                  placeholder="제목, 내용, 문의처, 공고번호 검색"
-                  type="search"
-                />
-              </label>
             </div>
 
             {fallbackMessage ? (
