@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "vite --open /app.html",
+    "build": "node scripts/fetch-seoul-snapshot.mjs && vite build && node scripts/publish-static.mjs",
+    "build:vite": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {

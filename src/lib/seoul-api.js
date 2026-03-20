@@ -3,6 +3,8 @@ import { getDistrictIndex, normalizeText } from './region-utils';
 const SEOUL_API_KEY = '714563777567757338346d70445972';
 const SEOUL_DATASET = 'TbWcmBoardB0414';
 const SEOUL_FETCH_RANGE = { start: 1, end: 80 };
+const SEOUL_PROXY_ENDPOINT = `/api/seoul/${SEOUL_API_KEY}/xml/${SEOUL_DATASET}/${SEOUL_FETCH_RANGE.start}/${SEOUL_FETCH_RANGE.end}/`;
+const SEOUL_SNAPSHOT_ENDPOINT = '/data/seoul-open-api.xml';
 
 function decodeHtmlEntities(value = '') {
   if (!value || typeof window === 'undefined') return value;
@@ -117,13 +119,17 @@ function parseSeoulXml(xmlText) {
 }
 
 export async function fetchSeoulUrbanPlanningNotices() {
-  const endpoint = `/api/seoul/${SEOUL_API_KEY}/xml/${SEOUL_DATASET}/${SEOUL_FETCH_RANGE.start}/${SEOUL_FETCH_RANGE.end}/`;
-  const response = await fetch(endpoint);
+  const candidates = [SEOUL_PROXY_ENDPOINT, SEOUL_SNAPSHOT_ENDPOINT];
 
-  if (!response.ok) {
-    throw new Error(`seoul-api-${response.status}`);
+  for (const endpoint of candidates) {
+    const response = await fetch(endpoint);
+    if (!response.ok) {
+      continue;
+    }
+
+    const xmlText = await response.text();
+    return parseSeoulXml(xmlText);
   }
 
-  const xmlText = await response.text();
-  return parseSeoulXml(xmlText);
+  throw new Error('seoul-api-unavailable');
 }
