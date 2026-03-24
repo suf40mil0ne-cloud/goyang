@@ -8,7 +8,7 @@ import {
   Info,
   LoaderCircle,
   LocateFixed,
-  Map,
+  Map as MapIcon,
   Megaphone,
   Radar,
   RotateCcw,
@@ -126,6 +126,314 @@ function describeLocationError(error) {
   };
 }
 
+function normalizeString(value) {
+  return String(value ?? '').trim();
+}
+
+function normalizeInlineText(value) {
+  return normalizeString(value).replace(/\s+/g, ' ').trim();
+}
+
+function normalizeComparableText(value) {
+  return normalizeInlineText(value)
+    .toLowerCase()
+    .replace(/[\s()\[\]{}.,·ㆍ:;!?"'`~\-_/\\|]/g, '');
+}
+
+function normalizeRegionName(value) {
+  const text = normalizeInlineText(value).replace(/\([^)]*\)/g, ' ');
+  const tokens = text.match(/[가-힣]+(?:특별자치도|특별자치시|특별시|광역시|자치도|자치시|시|군|구)/g) || [];
+
+  if (!tokens.length) {
+    return text.replace(/\s+/g, ' ').trim();
+  }
+
+  if (tokens.length === 1) {
+    return tokens[0];
+  }
+
+  return `${tokens[0]} ${tokens[tokens.length - 1]}`.replace(/\s+/g, ' ').trim();
+}
+
+function extractDistrictToken(value) {
+  const text = normalizeInlineText(value);
+  const tokens = text.match(/[가-힣]+(?:시|군|구)/g) || [];
+  return tokens[tokens.length - 1] || normalizeRegionName(text);
+}
+
+function uniqueStrings(values) {
+  return [...new Set(values.filter(Boolean))];
+}
+
+function isDetailedLink(link) {
+  const normalized = normalizeInlineText(link).toLowerCase();
+  if (!normalized) {
+    return false;
+  }
+
+  return /det\.jsp|detail|view|seq=|gosino=|opinion/i.test(normalized);
+}
+
+function normalizeNotice(notice) {
+  const sourceLabels = uniqueStrings([...(notice.sourceLabels || []), notice.sourceLabel].map(normalizeInlineText));
+  const sources = uniqueStrings([...(notice.sources || []), notice.source]);
+  const attachments = new globalThis.Map();
+
+  (notice.attachments || []).forEach((attachment) => {
+    const name = normalizeInlineText(attachment?.name);
+    const url = normalizeInlineText(attachment?.url);
+    const key = `${name}::${url}`;
+    if (!key || key === '::') {
+      return;
+    }
+    if (!attachments.has(key)) {
+      attachments.set(key, { name, url });
+    }
+  });
+
+  return {
+    ...notice,
+    id: normalizeInlineText(notice.id),
+    sourceLabel: sourceLabels.join(' · ') || normalizeInlineText(notice.sourceLabel),
+    sourceLabels,
+    sources,
+    seq: normalizeInlineText(notice.seq) || undefined,
+    noticeNumber: normalizeInlineText(notice.noticeNumber) || undefined,
+    title: normalizeInlineText(notice.title) || '공고 제목 없음',
+    region: normalizeInlineText(notice.region) || undefined,
+    sigunguCode: normalizeInlineText(notice.sigunguCode) || undefined,
+    agency: normalizeInlineText(notice.agency) || undefined,
+    department: normalizeInlineText(notice.department) || undefined,
+    publishedAt: normalizeInlineText(notice.publishedAt) || undefined,
+    hearingStartDate: normalizeInlineText(notice.hearingStartDate) || undefined,
+    hearingEndDate: normalizeInlineText(notice.hearingEndDate) || undefined,
+    location: normalizeInlineText(notice.location) || undefined,
+    contact: normalizeInlineText(notice.contact) || undefined,
+    summary: normalizeInlineText(notice.summary) || undefined,
+    body: normalizeInlineText(notice.body) || undefined,
+    attachments: [...attachments.values()],
+    link: normalizeInlineText(notice.link),
+  };
+}
+
+function buildAttachmentSignature(notice) {
+  return (notice.attachments || [])
+    .map((attachment) => `${normalizeComparableText(attachment.name)}::${normalizeComparableText(attachment.url)}`)
+    .filter(Boolean)
+    .sort()
+    .join('|');
+}
+
+function buildAttachmentNameSignature(notice) {
+  return (notice.attachments || [])
+    .map((attachment) => normalizeComparableText(attachment.name))
+    .filter(Boolean)
+    .sort()
+    .join('|');
+}
+
+function buildNoticeComposite(notice) {
+  const noticeNumber = normalizeComparableText(notice.noticeNumber);
+  const publishedAt = normalizeInlineText(notice.publishedAt);
+  const agency = normalizeComparableText(notice.agency);
+  return noticeNumber && publishedAt && agency ? [noticeNumber, publishedAt, agency].join('::') : '';
+}
+
+function buildTitleComposite(notice) {
+  const title = normalizeComparableText(notice.title);
+  const publishedAt = normalizeInlineText(notice.publishedAt);
+  const agency = normalizeComparableText(notice.agency);
+  return title && publishedAt && agency ? [title, publishedAt, agency].join('::') : '';
+}
+
+function getNoticeDataScore(notice) {
+  return [
+    notice.body ? 5 : 0,
+    notice.summary ? 2 : 0,
+    notice.attachments?.length ? 3 : 0,
+    notice.hearingStartDate ? 2 : 0,
+    notice.hearingEndDate ? 2 : 0,
+    notice.location ? 2 : 0,
+    notice.contact ? 1 : 0,
+    notice.noticeNumber ? 2 : 0,
+    notice.seq ? 2 : 0,
+    isDetailedLink(notice.link) ? 2 : notice.link ? 1 : 0,
+    Math.max(0, (notice.sourceLabels?.length || 1) - 1),
+  ].reduce((sum, value) => sum + value, 0);
+}
+
+function choosePreferredText(left, right) {
+  const normalizedLeft = normalizeInlineText(left);
+  const normalizedRight = normalizeInlineText(right);
+  if (!normalizedLeft) return normalizedRight || undefined;
+  if (!normalizedRight) return normalizedLeft || undefined;
+  return normalizedRight.length > normalizedLeft.length ? normalizedRight : normalizedLeft;
+}
+
+function areSameNotice(left, right) {
+  if (left.seq && right.seq && left.seq === right.seq) {
+    return true;
+  }
+
+  const leftNoticeComposite = buildNoticeComposite(left);
+  const rightNoticeComposite = buildNoticeComposite(right);
+  if (leftNoticeComposite && rightNoticeComposite && leftNoticeComposite === rightNoticeComposite) {
+    return true;
+  }
+
+  const leftTitleComposite = buildTitleComposite(left);
+  const rightTitleComposite = buildTitleComposite(right);
+  if (leftTitleComposite && rightTitleComposite && leftTitleComposite === rightTitleComposite) {
+    return true;
+  }
+
+  const leftLink = normalizeComparableText(left.link);
+  const rightLink = normalizeComparableText(right.link);
+  if (leftLink && rightLink && leftLink === rightLink) {
+    return true;
+  }
+
+  const leftAttachmentSignature = buildAttachmentSignature(left);
+  const rightAttachmentSignature = buildAttachmentSignature(right);
+  if (leftAttachmentSignature && rightAttachmentSignature && leftAttachmentSignature === rightAttachmentSignature) {
+    return true;
+  }
+
+  const leftAttachmentNames = buildAttachmentNameSignature(left);
+  const rightAttachmentNames = buildAttachmentNameSignature(right);
+  return Boolean(leftAttachmentNames && rightAttachmentNames && leftAttachmentNames === rightAttachmentNames);
+}
+
+function mergeNotices(left, right) {
+  const preferred = getNoticeDataScore(right) > getNoticeDataScore(left) ? right : left;
+  const secondary = preferred === left ? right : left;
+  const sourceLabels = uniqueStrings([
+    ...(preferred.sourceLabels || []),
+    ...(secondary.sourceLabels || []),
+    preferred.sourceLabel,
+    secondary.sourceLabel,
+  ].map(normalizeInlineText));
+  const sources = uniqueStrings([...(preferred.sources || []), ...(secondary.sources || []), preferred.source, secondary.source]);
+  const attachments = new globalThis.Map();
+
+  [...(preferred.attachments || []), ...(secondary.attachments || [])].forEach((attachment) => {
+    const name = normalizeInlineText(attachment?.name);
+    const url = normalizeInlineText(attachment?.url);
+    const key = `${name}::${url}`;
+    if (!key || key === '::') {
+      return;
+    }
+    if (!attachments.has(key)) {
+      attachments.set(key, { name, url });
+    }
+  });
+
+  return normalizeNotice({
+    ...secondary,
+    ...preferred,
+    source: preferred.source || secondary.source,
+    sourceLabel: sourceLabels.join(' · ') || preferred.sourceLabel || secondary.sourceLabel,
+    sourceLabels,
+    sources,
+    id: preferred.id || secondary.id,
+    seq: preferred.seq || secondary.seq,
+    noticeNumber: choosePreferredText(preferred.noticeNumber, secondary.noticeNumber),
+    title: choosePreferredText(preferred.title, secondary.title) || preferred.title || secondary.title,
+    region: choosePreferredText(preferred.region, secondary.region),
+    sigunguCode: choosePreferredText(preferred.sigunguCode, secondary.sigunguCode),
+    agency: choosePreferredText(preferred.agency, secondary.agency),
+    department: choosePreferredText(preferred.department, secondary.department),
+    publishedAt: choosePreferredText(preferred.publishedAt, secondary.publishedAt),
+    hearingStartDate: choosePreferredText(preferred.hearingStartDate, secondary.hearingStartDate),
+    hearingEndDate: choosePreferredText(preferred.hearingEndDate, secondary.hearingEndDate),
+    location: choosePreferredText(preferred.location, secondary.location),
+    contact: choosePreferredText(preferred.contact, secondary.contact),
+    status: preferred.status || secondary.status,
+    summary: choosePreferredText(preferred.summary, secondary.summary),
+    body: choosePreferredText(preferred.body, secondary.body),
+    attachments: [...attachments.values()],
+    link: isDetailedLink(preferred.link) ? preferred.link : preferred.link || secondary.link,
+    rawSource: preferred.rawSource || secondary.rawSource,
+  });
+}
+
+function dedupeNotices(items) {
+  const deduped = [];
+
+  items.map((item) => normalizeNotice(item)).forEach((item) => {
+    const existingIndex = deduped.findIndex((candidate) => areSameNotice(candidate, item));
+    if (existingIndex === -1) {
+      deduped.push(item);
+      return;
+    }
+
+    deduped[existingIndex] = mergeNotices(deduped[existingIndex], item);
+  });
+
+  return deduped;
+}
+
+function getNoticeRegionCandidates(notice) {
+  return uniqueStrings([
+    notice.region,
+    notice.sigunguCode ? getRegionLabelBySigunguCode(notice.sigunguCode) : '',
+    notice.agency,
+    notice.department,
+    notice.location,
+    notice.title,
+    notice.summary,
+    notice.body,
+  ].map(normalizeInlineText));
+}
+
+function isCurrentDistrictNotice(notice, selectedRegion, currentSigunguCode) {
+  if (!selectedRegion) {
+    return false;
+  }
+
+  if (currentSigunguCode && notice.sigunguCode === currentSigunguCode) {
+    return true;
+  }
+
+  const currentRegionLabel = normalizeRegionName(formatRegionLabel(selectedRegion));
+  const currentDistrict = extractDistrictToken(selectedRegion.sigungu);
+
+  return getNoticeRegionCandidates(notice).some((candidate) => {
+    const normalizedCandidate = normalizeRegionName(candidate);
+    return normalizedCandidate === currentRegionLabel || extractDistrictToken(candidate) === currentDistrict;
+  });
+}
+
+function isAdjacentDistrictNotice(notice, selectedRegion, currentSigunguCode, adjacentCodes) {
+  if (!selectedRegion || !adjacentCodes.length) {
+    return false;
+  }
+
+  if (isCurrentDistrictNotice(notice, selectedRegion, currentSigunguCode)) {
+    return false;
+  }
+
+  const adjacentCodeSet = new Set(adjacentCodes);
+  if (notice.sigunguCode && adjacentCodeSet.has(notice.sigunguCode)) {
+    return true;
+  }
+
+  const adjacentRegionLabels = adjacentCodes
+    .map((code) => getRegionLabelBySigunguCode(code))
+    .filter(Boolean)
+    .map((label) => normalizeRegionName(label));
+  const adjacentDistrictTokens = adjacentCodes
+    .map((code) => getRegionLabelBySigunguCode(code))
+    .filter(Boolean)
+    .map((label) => extractDistrictToken(label));
+
+  return getNoticeRegionCandidates(notice).some((candidate) => {
+    const normalizedCandidate = normalizeRegionName(candidate);
+    const districtToken = extractDistrictToken(candidate);
+    return adjacentRegionLabels.includes(normalizedCandidate) || adjacentDistrictTokens.includes(districtToken);
+  });
+}
+
 function getStatusMeta(status) {
   switch (status) {
     case 'open':
@@ -170,36 +478,6 @@ function buildNoticeSummary(notice) {
   return resolved.length > 120 ? `${resolved.slice(0, 120).trim()}...` : resolved;
 }
 
-function getNoticeRegionText(notice) {
-  return [notice.region, notice.agency, notice.department, notice.title, notice.summary, notice.body]
-    .filter(Boolean)
-    .join(' ');
-}
-
-function matchesRegion(notice, region, sigunguCode) {
-  if (!region) {
-    return false;
-  }
-
-  if (sigunguCode) {
-    return notice.sigunguCode === sigunguCode;
-  }
-
-  return getNoticeRegionText(notice).includes(region.sigungu);
-}
-
-function matchesSido(notice, sido, sigunguCode) {
-  if (!sido) {
-    return false;
-  }
-
-  if (sigunguCode && notice.sigunguCode?.startsWith(sigunguCode.slice(0, 2))) {
-    return true;
-  }
-
-  return getNoticeRegionText(notice).includes(sido);
-}
-
 function NoticeSummaryCard({ notice, emphasized = false }) {
   const statusMeta = getStatusMeta(notice.status);
   const summary = buildNoticeSummary(notice);
@@ -208,7 +486,8 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
       ? notice.attachments[0].name
       : `첨부 ${notice.attachments.length}건`
     : notice.agency || notice.sourceLabel;
-  const regionLabel = notice.region || notice.agency || notice.sigunguCode || '지역 정보 없음';
+  const regionLabel = notice.region || (notice.sigunguCode ? getRegionLabelBySigunguCode(notice.sigunguCode) : '') || notice.agency || '지역 정보 없음';
+  const sourceLabel = notice.sourceLabels?.length ? notice.sourceLabels.join(' · ') : notice.sourceLabel;
 
   return (
     <article className={`feed-card ${emphasized ? 'border border-[#c1e0ff]' : ''}`}>
@@ -228,9 +507,7 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
         {notice.title || '공고 제목 없음'}
       </h3>
 
-      <p className="mt-3 text-sm leading-7 text-[#3f4850]">
-        {summary}
-      </p>
+      <p className="mt-3 text-sm leading-7 text-[#3f4850]">{summary}</p>
 
       <div className="mt-5 grid gap-3 text-sm text-[#3f4850] sm:grid-cols-2">
         <div className="rounded-xl bg-[#f7f9fb] px-4 py-3">
@@ -251,7 +528,7 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2 text-sm text-[#3f4850]">
-          <span className="rounded-full bg-[#f2f4f6] px-3 py-2">출처: {notice.sourceLabel}</span>
+          <span className="rounded-full bg-[#f2f4f6] px-3 py-2">출처: {sourceLabel}</span>
           <span className="rounded-full bg-[#f2f4f6] px-3 py-2">{attachmentLabel}</span>
         </div>
         {notice.link ? (
@@ -304,6 +581,7 @@ export default function App() {
   const [error, setError] = useState('');
   const [locationMessage, setLocationMessage] = useState('현재 위치를 확인하지 못했습니다. 위치를 허용하거나 지역을 선택해주세요.');
   const [locationResolution, setLocationResolution] = useState('위치 확인 대기 중');
+  const [rawHearings, setRawHearings] = useState([]);
   const [hearings, setHearings] = useState([]);
   const [updatedAt, setUpdatedAt] = useState('');
   const [fallbackMessage, setFallbackMessage] = useState('');
@@ -333,19 +611,24 @@ export default function App() {
           return;
         }
 
-        setHearings(payload.items);
+        const rawItems = Array.isArray(payload.items) ? payload.items : [];
+        const dedupedItems = dedupeNotices(rawItems);
+
+        setRawHearings(rawItems);
+        setHearings(dedupedItems);
         setUpdatedAt(payload.fetchedAt || new Date().toISOString());
         setSourceWarning(
           payload.failedSources?.length
             ? '일부 데이터 소스를 불러오지 못했지만, 수집에 성공한 공고는 계속 표시합니다.'
             : ''
         );
-      } catch (loadError) {
+      } catch {
         if (ignore) {
           return;
         }
 
         setError('통합 공고 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+        setRawHearings([]);
         setHearings([]);
       } finally {
         if (!ignore) {
@@ -388,137 +671,111 @@ export default function App() {
     [currentSigunguCode]
   );
 
-  const exactHearings = useMemo(() => {
+  const currentDistrictHearings = useMemo(() => {
     if (!selectedRegion) {
-      return [];
+      return recentHearings;
     }
 
-    if (currentSigunguCode) {
-      return recentHearings.filter((notice) => notice.sigunguCode === currentSigunguCode);
-    }
-
-    return recentHearings.filter((notice) => matchesRegion(notice, selectedRegion, currentSigunguCode));
+    return filterAndSortHearings(
+      recentHearings.filter((notice) => isCurrentDistrictNotice(notice, selectedRegion, currentSigunguCode)),
+      ''
+    );
   }, [currentSigunguCode, recentHearings, selectedRegion]);
 
-  const nearbyFallbackHearings = useMemo(() => {
+  const adjacentDistrictHearings = useMemo(() => {
     if (!selectedRegion) {
       return [];
     }
 
-    const exactIds = new Set(exactHearings.map((notice) => notice.id));
-    const adjacentSet = new Set(adjacentCodes);
-
-    const adjacentMatches = recentHearings.filter((notice) =>
-      adjacentSet.has(notice.sigunguCode) && !exactIds.has(notice.id)
+    return filterAndSortHearings(
+      recentHearings.filter((notice) => isAdjacentDistrictNotice(notice, selectedRegion, currentSigunguCode, adjacentCodes)),
+      ''
     );
+  }, [adjacentCodes, currentSigunguCode, recentHearings, selectedRegion]);
 
-    const sameSidoMatches = recentHearings.filter((notice) =>
-      matchesSido(notice, selectedRegion.sido, currentSigunguCode) &&
-      !exactIds.has(notice.id) &&
-      !adjacentSet.has(notice.sigunguCode)
-    );
-
-    return filterAndSortHearings([...adjacentMatches, ...sameSidoMatches], '');
-  }, [adjacentCodes, exactHearings, recentHearings, selectedRegion]);
-
-  const selectedAdjacentHearings = useMemo(() => {
+  const visibleAdjacentHearings = useMemo(() => {
     if (!selectedAdjacentCodes.length) {
-      return [];
+      return adjacentDistrictHearings;
     }
 
     const selectedSet = new Set(selectedAdjacentCodes);
     return filterAndSortHearings(
-      recentHearings.filter((notice) => selectedSet.has(notice.sigunguCode)),
+      adjacentDistrictHearings.filter((notice) => notice.sigunguCode && selectedSet.has(notice.sigunguCode)),
       ''
     );
-  }, [recentHearings, selectedAdjacentCodes]);
+  }, [adjacentDistrictHearings, selectedAdjacentCodes]);
 
-  const displayState = useMemo(() => {
+  const summaryHearings = useMemo(() => {
     if (!selectedRegion) {
-      return {
-        current: recentHearings,
-        selected: recentHearings,
-        fallbackMessage: '선택 지역이 없어서 최신 공고 전체를 먼저 보여줍니다.',
-        currentTitle: '전체 최신 공고',
-        currentDescription: '토지이음 주민의견청취 공람과 국토부 인터넷 주민의견청취를 최신순으로 보여줍니다.',
-        selectedDescription: '지역을 선택하면 해당 지역 공고를 우선하고, 없으면 관련 지역 결과로 fallback 합니다.',
-        mode: 'latest',
-      };
+      return recentHearings;
     }
 
-    if (exactHearings.length) {
-      const selectedItems = selectedAdjacentHearings.length
-        ? filterAndSortHearings([...exactHearings, ...selectedAdjacentHearings], '')
-        : exactHearings;
+    return filterAndSortHearings(dedupeNotices([...currentDistrictHearings, ...visibleAdjacentHearings]), '');
+  }, [currentDistrictHearings, recentHearings, selectedRegion, visibleAdjacentHearings]);
 
-      return {
-        current: exactHearings,
-        selected: selectedItems,
-        fallbackMessage: selectedAdjacentHearings.length
-          ? '인접지역 포함 결과를 함께 보여줍니다.'
-          : '',
-        currentTitle: `${selectedRegion.sigungu} 공고`,
-        currentDescription: `${formatRegionLabel(selectedRegion)} 공고를 우선 보여줍니다.`,
-        selectedDescription: selectedAdjacentHearings.length
-          ? `${formatRegionLabel(selectedRegion)}와 선택한 인접 지역 결과입니다.`
-          : `${formatRegionLabel(selectedRegion)} 공고 목록입니다.`,
-        mode: selectedAdjacentHearings.length ? 'exact+adjacent' : 'exact',
-      };
-    }
+  const currentSectionTitle = selectedRegion ? `${selectedRegion.sigungu}에서 진행중인 공고` : '전체 최신 공고';
+  const currentSectionDescription = selectedRegion
+    ? `${formatRegionLabel(selectedRegion)} 공고만 보여줍니다. 인접 자치구 공고는 아래 섹션에서 분리해 확인할 수 있습니다.`
+    : '지역이 선택되지 않아 최신 공고 전체를 보여줍니다.';
+  const adjacentSectionDescription = selectedRegion
+    ? '현재 자치구를 제외한 인접 자치구 공고만 표시합니다. 현재 자치구 공고는 이 섹션에 다시 넣지 않습니다.'
+    : '위치가 확인되면 현재 자치구를 제외한 인접 자치구 공고를 여기에 분리해 보여줍니다.';
+  const summaryDescription = selectedRegion
+    ? '현재 자치구 공고 1회와 인접 자치구 공고 1회를 중복 없이 합쳐 보여줍니다.'
+    : '지역을 선택하면 현재 자치구와 인접 자치구 공고를 중복 없이 묶어 보여줍니다.';
 
-    if (nearbyFallbackHearings.length) {
-      return {
-        current: nearbyFallbackHearings,
-        selected: nearbyFallbackHearings,
-        fallbackMessage: '정확히 일치하는 공고가 없어 같은 시/도 또는 인접 지역 공고를 보여줍니다.',
-        currentTitle: `${selectedRegion.sigungu} 인접/동일 시도 공고`,
-        currentDescription: '정확히 일치하는 공고가 없어 인접 지역과 같은 시/도 결과를 우선 보여줍니다.',
-        selectedDescription: '정확히 일치하는 공고가 없어 fallback 결과를 보여줍니다.',
-        mode: 'nearby-fallback',
-      };
-    }
-
-    return {
-      current: recentHearings,
-      selected: recentHearings,
-      fallbackMessage: '정확히 일치하는 공고와 인접 지역 공고가 없어 전체 최신 공고를 보여줍니다.',
-      currentTitle: '전체 최신 공고',
-      currentDescription: '지역 일치 결과가 없어 전체 최신 공고로 fallback 되었습니다.',
-      selectedDescription: '전체 최신 공고 목록입니다.',
-      mode: 'latest-fallback',
-    };
-  }, [exactHearings, nearbyFallbackHearings, recentHearings, selectedAdjacentHearings, selectedRegion]);
-
-  const currentHearings = displayState.current;
-  const selectedAreaHearings = displayState.selected;
-  const visibleSelectedAreaHearings = useMemo(
-    () => filterAndSortHearings(selectedAreaHearings, ''),
-    [selectedAreaHearings]
-  );
-  const effectiveFallbackMessage = fallbackMessage || displayState.fallbackMessage;
-
-  useEffect(() => {
-    console.info('[notices] display selection', {
-      totalCount: hearings.length,
-      selectedRegion,
-      currentSigunguCode,
-      exactCount: exactHearings.length,
-      nearbyCount: nearbyFallbackHearings.length,
-      selectedCount: visibleSelectedAreaHearings.length,
-      mode: displayState.mode,
-    });
-  }, [currentSigunguCode, displayState.mode, exactHearings.length, hearings.length, nearbyFallbackHearings.length, selectedRegion, visibleSelectedAreaHearings.length]);
-
+  const currentHearings = currentDistrictHearings;
   const currentOpenHearings = currentHearings.filter((notice) => notice.status === 'open');
   const currentUnknownHearings = currentHearings.filter((notice) => notice.status === 'unknown');
   const currentClosedHearings = currentHearings.filter((notice) => notice.status === 'closed');
+
+  const effectiveSummaryMessage = useMemo(() => {
+    if (fallbackMessage) {
+      return fallbackMessage;
+    }
+
+    if (!selectedRegion) {
+      return '선택 지역이 없어서 최신 공고 전체를 먼저 보여줍니다.';
+    }
+
+    if (currentDistrictHearings.length && visibleAdjacentHearings.length) {
+      return '현재 자치구 공고와 인접 자치구 공고를 중복 없이 함께 보여줍니다.';
+    }
+
+    if (currentDistrictHearings.length && !visibleAdjacentHearings.length) {
+      return '인접 자치구 공고가 없어 현재 자치구 공고만 표시합니다.';
+    }
+
+    if (!currentDistrictHearings.length && visibleAdjacentHearings.length) {
+      return '현재 자치구 공고가 없어 인접 자치구 공고만 표시합니다.';
+    }
+
+    return '';
+  }, [currentDistrictHearings.length, fallbackMessage, selectedRegion, visibleAdjacentHearings.length]);
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) {
+      return;
+    }
+
+    console.info('[notices] dedupe summary', {
+      rawTotalCount: rawHearings.length,
+      dedupedTotalCount: hearings.length,
+      currentDistrictCount: selectedRegion ? currentDistrictHearings.length : 0,
+      adjacentDistrictCount: selectedRegion ? adjacentDistrictHearings.length : 0,
+      mergedSummaryCount: summaryHearings.length,
+      duplicatesRemovedCount: Math.max(0, rawHearings.length - hearings.length),
+      selectedRegion,
+      currentSigunguCode,
+    });
+  }, [adjacentDistrictHearings.length, currentDistrictHearings.length, currentSigunguCode, hearings.length, rawHearings.length, selectedRegion, summaryHearings.length]);
 
   function applyRegion(region, resolutionText) {
     setSelectedRegion(region);
     setSelectedSido(region.sido);
     setSelectedSigungu(region.sigungu);
     setLocationResolution(resolutionText);
-    setLocationMessage(`${formatRegionLabel(region)} 기준으로 내 구 공고를 먼저 보여주고, 인접 자치구는 아래에서 확장해 볼 수 있습니다.`);
+    setLocationMessage(`${formatRegionLabel(region)} 기준으로 현재 자치구 공고를 먼저 보여주고, 인접 자치구 공고는 아래에서 분리해 볼 수 있습니다.`);
   }
 
   function handleReset() {
@@ -658,7 +915,7 @@ export default function App() {
 
         <nav className="flex flex-col gap-1">
           <a className="rail-link rail-link-active" href="#hero">
-            <Map className="h-4 w-4" />
+            <MapIcon className="h-4 w-4" />
             <span>내 주변 공고</span>
           </a>
           <a className="rail-link" href="#current-district">
@@ -709,7 +966,7 @@ export default function App() {
                   내 주변 도시계획 공고 찾기
                 </h1>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#52606d] sm:text-[1.05rem]">
-                  토지이음 주민의견청취 공람과 국토부 인터넷 주민의견청취를 통합해 현재 위치, 같은 시/도, 인접 지역 순서로 보여줍니다.
+                  토지이음 주민의견청취 공람과 국토부 인터넷 주민의견청취를 통합해 현재 자치구와 인접 자치구 공고를 분리해 보여줍니다.
                 </p>
                 <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
                   <button type="button" onClick={handleDetectLocation} className="hero-button w-full justify-center sm:w-auto">
@@ -738,10 +995,10 @@ export default function App() {
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">현재 자치구 공고</p>
                 <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">
-                  {displayState.currentTitle}
+                  {currentSectionTitle}
                 </h2>
                 <p className="mt-2 text-sm leading-7 text-[#3f4850]">
-                  {displayState.currentDescription}
+                  {currentSectionDescription}
                 </p>
               </div>
             </div>
@@ -761,7 +1018,7 @@ export default function App() {
               </div>
             ) : (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                {selectedRegion ? '현재 표시할 공고가 없습니다.' : '현재 수집된 최신 공고가 없습니다.'}
+                {selectedRegion ? `${selectedRegion.sigungu} 공고가 없습니다.` : '현재 수집된 최신 공고가 없습니다.'}
               </div>
             )}
           </section>
@@ -771,6 +1028,7 @@ export default function App() {
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">인접 지역 함께 보기</p>
                 <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">인접 자치구 확장 보기</h2>
+                <p className="mt-2 text-sm leading-7 text-[#3f4850]">{adjacentSectionDescription}</p>
               </div>
               {adjacentCodes.length ? (
                 <button
@@ -785,7 +1043,7 @@ export default function App() {
 
             {!selectedRegion ? (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                위치가 확인되면 인접 자치구 선택 칩이 여기에 표시됩니다.
+                위치가 확인되면 현재 자치구를 제외한 인접 자치구 공고가 여기에 표시됩니다.
               </div>
             ) : currentSigunguCode && adjacentCodes.length ? (
               <div className="space-y-4">
@@ -811,9 +1069,17 @@ export default function App() {
                   </div>
                 ) : null}
 
-                <p className="text-sm leading-7 text-[#3f4850]">
-                  현재 위치 기준 자치구와 함께 비교할 인접 자치구를 선택할 수 있습니다.
-                </p>
+                {visibleAdjacentHearings.length ? (
+                  <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    {visibleAdjacentHearings.slice(0, isNearbyExpanded ? 8 : 4).map((notice) => (
+                      <NoticeSummaryCard key={`adjacent-${notice.id}`} notice={notice} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
+                    인접 자치구 공고가 없습니다. 현재 자치구 공고를 이 섹션에 다시 넣지 않습니다.
+                  </div>
+                )}
               </div>
             ) : (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
@@ -828,7 +1094,7 @@ export default function App() {
                 <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">선택한 지역의 공고 요약</p>
                 <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">내 구와 인접 구 공고 요약 리스트</h2>
                 <p className="mt-2 text-sm leading-7 text-[#3f4850]">
-                  {displayState.selectedDescription}
+                  {summaryDescription}
                 </p>
               </div>
             </div>
@@ -839,9 +1105,9 @@ export default function App() {
               </div>
             ) : null}
 
-            {effectiveFallbackMessage ? (
+            {effectiveSummaryMessage ? (
               <div className="rounded-[20px] bg-[#fff4e5] px-5 py-4 text-sm text-[#6b3b00] shadow-sm">
-                {effectiveFallbackMessage}
+                {effectiveSummaryMessage}
               </div>
             ) : null}
 
@@ -851,16 +1117,16 @@ export default function App() {
               </div>
             ) : null}
 
-            {visibleSelectedAreaHearings.length ? (
+            {summaryHearings.length ? (
               <div id="notice-list" className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                {visibleSelectedAreaHearings.map((notice) => (
-                  <NoticeSummaryCard key={notice.id} notice={notice} />
+                {summaryHearings.map((notice) => (
+                  <NoticeSummaryCard key={`summary-${notice.id}`} notice={notice} />
                 ))}
               </div>
             ) : (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
                 {selectedRegion
-                  ? '현재 조건에 맞는 공고가 없습니다.'
+                  ? '현재 자치구와 인접 자치구에 맞는 공고가 없습니다.'
                   : '현재 수집된 최신 공고가 없습니다.'}
               </div>
             )}
@@ -921,7 +1187,7 @@ export default function App() {
             <article className="md:col-span-6 rounded-[24px] bg-white p-8 shadow-sm">
               <div className="space-y-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#3f4850]">현재 자치구 상태</span>
-                <MetricCard icon={Map} label="공개중" value={`${currentOpenHearings.length}건`} />
+                <MetricCard icon={MapIcon} label="공개중" value={`${currentOpenHearings.length}건`} />
                 <MetricCard icon={Megaphone} label="확인필요" value={`${currentUnknownHearings.length}건`} />
                 <MetricCard icon={FileText} label="종료" value={`${currentClosedHearings.length}건`} />
               </div>
@@ -947,7 +1213,7 @@ export default function App() {
 
       <nav className="mobile-nav md:hidden">
         <a href="#hero" className="mobile-nav-item mobile-nav-item-active">
-          <Map className="h-5 w-5" />
+          <MapIcon className="h-5 w-5" />
           <span>위치</span>
         </a>
         <a href="#current-district" className="mobile-nav-item">
