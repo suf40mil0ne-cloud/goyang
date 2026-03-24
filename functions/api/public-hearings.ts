@@ -7,13 +7,14 @@ import {
 
 type EnvMap = {
   PUBLIC_DATA_SERVICE_KEY?: string;
-  DATA_GO_KR_SERVICE_KEY?: string;
 };
 
 type RequestContext = {
   request: Request;
   env: EnvMap;
 };
+
+type UpstreamRecord = Record<string, unknown>;
 
 type CacheEntry = {
   cachedAt: number;
@@ -24,12 +25,106 @@ type CacheEntry = {
   };
 };
 
+type UpstreamPayload = {
+  data?: UpstreamRecord[];
+  totalCount?: number;
+};
+
+type UpstreamStatus = number | 'network-error' | 'invalid-json' | 'invalid-payload';
+
+type UpstreamFailureDetails = {
+  upstreamStatus: UpstreamStatus;
+  responsePreview: string;
+  serviceKeyPresent: boolean;
+  requestUrl: string;
+};
+
+class UpstreamFetchError extends Error {
+  status: UpstreamStatus;
+  canUseStaleCache: boolean;
+
+  constructor(message: string, status: UpstreamStatus, canUseStaleCache: boolean) {
+    super(message);
+    this.name = 'UpstreamFetchError';
+    this.status = status;
+    this.canUseStaleCache = canUseStaleCache;
+  }
+}
+
 const API_URL = 'https://api.odcloud.kr/api/15144538/v1/uddi:e3214695-5339-4f73-abd2-9157715f3b16';
 const CACHE_TTL_MS = 10 * 60 * 1000;
 const REQUEST_TIMEOUT_MS = 8000;
+const RESPONSE_PREVIEW_LIMIT = 300;
 const cache = new Map<string, CacheEntry>();
 
-async function fetchWithRetry(url: URL, retries = 1): Promise<Response> {
+function getCacheKey(page: number, perPage: number): string {
+  return `${page}:${perPage}`;
+}
+
+function parsePositiveInteger(
+  value: string | null,
+  fallbackValue: number,
+  limits: { min?: number; max?: number } = {}
+): number {
+  const parsed = Number.parseInt(String(value ?? ''), 10);
+  const safeValue = Number.isFinite(parsed) ? parsed : fallbackValue;
+  const min = limits.min ?? 1;
+  const max = limits.max ?? Number.MAX_SAFE_INTEGER;
+  return Math.min(max, Math.max(min, safeValue));
+}
+
+function normalizeServiceKey(value: string): string {
+  let normalized = String(value ?? '').trim();
+
+  for (let index = 0; index < 3; index += 1) {
+    if (!/%[0-9a-f]{2}/i.test(normalized)) {
+      break;
+    }
+
+    try {
+      const decoded = decodeURIComponent(normalized);
+      if (decoded === normalized) {
+        break;
+      }
+      normalized = decoded;
+    } catch {
+      break;
+    }
+  }
+
+  return normalized;
+}
+
+function buildMaskedUrl(url: URL): string {
+  const maskedUrl = new URL(url.toString());
+  if (maskedUrl.searchParams.has('serviceKey')) {
+    maskedUrl.searchParams.set('serviceKey', '[masked]');
+  }
+  return maskedUrl.toString();
+}
+
+function getResponsePreview(value: string): string {
+  return value.replace(/\s+/g, ' ').trim().slice(0, RESPONSE_PREVIEW_LIMIT);
+}
+
+function logUpstreamFailure(details: UpstreamFailureDetails): void {
+  console.error('[public-hearings] Upstream request failed', details);
+}
+
+function readServiceKey(env: EnvMap): string {
+  return normalizeServiceKey(env.PUBLIC_DATA_SERVICE_KEY || '');
+}
+
+function createJsonResponse(body: Record<string, unknown>, status: number): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      'content-type': 'application/json; charset=UTF-8',
+    },
+  });
+}
+
+async function fetchUpstreamPayload(url: URL, serviceKeyPresent: boolean, retries = 1): Promise<UpstreamPayload> {
   let lastError: unknown = null;
 
   for (let attempt = 0; attempt <= retries; attempt += 1) {
@@ -43,36 +138,94 @@ async function fetchWithRetry(url: URL, retries = 1): Promise<Response> {
           Accept: 'application/json',
         },
       });
+      const responseText = await response.text();
 
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`upstream-${response.status}`);
+        logUpstreamFailure({
+          upstreamStatus: response.status,
+          responsePreview: getResponsePreview(responseText),
+          serviceKeyPresent,
+          requestUrl: buildMaskedUrl(url),
+        });
+
+        const error = new UpstreamFetchError(
+          `upstream-http-${response.status}`,
+          response.status,
+          response.status >= 500
+        );
+        lastError = error;
+
+        if (attempt === retries || !error.canUseStaleCache) {
+          throw error;
+        }
+
+        continue;
       }
 
-      return response;
+      let payload: UpstreamPayload;
+
+      try {
+        payload = JSON.parse(responseText) as UpstreamPayload;
+      } catch {
+        const error = new UpstreamFetchError('upstream-json-invalid', 'invalid-json', false);
+        logUpstreamFailure({
+          upstreamStatus: error.status,
+          responsePreview: getResponsePreview(responseText),
+          serviceKeyPresent,
+          requestUrl: buildMaskedUrl(url),
+        });
+        throw error;
+      }
+
+      if (!payload || !Array.isArray(payload.data)) {
+        const error = new UpstreamFetchError('upstream-payload-invalid', 'invalid-payload', false);
+        logUpstreamFailure({
+          upstreamStatus: error.status,
+          responsePreview: getResponsePreview(responseText),
+          serviceKeyPresent,
+          requestUrl: buildMaskedUrl(url),
+        });
+        throw error;
+      }
+
+      return payload;
     } catch (error) {
       clearTimeout(timeoutId);
-      lastError = error;
+
+      if (error instanceof UpstreamFetchError) {
+        lastError = error;
+        if (attempt === retries || !error.canUseStaleCache) {
+          throw error;
+        }
+        continue;
+      }
+
+      const networkError = new UpstreamFetchError(
+        error instanceof Error ? error.message : 'upstream-network-error',
+        'network-error',
+        true
+      );
+      logUpstreamFailure({
+        upstreamStatus: networkError.status,
+        responsePreview: getResponsePreview(error instanceof Error ? error.message : String(error)),
+        serviceKeyPresent,
+        requestUrl: buildMaskedUrl(url),
+      });
+      lastError = networkError;
+
       if (attempt === retries) {
-        throw lastError;
+        throw networkError;
       }
     }
   }
 
-  throw lastError;
-}
-
-function getCacheKey(page: number, perPage: number): string {
-  return `${page}:${perPage}`;
-}
-
-function readServiceKey(env: EnvMap): string {
-  const serviceKey = env.PUBLIC_DATA_SERVICE_KEY || env.DATA_GO_KR_SERVICE_KEY || '';
-  if (!serviceKey) {
-    console.error('[public-hearings] Missing PUBLIC_DATA_SERVICE_KEY or DATA_GO_KR_SERVICE_KEY.');
+  if (lastError instanceof Error) {
+    throw lastError;
   }
-  return serviceKey;
+
+  throw new Error('upstream-fetch-failed');
 }
 
 async function loadBasePayload(page: number, perPage: number, env: EnvMap) {
@@ -81,16 +234,12 @@ async function loadBasePayload(page: number, perPage: number, env: EnvMap) {
   const cached = cache.get(cacheKey);
   const serviceKey = readServiceKey(env);
 
-  if (cached && now - cached.cachedAt <= CACHE_TTL_MS) {
-    return { ...cached.payload, usedStaleCache: false };
+  if (!serviceKey) {
+    throw new Error('service-key-missing');
   }
 
-  if (!serviceKey) {
-    if (cached) {
-      return { ...cached.payload, usedStaleCache: true };
-    }
-
-    throw new Error('service-key-missing');
+  if (cached && now - cached.cachedAt <= CACHE_TTL_MS) {
+    return { ...cached.payload, usedStaleCache: false };
   }
 
   const url = new URL(API_URL);
@@ -100,8 +249,7 @@ async function loadBasePayload(page: number, perPage: number, env: EnvMap) {
   url.searchParams.set('serviceKey', serviceKey);
 
   try {
-    const response = await fetchWithRetry(url, 1);
-    const payload = await response.json() as { data?: Record<string, unknown>[]; totalCount?: number };
+    const payload = await fetchUpstreamPayload(url, true, 1);
     const normalizedItems = (payload.data ?? []).map((item) =>
       normalizePublicHearingItem(item, {
         regionLabel: getRegionLabelBySigunguCode(item.sigunguCode ?? item['시군구코드']),
@@ -124,8 +272,14 @@ async function loadBasePayload(page: number, perPage: number, env: EnvMap) {
       usedStaleCache: false,
     };
   } catch (error) {
-    console.error('[public-hearings] Upstream fetch failed:', error);
-    if (cached) {
+    console.error('[public-hearings] Upstream fetch handling result', {
+      serviceKeyPresent: true,
+      requestUrl: buildMaskedUrl(url),
+      usedStaleCache: Boolean(cached),
+      error: error instanceof Error ? error.message : String(error),
+    });
+
+    if (cached && error instanceof UpstreamFetchError && error.canUseStaleCache) {
       return {
         ...cached.payload,
         usedStaleCache: true,
@@ -138,8 +292,8 @@ async function loadBasePayload(page: number, perPage: number, env: EnvMap) {
 
 export async function onRequestGet(context: RequestContext): Promise<Response> {
   const requestUrl = new URL(context.request.url);
-  const page = Number(requestUrl.searchParams.get('page') ?? '1');
-  const perPage = Number(requestUrl.searchParams.get('perPage') ?? '100');
+  const page = parsePositiveInteger(requestUrl.searchParams.get('page'), 1, { min: 1, max: 9999 });
+  const perPage = parsePositiveInteger(requestUrl.searchParams.get('perPage'), 20, { min: 1, max: 100 });
   const requestedSigunguCode = normalizeSigunguCode(requestUrl.searchParams.get('sigunguCode'));
 
   try {
@@ -174,17 +328,25 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
       },
     });
   } catch (error) {
-    const status = String(error).includes('service-key-missing') ? 500 : 502;
-    return new Response(
-      JSON.stringify({
-        message: '공고 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.',
-      }),
-      {
-        status,
-        headers: {
-          'content-type': 'application/json; charset=UTF-8',
+    if (String(error).includes('service-key-missing')) {
+      console.error('[public-hearings] PUBLIC_DATA_SERVICE_KEY is missing.', {
+        serviceKeyPresent: false,
+      });
+      return createJsonResponse(
+        {
+          message: 'PUBLIC_DATA_SERVICE_KEY가 설정되지 않았습니다.',
+          code: 'public_data_service_key_missing',
         },
-      }
+        500
+      );
+    }
+
+    return createJsonResponse(
+      {
+        message: '공고 데이터를 불러오지 못했습니다. 서버 로그를 확인해주세요.',
+        code: 'public_hearings_upstream_failed',
+      },
+      502
     );
   }
 }

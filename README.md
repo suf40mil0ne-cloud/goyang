@@ -2,6 +2,9 @@
 
 내 주변 주민공람 정보를 지도에서 콕 확인하는 정적 웹사이트입니다.
 
+## 환경변수
+- PUBLIC_DATA_SERVICE_KEY: Cloudflare Pages 배포환경과 로컬 .env/.env.example 에서 동일한 이름으로 설정하는 국토교통부 공공데이터포털 인증키
+
 ## 페이지 구성
 - `/index.html`: 메인 대시보드(실시간 기상/대기 + 도시 해설)
 - `/pages/about.html`: 사이트 소개
