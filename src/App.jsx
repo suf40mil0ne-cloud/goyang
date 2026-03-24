@@ -67,6 +67,65 @@ function getCurrentPosition() {
   });
 }
 
+function describeLocationError(error) {
+  const code = typeof error?.code === 'number' ? error.code : null;
+  const message = String(error?.message || '');
+
+  if (message === 'unsupported-geolocation') {
+    return {
+      stage: 'geolocation',
+      resolution: '브라우저 위치 기능 미지원',
+      message: '이 브라우저에서는 위치 기능을 지원하지 않습니다. 지역 직접 선택을 사용해주세요.',
+    };
+  }
+
+  if (message === 'reverse-geocode-failed') {
+    return {
+      stage: 'reverse-geocode',
+      resolution: '주소 변환 실패',
+      message: '좌표는 확인했지만 주소 변환에 실패했습니다. 잠시 후 다시 시도하거나 지역을 직접 선택해주세요.',
+    };
+  }
+
+  if (message === 'region-match-failed') {
+    return {
+      stage: 'region-match',
+      resolution: '시군구 매칭 실패',
+      message: '현재 위치 주소를 찾았지만 서비스 지역과 정확히 연결하지 못했습니다. 지역 직접 선택을 사용해주세요.',
+    };
+  }
+
+  if (code === 1) {
+    return {
+      stage: 'geolocation',
+      resolution: '위치 권한 거부',
+      message: '브라우저 위치 권한이 거부되었습니다. 권한을 허용하거나 지역을 직접 선택해주세요.',
+    };
+  }
+
+  if (code === 2) {
+    return {
+      stage: 'geolocation',
+      resolution: '위치 정보 확인 실패',
+      message: '기기에서 현재 위치 좌표를 가져오지 못했습니다. GPS 또는 네트워크 상태를 확인해주세요.',
+    };
+  }
+
+  if (code === 3) {
+    return {
+      stage: 'geolocation',
+      resolution: '위치 확인 시간 초과',
+      message: '현재 위치 확인 시간이 초과되었습니다. 잠시 후 다시 시도하거나 지역을 직접 선택해주세요.',
+    };
+  }
+
+  return {
+    stage: 'unknown',
+    resolution: '위치 자동 확인 실패',
+    message: '현재 위치를 확인하지 못했습니다. 잠시 후 다시 시도하거나 지역을 직접 선택해주세요.',
+  };
+}
+
 function getStatusMeta(status) {
   switch (status) {
     case 'ongoing':
@@ -352,13 +411,13 @@ export default function App() {
   const displayState = useMemo(() => {
     if (!selectedRegion) {
       return {
-        current: recentHearings,
-        selected: recentHearings,
-        fallbackMessage: '위치나 지역을 선택하기 전에는 최근 공고를 먼저 보여줍니다.',
-        currentTitle: '최근 공고',
-        currentDescription: '위치가 없어도 최신 공고를 먼저 보여줍니다.',
-        selectedDescription: '최근 등록된 공고 전체 목록입니다.',
-        mode: 'latest',
+        current: [],
+        selected: [],
+        fallbackMessage: '',
+        currentTitle: '위치 확인 필요',
+        currentDescription: '현재 위치를 확인하거나 지역을 직접 선택하면 주변 공고를 보여줍니다.',
+        selectedDescription: '위치가 확인되면 내 구와 인접 구 공고 요약을 보여줍니다.',
+        mode: 'awaiting-location',
       };
     }
 
@@ -454,12 +513,22 @@ export default function App() {
   async function handleDetectLocation() {
     setIsDetecting(true);
     setError('');
+    setFallbackMessage('');
     setLocationResolution('현재 위치 확인 중');
     setLocationMessage('현재 위치를 기반으로 내 자치구 공고를 확인하고 있습니다. 브라우저 위치 권한을 허용해주세요.');
+    console.info('[location] detect:start');
 
     try {
       const coords = await getCurrentPosition();
+      console.info('[location] geolocation:success', {
+        latitude: Number(coords.latitude?.toFixed?.(5) || coords.latitude),
+        longitude: Number(coords.longitude?.toFixed?.(5) || coords.longitude),
+      });
       const address = await reverseGeocode({ lat: coords.latitude, lon: coords.longitude });
+      console.info('[location] reverse-geocode:success', {
+        city: address.city || address.state || '',
+        borough: address.borough || address.suburb || address.city_district || '',
+      });
       const region = matchRegionFromAddress(address);
 
       if (!region) {
@@ -468,8 +537,14 @@ export default function App() {
 
       applyRegion(region, 'GPS + 역지오코딩으로 시군구 확인');
     } catch (detectError) {
-      setLocationMessage('현재 위치에서 시군구를 판별하지 못했습니다. 아래에서 지역 직접 선택을 사용해주세요.');
-      setLocationResolution('위치 자동 확인 실패');
+      const details = describeLocationError(detectError);
+      console.error('[location] detect:failed', {
+        stage: details.stage,
+        code: typeof detectError?.code === 'number' ? detectError.code : null,
+        message: String(detectError?.message || ''),
+      });
+      setLocationResolution(details.resolution);
+      setLocationMessage(details.message);
     } finally {
       setIsDetecting(false);
     }
@@ -551,7 +626,7 @@ export default function App() {
         <div className="mb-8">
           <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">Your Civic Feed</p>
           <p className="mt-1 text-xs text-[#3f4850]">
-            {selectedRegion ? formatRegionLabel(selectedRegion) : '최근 공고 우선'}
+            {selectedRegion ? formatRegionLabel(selectedRegion) : '위치 확인 필요'}
           </p>
         </div>
 
@@ -621,8 +696,12 @@ export default function App() {
                   </button>
                 </div>
                 <div className="mt-7 flex flex-wrap justify-center gap-2.5">
-                  <span className="status-chip">{selectedRegion ? formatRegionLabel(selectedRegion) : '위치 전에도 최근 공고를 먼저 보여줍니다.'}</span>
+                  <span className="status-chip">{selectedRegion ? formatRegionLabel(selectedRegion) : locationResolution}</span>
                   <span className="status-chip">{updatedAt ? `업데이트 ${updatedAt.slice(0, 19).replace('T', ' ')}` : '최근 공고를 불러오는 중입니다.'}</span>
+                </div>
+                <div className="mt-5 rounded-[20px] border border-[#d8e3ef] bg-[#f7f9fb] px-5 py-4 text-left text-sm leading-6 text-[#3f4850]">
+                  <p className="font-semibold text-[#191c1e]">{locationResolution}</p>
+                  <p className="mt-1">{locationMessage}</p>
                 </div>
               </div>
             </div>
@@ -656,7 +735,7 @@ export default function App() {
               </div>
             ) : (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                현재 표시할 공고가 없습니다.
+                {selectedRegion ? '현재 표시할 공고가 없습니다.' : locationMessage}
               </div>
             )}
           </section>
@@ -748,7 +827,9 @@ export default function App() {
               </div>
             ) : (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                현재 조건에 맞는 공고가 없습니다.
+                {selectedRegion
+                  ? '현재 조건에 맞는 공고가 없습니다.'
+                  : '위치를 확인하거나 지역을 직접 선택하면 내 구와 인접 구 공고 요약을 보여줍니다.'}
               </div>
             )}
           </section>
