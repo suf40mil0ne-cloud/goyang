@@ -9,16 +9,14 @@ import {
   LoaderCircle,
   LocateFixed,
   Map,
-  MapPin,
   Megaphone,
   Radar,
   RotateCcw,
-  ShieldAlert,
   UserRound,
 } from 'lucide-react';
 import regionAdjacency from '../data/region-adjacency.json';
 import { findSigunguCodeByRegion, getRegionLabelBySigunguCode } from '../shared/region-codes';
-import { filterAndSortPublicHearings, fetchPublicHearings } from './lib/public-hearings-client';
+import { fetchNotices, filterAndSortNotices } from './lib/notices-client';
 import { formatRegionLabel, getDistrictsForSido, getRegions, matchRegionFromAddress } from './lib/region-utils';
 
 const regions = getRegions();
@@ -81,26 +79,36 @@ function getStatusMeta(status) {
 }
 
 function formatPeriod(notice) {
-  const start = notice.viewStartDate || '-';
-  const end = notice.viewEndDate || '-';
-  return `${start} ~ ${end}`;
+  const start = notice.viewStartDate || '';
+  const end = notice.viewEndDate || '';
+
+  if (start || end) {
+    return `${start || '-'} ~ ${end || '-'}`;
+  }
+
+  return notice.noticeDate || notice.date || '-';
 }
 
 function buildNoticeSummary(notice) {
+  const summary = String(notice.summary || '').replace(/\s+/g, ' ').trim();
   const content = String(notice.content || '').replace(/\s+/g, ' ').trim();
   const title = String(notice.title || '').trim();
 
+  if (summary) {
+    return summary.length > 100 ? `${summary.slice(0, 100).trim()}...` : summary;
+  }
+
   if (!content) {
-    return title ? `${title} 관련 주민의견청취 공고입니다.` : '주민의견청취 공고 요약 정보가 제공되지 않았습니다.';
+    return title ? `${title} 관련 공고입니다.` : '공고 요약 정보가 제공되지 않았습니다.';
   }
 
   const firstSentence = content.split(/[.!?。]\s|[\n\r]/).find(Boolean)?.trim() || content;
   const cleaned = firstSentence.startsWith(title)
     ? firstSentence.replace(title, '').trim()
     : firstSentence;
+  const resolved = cleaned || firstSentence;
 
-  const summary = cleaned || firstSentence;
-  return summary.length > 90 ? `${summary.slice(0, 90).trim()}...` : summary;
+  return resolved.length > 100 ? `${resolved.slice(0, 100).trim()}...` : resolved;
 }
 
 function matchesRegion(notice, region, sigunguCode) {
@@ -112,7 +120,7 @@ function matchesRegion(notice, region, sigunguCode) {
     return notice.sigunguCode === sigunguCode;
   }
 
-  return String(notice.regionLabel || '').includes(region.sigungu);
+  return String(notice.region || notice.regionLabel || '').includes(region.sigungu);
 }
 
 function NoticeSummaryCard({ notice, emphasized = false }) {
@@ -120,20 +128,23 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
   const summary = buildNoticeSummary(notice);
   const attachmentLabel = notice.fileName
     ? `${notice.fileName}${notice.fileExt ? `.${notice.fileExt}` : ''}`
-    : '첨부파일 없음';
+    : notice.source === 'seoul'
+      ? '서울시 Open API'
+      : '국토부 공공데이터';
+  const regionLabel = notice.region || notice.regionLabel || notice.sigunguCode || '지역 정보 없음';
 
   return (
     <article className={`feed-card ${emphasized ? 'border border-[#c1e0ff]' : ''}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <span className="rounded-full bg-[#f2f4f6] px-3 py-1 text-[11px] font-bold text-[#43617c]">
-            {notice.regionLabel || notice.sigunguCode || '지역 정보 없음'}
+            {regionLabel}
           </span>
           <span className={`rounded-full px-3 py-1 text-[11px] font-bold ${statusMeta.classes}`}>
             {statusMeta.label}
           </span>
         </div>
-        <span className="text-xs text-[#3f4850]">{notice.noticeDate || formatPeriod(notice)}</span>
+        <span className="text-xs text-[#3f4850]">{notice.noticeDate || notice.date || formatPeriod(notice)}</span>
       </div>
 
       <h3 className="mt-4 text-lg font-bold leading-tight text-[#191c1e]">
@@ -148,7 +159,7 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
         <div className="rounded-xl bg-[#f7f9fb] px-4 py-3">
           <div className="flex items-center gap-2 text-[#006194]">
             <CalendarRange className="h-4 w-4" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">열람기간</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.12em]">공고일/기간</span>
           </div>
           <p className="mt-2 leading-6">{formatPeriod(notice)}</p>
         </div>
@@ -163,17 +174,28 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2 text-sm text-[#3f4850]">
-          <span className="rounded-full bg-[#f2f4f6] px-3 py-2">문의처: {notice.contact || '-'}</span>
+          <span className="rounded-full bg-[#f2f4f6] px-3 py-2">출처: {notice.source === 'seoul' ? '서울시' : '국토부'}</span>
           <span className="rounded-full bg-[#f2f4f6] px-3 py-2">{attachmentLabel}</span>
         </div>
-        <button
-          type="button"
-          className="rounded-xl border border-[#bfc7d2] px-4 py-2 text-sm font-semibold text-[#3f4850] opacity-70"
-          disabled
-          title="공식 API 응답에 원문 상세 URL이 제공되지 않아 준비 중입니다."
-        >
-          원문 보기
-        </button>
+        {notice.link ? (
+          <a
+            href={notice.link}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-xl border border-[#bfc7d2] px-4 py-2 text-sm font-semibold text-[#3f4850] transition hover:border-[#006194] hover:text-[#006194]"
+          >
+            원문 보기
+          </a>
+        ) : (
+          <button
+            type="button"
+            className="rounded-xl border border-[#bfc7d2] px-4 py-2 text-sm font-semibold text-[#3f4850] opacity-70"
+            disabled
+            title="원문 링크 정보가 제공되지 않았습니다."
+          >
+            원문 보기
+          </button>
+        )}
       </div>
     </article>
   );
@@ -215,29 +237,17 @@ export default function App() {
   );
 
   useEffect(() => {
-    setSelectedAdjacentCodes([]);
-  }, [currentSigunguCode]);
-
-  useEffect(() => {
     let ignore = false;
 
     async function loadHearings() {
-      if (!selectedRegion) {
-        setHearings([]);
-        setUpdatedAt('');
-        setFallbackMessage('');
-        setIsLoading(false);
-        return;
-      }
-
       setIsLoading(true);
       setError('');
       setFallbackMessage('');
 
       try {
-        const payload = await fetchPublicHearings({
+        const payload = await fetchNotices({
           page: 1,
-          perPage: 100,
+          perPage: 200,
         });
 
         if (ignore) {
@@ -246,16 +256,12 @@ export default function App() {
 
         setHearings(payload.items);
         setUpdatedAt(payload.meta.fetchedAt || new Date().toISOString());
-
-        if (!currentSigunguCode) {
-          setFallbackMessage(`${formatRegionLabel(selectedRegion)}의 시군구코드 매핑이 아직 충분하지 않아 현재 지역 중심 정렬만 적용합니다.`);
-        }
       } catch (loadError) {
         if (ignore) {
           return;
         }
 
-        setError('공고 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+        setError('통합 공고 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
         setHearings([]);
       } finally {
         if (!ignore) {
@@ -268,7 +274,7 @@ export default function App() {
     return () => {
       ignore = true;
     };
-  }, [selectedRegion, currentSigunguCode]);
+  }, []);
 
   useEffect(() => {
     if (hasRequestedInitialLocation.current) {
@@ -279,45 +285,145 @@ export default function App() {
     handleDetectLocation();
   }, []);
 
+  useEffect(() => {
+    setSelectedAdjacentCodes([]);
+  }, [currentSigunguCode]);
+
   const districtOptions = useMemo(
     () => getDistrictsForSido(selectedSido),
     [selectedSido]
   );
 
-  const currentHearings = useMemo(() => {
-    if (!selectedRegion) {
-      return [];
-    }
-
-    return filterAndSortPublicHearings(
-      hearings.filter((notice) => matchesRegion(notice, selectedRegion, currentSigunguCode)),
-      ''
-    );
-  }, [hearings, selectedRegion, currentSigunguCode]);
+  const recentHearings = useMemo(
+    () => filterAndSortNotices(hearings, ''),
+    [hearings]
+  );
 
   const adjacentCodes = useMemo(
     () => (currentSigunguCode ? regionAdjacency[currentSigunguCode] || [] : []),
     [currentSigunguCode]
   );
 
-  const selectedAreaHearings = useMemo(() => {
+  const exactHearings = useMemo(() => {
     if (!selectedRegion) {
       return [];
     }
 
-    const activeCodes = new Set([currentSigunguCode, ...selectedAdjacentCodes].filter(Boolean));
-
-    if (activeCodes.size > 0) {
-      return hearings.filter((notice) => activeCodes.has(notice.sigunguCode));
+    if (currentSigunguCode) {
+      return recentHearings.filter((notice) => notice.sigunguCode === currentSigunguCode);
     }
 
-    return currentHearings;
-  }, [currentHearings, currentSigunguCode, hearings, selectedAdjacentCodes, selectedRegion]);
+    return recentHearings.filter((notice) => matchesRegion(notice, selectedRegion, currentSigunguCode));
+  }, [currentSigunguCode, recentHearings, selectedRegion]);
 
+  const nearbyFallbackHearings = useMemo(() => {
+    if (!selectedRegion) {
+      return [];
+    }
+
+    const exactIds = new Set(exactHearings.map((notice) => notice.id));
+    const adjacentSet = new Set(adjacentCodes);
+
+    const adjacentMatches = recentHearings.filter((notice) =>
+      adjacentSet.has(notice.sigunguCode) && !exactIds.has(notice.id)
+    );
+
+    const sameSidoMatches = recentHearings.filter((notice) =>
+      notice.region.startsWith(selectedRegion.sido) &&
+      !exactIds.has(notice.id) &&
+      !adjacentSet.has(notice.sigunguCode)
+    );
+
+    return filterAndSortNotices([...adjacentMatches, ...sameSidoMatches], '');
+  }, [adjacentCodes, exactHearings, recentHearings, selectedRegion]);
+
+  const selectedAdjacentHearings = useMemo(() => {
+    if (!selectedAdjacentCodes.length) {
+      return [];
+    }
+
+    const selectedSet = new Set(selectedAdjacentCodes);
+    return filterAndSortNotices(
+      recentHearings.filter((notice) => selectedSet.has(notice.sigunguCode)),
+      ''
+    );
+  }, [recentHearings, selectedAdjacentCodes]);
+
+  const displayState = useMemo(() => {
+    if (!selectedRegion) {
+      return {
+        current: recentHearings,
+        selected: recentHearings,
+        fallbackMessage: '위치나 지역을 선택하기 전에는 최근 공고를 먼저 보여줍니다.',
+        currentTitle: '최근 공고',
+        currentDescription: '위치가 없어도 최신 공고를 먼저 보여줍니다.',
+        selectedDescription: '최근 등록된 공고 전체 목록입니다.',
+        mode: 'latest',
+      };
+    }
+
+    if (exactHearings.length) {
+      const selectedItems = selectedAdjacentHearings.length
+        ? filterAndSortNotices([...exactHearings, ...selectedAdjacentHearings], '')
+        : exactHearings;
+
+      return {
+        current: exactHearings,
+        selected: selectedItems,
+        fallbackMessage: selectedAdjacentHearings.length
+          ? '인접지역 포함 결과를 함께 보여줍니다.'
+          : '',
+        currentTitle: `${selectedRegion.sigungu} 공고`,
+        currentDescription: `${formatRegionLabel(selectedRegion)} 공고를 우선 보여줍니다.`,
+        selectedDescription: selectedAdjacentHearings.length
+          ? `${formatRegionLabel(selectedRegion)}와 선택한 인접 지역 결과입니다.`
+          : `${formatRegionLabel(selectedRegion)} 공고 목록입니다.`,
+        mode: selectedAdjacentHearings.length ? 'exact+adjacent' : 'exact',
+      };
+    }
+
+    if (nearbyFallbackHearings.length) {
+      return {
+        current: nearbyFallbackHearings,
+        selected: nearbyFallbackHearings,
+        fallbackMessage: '정확히 일치하는 공고가 없어 같은 시/도 또는 인접 지역 공고를 보여줍니다.',
+        currentTitle: `${selectedRegion.sigungu} 인접/동일 시도 공고`,
+        currentDescription: '정확히 일치하는 공고가 없어 인접 지역과 같은 시/도 결과를 우선 보여줍니다.',
+        selectedDescription: '정확히 일치하는 공고가 없어 fallback 결과를 보여줍니다.',
+        mode: 'nearby-fallback',
+      };
+    }
+
+    return {
+      current: recentHearings,
+      selected: recentHearings,
+      fallbackMessage: '정확히 일치하는 공고와 인접 지역 공고가 없어 전체 최신 공고를 보여줍니다.',
+      currentTitle: '전체 최신 공고',
+      currentDescription: '지역 일치 결과가 없어 전체 최신 공고로 fallback 되었습니다.',
+      selectedDescription: '전체 최신 공고 목록입니다.',
+      mode: 'latest-fallback',
+    };
+  }, [exactHearings, nearbyFallbackHearings, recentHearings, selectedAdjacentHearings, selectedRegion]);
+
+  const currentHearings = displayState.current;
+  const selectedAreaHearings = displayState.selected;
   const visibleSelectedAreaHearings = useMemo(
-    () => filterAndSortPublicHearings(selectedAreaHearings, ''),
+    () => filterAndSortNotices(selectedAreaHearings, ''),
     [selectedAreaHearings]
   );
+  const effectiveFallbackMessage = fallbackMessage || displayState.fallbackMessage;
+
+  useEffect(() => {
+    console.info('[notices] display selection', {
+      totalCount: hearings.length,
+      selectedRegion,
+      currentSigunguCode,
+      exactCount: exactHearings.length,
+      nearbyCount: nearbyFallbackHearings.length,
+      selectedCount: visibleSelectedAreaHearings.length,
+      mode: displayState.mode,
+    });
+  }, [currentSigunguCode, displayState.mode, exactHearings.length, hearings.length, nearbyFallbackHearings.length, selectedRegion, visibleSelectedAreaHearings.length]);
 
   const currentOngoingHearings = currentHearings.filter((notice) => notice.status === 'ongoing');
   const currentUpcomingHearings = currentHearings.filter((notice) => notice.status === 'upcoming');
@@ -338,8 +444,6 @@ export default function App() {
     setIsPickerOpen(false);
     setIsNearbyExpanded(false);
     setSelectedAdjacentCodes([]);
-    setHearings([]);
-    setUpdatedAt('');
     setFallbackMessage('');
     setLocationResolution('위치 확인 대기 중');
     setLocationMessage('현재 위치를 확인하지 못했습니다. 위치를 허용하거나 지역을 선택해주세요.');
@@ -447,7 +551,7 @@ export default function App() {
         <div className="mb-8">
           <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">Your Civic Feed</p>
           <p className="mt-1 text-xs text-[#3f4850]">
-            {selectedRegion ? formatRegionLabel(selectedRegion) : '내 주변 공고 우선'}
+            {selectedRegion ? formatRegionLabel(selectedRegion) : '최근 공고 우선'}
           </p>
         </div>
 
@@ -504,7 +608,7 @@ export default function App() {
                   내 주변 도시계획 공고 찾기
                 </h1>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#52606d] sm:text-[1.05rem]">
-                  현재 위치를 기반으로 내 자치구 및 인접 자치구의 주민의견청취 공고를 우선 보여줍니다.
+                  서울시와 국토부 공고를 통합해 현재 위치, 같은 시/도, 인접 지역 순서로 보여줍니다.
                 </p>
                 <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
                   <button type="button" onClick={handleDetectLocation} className="hero-button w-full justify-center sm:w-auto">
@@ -517,8 +621,8 @@ export default function App() {
                   </button>
                 </div>
                 <div className="mt-7 flex flex-wrap justify-center gap-2.5">
-                  <span className="status-chip">{selectedRegion ? formatRegionLabel(selectedRegion) : '위치 권한 전에는 공고를 표시하지 않습니다.'}</span>
-                  <span className="status-chip">{updatedAt ? `업데이트 ${updatedAt.slice(0, 19).replace('T', ' ')}` : '지역 선택 후 공고를 불러옵니다.'}</span>
+                  <span className="status-chip">{selectedRegion ? formatRegionLabel(selectedRegion) : '위치 전에도 최근 공고를 먼저 보여줍니다.'}</span>
+                  <span className="status-chip">{updatedAt ? `업데이트 ${updatedAt.slice(0, 19).replace('T', ' ')}` : '최근 공고를 불러오는 중입니다.'}</span>
                 </div>
               </div>
             </div>
@@ -529,28 +633,19 @@ export default function App() {
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">현재 자치구 공고</p>
                 <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">
-                  {selectedRegion
-                    ? `${selectedRegion.sigungu}에서 진행 중인 공고`
-                    : '현재 위치 기준 공고'}
+                  {displayState.currentTitle}
                 </h2>
                 <p className="mt-2 text-sm leading-7 text-[#3f4850]">
-                  {selectedRegion
-                    ? `${formatRegionLabel(selectedRegion)} 공고를 가장 먼저 보여줍니다.`
-                    : '현재 위치를 확인하기 전에는 공고 리스트를 자동으로 노출하지 않습니다.'}
+                  {displayState.currentDescription}
                 </p>
               </div>
             </div>
 
-            {!selectedRegion ? (
-              <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                <p className="font-semibold text-[#191c1e]">내 주변 공고 찾기를 먼저 시작해주세요.</p>
-                <p className="mt-2">위치 권한을 허용하거나 지역을 직접 선택하면 해당 자치구 공고를 우선 보여줍니다.</p>
-              </div>
-            ) : isLoading ? (
+            {isLoading ? (
               <div className="rounded-[24px] bg-white px-6 py-16 text-center shadow-sm">
                 <div className="inline-flex items-center gap-3 text-[#3f4850]">
                   <LoaderCircle className="h-5 w-5 animate-spin text-[#006194]" />
-                  주민의견청취 공고를 불러오는 중입니다...
+                  통합 공고를 불러오는 중입니다...
                 </div>
               </div>
             ) : currentHearings.length ? (
@@ -561,7 +656,7 @@ export default function App() {
               </div>
             ) : (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                현재 자치구에는 진행 중인 공고가 없습니다.
+                현재 표시할 공고가 없습니다.
               </div>
             )}
           </section>
@@ -628,16 +723,14 @@ export default function App() {
                 <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">선택한 지역의 공고 요약</p>
                 <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">내 구와 인접 구 공고 요약 리스트</h2>
                 <p className="mt-2 text-sm leading-7 text-[#3f4850]">
-                  {selectedRegion
-                    ? `${formatRegionLabel(selectedRegion)}를 우선으로 보고, 선택한 인접 자치구가 있으면 함께 비교합니다.`
-                    : '먼저 내 위치 또는 지역을 선택하면 선택 지역의 공고 요약 리스트가 열립니다.'}
+                  {displayState.selectedDescription}
                 </p>
               </div>
             </div>
 
-            {fallbackMessage ? (
+            {effectiveFallbackMessage ? (
               <div className="rounded-[20px] bg-[#fff4e5] px-5 py-4 text-sm text-[#6b3b00] shadow-sm">
-                {fallbackMessage}
+                {effectiveFallbackMessage}
               </div>
             ) : null}
 
@@ -647,11 +740,7 @@ export default function App() {
               </div>
             ) : null}
 
-            {!selectedRegion ? (
-              <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                현재 위치 또는 지역 선택 전에는 아무 공고도 먼저 보여주지 않습니다.
-              </div>
-            ) : visibleSelectedAreaHearings.length ? (
+            {visibleSelectedAreaHearings.length ? (
               <div id="notice-list" className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 {visibleSelectedAreaHearings.map((notice) => (
                   <NoticeSummaryCard key={notice.id} notice={notice} />
@@ -659,7 +748,7 @@ export default function App() {
               </div>
             ) : (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                현재 조건에 맞는 주민의견청취 공고가 없습니다.
+                현재 조건에 맞는 공고가 없습니다.
               </div>
             )}
           </section>
