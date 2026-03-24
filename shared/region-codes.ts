@@ -109,3 +109,59 @@ export function findSigunguCodeByRegion(sido: unknown, sigungu: unknown): string
 
   return aliasMatch?.adminCode ?? '';
 }
+
+export type RegionMatch = {
+  sido: string;
+  sigungu: string;
+  sigunguCode: string;
+  label: string;
+};
+
+export function findRegionMatchByText(value: unknown): RegionMatch | null {
+  const normalizedValue = normalizeText(value);
+  if (!normalizedValue) {
+    return null;
+  }
+
+  let bestMatch: (typeof regionEntries[number] & { score: number }) | null = null;
+
+  for (const entry of regionEntries) {
+    if (!entry.adminCode) {
+      continue;
+    }
+
+    const normalizedSido = normalizeText(entry.sido);
+    const labels = [entry.sigungu, ...entry.aliases]
+      .filter(Boolean)
+      .map(normalizeText);
+
+    for (const label of labels) {
+      if (!label || !normalizedValue.includes(label)) {
+        continue;
+      }
+
+      const score = label.length + (normalizedSido && normalizedValue.includes(normalizedSido) ? 6 : 0);
+      if (!bestMatch || score > bestMatch.score) {
+        bestMatch = {
+          ...entry,
+          score,
+        };
+      }
+    }
+  }
+
+  if (!bestMatch) {
+    return null;
+  }
+
+  const label = bestMatch.sigungu === bestMatch.sido
+    ? bestMatch.sido
+    : `${bestMatch.sido} ${bestMatch.sigungu}`.trim();
+
+  return {
+    sido: bestMatch.sido,
+    sigungu: bestMatch.sigungu,
+    sigunguCode: bestMatch.adminCode,
+    label,
+  };
+}
