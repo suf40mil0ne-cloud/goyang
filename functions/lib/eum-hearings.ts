@@ -39,6 +39,38 @@ type DecodedHtmlResponse = {
   contentType: string;
 };
 
+type EumStage = 'list-fetch' | 'list-parse' | 'detail-fetch' | 'detail-parse' | 'dataset-build';
+
+type EumDebugSnapshot = {
+  lastErrorStage: EumStage | '';
+  listCount: number;
+  detailAttemptCount: number;
+  detailSuccessCount: number;
+  lastListUrl: string;
+  lastDetailUrl: string;
+  lastListPreview: string;
+  lastDetailPreview: string;
+};
+
+type EumDebugState = EumDebugSnapshot & {
+  lastListContentType: string;
+  lastDetailContentType: string;
+  lastListDetectedCharset: string;
+  lastDetailDetectedCharset: string;
+};
+
+export class EumStageError extends Error {
+  stage: EumStage;
+  debug: EumDebugSnapshot;
+
+  constructor(stage: EumStage, message: string, debug: EumDebugSnapshot) {
+    super(message);
+    this.name = 'EumStageError';
+    this.stage = stage;
+    this.debug = debug;
+  }
+}
+
 const EUM_LIST_URL = 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp';
 const DATASET_CACHE_TTL_MS = 15 * 60 * 1000;
 const DATASET_STALE_TTL_MS = 60 * 60 * 1000;
@@ -127,6 +159,111 @@ function decodeHtmlBuffer(buffer: ArrayBuffer, contentType: string): { html: str
     html: best.html,
     detectedCharset: best.detectedCharset,
   };
+}
+
+function createEmptyEumDebugState(): EumDebugState {
+  return {
+    lastErrorStage: '',
+    listCount: 0,
+    detailAttemptCount: 0,
+    detailSuccessCount: 0,
+    lastListUrl: '',
+    lastDetailUrl: '',
+    lastListPreview: '',
+    lastDetailPreview: '',
+    lastListContentType: '',
+    lastDetailContentType: '',
+    lastListDetectedCharset: '',
+    lastDetailDetectedCharset: '',
+  };
+}
+
+function snapshotEumDebug(state: EumDebugState): EumDebugSnapshot {
+  return {
+    lastErrorStage: state.lastErrorStage,
+    listCount: state.listCount,
+    detailAttemptCount: state.detailAttemptCount,
+    detailSuccessCount: state.detailSuccessCount,
+    lastListUrl: state.lastListUrl,
+    lastDetailUrl: state.lastDetailUrl,
+    lastListPreview: state.lastListPreview,
+    lastDetailPreview: state.lastDetailPreview,
+  };
+}
+
+function getHtmlPreview(html: string): string {
+  return String(html || '').slice(0, 200);
+}
+
+function hasActiveListFilters(query: EumQuery): boolean {
+  return Boolean(
+    normalizeString(query.startdt)
+    || normalizeString(query.enddt)
+    || normalizeSigunguCode(query.selSggCd)
+    || normalizeString(query.zonenm)
+    || normalizeString(query.chrgorg)
+    || normalizeString(query.gosino)
+  );
+}
+
+function classifyEumHtml(html: string, responseUrl: string, kind: 'list' | 'detail'): string {
+  const normalizedHtml = normalizeInlineText(html).toLowerCase();
+  const normalizedUrl = String(responseUrl || '').toLowerCase();
+  const expectedPath = kind === 'list' ? '/web/cp/hr/hrpeoplehearlist.jsp' : '/web/cp/hr/hrpeopleheardet.jsp';
+
+  if (normalizedUrl && !normalizedUrl.includes(expectedPath)) {
+    if (normalizedUrl.includes('/web/am/ammain.jsp')) {
+      return 'main-page';
+    }
+    return 'redirect';
+  }
+
+  if (
+    normalizedHtml.includes('비정상적인 접근')
+    || normalizedHtml.includes('접근이 제한')
+    || normalizedHtml.includes('권한이 없습니다')
+    || normalizedHtml.includes('차단')
+  ) {
+    return 'blocked';
+  }
+
+  if (normalizedHtml.includes('로그인') && normalizedHtml.includes('토지이음')) {
+    return 'login-page';
+  }
+
+  if (
+    kind === 'list'
+    && normalizedHtml.includes('메인페이지로 이동')
+    && !normalizedHtml.includes('전체:')
+    && !normalizedHtml.includes('주민의견청취 공람')
+  ) {
+    return 'main-page';
+  }
+
+  return 'expected';
+}
+
+function logEumStage(
+  level: 'info' | 'error',
+  payload: {
+    stage: EumStage;
+    requestUrl: string;
+    responseUrl: string;
+    contentType: string;
+    detectedCharset: string;
+    pageNo?: number;
+    seq?: string;
+    htmlPreview: string;
+    htmlKind?: string;
+    parsedCount?: number;
+    message?: string;
+  }
+): void {
+  if (level === 'error') {
+    console.error('[eum] stage', payload);
+    return;
+  }
+  console.info('[eum] stage', payload);
 }
 
 function buildQueryKey(query: EumQuery): string {
@@ -319,26 +456,75 @@ async function mapWithConcurrency<T, R>(items: T[], concurrency: number, mapper:
   return results;
 }
 
-async function loadDetail(listItem: EumListItem): Promise<EumDetailItem | null> {
+async function loadDetail(listItem: EumListItem, debugState: EumDebugState): Promise<EumDetailItem | null> {
   const cached = detailCache.get(listItem.seq);
   const now = Date.now();
   if (cached && now - cached.cachedAt <= DETAIL_CACHE_TTL_MS) {
     return cached.item;
   }
 
-  const response = await fetchDecodedHtmlWithRetry(new URL(listItem.detailUrl), `eum-detail-${listItem.seq}`);
+  const requestUrl = new URL(listItem.detailUrl);
+  const response = await fetchDecodedHtmlWithRetry(requestUrl, `eum-detail-${listItem.seq}`);
+  debugState.lastDetailUrl = requestUrl.toString();
+  debugState.lastDetailPreview = getHtmlPreview(response.html);
+  debugState.lastDetailContentType = response.contentType;
+  debugState.lastDetailDetectedCharset = response.detectedCharset;
+
+  const responseUrl = response.url || requestUrl.toString();
+  const htmlKind = classifyEumHtml(response.html, responseUrl, 'detail');
+  const detailFetchLog = {
+    stage: 'detail-fetch' as const,
+    requestUrl: requestUrl.toString(),
+    responseUrl,
+    contentType: response.contentType,
+    detectedCharset: response.detectedCharset,
+    seq: listItem.seq,
+    htmlPreview: debugState.lastDetailPreview,
+    htmlKind,
+  };
+
+  if (htmlKind !== 'expected') {
+    debugState.lastErrorStage = 'detail-fetch';
+    logEumStage('error', {
+      ...detailFetchLog,
+      message: `unexpected detail html: ${htmlKind}`,
+    });
+    throw new EumStageError('detail-fetch', `eum-detail-fetch-unexpected-${htmlKind}`, snapshotEumDebug(debugState));
+  }
+
+  logEumStage('info', detailFetchLog);
+
   const parsed = parseEumDetailHtml(response.html, {
     seq: listItem.seq,
-    detailUrl: response.url || listItem.detailUrl,
+    detailUrl: responseUrl,
   });
+
   if (!parsed) {
-    console.error('[eum] detail parse returned null', {
-      seq: listItem.seq,
-      responseUrl: response.url || listItem.detailUrl,
+    debugState.lastErrorStage = 'detail-parse';
+    logEumStage('error', {
+      stage: 'detail-parse',
+      requestUrl: requestUrl.toString(),
+      responseUrl,
       contentType: response.contentType,
-      htmlPreview: response.html.slice(0, 500),
+      detectedCharset: response.detectedCharset,
+      seq: listItem.seq,
+      htmlPreview: debugState.lastDetailPreview,
+      htmlKind,
+      message: 'detail parse returned null',
     });
+    throw new EumStageError('detail-parse', 'eum-detail-parse-null', snapshotEumDebug(debugState));
   }
+
+  logEumStage('info', {
+    stage: 'detail-parse',
+    requestUrl: requestUrl.toString(),
+    responseUrl,
+    contentType: response.contentType,
+    detectedCharset: response.detectedCharset,
+    seq: listItem.seq,
+    htmlPreview: debugState.lastDetailPreview,
+    htmlKind,
+  });
 
   detailCache.set(listItem.seq, {
     cachedAt: now,
@@ -348,16 +534,18 @@ async function loadDetail(listItem: EumListItem): Promise<EumDetailItem | null> 
   return parsed;
 }
 
-export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ payload: EumDatasetPayload; usedStaleCache: boolean }> {
+export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ payload: EumDatasetPayload; usedStaleCache: boolean; debug: EumDebugSnapshot }> {
   const cacheKey = buildQueryKey(query);
   const now = Date.now();
   const cached = datasetCache.get(cacheKey);
+  const debugState = createEmptyEumDebugState();
 
   if (cached && now - cached.cachedAt <= DATASET_CACHE_TTL_MS) {
     console.info('[eum] using fresh cache', { cacheKey, count: cached.payload.items.length });
     return {
       payload: cached.payload,
       usedStaleCache: false,
+      debug: snapshotEumDebug(debugState),
     };
   }
 
@@ -370,9 +558,51 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
     for (let pageNo = 1; pageNo <= maxPages; pageNo += 1) {
       const listUrl = buildListUrl(query, pageNo);
       const response = await fetchDecodedHtmlWithRetry(listUrl, `eum-list-${pageNo}`);
-      const parsed = parseEumListHtml(response.html, {
-        baseUrl: response.url || listUrl.toString(),
+      debugState.lastListUrl = listUrl.toString();
+      debugState.lastListPreview = getHtmlPreview(response.html);
+      debugState.lastListContentType = response.contentType;
+      debugState.lastListDetectedCharset = response.detectedCharset;
+
+      const responseUrl = response.url || listUrl.toString();
+      const htmlKind = classifyEumHtml(response.html, responseUrl, 'list');
+      const listFetchLog = {
+        stage: 'list-fetch' as const,
+        requestUrl: listUrl.toString(),
+        responseUrl,
+        contentType: response.contentType,
+        detectedCharset: response.detectedCharset,
         pageNo,
+        htmlPreview: debugState.lastListPreview,
+        htmlKind,
+      };
+
+      if (htmlKind !== 'expected') {
+        debugState.lastErrorStage = 'list-fetch';
+        logEumStage('error', {
+          ...listFetchLog,
+          message: `unexpected list html: ${htmlKind}`,
+        });
+        throw new EumStageError('list-fetch', `eum-list-fetch-unexpected-${htmlKind}`, snapshotEumDebug(debugState));
+      }
+
+      logEumStage('info', listFetchLog);
+
+      const parsed = parseEumListHtml(response.html, {
+        baseUrl: responseUrl,
+        pageNo,
+      });
+
+      logEumStage(parsed.items.length ? 'info' : 'error', {
+        stage: 'list-parse',
+        requestUrl: listUrl.toString(),
+        responseUrl,
+        contentType: response.contentType,
+        detectedCharset: response.detectedCharset,
+        pageNo,
+        htmlPreview: debugState.lastListPreview,
+        htmlKind,
+        parsedCount: parsed.items.length,
+        message: parsed.items.length ? undefined : 'parsed 0 items',
       });
 
       console.info('[eum] list parsed', {
@@ -381,13 +611,12 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
         parsedCount: parsed.items.length,
         lastPageNo: parsed.lastPageNo,
       });
+
       if (!parsed.items.length) {
-        console.error('[eum] list parse returned 0 items', {
-          pageNo,
-          responseUrl: response.url || listUrl.toString(),
-          contentType: response.contentType,
-          htmlPreview: response.html.slice(0, 500),
-        });
+        debugState.lastErrorStage = 'list-parse';
+        if (pageNo === 1 && !hasActiveListFilters(query)) {
+          throw new EumStageError('list-parse', 'eum-list-parse-empty', snapshotEumDebug(debugState));
+        }
       }
 
       lastPageNo = parsed.lastPageNo || lastPageNo;
@@ -399,6 +628,7 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
         return true;
       });
       listings.push(...newItems);
+      debugState.listCount = listings.length;
 
       if (!parsed.items.length || pageNo >= lastPageNo) {
         break;
@@ -406,17 +636,22 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
     }
 
     const detailResults = await mapWithConcurrency(listings, DETAIL_CONCURRENCY, async (listItem) => {
+      debugState.detailAttemptCount += 1;
       try {
-        const detail = await loadDetail(listItem);
+        const detail = await loadDetail(listItem, debugState);
         return {
           ok: true,
           listItem,
           detail,
         };
       } catch (error) {
+        if (error instanceof EumStageError) {
+          debugState.lastErrorStage = error.stage;
+        }
         console.error('[eum] detail fetch failed', {
           seq: listItem.seq,
           detailUrl: listItem.detailUrl,
+          stage: error instanceof EumStageError ? error.stage : 'detail-fetch',
           message: String(error),
         });
         return {
@@ -429,6 +664,9 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
 
     const detailSuccessCount = detailResults.filter((result) => result.ok && result.detail).length;
     const detailFailureCount = detailResults.filter((result) => !result.ok).length;
+    debugState.listCount = listings.length;
+    debugState.detailSuccessCount = detailSuccessCount;
+
     const items = sortHearings(detailResults.map((result) => normalizeEumHearing(result.listItem, result.detail)));
     const payload: EumDatasetPayload = {
       items,
@@ -443,9 +681,21 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
       payload,
     });
 
+    logEumStage('info', {
+      stage: 'dataset-build',
+      requestUrl: debugState.lastListUrl || EUM_LIST_URL,
+      responseUrl: debugState.lastListUrl || EUM_LIST_URL,
+      contentType: debugState.lastListContentType,
+      detectedCharset: debugState.lastListDetectedCharset,
+      htmlPreview: debugState.lastListPreview,
+      parsedCount: items.length,
+      message: `listCount=${payload.listCount}, detailAttemptCount=${debugState.detailAttemptCount}, detailSuccessCount=${detailSuccessCount}, detailFailureCount=${detailFailureCount}`,
+    });
+
     console.info('[eum] dataset built', {
       cacheKey,
       listCount: payload.listCount,
+      detailAttemptCount: debugState.detailAttemptCount,
       detailSuccessCount,
       detailFailureCount,
       totalCount: items.length,
@@ -454,22 +704,29 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
     return {
       payload,
       usedStaleCache: false,
+      debug: snapshotEumDebug(debugState),
     };
   } catch (error) {
     if (cached && now - cached.cachedAt <= DATASET_STALE_TTL_MS) {
       console.warn('[eum] using stale cache after fetch failure', {
         cacheKey,
+        stage: error instanceof EumStageError ? error.stage : debugState.lastErrorStage || 'dataset-build',
         message: String(error),
         staleCount: cached.payload.items.length,
       });
       return {
         payload: cached.payload,
         usedStaleCache: true,
+        debug: snapshotEumDebug(debugState),
       };
     }
 
-    throw error;
+    if (error instanceof EumStageError) {
+      throw error;
+    }
+
+    throw new EumStageError(debugState.lastErrorStage || 'dataset-build', String(error), snapshotEumDebug(debugState));
   }
 }
 
-export type { EumQuery };
+export type { EumQuery, EumDebugSnapshot, EumStage };

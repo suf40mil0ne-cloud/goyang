@@ -15,6 +15,23 @@ type FallbackSelection = {
   fallbackReason: string;
 };
 
+type FailedSourceEntry = {
+  source: string;
+  stage: string;
+  message?: string;
+};
+
+type EumDebugState = {
+  lastErrorStage: string;
+  listCount: number;
+  detailAttemptCount: number;
+  detailSuccessCount: number;
+  lastListUrl: string;
+  lastDetailUrl: string;
+  lastListPreview: string;
+  lastDetailPreview: string;
+};
+
 const DEFAULT_PER_PAGE = 50;
 const MAX_PER_PAGE = 200;
 
@@ -47,6 +64,55 @@ function createJsonResponse(body: Record<string, unknown>, status: number): Resp
       'cache-control': 'public, max-age=300, stale-while-revalidate=300',
     },
   });
+}
+
+function createEmptyEumDebug(): EumDebugState {
+  return {
+    lastErrorStage: '',
+    listCount: 0,
+    detailAttemptCount: 0,
+    detailSuccessCount: 0,
+    lastListUrl: '',
+    lastDetailUrl: '',
+    lastListPreview: '',
+    lastDetailPreview: '',
+  };
+}
+
+function formatEumDebug(debug: EumDebugState): Record<string, unknown> {
+  return {
+    listCount: debug.listCount,
+    detailAttemptCount: debug.detailAttemptCount,
+    detailSuccessCount: debug.detailSuccessCount,
+    lastListUrl: debug.lastListUrl,
+    lastDetailUrl: debug.lastDetailUrl,
+    lastListPreview: debug.lastListPreview,
+    lastDetailPreview: debug.lastDetailPreview,
+  };
+}
+
+function getErrorStage(error: unknown): string {
+  if (error && typeof error === 'object' && 'stage' in error) {
+    return String((error as { stage?: unknown }).stage || 'unknown');
+  }
+  return 'unknown';
+}
+
+function getErrorDebug(error: unknown): EumDebugState | null {
+  if (!error || typeof error !== 'object' || !('debug' in error)) {
+    return null;
+  }
+
+  const debug = (error as { debug?: unknown }).debug;
+  if (!debug || typeof debug !== 'object') {
+    return null;
+  }
+
+  return {
+    ...createEmptyEumDebug(),
+    ...(debug as Partial<EumDebugState>),
+    lastErrorStage: String((debug as { lastErrorStage?: unknown }).lastErrorStage || ''),
+  };
 }
 
 function inferRequestedSido(sigunguCode: string): string {
@@ -117,6 +183,7 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
   const requestedSigunguCode = normalizeSigunguCode(requestUrl.searchParams.get('sigunguCode'));
   const includeEum = parseBooleanFlag(requestUrl.searchParams.get('includeEum'), true);
   const includeMolit = parseBooleanFlag(requestUrl.searchParams.get('includeMolit'), true);
+  const debugMode = requestUrl.searchParams.get('debug') === '1';
   const eumQuery = {
     startdt: requestUrl.searchParams.get('startdt') || '',
     enddt: requestUrl.searchParams.get('enddt') || '',
@@ -132,21 +199,35 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
     requestedSigunguCode,
     includeEum,
     includeMolit,
+    debugMode,
     eumQuery,
   });
 
-  try {
-    const sourceCounts = {
-      molit_api: 0,
-      eum_public_hearing: 0,
-    };
-    const failedSources: string[] = [];
-    let fetchedAt = new Date().toISOString();
-    let usedStaleCache = false;
+  const executedSources = [
+    ...(includeMolit ? ['molit'] : []),
+    ...(includeEum ? ['eum'] : []),
+  ];
+  const sourceCounts = {
+    molit_api: 0,
+    eum_public_hearing: 0,
+  };
+  const failedSources: string[] = [];
+  const failedSourceDetails: FailedSourceEntry[] = [];
+  let fetchedAt = new Date().toISOString();
+  let usedStaleCache = false;
+  let lastErrorStage = '';
+  let eumDebug = createEmptyEumDebug();
 
+  try {
     const [molitResult, eumResult] = await Promise.allSettled([
       includeMolit ? loadMolitHearings(context.env) : Promise.resolve({ payload: { items: [], fetchedAt }, usedStaleCache: false }),
-      includeEum ? loadEumPublicHearings(eumQuery) : Promise.resolve({ payload: { items: [], fetchedAt, listCount: 0, detailSuccessCount: 0, detailFailureCount: 0 }, usedStaleCache: false }),
+      includeEum
+        ? loadEumPublicHearings(eumQuery)
+        : Promise.resolve({
+            payload: { items: [], fetchedAt, listCount: 0, detailSuccessCount: 0, detailFailureCount: 0 },
+            usedStaleCache: false,
+            debug: createEmptyEumDebug(),
+          }),
     ]);
 
     const molitItems = molitResult.status === 'fulfilled' ? molitResult.value.payload.items : [];
@@ -156,8 +237,14 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
 
     if (molitResult.status === 'rejected') {
       failedSources.push('molit_api');
+      failedSourceDetails.push({
+        source: 'molit',
+        stage: getErrorStage(molitResult.reason),
+        message: String(molitResult.reason),
+      });
       console.error('[hearings/combined] source failed', {
         source: 'molit_api',
+        stage: getErrorStage(molitResult.reason),
         message: String(molitResult.reason),
       });
     } else {
@@ -166,16 +253,37 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
     }
 
     if (eumResult.status === 'rejected') {
+      const stage = getErrorStage(eumResult.reason);
+      const errorDebug = getErrorDebug(eumResult.reason);
       failedSources.push('eum_public_hearing');
+      failedSourceDetails.push({
+        source: 'eum',
+        stage,
+        message: String(eumResult.reason),
+      });
+      if (errorDebug) {
+        eumDebug = errorDebug;
+      }
+      lastErrorStage = stage;
       console.error('[hearings/combined] source failed', {
         source: 'eum_public_hearing',
+        stage,
         message: String(eumResult.reason),
+        eumDebug,
       });
     } else {
       fetchedAt = eumResult.value.payload.fetchedAt || fetchedAt;
       usedStaleCache = usedStaleCache || eumResult.value.usedStaleCache;
+      eumDebug = {
+        ...eumDebug,
+        ...eumResult.value.debug,
+      };
+      if (eumDebug.lastErrorStage) {
+        lastErrorStage = eumDebug.lastErrorStage;
+      }
       console.info('[hearings/combined] eum detail stats', {
         listCount: eumResult.value.payload.listCount,
+        detailAttemptCount: eumResult.value.debug.detailAttemptCount,
         detailSuccessCount: eumResult.value.payload.detailSuccessCount,
         detailFailureCount: eumResult.value.payload.detailFailureCount,
       });
@@ -183,6 +291,16 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
 
     const mergedItems = sortHearings(dedupeHearings([...molitItems, ...eumItems]));
     if (!mergedItems.length) {
+      if (includeEum && !eumItems.length) {
+        const stage = lastErrorStage || eumDebug.lastErrorStage || 'dataset-build';
+        failedSources.push('eum_public_hearing');
+        failedSourceDetails.push({
+          source: 'eum',
+          stage,
+          message: 'EUM returned no items before merge',
+        });
+        lastErrorStage = stage;
+      }
       throw new Error('combined-hearings-empty');
     }
 
@@ -190,7 +308,10 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
       mergedCount: mergedItems.length,
       sourceCounts,
       failedSources,
+      failedSourceDetails,
       usedStaleCache,
+      lastErrorStage,
+      eumDebug,
     });
 
     const fallbackSelection = applyRegionFallback(mergedItems, requestedSigunguCode);
@@ -203,7 +324,7 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
 
     const startIndex = (page - 1) * perPage;
     const items = fallbackSelection.items.slice(startIndex, startIndex + perPage);
-    const responseBody: CombinedHearingsResponse = {
+    const responseBody: Record<string, unknown> = {
       items,
       total: fallbackSelection.items.length,
       page,
@@ -216,18 +337,32 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
       usedStaleCache,
       failedSources,
       fetchedAt,
-    };
+    } satisfies CombinedHearingsResponse as unknown as Record<string, unknown>;
 
-    return createJsonResponse(responseBody as unknown as Record<string, unknown>, 200);
+    if (debugMode) {
+      responseBody.executedSources = executedSources;
+      responseBody.failedSources = failedSourceDetails;
+      responseBody.lastErrorStage = lastErrorStage;
+      responseBody.eumDebug = formatEumDebug(eumDebug);
+    }
+
+    return createJsonResponse(responseBody, 200);
   } catch (error) {
+    const stage = lastErrorStage || getErrorStage(error) || eumDebug.lastErrorStage || 'unknown';
+    lastErrorStage = stage;
+
     if (String(error).includes('public-data-service-key-missing')) {
-      return createJsonResponse(
-        {
-          message: 'PUBLIC_DATA_SERVICE_KEY가 설정되지 않았습니다.',
-          code: 'public_data_service_key_missing',
-        },
-        500
-      );
+      const body: Record<string, unknown> = {
+        message: 'PUBLIC_DATA_SERVICE_KEY가 설정되지 않았습니다.',
+        code: 'public_data_service_key_missing',
+      };
+      if (debugMode) {
+        body.executedSources = executedSources;
+        body.failedSources = failedSourceDetails;
+        body.lastErrorStage = lastErrorStage;
+        body.eumDebug = formatEumDebug(eumDebug);
+      }
+      return createJsonResponse(body, 500);
     }
 
     console.error('[hearings/combined] request failed', {
@@ -235,15 +370,25 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
       requestedSigunguCode,
       includeEum,
       includeMolit,
+      executedSources,
+      failedSourceDetails,
+      lastErrorStage,
+      eumDebug,
       eumQuery,
     });
 
-    return createJsonResponse(
-      {
-        message: '통합 공고 데이터를 불러오지 못했습니다. 서버 로그를 확인해주세요.',
-        code: 'combined_hearings_failed',
-      },
-      502
-    );
+    const body: Record<string, unknown> = {
+      message: '통합 공고 데이터를 불러오지 못했습니다. 서버 로그를 확인해주세요.',
+      code: 'combined_hearings_failed',
+    };
+
+    if (debugMode) {
+      body.executedSources = executedSources;
+      body.failedSources = failedSourceDetails;
+      body.lastErrorStage = lastErrorStage;
+      body.eumDebug = formatEumDebug(eumDebug);
+    }
+
+    return createJsonResponse(body, 502);
   }
 }
