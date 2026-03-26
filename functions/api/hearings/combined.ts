@@ -34,6 +34,8 @@ type EumDebugState = {
 
 const DEFAULT_PER_PAGE = 50;
 const MAX_PER_PAGE = 200;
+const MOLIT_SOURCE_TIMEOUT_MS = 15000;
+const EUM_SOURCE_TIMEOUT_MS = 25000;
 
 function parsePositiveInteger(value: string | null, fallbackValue: number, min = 1, max = Number.MAX_SAFE_INTEGER): number {
   const parsed = Number.parseInt(String(value ?? ''), 10);
@@ -113,6 +115,58 @@ function getErrorDebug(error: unknown): EumDebugState | null {
     ...(debug as Partial<EumDebugState>),
     lastErrorStage: String((debug as { lastErrorStage?: unknown }).lastErrorStage || ''),
   };
+}
+
+type SourceTimeoutError = Error & {
+  stage: string;
+  source: string;
+};
+
+function createSourceTimeoutError(source: string): SourceTimeoutError {
+  const error = new Error(`${source}-source-timeout`) as SourceTimeoutError;
+  error.name = 'SourceTimeoutError';
+  error.stage = 'source-timeout';
+  error.source = source;
+  return error;
+}
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, createError: () => Error): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<T>((_, reject) => {
+        timeoutId = setTimeout(() => reject(createError()), timeoutMs);
+      }),
+    ]);
+  } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }
+}
+
+async function runSourceWithTimeout<T>(source: string, timeoutMs: number, work: () => Promise<T>): Promise<T> {
+  const startedAt = Date.now();
+  console.info('[hearings/combined] source start', { source, timeoutMs });
+  try {
+    const result = await withTimeout(work(), timeoutMs, () => createSourceTimeoutError(source));
+    console.info('[hearings/combined] source done', {
+      source,
+      status: 'fulfilled',
+      durationMs: Date.now() - startedAt,
+    });
+    return result;
+  } catch (error) {
+    console.error('[hearings/combined] source done', {
+      source,
+      status: 'rejected',
+      durationMs: Date.now() - startedAt,
+      stage: getErrorStage(error),
+      message: String(error),
+    });
+    throw error;
+  }
 }
 
 function inferRequestedSido(sigunguCode: string): string {
@@ -221,9 +275,11 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
 
   try {
     const [molitResult, eumResult] = await Promise.allSettled([
-      includeMolit ? loadMolitHearings(context.env) : Promise.resolve({ payload: { items: [], fetchedAt }, usedStaleCache: false }),
+      includeMolit
+        ? runSourceWithTimeout('molit', MOLIT_SOURCE_TIMEOUT_MS, () => loadMolitHearings(context.env))
+        : Promise.resolve({ payload: { items: [], fetchedAt }, usedStaleCache: false }),
       includeEum
-        ? loadEumPublicHearings(eumQuery)
+        ? runSourceWithTimeout('eum', EUM_SOURCE_TIMEOUT_MS, () => loadEumPublicHearings(eumQuery))
         : Promise.resolve({
             payload: { items: [], fetchedAt, listCount: 0, detailSuccessCount: 0, detailFailureCount: 0 },
             usedStaleCache: false,
