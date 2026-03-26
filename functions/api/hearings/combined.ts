@@ -56,12 +56,12 @@ function parseBooleanFlag(value: string | null, fallbackValue: boolean): boolean
   return fallbackValue;
 }
 
-function createJsonResponse(body: Record<string, unknown>, status: number): Response {
+function createJsonResponse(body: Record<string, unknown>, status: number, cacheControl?: string): Response {
   return new Response(JSON.stringify(body), {
     status,
     headers: {
       'content-type': 'application/json; charset=UTF-8',
-      'cache-control': 'public, max-age=300, stale-while-revalidate=300',
+      'cache-control': cacheControl || 'public, max-age=300, stale-while-revalidate=300',
     },
   });
 }
@@ -184,6 +184,7 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
   const includeEum = parseBooleanFlag(requestUrl.searchParams.get('includeEum'), true);
   const includeMolit = parseBooleanFlag(requestUrl.searchParams.get('includeMolit'), true);
   const debugMode = requestUrl.searchParams.get('debug') === '1';
+  const responseCacheControl = debugMode ? 'no-store' : 'public, max-age=300, stale-while-revalidate=300';
   const eumQuery = {
     startdt: requestUrl.searchParams.get('startdt') || '',
     enddt: requestUrl.searchParams.get('enddt') || '',
@@ -346,7 +347,7 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
       responseBody.eumDebug = formatEumDebug(eumDebug);
     }
 
-    return createJsonResponse(responseBody, 200);
+    return createJsonResponse(responseBody, 200, responseCacheControl);
   } catch (error) {
     const stage = lastErrorStage || getErrorStage(error) || eumDebug.lastErrorStage || 'unknown';
     lastErrorStage = stage;
@@ -362,7 +363,7 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
         body.lastErrorStage = lastErrorStage;
         body.eumDebug = formatEumDebug(eumDebug);
       }
-      return createJsonResponse(body, 500);
+      return createJsonResponse(body, 500, responseCacheControl);
     }
 
     console.error('[hearings/combined] request failed', {
@@ -389,6 +390,6 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
       body.eumDebug = formatEumDebug(eumDebug);
     }
 
-    return createJsonResponse(body, 502);
+    return createJsonResponse(body, 502, responseCacheControl);
   }
 }
