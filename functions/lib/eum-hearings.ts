@@ -36,6 +36,7 @@ type DecodedHtmlResponse = {
   url: string;
   html: string;
   detectedCharset: string;
+  contentType: string;
 };
 
 const EUM_LIST_URL = 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp';
@@ -191,6 +192,7 @@ async function fetchDecodedHtml(url: URL): Promise<DecodedHtmlResponse> {
       url: response.url || url.toString(),
       html: decoded.html,
       detectedCharset: decoded.detectedCharset,
+      contentType: response.headers.get('content-type') || '',
     };
   } finally {
     clearTimeout(timeoutId);
@@ -329,6 +331,14 @@ async function loadDetail(listItem: EumListItem): Promise<EumDetailItem | null> 
     seq: listItem.seq,
     detailUrl: response.url || listItem.detailUrl,
   });
+  if (!parsed) {
+    console.error('[eum] detail parse returned null', {
+      seq: listItem.seq,
+      responseUrl: response.url || listItem.detailUrl,
+      contentType: response.contentType,
+      htmlPreview: response.html.slice(0, 500),
+    });
+  }
 
   detailCache.set(listItem.seq, {
     cachedAt: now,
@@ -371,6 +381,14 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
         parsedCount: parsed.items.length,
         lastPageNo: parsed.lastPageNo,
       });
+      if (!parsed.items.length) {
+        console.error('[eum] list parse returned 0 items', {
+          pageNo,
+          responseUrl: response.url || listUrl.toString(),
+          contentType: response.contentType,
+          htmlPreview: response.html.slice(0, 500),
+        });
+      }
 
       lastPageNo = parsed.lastPageNo || lastPageNo;
       const newItems = parsed.items.filter((item) => {

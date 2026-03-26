@@ -31,6 +31,20 @@ export async function fetchHearings(params: FetchHearingsParams = {}): Promise<C
     throw new Error(`hearings-${response.status}`);
   }
 
+  const contentType = response.headers.get('content-type') ?? '';
+  if (!contentType.includes('application/json')) {
+    const preview = (await response.text()).slice(0, 200);
+    console.error('[hearings-client] non-JSON response', {
+      status: response.status,
+      contentType,
+      preview,
+      url: response.url,
+    });
+    throw new Error(
+      `API가 JSON이 아닌 응답을 반환했습니다 (${response.status} ${contentType}) — 로컬이면 wrangler pages dev가 실행 중인지 확인하세요`
+    );
+  }
+
   return response.json() as Promise<CombinedHearingsResponse>;
 }
 

@@ -14,6 +14,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      '/api/hearings': {
+        target: 'http://localhost:8788',
+        changeOrigin: true,
+      },
       '/api/seoul': {
         target: 'http://openapi.seoul.go.kr:8088',
         changeOrigin: true,

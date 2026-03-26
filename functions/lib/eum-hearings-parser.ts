@@ -215,8 +215,9 @@ export function extractLastPageNo(html: string): number {
 }
 
 export function parseEumListHtml(html: string, options: { baseUrl: string; pageNo: number }): EumListPage {
-  const bodyMatches = [...String(html).matchAll(/<tbody>([\s\S]*?)<\/tbody>/gi)].map((match) => match[1]);
-  const targetBody = bodyMatches.find((tbodyHtml) => tbodyHtml.includes('hrPeopleHearDet.jsp')) || '';
+  const listTableHtml = extractFirstMatch(/<table\b[^>]*>[\s\S]*?<caption>\s*주민의견청취 공람\s*<\/caption>([\s\S]*?)<\/table>/i, html);
+  const bodyMatches = [...String(listTableHtml || html).matchAll(/<tbody>([\s\S]*?)<\/tbody>/gi)].map((match) => match[1]);
+  const targetBody = bodyMatches.find((tbodyHtml) => tbodyHtml.includes('hrPeopleHearDet.jsp')) || bodyMatches[0] || '';
   const rows = extractTagContents('tr', targetBody);
   const items: EumListItem[] = [];
 
