@@ -17,6 +17,13 @@ export type HearingItem = {
   title: string;
   region?: string;
   sigunguCode?: string;
+  cityLevelRegionName?: string;
+  cityLevelRegionKey?: string;
+  districtLevelRegionName?: string | null;
+  districtLevelRegionKey?: string | null;
+  matchedCity?: string;
+  matchedDistrict?: string | null;
+  regionMatchType?: 'district-exact' | 'city-only' | 'text-fallback' | 'unmatched';
   agency?: string;
   department?: string;
   publishedAt?: string;
@@ -180,6 +187,19 @@ function choosePreferredDate(left: string | undefined, right: string | undefined
   return rightDate || leftDate;
 }
 
+function choosePreferredRegionMatchType(left: HearingItem['regionMatchType'], right: HearingItem['regionMatchType']): HearingItem['regionMatchType'] {
+  const score = {
+    'district-exact': 4,
+    'text-fallback': 3,
+    'city-only': 2,
+    unmatched: 1,
+    '': 0,
+    undefined: 0,
+  } as const;
+
+  return (score[right || ''] || 0) >= (score[left || ''] || 0) ? right || left : left || right;
+}
+
 function mergeAttachments(left: HearingAttachment[] = [], right: HearingAttachment[] = []): HearingAttachment[] {
   const merged = new Map<string, HearingAttachment>();
   [...left, ...right].forEach((attachment) => {
@@ -240,6 +260,13 @@ function mergeHearings(left: HearingItem, right: HearingItem): HearingItem {
     title: choosePreferredText(preferred.title, secondary.title) || preferred.title || secondary.title,
     region: choosePreferredText(preferred.region, secondary.region),
     sigunguCode: choosePreferredText(preferred.sigunguCode, secondary.sigunguCode),
+    cityLevelRegionName: choosePreferredText(preferred.cityLevelRegionName, secondary.cityLevelRegionName),
+    cityLevelRegionKey: choosePreferredText(preferred.cityLevelRegionKey, secondary.cityLevelRegionKey),
+    districtLevelRegionName: choosePreferredText(preferred.districtLevelRegionName || '', secondary.districtLevelRegionName || '') || undefined,
+    districtLevelRegionKey: choosePreferredText(preferred.districtLevelRegionKey || '', secondary.districtLevelRegionKey || '') || undefined,
+    matchedCity: choosePreferredText(preferred.matchedCity, secondary.matchedCity),
+    matchedDistrict: choosePreferredText(preferred.matchedDistrict || '', secondary.matchedDistrict || '') || undefined,
+    regionMatchType: choosePreferredRegionMatchType(preferred.regionMatchType, secondary.regionMatchType),
     agency: choosePreferredText(preferred.agency, secondary.agency),
     department: choosePreferredText(preferred.department, secondary.department),
     publishedAt: choosePreferredDate(preferred.publishedAt, secondary.publishedAt),

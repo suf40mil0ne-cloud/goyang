@@ -1,5 +1,5 @@
 import { computeHearingStatus, HearingItem, sortHearings } from '../../shared/hearings';
-import { getRegionLabelBySigunguCode, normalizeSigunguCode } from '../../shared/region-codes';
+import { findHearingRegionFieldsByText, getRegionHierarchyBySigunguCode, getRegionLabelBySigunguCode, normalizeSigunguCode } from '../../shared/region-codes';
 import { formatIsoDate } from '../../shared/public-hearings';
 
 type EnvMap = {
@@ -88,7 +88,6 @@ function buildSummary(item: { region: string; publishedAt: string; hearingStartD
 
 function normalizeMolitItem(record: Record<string, unknown>): HearingItem {
   const sigunguCode = normalizeSigunguCode(record['시군구코드'] ?? record.sigunguCode);
-  const region = getRegionLabelBySigunguCode(sigunguCode) || normalizeString(record['시군구명']);
   const title = normalizeInlineText(record['공고제목'] ?? record.title);
   const body = normalizeInlineText(record['공고내용'] ?? record.content);
   const publishedAt = formatIsoDate(record['공고일자'] ?? record.noticeDate);
@@ -96,6 +95,21 @@ function normalizeMolitItem(record: Record<string, unknown>): HearingItem {
   const hearingEndDate = formatIsoDate(record['열람종료일자'] ?? record.viewEndDate);
   const contact = normalizeInlineText(record['문의처'] ?? record.contact);
   const noticeNumber = normalizeInlineText(record['공고번호'] ?? record.noticeNumber);
+  const sourceRegionText = normalizeString(record['시군구명']);
+  const regionFields = getRegionHierarchyBySigunguCode(sigunguCode)
+    || findHearingRegionFieldsByText([sourceRegionText, title, body].join(' '), 'text-fallback');
+  const region = regionFields?.region || getRegionLabelBySigunguCode(sigunguCode) || sourceRegionText;
+
+  console.info('[region-debug] parsed notice location fields', {
+    source: 'molit_api',
+    noticeNumber,
+    sigunguCode,
+    sourceRegionText,
+    title,
+    matchedCity: regionFields?.matchedCity || '',
+    matchedDistrict: regionFields?.matchedDistrict || null,
+    regionMatchType: regionFields?.regionMatchType || 'unmatched',
+  });
 
   return {
     id: normalizeInlineText(record['공고코드'] ?? record.id) || [sigunguCode, publishedAt, title].filter(Boolean).join('::'),
@@ -104,7 +118,14 @@ function normalizeMolitItem(record: Record<string, unknown>): HearingItem {
     noticeNumber,
     title,
     region,
-    sigunguCode,
+    sigunguCode: regionFields?.sigunguCode || sigunguCode,
+    cityLevelRegionName: regionFields?.cityLevelRegionName || '',
+    cityLevelRegionKey: regionFields?.cityLevelRegionKey || '',
+    districtLevelRegionName: regionFields?.districtLevelRegionName || null,
+    districtLevelRegionKey: regionFields?.districtLevelRegionKey || null,
+    matchedCity: regionFields?.matchedCity || '',
+    matchedDistrict: regionFields?.matchedDistrict || null,
+    regionMatchType: regionFields?.regionMatchType || 'unmatched',
     agency: region,
     publishedAt,
     hearingStartDate,

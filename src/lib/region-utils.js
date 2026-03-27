@@ -1,12 +1,5 @@
 import regions from '../../data/regions.json';
-
-const AMBIGUOUS_STANDALONE_DISTRICTS = new Set([
-  '서구',
-  '동구',
-  '남구',
-  '북구',
-  '중구',
-].map(normalizeText));
+import { findHearingRegionFieldsByText, getCityHierarchyByName, getRegionHierarchyByRegion } from '../../shared/region-codes';
 
 const districtIndex = regions.flatMap((region) =>
   (region.districts || []).map((district) => ({
@@ -18,6 +11,14 @@ const districtIndex = regions.flatMap((region) =>
       .map(normalizeText),
   }))
 );
+
+const AMBIGUOUS_STANDALONE_DISTRICTS = new Set([
+  '서구',
+  '동구',
+  '남구',
+  '북구',
+  '중구',
+].map(normalizeText));
 
 export function normalizeText(value = '') {
   return String(value).replace(/\s+/g, '').trim().toLowerCase();
@@ -36,12 +37,22 @@ export function getDistrictsForSido(sido) {
 }
 
 export function matchRegionByText(sourceText = '') {
-  const normalized = normalizeText(sourceText);
-  if (!normalized) return null;
+  const matched = findHearingRegionFieldsByText(sourceText, 'text-fallback');
+  if (!matched) {
+    return null;
+  }
 
-  return districtIndex.find((district) =>
-    district.aliases.some((alias) => normalized.includes(alias))
-  ) || null;
+  return {
+    sido: matched.sido,
+    sigungu: matched.sigungu,
+    cityLevelRegionName: matched.cityLevelRegionName,
+    cityLevelRegionKey: matched.cityLevelRegionKey,
+    districtLevelRegionName: matched.districtLevelRegionName,
+    districtLevelRegionKey: matched.districtLevelRegionKey,
+    matchedCity: matched.matchedCity,
+    matchedDistrict: matched.matchedDistrict,
+    regionMatchType: matched.regionMatchType,
+  };
 }
 
 export function matchRegionFromAddress(address = {}) {
@@ -101,7 +112,6 @@ export function matchRegionFromAddress(address = {}) {
     ? regions.filter((region) => (region.districts || []).some((district) => isCityScopedDistrict(district, cityText)))
     : [];
 
-  // Debug only: log the parsed address fields and candidate combinations used for matching.
   console.info('[location-debug] parsed region/district candidates', {
     stateText,
     cityText,
@@ -116,6 +126,50 @@ export function matchRegionFromAddress(address = {}) {
     cityScopedRegionNames: cityScopedRegions.map((region) => region.name),
   });
 
+  const buildMatchedRegion = (fields, stage, extras = {}) => {
+    if (!fields) {
+      return null;
+    }
+
+    console.info('[location-debug] parsed region/district', {
+      stage,
+      region: { sido: fields.sido, sigungu: fields.sigungu },
+      matchedCity: fields.matchedCity,
+      matchedDistrict: fields.matchedDistrict,
+      regionMatchType: fields.regionMatchType,
+      ...extras,
+    });
+
+    return {
+      sido: fields.sido,
+      sigungu: fields.sigungu,
+      cityLevelRegionName: fields.cityLevelRegionName,
+      cityLevelRegionKey: fields.cityLevelRegionKey,
+      districtLevelRegionName: fields.districtLevelRegionName,
+      districtLevelRegionKey: fields.districtLevelRegionKey,
+      matchedCity: fields.matchedCity,
+      matchedDistrict: fields.matchedDistrict,
+      regionMatchType: fields.regionMatchType,
+    };
+  };
+
+  const buildCityOnlyMatch = (candidateRegions, stage) => {
+    if (!cityText) {
+      return null;
+    }
+
+    for (const region of candidateRegions) {
+      const cityOnly = getCityHierarchyByName(region.name, cityText, 'city-only');
+      if (cityOnly) {
+        return buildMatchedRegion(cityOnly, stage, {
+          cityValue: cityText,
+        });
+      }
+    }
+
+    return null;
+  };
+
   const findExplicitDistrictInRegion = (region) => {
     for (const [cityValue, districtValue] of explicitDistrictCombos) {
       const normalizedCombined = normalizeText([cityValue, districtValue].join(' '));
@@ -123,14 +177,15 @@ export function matchRegionFromAddress(address = {}) {
 
       const district = (region.districts || []).find((item) => hasExactDistrictAlias(item, normalizedCombined));
       if (district) {
-        console.info('[location-debug] parsed region/district', {
-          stage: 'explicit-combo-exact-match',
-          region: { sido: region.name, sigungu: district.sigungu },
-          cityValue,
-          districtValue,
-          combined: normalizedCombined,
-        });
-        return district;
+        return buildMatchedRegion(
+          getRegionHierarchyByRegion(region.name, district.sigungu),
+          'explicit-combo-exact-match',
+          {
+            cityValue,
+            districtValue,
+            combined: normalizedCombined,
+          }
+        );
       }
     }
 
@@ -155,29 +210,35 @@ export function matchRegionFromAddress(address = {}) {
         continue;
       }
 
-      console.info('[location-debug] parsed region/district', {
-        stage: 'candidate-exact-match',
-        region: { sido: region.name, sigungu: exactMatch.sigungu },
-        candidate,
-      });
-      return exactMatch;
+      return buildMatchedRegion(
+        getRegionHierarchyByRegion(region.name, exactMatch.sigungu),
+        'candidate-exact-match',
+        {
+          candidate,
+        }
+      );
     }
 
     return null;
   };
 
+  const candidateRegions = stateRegions.length
+    ? stateRegions
+    : cityScopedRegions;
+
   if (explicitDistrictCombos.length) {
-    const explicitCandidateRegions = stateRegions.length
-      ? stateRegions
-      : cityScopedRegions.length
-        ? cityScopedRegions
-        : regions;
+    const explicitCandidateRegions = candidateRegions.length ? candidateRegions : regions;
 
     for (const region of explicitCandidateRegions) {
-      const district = findExplicitDistrictInRegion(region);
-      if (district) {
-        return { sido: region.name, sigungu: district.sigungu };
+      const districtMatch = findExplicitDistrictInRegion(region);
+      if (districtMatch) {
+        return districtMatch;
       }
+    }
+
+    const cityOnlyMatch = buildCityOnlyMatch(explicitCandidateRegions, 'explicit-combo-city-only');
+    if (cityOnlyMatch) {
+      return cityOnlyMatch;
     }
 
     console.warn('[region-match] explicit combo match failed', {
@@ -189,40 +250,25 @@ export function matchRegionFromAddress(address = {}) {
     return null;
   }
 
-  const candidateRegions = stateRegions.length
-    ? stateRegions
-    : cityScopedRegions;
-
   for (const region of candidateRegions) {
-    const district = findDistrictInRegion(region);
-    if (district) {
-      return { sido: region.name, sigungu: district.sigungu };
+    const districtMatch = findDistrictInRegion(region);
+    if (districtMatch) {
+      return districtMatch;
     }
   }
 
-  const fullTextCandidates = [...new Set([
-    fullText,
-    ...districtCandidates,
-  ].map(normalizeText).filter(Boolean))];
+  const fullTextMatch = candidateRegions.length
+    ? findHearingRegionFieldsByText(fullText, 'text-fallback')
+    : null;
+  if (fullTextMatch && candidateRegions.some((region) => region.name === fullTextMatch.sido)) {
+    return buildMatchedRegion(fullTextMatch, 'full-text-exact-match', {
+      fullText,
+    });
+  }
 
-  for (const region of candidateRegions) {
-    for (const district of region.districts || []) {
-      const aliases = districtAliases(district);
-      const matchedCandidate = fullTextCandidates.find((candidate) => (
-        !isAmbiguousStandaloneDistrict(candidate)
-        && aliases.includes(candidate)
-      ));
-
-      if (matchedCandidate) {
-        console.info('[location-debug] parsed region/district', {
-          stage: 'full-text-exact-match',
-          region: { sido: region.name, sigungu: district.sigungu },
-          candidate: matchedCandidate,
-          fullText,
-        });
-        return { sido: region.name, sigungu: district.sigungu };
-      }
-    }
+  const cityOnlyMatch = buildCityOnlyMatch(candidateRegions, 'city-only-match');
+  if (cityOnlyMatch) {
+    return cityOnlyMatch;
   }
 
   console.warn('[region-match] unable to match address', address);
@@ -231,5 +277,5 @@ export function matchRegionFromAddress(address = {}) {
 
 export function formatRegionLabel(region) {
   if (!region) return '선택된 지역 없음';
-  return region.sigungu === region.sido ? region.sido : `${region.sido} ${region.sigungu}`;
+  return region.sigungu === region.sido ? region.sido : region.sido + ' ' + region.sigungu;
 }

@@ -1,5 +1,5 @@
 import { computeHearingStatus, HearingItem, sortHearings } from '../../shared/hearings';
-import { findRegionMatchByText, normalizeSigunguCode } from '../../shared/region-codes';
+import { findHearingRegionFieldsByText, normalizeSigunguCode } from '../../shared/region-codes';
 import { formatIsoDate } from '../../shared/public-hearings';
 import { EumDetailItem, EumListItem, parseEumDetailHtml, parseEumListHtml } from './eum-hearings-parser';
 
@@ -507,21 +507,34 @@ function normalizeEumHearing(listItem: EumListItem, detailItem: EumDetailItem | 
   const body = normalizeInlineText(detailItem?.body);
   const originalUrl = normalizeInlineText(detailItem?.link || listItem.detailUrl);
   const canonicalDetailUrl = canonicalizeEumDetailUrl(originalUrl);
-  const regionMatch = findRegionMatchByText([
+  const locationSourceText = [
     listItem.noticeNumber,
     agency,
     title,
     location,
     body,
-  ].join(' '));
-  const region = regionMatch?.label || '';
-  const sigunguCode = regionMatch?.sigunguCode || '';
+    normalizeInlineText(detailItem?.department),
+  ].join(' ');
+  const regionFields = findHearingRegionFieldsByText(locationSourceText);
+  const region = regionFields?.region || '';
+  const sigunguCode = normalizeSigunguCode(regionFields?.sigunguCode || '');
 
   console.info('[eum-url-debug] normalized item urls', {
     seq: listItem.seq,
     originalUrl,
     detailUrl: canonicalDetailUrl,
     sourceUrl: normalizeInlineText(listItem.detailUrl),
+  });
+  console.info('[region-debug] parsed notice location fields', {
+    source: 'eum_public_hearing',
+    seq: listItem.seq,
+    noticeNumber,
+    title,
+    agency,
+    location,
+    matchedCity: regionFields?.matchedCity || '',
+    matchedDistrict: regionFields?.matchedDistrict || null,
+    regionMatchType: regionFields?.regionMatchType || 'unmatched',
   });
 
   return {
@@ -533,6 +546,13 @@ function normalizeEumHearing(listItem: EumListItem, detailItem: EumDetailItem | 
     title,
     region,
     sigunguCode,
+    cityLevelRegionName: regionFields?.cityLevelRegionName || '',
+    cityLevelRegionKey: regionFields?.cityLevelRegionKey || '',
+    districtLevelRegionName: regionFields?.districtLevelRegionName || null,
+    districtLevelRegionKey: regionFields?.districtLevelRegionKey || null,
+    matchedCity: regionFields?.matchedCity || '',
+    matchedDistrict: regionFields?.matchedDistrict || null,
+    regionMatchType: regionFields?.regionMatchType || 'unmatched',
     agency,
     department: normalizeInlineText(detailItem?.department),
     publishedAt,

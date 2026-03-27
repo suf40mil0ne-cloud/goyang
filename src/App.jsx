@@ -15,7 +15,7 @@ import {
   UserRound,
 } from 'lucide-react';
 import regionAdjacency from '../data/region-adjacency.json';
-import { findSigunguCodeByRegion, getRegionLabelBySigunguCode } from '../shared/region-codes';
+import { findHearingRegionFieldsByText, findSigunguCodeByRegion, getRegionHierarchyByRegion, getRegionHierarchyBySigunguCode, getRegionLabelBySigunguCode } from '../shared/region-codes';
 import { fetchHearings, filterAndSortHearings } from './lib/hearings-client';
 import { formatRegionLabel, getDistrictsForSido, getRegions, matchRegionFromAddress } from './lib/region-utils';
 
@@ -24,7 +24,14 @@ const initialSido = regions[0]?.name || '';
 
 function getInitialRegion() {
   const firstDistrict = getDistrictsForSido(initialSido)[0];
-  return firstDistrict ? { sido: initialSido, sigungu: firstDistrict.sigungu } : null;
+  if (!firstDistrict) {
+    return null;
+  }
+
+  return getRegionHierarchyByRegion(initialSido, firstDistrict.sigungu) || {
+    sido: initialSido,
+    sigungu: firstDistrict.sigungu,
+  };
 }
 
 async function reverseGeocode(coords) {
@@ -254,10 +261,185 @@ function canonicalizeEumDetailUrl(link) {
   }
 }
 
+function normalizeRegionMatchType(value) {
+  const normalized = normalizeInlineText(value);
+  if (normalized === 'district-exact' || normalized === 'city-only' || normalized === 'text-fallback' || normalized === 'unmatched') {
+    return normalized;
+  }
+  return 'unmatched';
+}
+
+function choosePreferredRegionMatchType(left, right) {
+  const score = {
+    'district-exact': 4,
+    'text-fallback': 3,
+    'city-only': 2,
+    unmatched: 1,
+    '': 0,
+  };
+
+  return (score[right || ''] || 0) >= (score[left || ''] || 0) ? right || left : left || right;
+}
+
+function resolveNoticeRegionMetadata(notice) {
+  const providedMeta = {
+    cityLevelRegionName: normalizeInlineText(notice.cityLevelRegionName),
+    cityLevelRegionKey: normalizeInlineText(notice.cityLevelRegionKey),
+    districtLevelRegionName: normalizeInlineText(notice.districtLevelRegionName),
+    districtLevelRegionKey: normalizeInlineText(notice.districtLevelRegionKey),
+    matchedCity: normalizeInlineText(notice.matchedCity),
+    matchedDistrict: normalizeInlineText(notice.matchedDistrict),
+    regionMatchType: normalizeRegionMatchType(notice.regionMatchType),
+  };
+
+  const fallbackText = [
+    notice.region,
+    notice.agency,
+    notice.department,
+    notice.location,
+    notice.title,
+    notice.summary,
+    notice.body,
+  ].filter(Boolean).join(' ');
+
+  const derivedMeta = !providedMeta.cityLevelRegionKey
+    ? getRegionHierarchyBySigunguCode(notice.sigunguCode)
+      || findHearingRegionFieldsByText(fallbackText, 'text-fallback')
+    : null;
+
+  const resolvedMeta = {
+    cityLevelRegionName: providedMeta.cityLevelRegionName || normalizeInlineText(derivedMeta?.cityLevelRegionName),
+    cityLevelRegionKey: providedMeta.cityLevelRegionKey || normalizeInlineText(derivedMeta?.cityLevelRegionKey),
+    districtLevelRegionName: providedMeta.districtLevelRegionName || normalizeInlineText(derivedMeta?.districtLevelRegionName),
+    districtLevelRegionKey: providedMeta.districtLevelRegionKey || normalizeInlineText(derivedMeta?.districtLevelRegionKey),
+    matchedCity: providedMeta.matchedCity || normalizeInlineText(derivedMeta?.matchedCity),
+    matchedDistrict: providedMeta.matchedDistrict || normalizeInlineText(derivedMeta?.matchedDistrict),
+    regionMatchType: providedMeta.cityLevelRegionKey
+      ? providedMeta.regionMatchType
+      : normalizeRegionMatchType(derivedMeta?.regionMatchType || 'unmatched'),
+  };
+
+  console.info('[region-debug] parsed notice location fields', {
+    noticeId: normalizeInlineText(notice.id),
+    title: normalizeInlineText(notice.title),
+    region: normalizeInlineText(notice.region),
+    location: normalizeInlineText(notice.location),
+    agency: normalizeInlineText(notice.agency),
+    department: normalizeInlineText(notice.department),
+    matchedCity: resolvedMeta.matchedCity || '',
+    matchedDistrict: resolvedMeta.matchedDistrict || null,
+    regionMatchType: resolvedMeta.regionMatchType,
+  });
+
+  return {
+    cityLevelRegionName: resolvedMeta.cityLevelRegionName || undefined,
+    cityLevelRegionKey: resolvedMeta.cityLevelRegionKey || undefined,
+    districtLevelRegionName: resolvedMeta.districtLevelRegionName || undefined,
+    districtLevelRegionKey: resolvedMeta.districtLevelRegionKey || undefined,
+    matchedCity: resolvedMeta.matchedCity || undefined,
+    matchedDistrict: resolvedMeta.matchedDistrict || undefined,
+    regionMatchType: resolvedMeta.cityLevelRegionKey ? resolvedMeta.regionMatchType : 'unmatched',
+  };
+}
+
+function isNoticeInSelectedCity(notice, selectedRegion) {
+  if (!selectedRegion) {
+    return false;
+  }
+
+  if (selectedRegion.cityLevelRegionKey && notice.cityLevelRegionKey) {
+    return notice.cityLevelRegionKey === selectedRegion.cityLevelRegionKey;
+  }
+
+  const selectedCity = normalizeInlineText(selectedRegion.matchedCity || selectedRegion.sigungu);
+  const noticeCity = normalizeInlineText(notice.matchedCity || '');
+  return Boolean(selectedCity && noticeCity && selectedCity === noticeCity);
+}
+
+function isNoticeInSelectedDistrict(notice, selectedRegion, currentSigunguCode) {
+  if (!selectedRegion) {
+    return false;
+  }
+
+  if (selectedRegion.districtLevelRegionKey && notice.districtLevelRegionKey) {
+    return notice.districtLevelRegionKey === selectedRegion.districtLevelRegionKey;
+  }
+
+  if (currentSigunguCode && notice.sigunguCode === currentSigunguCode) {
+    return true;
+  }
+
+  const currentRegionLabel = normalizeRegionName(formatRegionLabel(selectedRegion));
+  const currentDistrict = extractDistrictToken(selectedRegion.sigungu);
+
+  return getNoticeRegionCandidates(notice).some((candidate) => {
+    const normalizedCandidate = normalizeRegionName(candidate);
+    return normalizedCandidate === currentRegionLabel || extractDistrictToken(candidate) === currentDistrict;
+  });
+}
+
+function getNoticeLocationPriority(notice, selectedRegion, adjacentCodes) {
+  if (!selectedRegion) {
+    return { rank: 4, reason: 'other-region' };
+  }
+
+  if (isNoticeInSelectedDistrict(notice, selectedRegion, '')) {
+    return { rank: 0, reason: 'district-level-match' };
+  }
+
+  if (isNoticeInSelectedCity(notice, selectedRegion) && !notice.districtLevelRegionKey) {
+    return { rank: 1, reason: 'city-level-match' };
+  }
+
+  if (isNoticeInSelectedCity(notice, selectedRegion)) {
+    return { rank: 2, reason: 'same-city-other-district' };
+  }
+
+  if (selectedRegion.districtLevelRegionKey && notice.sigunguCode && adjacentCodes.includes(notice.sigunguCode)) {
+    return { rank: 3, reason: 'adjacent-district-match' };
+  }
+
+  return { rank: 4, reason: 'other-region' };
+}
+
+function sortHearingsForSelectedRegion(items, selectedRegion, adjacentCodes, contextKey) {
+  const baseline = filterAndSortHearings(items, '');
+  if (!selectedRegion) {
+    return baseline;
+  }
+
+  const baselineIndex = new Map(baseline.map((notice, index) => [notice.id, index]));
+  const sorted = [...baseline].sort((left, right) => {
+    const leftPriority = getNoticeLocationPriority(left, selectedRegion, adjacentCodes);
+    const rightPriority = getNoticeLocationPriority(right, selectedRegion, adjacentCodes);
+    if (leftPriority.rank !== rightPriority.rank) {
+      return leftPriority.rank - rightPriority.rank;
+    }
+
+    return (baselineIndex.get(left.id) || 0) - (baselineIndex.get(right.id) || 0);
+  });
+
+  console.info('[location-debug] final sorted order reason', {
+    context: contextKey,
+    currentUserCity: selectedRegion.matchedCity || '',
+    currentUserDistrict: selectedRegion.matchedDistrict || null,
+    items: sorted.map((notice) => ({
+      id: notice.id,
+      title: notice.title,
+      cityLevelRegionName: notice.cityLevelRegionName || '',
+      districtLevelRegionName: notice.districtLevelRegionName || null,
+      reason: getNoticeLocationPriority(notice, selectedRegion, adjacentCodes).reason,
+    })),
+  });
+
+  return sorted;
+}
+
 function normalizeNotice(notice) {
   const sourceLabels = uniqueStrings([...(notice.sourceLabels || []), notice.sourceLabel].map(normalizeInlineText));
   const sources = uniqueStrings([...(notice.sources || []), notice.source]);
   const attachments = new globalThis.Map();
+  const regionMeta = resolveNoticeRegionMetadata(notice);
   const rawLink = normalizeInlineText(notice.link);
   const normalizedLink = notice.source === 'eum_public_hearing' || /hrPeopleHearDet\.jsp/i.test(rawLink)
     ? canonicalizeEumDetailUrl(rawLink)
@@ -286,6 +468,13 @@ function normalizeNotice(notice) {
     title: normalizeInlineText(notice.title) || '공고 제목 없음',
     region: normalizeInlineText(notice.region) || undefined,
     sigunguCode: normalizeInlineText(notice.sigunguCode) || undefined,
+    cityLevelRegionName: regionMeta.cityLevelRegionName,
+    cityLevelRegionKey: regionMeta.cityLevelRegionKey,
+    districtLevelRegionName: regionMeta.districtLevelRegionName || undefined,
+    districtLevelRegionKey: regionMeta.districtLevelRegionKey || undefined,
+    matchedCity: regionMeta.matchedCity,
+    matchedDistrict: regionMeta.matchedDistrict || undefined,
+    regionMatchType: regionMeta.regionMatchType,
     agency: normalizeInlineText(notice.agency) || undefined,
     department: normalizeInlineText(notice.department) || undefined,
     publishedAt: normalizeInlineText(notice.publishedAt) || undefined,
@@ -425,6 +614,13 @@ function mergeNotices(left, right) {
     title: choosePreferredText(preferred.title, secondary.title) || preferred.title || secondary.title,
     region: choosePreferredText(preferred.region, secondary.region),
     sigunguCode: choosePreferredText(preferred.sigunguCode, secondary.sigunguCode),
+    cityLevelRegionName: choosePreferredText(preferred.cityLevelRegionName, secondary.cityLevelRegionName),
+    cityLevelRegionKey: choosePreferredText(preferred.cityLevelRegionKey, secondary.cityLevelRegionKey),
+    districtLevelRegionName: choosePreferredText(preferred.districtLevelRegionName || '', secondary.districtLevelRegionName || '') || undefined,
+    districtLevelRegionKey: choosePreferredText(preferred.districtLevelRegionKey || '', secondary.districtLevelRegionKey || '') || undefined,
+    matchedCity: choosePreferredText(preferred.matchedCity, secondary.matchedCity),
+    matchedDistrict: choosePreferredText(preferred.matchedDistrict || '', secondary.matchedDistrict || '') || undefined,
+    regionMatchType: choosePreferredRegionMatchType(preferred.regionMatchType, secondary.regionMatchType),
     agency: choosePreferredText(preferred.agency, secondary.agency),
     department: choosePreferredText(preferred.department, secondary.department),
     publishedAt: choosePreferredText(preferred.publishedAt, secondary.publishedAt),
@@ -460,6 +656,10 @@ function dedupeNotices(items) {
 function getNoticeRegionCandidates(notice) {
   return uniqueStrings([
     notice.region,
+    notice.cityLevelRegionName,
+    notice.districtLevelRegionName,
+    notice.matchedCity,
+    notice.matchedDistrict,
     notice.sigunguCode ? getRegionLabelBySigunguCode(notice.sigunguCode) : '',
     notice.agency,
     notice.department,
@@ -471,29 +671,19 @@ function getNoticeRegionCandidates(notice) {
 }
 
 function isCurrentDistrictNotice(notice, selectedRegion, currentSigunguCode) {
-  if (!selectedRegion) {
-    return false;
-  }
-
-  if (currentSigunguCode && notice.sigunguCode === currentSigunguCode) {
-    return true;
-  }
-
-  const currentRegionLabel = normalizeRegionName(formatRegionLabel(selectedRegion));
-  const currentDistrict = extractDistrictToken(selectedRegion.sigungu);
-
-  return getNoticeRegionCandidates(notice).some((candidate) => {
-    const normalizedCandidate = normalizeRegionName(candidate);
-    return normalizedCandidate === currentRegionLabel || extractDistrictToken(candidate) === currentDistrict;
-  });
+  return isNoticeInSelectedDistrict(notice, selectedRegion, currentSigunguCode);
 }
 
 function isAdjacentDistrictNotice(notice, selectedRegion, currentSigunguCode, adjacentCodes) {
-  if (!selectedRegion || !adjacentCodes.length) {
+  if (!selectedRegion || !adjacentCodes.length || !selectedRegion.districtLevelRegionKey) {
     return false;
   }
 
   if (isCurrentDistrictNotice(notice, selectedRegion, currentSigunguCode)) {
+    return false;
+  }
+
+  if (isNoticeInSelectedCity(notice, selectedRegion)) {
     return false;
   }
 
@@ -579,14 +769,23 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
     : notice.agency || notice.sourceLabel;
   const regionLabel = notice.region || (notice.sigunguCode ? getRegionLabelBySigunguCode(notice.sigunguCode) : '') || notice.agency || '지역 정보 없음';
   const sourceLabel = notice.sourceLabels?.length ? notice.sourceLabels.join(' · ') : notice.sourceLabel;
+  const cityBadgeLabel = notice.cityLevelRegionName || regionLabel;
+  const districtBadgeLabel = notice.cityLevelRegionName
+    ? (notice.districtLevelRegionName || '세부 구 미확정')
+    : '';
 
   return (
     <article className={`feed-card ${emphasized ? 'border border-[#c1e0ff]' : ''}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-[#f2f4f6] px-3 py-1 text-[11px] font-bold text-[#43617c]">
-            {regionLabel}
+            {cityBadgeLabel}
           </span>
+          {districtBadgeLabel ? (
+            <span className="rounded-full bg-[#eef6ff] px-3 py-1 text-[11px] font-bold text-[#006194]">
+              {districtBadgeLabel}
+            </span>
+          ) : null}
           <span className={`rounded-full px-3 py-1 text-[11px] font-bold ${statusMeta.classes}`}>
             {statusMeta.label}
           </span>
@@ -672,6 +871,7 @@ export default function App() {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedSido, setSelectedSido] = useState(initialSido);
   const [selectedSigungu, setSelectedSigungu] = useState(getInitialRegion()?.sigungu || '');
+  const [selectedRegionFilterKey, setSelectedRegionFilterKey] = useState(getInitialRegion()?.cityLevelRegionKey || '');
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [isNearbyExpanded, setIsNearbyExpanded] = useState(false);
   const [showAdjacentSections, setShowAdjacentSections] = useState(false);
@@ -788,10 +988,31 @@ export default function App() {
     setShowAdjacentSections(false);
   }, [currentSigunguCode]);
 
+  const currentCityRegionKey = selectedRegion?.cityLevelRegionKey || '';
+  const currentDistrictRegionKey = selectedRegion?.districtLevelRegionKey || '';
+
   const districtOptions = useMemo(
     () => getDistrictsForSido(selectedSido),
     [selectedSido]
   );
+
+  const cityFilterOptions = useMemo(() => {
+    if (!selectedRegion?.sido || !selectedRegion?.cityLevelRegionKey) {
+      return [];
+    }
+
+    return getDistrictsForSido(selectedRegion.sido)
+      .map((district) => getRegionHierarchyByRegion(selectedRegion.sido, district.sigungu))
+      .filter((option) => option?.cityLevelRegionKey === selectedRegion.cityLevelRegionKey && option?.districtLevelRegionKey)
+      .map((option) => ({
+        key: option.districtLevelRegionKey,
+        label: option.districtLevelRegionName || option.sigungu,
+        sigungu: option.sigungu,
+      }));
+  }, [selectedRegion]);
+
+  const activeRegionFilterKey = selectedRegionFilterKey || currentCityRegionKey;
+  const activeDistrictFilter = cityFilterOptions.find((option) => option.key === activeRegionFilterKey) || null;
 
   const recentHearings = useMemo(
     () => filterAndSortHearings(hearings, ''),
@@ -803,25 +1024,72 @@ export default function App() {
     [currentSigunguCode]
   );
 
+  const cityLevelHearings = useMemo(() => {
+    if (!selectedRegion) {
+      return recentHearings;
+    }
+
+    return sortHearingsForSelectedRegion(
+      recentHearings.filter((notice) => isNoticeInSelectedCity(notice, selectedRegion)),
+      selectedRegion,
+      adjacentCodes,
+      'city-level-match'
+    );
+  }, [adjacentCodes, recentHearings, selectedRegion]);
+
+  const districtLevelMatchedHearings = useMemo(() => {
+    if (!selectedRegion || !currentDistrictRegionKey) {
+      return [];
+    }
+
+    return cityLevelHearings.filter((notice) => isNoticeInSelectedDistrict(notice, selectedRegion, currentSigunguCode));
+  }, [cityLevelHearings, currentDistrictRegionKey, currentSigunguCode, selectedRegion]);
+
+  const cityOnlyMatchedHearings = useMemo(() => (
+    selectedRegion
+      ? cityLevelHearings.filter((notice) => isNoticeInSelectedCity(notice, selectedRegion) && !notice.districtLevelRegionKey)
+      : []
+  ), [cityLevelHearings, selectedRegion]);
+
+  const otherCityDistrictHearings = useMemo(() => {
+    if (!selectedRegion) {
+      return [];
+    }
+
+    return cityLevelHearings.filter((notice) =>
+      isNoticeInSelectedCity(notice, selectedRegion)
+      && notice.districtLevelRegionKey
+      && notice.districtLevelRegionKey !== currentDistrictRegionKey
+    );
+  }, [cityLevelHearings, currentDistrictRegionKey, selectedRegion]);
+
   const currentDistrictHearings = useMemo(() => {
     if (!selectedRegion) {
       return recentHearings;
     }
 
-    return filterAndSortHearings(
-      recentHearings.filter((notice) => isCurrentDistrictNotice(notice, selectedRegion, currentSigunguCode)),
-      ''
-    );
-  }, [currentSigunguCode, recentHearings, selectedRegion]);
+    if (activeDistrictFilter) {
+      return sortHearingsForSelectedRegion(
+        cityLevelHearings.filter((notice) => notice.districtLevelRegionKey === activeDistrictFilter.key),
+        selectedRegion,
+        adjacentCodes,
+        'district-level-filter'
+      );
+    }
+
+    return cityLevelHearings;
+  }, [activeDistrictFilter, adjacentCodes, cityLevelHearings, recentHearings, selectedRegion]);
 
   const adjacentDistrictHearings = useMemo(() => {
     if (!selectedRegion) {
       return [];
     }
 
-    return filterAndSortHearings(
+    return sortHearingsForSelectedRegion(
       recentHearings.filter((notice) => isAdjacentDistrictNotice(notice, selectedRegion, currentSigunguCode, adjacentCodes)),
-      ''
+      selectedRegion,
+      adjacentCodes,
+      'adjacent-district-match'
     );
   }, [adjacentCodes, currentSigunguCode, recentHearings, selectedRegion]);
 
@@ -831,30 +1099,50 @@ export default function App() {
     }
 
     const selectedSet = new Set(selectedAdjacentCodes);
-    return filterAndSortHearings(
+    return sortHearingsForSelectedRegion(
       adjacentDistrictHearings.filter((notice) => notice.sigunguCode && selectedSet.has(notice.sigunguCode)),
-      ''
+      selectedRegion,
+      adjacentCodes,
+      'adjacent-filtered'
     );
-  }, [adjacentDistrictHearings, selectedAdjacentCodes]);
+  }, [adjacentCodes, adjacentDistrictHearings, selectedAdjacentCodes, selectedRegion]);
 
   const summaryHearings = useMemo(() => {
     if (!selectedRegion) {
       return recentHearings;
     }
 
-    return filterAndSortHearings(dedupeNotices([...currentDistrictHearings, ...visibleAdjacentHearings]), '');
-  }, [currentDistrictHearings, recentHearings, selectedRegion, visibleAdjacentHearings]);
+    return sortHearingsForSelectedRegion(
+      dedupeNotices([...currentDistrictHearings, ...visibleAdjacentHearings]),
+      selectedRegion,
+      adjacentCodes,
+      'summary-hearings'
+    );
+  }, [adjacentCodes, currentDistrictHearings, recentHearings, selectedRegion, visibleAdjacentHearings]);
 
-  const currentSectionTitle = selectedRegion ? `${selectedRegion.sigungu}에서 진행중인 공고` : '전체 최신 공고';
+  const currentSectionTitle = selectedRegion
+    ? activeDistrictFilter
+      ? activeDistrictFilter.label + ' 공고'
+      : (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu) + ' 공고'
+    : '전체 최신 공고';
   const currentSectionDescription = selectedRegion
-    ? `${formatRegionLabel(selectedRegion)} 공고만 보여줍니다. 인접 자치구 공고는 아래 섹션에서 분리해 확인할 수 있습니다.`
+    ? activeDistrictFilter
+      ? activeDistrictFilter.label + '에 정확히 매칭된 공고만 보여줍니다.'
+      : [
+          selectedRegion.matchedDistrict ? selectedRegion.matchedDistrict + ' 공고를 먼저 보여주고' : '',
+          (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu) + '를 함께 보여줍니다.',
+        ].filter(Boolean).join(' ')
     : '지역이 선택되지 않아 최신 공고 전체를 보여줍니다.';
   const adjacentSectionDescription = selectedRegion
-    ? '현재 자치구를 제외한 인접 자치구 공고만 표시합니다. 현재 자치구 공고는 이 섹션에 다시 넣지 않습니다.'
-    : '위치가 확인되면 현재 자치구를 제외한 인접 자치구 공고를 여기에 분리해 보여줍니다.';
+    ? currentDistrictRegionKey
+      ? '현재 구를 제외한 인접 구 공고를 보조 순위로 분리해 보여줍니다. 같은 시의 다른 구 공고는 위 섹션에 포함됩니다.'
+      : '현재 구가 정확히 확인되지 않아 인접 구 공고는 아직 분리하지 않습니다.'
+    : '위치가 확인되면 현재 구를 제외한 인접 구 공고를 여기에 분리해 보여줍니다.';
   const summaryDescription = selectedRegion
-    ? '현재 자치구 공고 1회와 인접 자치구 공고 1회를 중복 없이 합쳐 보여줍니다.'
-    : '지역을 선택하면 현재 자치구와 인접 자치구 공고를 중복 없이 묶어 보여줍니다.';
+    ? activeDistrictFilter
+      ? activeDistrictFilter.label + ' 공고와 인접 구 공고를 중복 없이 합쳐 보여줍니다.'
+      : (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu) + ' 공고를 기본으로, 현재 구와 인접 구 공고를 우선순위에 맞게 합쳐 보여줍니다.'
+    : '지역을 선택하면 현재 시 전체와 인접 구 공고를 중복 없이 묶어 보여줍니다.';
 
   const currentHearings = currentDistrictHearings;
   const currentOpenHearings = currentHearings.filter((notice) => notice.status === 'open');
@@ -871,19 +1159,23 @@ export default function App() {
     }
 
     if (currentDistrictHearings.length && visibleAdjacentHearings.length) {
-      return '현재 자치구 공고와 인접 자치구 공고를 중복 없이 함께 보여줍니다.';
+      return activeDistrictFilter
+        ? activeDistrictFilter.label + ' 공고와 인접 구 공고를 함께 보여줍니다.'
+        : (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu) + ' 공고와 인접 구 공고를 함께 보여줍니다.';
     }
 
     if (currentDistrictHearings.length && !visibleAdjacentHearings.length) {
-      return '인접 자치구 공고가 없어 현재 자치구 공고만 표시합니다.';
+      return activeDistrictFilter
+        ? activeDistrictFilter.label + ' 공고만 표시합니다.'
+        : (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu) + ' 공고만 표시합니다.';
     }
 
     if (!currentDistrictHearings.length && visibleAdjacentHearings.length) {
-      return '현재 자치구 공고가 없어 인접 자치구 공고만 표시합니다.';
+      return '현재 시/구 공고가 없어 인접 구 공고만 표시합니다.';
     }
 
     return '';
-  }, [currentDistrictHearings.length, fallbackMessage, selectedRegion, visibleAdjacentHearings.length]);
+  }, [activeDistrictFilter, currentDistrictHearings.length, fallbackMessage, selectedRegion, visibleAdjacentHearings.length]);
 
   useEffect(() => {
     if (!import.meta.env.DEV) {
@@ -894,16 +1186,48 @@ export default function App() {
       rawTotalCount: rawHearings.length,
       dedupedTotalCount: hearings.length,
       currentDistrictCount: selectedRegion ? currentDistrictHearings.length : 0,
+      cityLevelCount: selectedRegion ? cityLevelHearings.length : 0,
+      districtLevelCount: districtLevelMatchedHearings.length,
+      cityOnlyCount: cityOnlyMatchedHearings.length,
+      otherCityDistrictCount: otherCityDistrictHearings.length,
       adjacentDistrictCount: selectedRegion ? adjacentDistrictHearings.length : 0,
       mergedSummaryCount: summaryHearings.length,
       duplicatesRemovedCount: Math.max(0, rawHearings.length - hearings.length),
       selectedRegion,
       currentSigunguCode,
     });
-  }, [adjacentDistrictHearings.length, currentDistrictHearings.length, currentSigunguCode, hearings.length, rawHearings.length, selectedRegion, summaryHearings.length]);
+  }, [adjacentDistrictHearings.length, cityLevelHearings.length, cityOnlyMatchedHearings.length, currentDistrictHearings.length, currentSigunguCode, districtLevelMatchedHearings.length, hearings.length, otherCityDistrictHearings.length, rawHearings.length, selectedRegion, summaryHearings.length]);
+
+  useEffect(() => {
+    if (!selectedRegion) {
+      return;
+    }
+
+    console.info('[location-debug] current user city', {
+      city: selectedRegion.matchedCity || '',
+      cityLevelRegionName: selectedRegion.cityLevelRegionName || '',
+      cityLevelRegionKey: selectedRegion.cityLevelRegionKey || '',
+    });
+    console.info('[location-debug] current user district', {
+      district: selectedRegion.matchedDistrict || null,
+      districtLevelRegionName: selectedRegion.districtLevelRegionName || null,
+      districtLevelRegionKey: selectedRegion.districtLevelRegionKey || null,
+    });
+    console.info('[location-debug] notices included by city-level match', cityLevelHearings.map((notice) => ({
+      id: notice.id,
+      title: notice.title,
+      cityLevelRegionName: notice.cityLevelRegionName || '',
+      districtLevelRegionName: notice.districtLevelRegionName || null,
+    })));
+    console.info('[location-debug] notices included by district-level match', districtLevelMatchedHearings.map((notice) => ({
+      id: notice.id,
+      title: notice.title,
+      cityLevelRegionName: notice.cityLevelRegionName || '',
+      districtLevelRegionName: notice.districtLevelRegionName || null,
+    })));
+  }, [cityLevelHearings, districtLevelMatchedHearings, selectedRegion]);
 
   function applyRegion(region, resolutionText) {
-    // Debug only: log the region that is about to be reflected in screen state.
     console.info('[location-debug] parsed region/district', {
       resolutionText,
       region,
@@ -911,19 +1235,29 @@ export default function App() {
       fallbackUsed: false,
       fallbackReason: '',
     });
+
+    const nextPickerSigungu = region.districtLevelRegionKey
+      ? region.sigungu
+      : getDistrictsForSido(region.sido)[0]?.sigungu || '';
+
     setSelectedRegion(region);
     setSelectedSido(region.sido);
-    setSelectedSigungu(region.sigungu);
+    setSelectedSigungu(nextPickerSigungu);
+    setSelectedRegionFilterKey(region.cityLevelRegionKey || region.districtLevelRegionKey || '');
     setIsNearbyExpanded(false);
     setShowAdjacentSections(false);
     setLocationResolution(resolutionText);
-    setLocationMessage(`${formatRegionLabel(region)} 기준으로 현재 자치구 공고를 먼저 보여주고, 인접 자치구 공고는 아래에서 분리해 볼 수 있습니다.`);
+    setLocationMessage([
+      region.matchedDistrict ? region.matchedDistrict + ' 공고를 먼저 보여주고,' : '',
+      (region.cityLevelRegionName || formatRegionLabel(region)) + '를 함께 보여줍니다.',
+    ].filter(Boolean).join(' '));
   }
 
   function handleReset() {
     setSelectedRegion(null);
     setSelectedSido(initialSido);
     setSelectedSigungu(getInitialRegion()?.sigungu || '');
+    setSelectedRegionFilterKey(getInitialRegion()?.cityLevelRegionKey || '');
     setIsPickerOpen(false);
     setIsNearbyExpanded(false);
     setSelectedAdjacentCodes([]);
@@ -988,13 +1322,11 @@ export default function App() {
 
   function handleRegionSubmit(event) {
     event.preventDefault();
-    applyRegion(
-      {
-        sido: selectedSido,
-        sigungu: selectedSigungu,
-      },
-      '지역 직접 선택으로 시군구 확인'
-    );
+    const region = getRegionHierarchyByRegion(selectedSido, selectedSigungu) || {
+      sido: selectedSido,
+      sigungu: selectedSigungu,
+    };
+    applyRegion(region, '지역 직접 선택으로 시군구 확인');
   }
 
   function handleOpenRegionPicker() {
@@ -1173,7 +1505,7 @@ export default function App() {
           <section id="current-district" className="space-y-6">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
-                <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">현재 자치구 공고</p>
+                <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">내 시 전체 + 현재 구 우선</p>
                 <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#191c1e]">
                   {currentSectionTitle}
                 </h2>
@@ -1182,6 +1514,28 @@ export default function App() {
                 </p>
               </div>
             </div>
+
+            {selectedRegion ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedRegionFilterKey(currentCityRegionKey)}
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition ${activeDistrictFilter ? 'border-[#dfe4ea] bg-white text-[#3f4850]' : 'border-[#006194] bg-[#c1e0ff] text-[#004b73]'}`}
+                >
+                  {selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu}
+                </button>
+                {cityFilterOptions.map((option) => (
+                  <button
+                    key={option.key}
+                    type="button"
+                    onClick={() => setSelectedRegionFilterKey(option.key)}
+                    className={`rounded-full border px-4 py-2 text-sm font-medium transition ${activeRegionFilterKey === option.key ? 'border-[#006194] bg-[#eef6ff] text-[#004b73]' : 'border-[#dfe4ea] bg-white text-[#3f4850]'}`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            ) : null}
 
             {isLoading ? (
               <div className="rounded-[24px] bg-white px-6 py-16 text-center shadow-sm">
@@ -1198,7 +1552,9 @@ export default function App() {
               </div>
             ) : (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                {selectedRegion ? `${selectedRegion.sigungu} 공고가 없습니다.` : '현재 수집된 최신 공고가 없습니다.'}
+                {selectedRegion
+                  ? `${activeDistrictFilter ? activeDistrictFilter.label : (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu)} 공고가 없습니다.`
+                  : '현재 수집된 최신 공고가 없습니다.'}
               </div>
             )}
 
