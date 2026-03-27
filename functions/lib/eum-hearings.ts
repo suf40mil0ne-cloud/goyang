@@ -112,7 +112,7 @@ export class EumStageError extends Error {
 }
 
 const EUM_LIST_URL = 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp';
-const EUM_CACHED_JSON_URL = 'https://raw.githubusercontent.com/suf40milOne-cloud/goyang/main/data/eum-hearings.json';
+const EUM_CACHED_JSON_URL = 'https://raw.githubusercontent.com/suf40mil0ne-cloud/goyang/main/data/eum-hearings.json';
 const DATASET_CACHE_TTL_MS = 15 * 60 * 1000;
 const DATASET_STALE_TTL_MS = 60 * 60 * 1000;
 const DETAIL_CACHE_TTL_MS = 60 * 60 * 1000;
