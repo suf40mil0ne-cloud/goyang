@@ -577,6 +577,7 @@ export default function App() {
   const [selectedSigungu, setSelectedSigungu] = useState(getInitialRegion()?.sigungu || '');
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [isNearbyExpanded, setIsNearbyExpanded] = useState(false);
+  const [showAdjacentSections, setShowAdjacentSections] = useState(false);
   const [selectedAdjacentCodes, setSelectedAdjacentCodes] = useState([]);
   const [isDetecting, setIsDetecting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -656,6 +657,7 @@ export default function App() {
 
   useEffect(() => {
     setSelectedAdjacentCodes([]);
+    setShowAdjacentSections(false);
   }, [currentSigunguCode]);
 
   const districtOptions = useMemo(
@@ -776,6 +778,8 @@ export default function App() {
     setSelectedRegion(region);
     setSelectedSido(region.sido);
     setSelectedSigungu(region.sigungu);
+    setIsNearbyExpanded(false);
+    setShowAdjacentSections(false);
     setLocationResolution(resolutionText);
     setLocationMessage(`${formatRegionLabel(region)} 기준으로 현재 자치구 공고를 먼저 보여주고, 인접 자치구 공고는 아래에서 분리해 볼 수 있습니다.`);
   }
@@ -1023,9 +1027,24 @@ export default function App() {
                 {selectedRegion ? `${selectedRegion.sigungu} 공고가 없습니다.` : '현재 수집된 최신 공고가 없습니다.'}
               </div>
             )}
+
+            {selectedRegion ? (
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setShowAdjacentSections((value) => !value)}
+                  aria-expanded={showAdjacentSections}
+                  aria-controls="adjacent-districts selected-region-list"
+                  className="hero-button-secondary justify-center"
+                >
+                  <ChevronDown className={`h-4 w-4 transition ${showAdjacentSections ? 'rotate-180' : ''}`} />
+                  {showAdjacentSections ? '인접 지역 숨기기' : '인접 지역도 보기'}
+                </button>
+              </div>
+            ) : null}
           </section>
 
-          <section className="space-y-6">
+          <section id="adjacent-districts" className="space-y-6" hidden={selectedRegion ? !showAdjacentSections : false}>
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">인접 지역 함께 보기</p>
@@ -1090,7 +1109,11 @@ export default function App() {
             )}
           </section>
 
-          <section id="selected-region-list" className="space-y-6">
+          <section
+            id="selected-region-list"
+            className="space-y-6"
+            hidden={selectedRegion ? !showAdjacentSections : false}
+          >
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">선택한 지역의 공고 요약</p>
