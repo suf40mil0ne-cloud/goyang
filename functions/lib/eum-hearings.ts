@@ -135,6 +135,33 @@ function normalizeInlineText(value: unknown): string {
   return normalizeString(value).replace(/\s+/g, ' ').trim();
 }
 
+function canonicalizeEumDetailUrl(value: unknown): string {
+  const rawUrl = normalizeInlineText(value);
+  const fallbackBaseUrl = 'https://www.eum.go.kr/web/cp/hr/';
+  const canonicalBaseUrl = 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp';
+
+  if (!rawUrl) {
+    return canonicalBaseUrl;
+  }
+
+  try {
+    const resolvedUrl = /^https?:\/\//i.test(rawUrl)
+      ? new URL(rawUrl)
+      : new URL(rawUrl, fallbackBaseUrl);
+
+    if (/hrPeopleHearDet\.jsp$/i.test(resolvedUrl.pathname)) {
+      const canonicalUrl = new URL(canonicalBaseUrl);
+      resolvedUrl.searchParams.forEach((value, key) => {
+        canonicalUrl.searchParams.append(key, value);
+      });
+      return canonicalUrl.toString();
+    }
+
+    return resolvedUrl.toString();
+  } catch {
+    return canonicalBaseUrl;
+  }
+}
 function normalizeCharset(value: string): string {
   return String(value || '').trim().replace(/['"]/g, '').toLowerCase();
 }
@@ -478,6 +505,8 @@ function normalizeEumHearing(listItem: EumListItem, detailItem: EumDetailItem | 
   const hearingEndDate = formatIsoDate(detailItem?.hearingEndDate || listItem.hearingEndDate);
   const location = normalizeInlineText(detailItem?.location);
   const body = normalizeInlineText(detailItem?.body);
+  const originalUrl = normalizeInlineText(detailItem?.link || listItem.detailUrl);
+  const canonicalDetailUrl = canonicalizeEumDetailUrl(originalUrl);
   const regionMatch = findRegionMatchByText([
     listItem.noticeNumber,
     agency,
@@ -487,6 +516,13 @@ function normalizeEumHearing(listItem: EumListItem, detailItem: EumDetailItem | 
   ].join(' '));
   const region = regionMatch?.label || '';
   const sigunguCode = regionMatch?.sigunguCode || '';
+
+  console.info('[eum-url-debug] normalized item urls', {
+    seq: listItem.seq,
+    originalUrl,
+    detailUrl: canonicalDetailUrl,
+    sourceUrl: normalizeInlineText(listItem.detailUrl),
+  });
 
   return {
     id: `eum-${listItem.seq}`,
@@ -508,7 +544,7 @@ function normalizeEumHearing(listItem: EumListItem, detailItem: EumDetailItem | 
     summary: buildSummary({ agency, publishedAt, hearingStartDate, hearingEndDate, location, body }),
     body,
     attachments: detailItem?.attachments || [],
-    link: detailItem?.link || listItem.detailUrl,
+    link: canonicalDetailUrl,
     rawSource: {
       list: listItem.rawSource,
       detail: detailItem?.rawSource || null,
@@ -540,7 +576,7 @@ async function loadDetail(listItem: EumListItem, debugState: EumDebugState): Pro
     return cached.item;
   }
 
-  const requestUrl = new URL(listItem.detailUrl);
+  const requestUrl = new URL(canonicalizeEumDetailUrl(listItem.detailUrl));
   debugState.lastRequestUrl = requestUrl.toString();
   debugState.lastDetailUrl = requestUrl.toString();
   debugState.elapsedMs = 0;

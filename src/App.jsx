@@ -226,10 +226,42 @@ function isDetailedLink(link) {
   return /det\.jsp|detail|view|seq=|gosino=|opinion/i.test(normalized);
 }
 
+function canonicalizeEumDetailUrl(link) {
+  const rawUrl = normalizeInlineText(link);
+  const fallbackBaseUrl = 'https://www.eum.go.kr/web/cp/hr/';
+  const canonicalBaseUrl = 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp';
+
+  if (!rawUrl) {
+    return '';
+  }
+
+  try {
+    const resolvedUrl = /^https?:\/\//i.test(rawUrl)
+      ? new URL(rawUrl)
+      : new URL(rawUrl, fallbackBaseUrl);
+
+    if (/hrPeopleHearDet\.jsp$/i.test(resolvedUrl.pathname)) {
+      const canonicalUrl = new URL(canonicalBaseUrl);
+      resolvedUrl.searchParams.forEach((value, key) => {
+        canonicalUrl.searchParams.append(key, value);
+      });
+      return canonicalUrl.toString();
+    }
+
+    return resolvedUrl.toString();
+  } catch {
+    return rawUrl;
+  }
+}
+
 function normalizeNotice(notice) {
   const sourceLabels = uniqueStrings([...(notice.sourceLabels || []), notice.sourceLabel].map(normalizeInlineText));
   const sources = uniqueStrings([...(notice.sources || []), notice.source]);
   const attachments = new globalThis.Map();
+  const rawLink = normalizeInlineText(notice.link);
+  const normalizedLink = notice.source === 'eum_public_hearing' || /hrPeopleHearDet\.jsp/i.test(rawLink)
+    ? canonicalizeEumDetailUrl(rawLink)
+    : rawLink;
 
   (notice.attachments || []).forEach((attachment) => {
     const name = normalizeInlineText(attachment?.name);
@@ -264,7 +296,7 @@ function normalizeNotice(notice) {
     summary: normalizeInlineText(notice.summary) || undefined,
     body: normalizeInlineText(notice.body) || undefined,
     attachments: [...attachments.values()],
-    link: normalizeInlineText(notice.link),
+    link: normalizedLink,
   };
 }
 
@@ -533,6 +565,13 @@ function buildNoticeSummary(notice) {
 function NoticeSummaryCard({ notice, emphasized = false }) {
   const statusMeta = getStatusMeta(notice.status);
   const summary = buildNoticeSummary(notice);
+  const finalNoticeHref = notice.link;
+  if (notice.source === 'eum_public_hearing' && finalNoticeHref) {
+    console.info('[eum-url-debug] render final href', {
+      seq: notice.seq || '',
+      href: finalNoticeHref,
+    });
+  }
   const attachmentLabel = notice.attachments?.length
     ? notice.attachments.length === 1
       ? notice.attachments[0].name
@@ -583,11 +622,19 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
           <span className="rounded-full bg-[#f2f4f6] px-3 py-2">출처: {sourceLabel}</span>
           <span className="rounded-full bg-[#f2f4f6] px-3 py-2">{attachmentLabel}</span>
         </div>
-        {notice.link ? (
+        {finalNoticeHref ? (
           <a
-            href={notice.link}
+            href={finalNoticeHref}
             target="_blank"
             rel="noreferrer"
+            onClick={() => {
+              if (notice.source === 'eum_public_hearing') {
+                console.info('[eum-url-debug] click open url', {
+                  seq: notice.seq || '',
+                  href: finalNoticeHref,
+                });
+              }
+            }}
             className="rounded-xl border border-[#bfc7d2] px-4 py-2 text-sm font-semibold text-[#3f4850] transition hover:border-[#006194] hover:text-[#006194]"
           >
             원문 보기
@@ -665,6 +712,21 @@ export default function App() {
         }
 
         const rawItems = Array.isArray(payload.items) ? payload.items : [];
+        const eumApiUrlLogs = rawItems
+          .filter((item) => item?.source === 'eum_public_hearing')
+          .map((item) => ({
+            seq: normalizeInlineText(item?.seq),
+            originalUrl: normalizeInlineText(item?.originalUrl),
+            detailUrl: normalizeInlineText(item?.detailUrl),
+            sourceUrl: normalizeInlineText(item?.sourceUrl),
+            link: normalizeInlineText(item?.link),
+            hasOriginalUrlField: Object.prototype.hasOwnProperty.call(item || {}, 'originalUrl'),
+            hasDetailUrlField: Object.prototype.hasOwnProperty.call(item || {}, 'detailUrl'),
+            hasSourceUrlField: Object.prototype.hasOwnProperty.call(item || {}, 'sourceUrl'),
+          }));
+        if (eumApiUrlLogs.length) {
+          console.info('[eum-url-debug] api response item urls', eumApiUrlLogs);
+        }
         const dedupedItems = dedupeNotices(rawItems);
 
         setRawHearings(rawItems);
