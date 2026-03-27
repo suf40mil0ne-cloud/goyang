@@ -65,6 +65,14 @@ export function matchRegionFromAddress(address = {}) {
     return names.some((name) => normalizedValue.includes(name) || name.includes(normalizedValue));
   };
 
+  const districtAliases = (district) => [district.sigungu, ...(district.aliases || [])].map(normalizeText);
+
+  const explicitDistrictCombos = [
+    [cityText, address.borough],
+    [cityText, address.suburb],
+    [cityText, address.city_district],
+  ].filter(([cityValue, districtValue]) => cityValue && districtValue);
+
   const districtCandidates = districtTexts.flatMap((text, index) => {
     const current = String(text || '').trim();
     if (!current) return [];
@@ -72,13 +80,43 @@ export function matchRegionFromAddress(address = {}) {
     return combined && combined !== current ? [combined, current] : [current];
   });
 
+  const findExplicitDistrictInRegion = (region) => {
+    const cityMatchesRegion = cityText && regionNameMatches(region, cityText);
+
+    for (const [cityValue, districtValue] of explicitDistrictCombos) {
+      const normalizedCity = normalizeText(cityValue);
+      const normalizedDistrict = normalizeText(districtValue);
+      const normalizedCombined = normalizeText([cityValue, districtValue].join(" "));
+      if (!normalizedCity || !normalizedDistrict) continue;
+
+      const district = (region.districts || []).find((item) => {
+        const aliases = districtAliases(item);
+        const combinedMatch = aliases.some((alias) => alias.includes(normalizedCombined) || normalizedCombined.includes(alias));
+        const splitMatch = aliases.some((alias) => alias.includes(normalizedCity) && alias.includes(normalizedDistrict));
+        const districtOnlyMatch = aliases.some((alias) => alias.includes(normalizedDistrict) || normalizedDistrict.includes(alias));
+
+        if (cityMatchesRegion) {
+          return combinedMatch || districtOnlyMatch;
+        }
+
+        return combinedMatch || splitMatch;
+      });
+
+      if (district) {
+        return district;
+      }
+    }
+
+    return null;
+  };
+
   const findDistrictInRegion = (region) => {
     for (const candidate of districtCandidates) {
       const normalizedCandidate = normalizeText(candidate);
       if (!normalizedCandidate) continue;
 
       const matches = (region.districts || []).filter((district) => {
-        const aliases = [district.sigungu, ...(district.aliases || [])].map(normalizeText);
+        const aliases = districtAliases(district);
         return aliases.some((alias) => alias.includes(normalizedCandidate) || normalizedCandidate.includes(alias));
       });
 
@@ -87,7 +125,7 @@ export function matchRegionFromAddress(address = {}) {
       }
 
       const exactMatch = matches.find((district) => {
-        const aliases = [district.sigungu, ...(district.aliases || [])].map(normalizeText);
+        const aliases = districtAliases(district);
         return aliases.includes(normalizedCandidate);
       });
 
@@ -107,6 +145,13 @@ export function matchRegionFromAddress(address = {}) {
   const candidateRegions = stateRegions.length ? stateRegions : regions;
 
   for (const region of candidateRegions) {
+    const district = findExplicitDistrictInRegion(region);
+    if (district) {
+      return { sido: region.name, sigungu: district.sigungu };
+    }
+  }
+
+  for (const region of candidateRegions) {
     const district = findDistrictInRegion(region);
     if (district) {
       return { sido: region.name, sigungu: district.sigungu };
@@ -121,7 +166,6 @@ export function matchRegionFromAddress(address = {}) {
   console.warn('[region-match] unable to match address', address);
   return null;
 }
-
 
 export function formatRegionLabel(region) {
   if (!region) return '선택된 지역 없음';
