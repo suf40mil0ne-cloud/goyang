@@ -40,7 +40,10 @@ function parseListHtml(html, pageNo) {
     const anchorMatch = cells[1].match(/<a\b[^>]*href=(["'])([\s\S]*?)\1[^>]*>([\s\S]*?)<\/a>/i);
     if (!anchorMatch) continue;
 
-    const href = new URL(anchorMatch[2], BASE_URL).toString();
+    const rawHref = anchorMatch[2].trim();
+    const href = /^https?:\/\//i.test(rawHref)
+      ? rawHref
+      : new URL(rawHref, 'https://www.eum.go.kr/web/cp/hr/').toString();
     const seq = new URL(href).searchParams.get('seq') || '';
     if (!seq) continue;
 
