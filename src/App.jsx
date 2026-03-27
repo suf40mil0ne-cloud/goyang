@@ -47,7 +47,16 @@ async function reverseGeocode(coords) {
   }
 
   const payload = await response.json();
-  return payload.address || {};
+  const address = payload.address || {};
+
+  return {
+    ...address,
+    state: address.state || address.region || address.province || '',
+    city: address.city || address.town || address.municipality || address.village || '',
+    county: address.county || '',
+    suburb: address.suburb || address.borough || '',
+    city_district: address.city_district || address.district || '',
+  };
 }
 
 function getCurrentPosition() {

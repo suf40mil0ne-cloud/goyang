@@ -70,20 +70,46 @@ function parseListHtml(html, pageNo) {
 }
 
 async function crawl() {
-  console.log('Fetching page 1...');
-  const firstHtml = await fetchHtml(`${LIST_URL}?pageNo=1`);
-  const { items: firstItems, lastPageNo } = parseListHtml(firstHtml, 1);
-  console.log(`Total pages: ${lastPageNo}, page 1 items: ${firstItems.length}`);
+  const dateParts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+    .formatToParts(new Date())
+    .reduce((acc, part) => {
+      if (part.type !== 'literal') acc[part.type] = part.value;
+      return acc;
+    }, {});
+  const today = [dateParts.year, dateParts.month, dateParts.day].join('-');
+  const allItems = [];
+  let page = 1;
+  let lastPageNo = 1;
 
-  const allItems = [...firstItems];
-  const pagesToFetch = Math.min(lastPageNo, 5); // 최대 5페이지
-
-  for (let page = 2; page <= pagesToFetch; page++) {
+  while (page <= lastPageNo) {
     console.log(`Fetching page ${page}...`);
     const html = await fetchHtml(`${LIST_URL}?pageNo=${page}`);
-    const { items } = parseListHtml(html, page);
-    console.log(`Page ${page} items: ${items.length}`);
-    allItems.push(...items);
+    const { items, lastPageNo: resolvedLastPageNo } = parseListHtml(html, page);
+
+    if (page === 1) {
+      lastPageNo = resolvedLastPageNo;
+      console.log(`Total pages: ${lastPageNo}, page 1 items: ${items.length}`);
+    } else {
+      console.log(`Page ${page} items: ${items.length}`);
+    }
+
+    const activeItems = items.filter((item) => !item.hearingEndDate || item.hearingEndDate >= today);
+    const pageAllClosed = items.length > 0 && items.every((item) => item.hearingEndDate && item.hearingEndDate < today);
+
+    allItems.push(...activeItems);
+    console.log(`Page ${page} active items: ${activeItems.length}`);
+
+    if (pageAllClosed) {
+      console.log(`Stopping at page ${page} because all items on this page are already closed.`);
+      break;
+    }
+
+    page += 1;
   }
 
   mkdirSync('data', { recursive: true });
