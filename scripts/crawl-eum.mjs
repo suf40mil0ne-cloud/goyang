@@ -96,4 +96,7 @@ async function crawl() {
   console.log(`Done! Total items: ${allItems.length}`);
 }
 
-crawl
+crawl().catch(e => {
+  console.error(e);
+  process.exit(1);
+});
