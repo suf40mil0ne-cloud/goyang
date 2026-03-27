@@ -36,6 +36,17 @@ async function reverseGeocode(coords) {
   url.searchParams.set('lon', String(longitude));
   url.searchParams.set('accept-language', 'ko');
 
+  // Debug only: log the exact reverse-geocode request params to verify lat/lng ordering.
+  console.info('[location-debug] reverse geocode request params', {
+    latitude,
+    longitude,
+    latParam: url.searchParams.get('lat'),
+    lonParam: url.searchParams.get('lon'),
+    x: coords?.x ?? null,
+    y: coords?.y ?? null,
+    latLngOrder: 'lat=latitude, lon=longitude',
+  });
+
   const response = await fetch(url, {
     headers: {
       Accept: 'application/json',
@@ -47,6 +58,8 @@ async function reverseGeocode(coords) {
   }
 
   const payload = await response.json();
+  console.info('[location-debug] reverse geocode raw response', payload);
+
   const address = payload.address || {};
 
   return {
@@ -59,16 +72,43 @@ async function reverseGeocode(coords) {
   };
 }
 
+
 function getCurrentPosition() {
   return new Promise((resolve, reject) => {
+    console.info('[location-debug] geolocation start', {
+      api: 'navigator.geolocation.getCurrentPosition',
+      watchPositionUsed: false,
+      hasNavigatorGeolocation: Boolean(navigator.geolocation),
+    });
+
     if (!navigator.geolocation) {
+      console.error('[location-debug] geolocation error', {
+        code: null,
+        message: 'unsupported-geolocation',
+      });
       reject(new Error('unsupported-geolocation'));
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
-      (position) => resolve(position.coords),
-      reject,
+      (position) => {
+        console.info('[location-debug] geolocation success', {
+          latitude: position.coords?.latitude ?? null,
+          longitude: position.coords?.longitude ?? null,
+          accuracy: position.coords?.accuracy ?? null,
+          x: position.coords?.x ?? null,
+          y: position.coords?.y ?? null,
+          latLngOrder: 'latitude -> lat, longitude -> lon',
+        });
+        resolve(position.coords);
+      },
+      (error) => {
+        console.error('[location-debug] geolocation error', {
+          code: typeof error?.code === 'number' ? error.code : null,
+          message: String(error?.message || ''),
+        });
+        reject(error);
+      },
       {
         enableHighAccuracy: true,
         timeout: 10000,
@@ -77,6 +117,7 @@ function getCurrentPosition() {
     );
   });
 }
+
 
 function describeLocationError(error) {
   const code = typeof error?.code === 'number' ? error.code : null;
@@ -656,7 +697,18 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    console.info('[location-debug] initial geolocation effect', {
+      hasRequestedInitialLocation: hasRequestedInitialLocation.current,
+      selectedRegion,
+      selectedSido,
+      selectedSigungu,
+      note: 'This effect only starts geolocation once and does not restore any stored district.',
+    });
+
     if (hasRequestedInitialLocation.current) {
+      console.info('[location-debug] initial geolocation effect skipped', {
+        reason: 'already-requested',
+      });
       return;
     }
 
@@ -665,6 +717,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    console.info('[location-debug] currentSigunguCode effect', {
+      currentSigunguCode,
+      selectedRegion,
+      note: 'This effect resets adjacent UI state only; it does not overwrite the selected district.',
+    });
     setSelectedAdjacentCodes([]);
     setShowAdjacentSections(false);
   }, [currentSigunguCode]);
@@ -784,6 +841,14 @@ export default function App() {
   }, [adjacentDistrictHearings.length, currentDistrictHearings.length, currentSigunguCode, hearings.length, rawHearings.length, selectedRegion, summaryHearings.length]);
 
   function applyRegion(region, resolutionText) {
+    // Debug only: log the region that is about to be reflected in screen state.
+    console.info('[location-debug] parsed region/district', {
+      resolutionText,
+      region,
+      district: region?.sigungu || '',
+      fallbackUsed: false,
+      fallbackReason: '',
+    });
     setSelectedRegion(region);
     setSelectedSido(region.sido);
     setSelectedSigungu(region.sigungu);
@@ -821,6 +886,7 @@ export default function App() {
       console.info('[location] geolocation:success', {
         latitude: Number(coords.latitude?.toFixed?.(5) || coords.latitude),
         longitude: Number(coords.longitude?.toFixed?.(5) || coords.longitude),
+        accuracy: Number(coords.accuracy?.toFixed?.(2) || coords.accuracy || 0),
       });
       const address = await reverseGeocode({ lat: coords.latitude, lon: coords.longitude });
       console.info('[location] reverse-geocode:success', {
@@ -828,6 +894,11 @@ export default function App() {
         borough: address.borough || address.suburb || address.city_district || '',
       });
       const region = matchRegionFromAddress(address);
+
+      console.info('[location-debug] fallback used', {
+        fallbackUsed: false,
+        reason: 'geolocation-and-reverse-geocode-succeeded',
+      });
 
       if (!region) {
         throw new Error('region-match-failed');
@@ -840,6 +911,11 @@ export default function App() {
         stage: details.stage,
         code: typeof detectError?.code === 'number' ? detectError.code : null,
         message: String(detectError?.message || ''),
+      });
+      console.info('[location-debug] fallback used', {
+        fallbackUsed: false,
+        reason: details.resolution,
+        note: 'No hardcoded district fallback is applied; the UI only shows an error message.',
       });
       setLocationResolution(details.resolution);
       setLocationMessage(details.message);
@@ -868,6 +944,33 @@ export default function App() {
       });
     });
   }
+
+  useEffect(() => {
+    // Debug only: confirm there is no storage-based district restore path in the current app flow.
+    console.info('[location-debug] localStorage restored value', {
+      restoredValue: null,
+      implemented: false,
+      reason: 'No localStorage/sessionStorage restore logic exists in App.jsx.',
+      localStorageAvailable: typeof window !== 'undefined' && 'localStorage' in window,
+      sessionStorageAvailable: typeof window !== 'undefined' && 'sessionStorage' in window,
+      watchPositionCallPresent: false,
+      defaultState: {
+        initialSido,
+        initialRegion: getInitialRegion(),
+      },
+      hardcodedBusanSeoguDetected: initialSido === '부산광역시' || getInitialRegion()?.sido === '부산광역시',
+    });
+  }, []);
+
+  useEffect(() => {
+    console.info('[location-debug] final district applied to screen', {
+      selectedRegion,
+      selectedSido,
+      selectedSigungu,
+      renderedDistrict: selectedRegion?.sigungu || '',
+      currentSigunguCode,
+    });
+  }, [currentSigunguCode, selectedRegion, selectedSido, selectedSigungu]);
 
   function toggleAdjacentCode(code) {
     setSelectedAdjacentCodes((current) =>

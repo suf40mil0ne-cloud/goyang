@@ -80,6 +80,19 @@ export function matchRegionFromAddress(address = {}) {
     return combined && combined !== current ? [combined, current] : [current];
   });
 
+  // Debug only: log the parsed address fields and candidate combinations used for matching.
+  console.info('[location-debug] parsed region/district candidates', {
+    stateText,
+    cityText,
+    borough: address.borough || '',
+    suburb: address.suburb || '',
+    cityDistrict: address.city_district || '',
+    county: address.county || '',
+    districtTexts,
+    explicitDistrictCombos,
+    fullText,
+  });
+
   const findExplicitDistrictInRegion = (region) => {
     const cityMatchesRegion = cityText && regionNameMatches(region, cityText);
 
@@ -103,6 +116,12 @@ export function matchRegionFromAddress(address = {}) {
       });
 
       if (district) {
+        console.info('[location-debug] parsed region/district', {
+          stage: 'explicit-combo-match',
+          region: { sido: region.name, sigungu: district.sigungu },
+          cityValue,
+          districtValue,
+        });
         return district;
       }
     }
@@ -130,10 +149,20 @@ export function matchRegionFromAddress(address = {}) {
       });
 
       if (exactMatch) {
+        console.info('[location-debug] parsed region/district', {
+          stage: 'candidate-exact-match',
+          region: { sido: region.name, sigungu: exactMatch.sigungu },
+          candidate,
+        });
         return exactMatch;
       }
 
       if (candidate !== cityText || matches.length === 1) {
+        console.info('[location-debug] parsed region/district', {
+          stage: 'candidate-fallback-match',
+          region: { sido: region.name, sigungu: matches[0].sigungu },
+          candidate,
+        });
         return matches[0];
       }
     }
@@ -160,6 +189,11 @@ export function matchRegionFromAddress(address = {}) {
 
   const matched = matchRegionByText(fullText);
   if (matched && (!normalizedState || stateRegions.some((region) => region.name === matched.sido))) {
+    console.info('[location-debug] parsed region/district', {
+      stage: 'full-text-match',
+      region: { sido: matched.sido, sigungu: matched.sigungu },
+      fullText,
+    });
     return { sido: matched.sido, sigungu: matched.sigungu };
   }
 
