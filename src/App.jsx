@@ -28,10 +28,12 @@ function getInitialRegion() {
 }
 
 async function reverseGeocode(coords) {
+  const latitude = coords?.lat ?? coords?.latitude;
+  const longitude = coords?.lon ?? coords?.lng ?? coords?.longitude;
   const url = new URL('https://nominatim.openstreetmap.org/reverse');
   url.searchParams.set('format', 'jsonv2');
-  url.searchParams.set('lat', String(coords.lat));
-  url.searchParams.set('lon', String(coords.lng));
+  url.searchParams.set('lat', String(latitude));
+  url.searchParams.set('lon', String(longitude));
   url.searchParams.set('accept-language', 'ko');
 
   const response = await fetch(url, {
