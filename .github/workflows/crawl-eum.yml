@@ -2,8 +2,11 @@ name: Crawl EUM Hearings
 
 on:
   schedule:
-    - cron: '0 * * * *'  # 매 1시간마다
-  workflow_dispatch:      # 수동 실행도 가능
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   crawl:
