@@ -114,8 +114,25 @@ function extractHrefAndText(anchorHtml: string, baseUrl: string): { href: string
   }
 
   try {
+    const rawHref = String(match[2] || '').trim();
+    const fallbackBaseUrl = 'https://www.eum.go.kr/web/cp/hr/';
+    const resolvedUrl = /^https?:\/\//i.test(rawHref)
+      ? new URL(rawHref)
+      : new URL(rawHref, fallbackBaseUrl);
+
+    if (/hrPeopleHearDet.jsp$/i.test(resolvedUrl.pathname)) {
+      const canonicalUrl = new URL('https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp');
+      resolvedUrl.searchParams.forEach((value, key) => {
+        canonicalUrl.searchParams.append(key, value);
+      });
+      return {
+        href: canonicalUrl.toString(),
+        text: normalizeInlineText(match[3]),
+      };
+    }
+
     return {
-      href: new URL(match[2], baseUrl).toString(),
+      href: resolvedUrl.toString(),
       text: normalizeInlineText(match[3]),
     };
   } catch {
