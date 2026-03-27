@@ -112,6 +112,7 @@ export class EumStageError extends Error {
 }
 
 const EUM_LIST_URL = 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp';
+const EUM_CACHED_JSON_URL = 'https://raw.githubusercontent.com/suf40mil0ne-cloud/goyang/main/data/eum-hearings.json';
 const DATASET_CACHE_TTL_MS = 15 * 60 * 1000;
 const DATASET_STALE_TTL_MS = 60 * 60 * 1000;
 const DETAIL_CACHE_TTL_MS = 60 * 60 * 1000;
@@ -168,7 +169,7 @@ function getDecodedScore(text: string): number {
   }
 
   let score = 0;
-  score -= (text.match(/�/g) || []).length * 8;
+  score -= (text.match(/\uFFFD/g) || []).length * 8;
   score -= (text.match(/\u0000/g) || []).length * 4;
   if (/[가-힣]/.test(text)) score += 40;
   if (text.includes('주민의견청취')) score += 10;
@@ -660,6 +661,58 @@ export async function loadEumPublicHearings(
   }
 
   try {
+    if (!hasActiveListFilters(query) && !query.maxPages) {
+      try {
+        const res = await fetch(EUM_CACHED_JSON_URL, { headers: { 'Cache-Control': 'no-cache' } });
+        if (!res.ok) throw new Error(
+          'cached-json-fetch-failed: ' + res.status
+        );
+
+        const json = await res.json() as {
+          crawledAt: string;
+          count: number;
+          items: EumListItem[];
+        };
+        const listItems = Array.isArray(json.items) ? json.items : [];
+        if (!listItems.length) {
+          throw new Error('cached-json-empty');
+        }
+
+        const items = sortHearings(listItems.map((listItem) => normalizeEumHearing(listItem, null)));
+        const payload: EumDatasetPayload = {
+          items,
+          fetchedAt: String(json.crawledAt || new Date().toISOString()),
+          listCount: listItems.length,
+          detailSuccessCount: 0,
+          detailFailureCount: 0,
+        };
+
+        datasetCache.set(cacheKey, {
+          cachedAt: now,
+          payload,
+        });
+
+        console.info('[eum] dataset loaded from cached json', {
+          cacheKey,
+          sourceUrl: EUM_CACHED_JSON_URL,
+          listCount: payload.listCount,
+          totalCount: items.length,
+        });
+
+        return {
+          payload,
+          usedStaleCache: false,
+          debug: snapshotEumDebug(debugState),
+        };
+      } catch (error) {
+        console.warn('[eum] cached json unavailable, falling back to live fetch', {
+          cacheKey,
+          sourceUrl: EUM_CACHED_JSON_URL,
+          message: String(error),
+        });
+      }
+    }
+
     const maxPages = Math.min(MAX_MAX_PAGES, Math.max(1, query.maxPages || DEFAULT_MAX_PAGES));
     const listings: EumListItem[] = [];
     const seenSeq = new Set<string>();
