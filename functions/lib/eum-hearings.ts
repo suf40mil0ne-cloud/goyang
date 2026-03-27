@@ -37,11 +37,15 @@ type DecodedHtmlResponse = {
   html: string;
   detectedCharset: string;
   contentType: string;
+  fetchStartedAt: string;
+  headersReceivedAt: string;
+  bodyReceivedAt: string;
 };
 
 type EumStage =
   | 'list-fetch-start'
-  | 'list-fetch-done'
+  | 'list-fetch-headers'
+  | 'list-fetch-body'
   | 'list-fetch-error'
   | 'list-fetch-timeout'
   | 'list-parse'
@@ -61,6 +65,9 @@ type EumDebugSnapshot = {
   lastListContentType: string;
   lastListPreview: string;
   lastDetailPreview: string;
+  listFetchStartedAt: string;
+  listFetchHeadersReceivedAt: string;
+  listFetchBodyReceivedAt: string;
   elapsedMs: number;
   timeoutMs: number;
 };
@@ -85,6 +92,9 @@ type ExternalEumDebugState = {
   lastDetailContentType?: string;
   lastListDetectedCharset?: string;
   lastDetailDetectedCharset?: string;
+  listFetchStartedAt?: string;
+  listFetchHeadersReceivedAt?: string;
+  listFetchBodyReceivedAt?: string;
   elapsedMs?: number;
   timeoutMs?: number;
 };
@@ -105,7 +115,8 @@ const EUM_LIST_URL = 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp';
 const DATASET_CACHE_TTL_MS = 15 * 60 * 1000;
 const DATASET_STALE_TTL_MS = 60 * 60 * 1000;
 const DETAIL_CACHE_TTL_MS = 60 * 60 * 1000;
-const LIST_FETCH_TIMEOUT_MS = 8000;
+export const EUM_LIST_FETCH_TIMEOUT_MS = 20000;
+const LIST_FETCH_TIMEOUT_MS = EUM_LIST_FETCH_TIMEOUT_MS;
 const DETAIL_FETCH_TIMEOUT_MS = 8000;
 const REQUEST_RETRIES = 2;
 const RETRY_DELAY_MS = 600;
@@ -204,6 +215,9 @@ function createEmptyEumDebugState(): EumDebugState {
     lastListContentType: '',
     lastListPreview: '',
     lastDetailPreview: '',
+    listFetchStartedAt: '',
+    listFetchHeadersReceivedAt: '',
+    listFetchBodyReceivedAt: '',
     lastDetailContentType: '',
     lastListDetectedCharset: '',
     lastDetailDetectedCharset: '',
@@ -224,6 +238,9 @@ function snapshotEumDebug(state: EumDebugState): EumDebugSnapshot {
     lastListContentType: state.lastListContentType,
     lastListPreview: state.lastListPreview,
     lastDetailPreview: state.lastDetailPreview,
+    listFetchStartedAt: state.listFetchStartedAt,
+    listFetchHeadersReceivedAt: state.listFetchHeadersReceivedAt,
+    listFetchBodyReceivedAt: state.listFetchBodyReceivedAt,
     elapsedMs: state.elapsedMs,
     timeoutMs: state.timeoutMs,
   };
@@ -300,6 +317,9 @@ function logEumStage(
     htmlKind?: string;
     parsedCount?: number;
     message?: string;
+    fetchStartedAt?: string;
+    headersReceivedAt?: string;
+    bodyReceivedAt?: string;
     elapsedMs?: number;
     timeoutMs?: number;
     errorName?: string;
@@ -353,21 +373,25 @@ function buildListUrl(query: EumQuery, pageNo: number): URL {
 async function fetchDecodedHtml(url: URL, timeoutMs: number): Promise<DecodedHtmlResponse> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  const fetchStartedAt = new Date().toISOString();
 
   try {
     const response = await fetch(url, {
       signal: controller.signal,
       headers: {
-        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-        'Accept-Language': 'ko-KR,ko;q=0.9,en;q=0.7',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
         Referer: 'https://www.eum.go.kr/',
-        'Upgrade-Insecure-Requests': '1',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
       },
       redirect: 'follow',
     });
+    const headersReceivedAt = new Date().toISOString();
 
     const buffer = await response.arrayBuffer();
+    const bodyReceivedAt = new Date().toISOString();
     const decoded = decodeHtmlBuffer(buffer, response.headers.get('content-type') || '');
 
     return {
@@ -376,6 +400,9 @@ async function fetchDecodedHtml(url: URL, timeoutMs: number): Promise<DecodedHtm
       html: decoded.html,
       detectedCharset: decoded.detectedCharset,
       contentType: response.headers.get('content-type') || '',
+      fetchStartedAt,
+      headersReceivedAt,
+      bodyReceivedAt,
     };
   } finally {
     clearTimeout(timeoutId);
@@ -644,8 +671,24 @@ export async function loadEumPublicHearings(
       debugState.lastRequestUrl = listUrl.toString();
       debugState.lastListUrl = '';
       debugState.lastListContentType = '';
+      debugState.lastListPreview = '';
+      debugState.listFetchStartedAt = new Date().toISOString();
+      debugState.listFetchHeadersReceivedAt = '';
+      debugState.listFetchBodyReceivedAt = '';
       debugState.elapsedMs = 0;
       debugState.timeoutMs = LIST_FETCH_TIMEOUT_MS;
+      logEumStage('info', {
+        stage: 'list-fetch-start',
+        requestUrl: listUrl.toString(),
+        responseUrl: '',
+        contentType: '',
+        detectedCharset: '',
+        pageNo,
+        htmlPreview: '',
+        fetchStartedAt: debugState.listFetchStartedAt,
+        elapsedMs: 0,
+        timeoutMs: debugState.timeoutMs,
+      });
 
       let response: DecodedHtmlResponse;
       const fetchStartedAt = Date.now();
@@ -664,6 +707,9 @@ export async function loadEumPublicHearings(
           pageNo,
           htmlPreview: debugState.lastListPreview,
           message: isAbortLikeError(error) ? 'list fetch timed out' : String(error),
+          fetchStartedAt: debugState.listFetchStartedAt,
+          headersReceivedAt: debugState.listFetchHeadersReceivedAt,
+          bodyReceivedAt: debugState.listFetchBodyReceivedAt,
           elapsedMs: debugState.elapsedMs,
           timeoutMs: debugState.timeoutMs,
           errorName: error instanceof Error ? error.name : '',
@@ -677,17 +723,40 @@ export async function loadEumPublicHearings(
         );
       }
 
-      debugState.lastErrorStage = 'list-fetch-done';
+      debugState.lastErrorStage = 'list-fetch-headers';
       debugState.elapsedMs = Date.now() - fetchStartedAt;
       debugState.lastListPreview = getHtmlPreview(response.html);
       debugState.lastListUrl = response.url || listUrl.toString();
       debugState.lastListContentType = response.contentType;
       debugState.lastListDetectedCharset = response.detectedCharset;
+      debugState.listFetchStartedAt = response.fetchStartedAt;
+      debugState.listFetchHeadersReceivedAt = response.headersReceivedAt;
+      debugState.listFetchBodyReceivedAt = response.bodyReceivedAt;
 
       const responseUrl = response.url || listUrl.toString();
       const htmlKind = classifyEumHtml(response.html, responseUrl, 'list');
-      const listFetchLog = {
-        stage: 'list-fetch-done' as const,
+      const listFetchHeadersLog = {
+        stage: 'list-fetch-headers' as const,
+        requestUrl: listUrl.toString(),
+        responseUrl,
+        contentType: response.contentType,
+        detectedCharset: response.detectedCharset,
+        pageNo,
+        htmlPreview: '',
+        htmlKind,
+        fetchStartedAt: debugState.listFetchStartedAt,
+        headersReceivedAt: debugState.listFetchHeadersReceivedAt,
+        bodyReceivedAt: '',
+        elapsedMs: debugState.listFetchHeadersReceivedAt
+          ? Date.parse(debugState.listFetchHeadersReceivedAt) - Date.parse(debugState.listFetchStartedAt)
+          : debugState.elapsedMs,
+        timeoutMs: debugState.timeoutMs,
+      };
+      logEumStage('info', listFetchHeadersLog);
+
+      debugState.lastErrorStage = 'list-fetch-body';
+      const listFetchBodyLog = {
+        stage: 'list-fetch-body' as const,
         requestUrl: listUrl.toString(),
         responseUrl,
         contentType: response.contentType,
@@ -695,6 +764,9 @@ export async function loadEumPublicHearings(
         pageNo,
         htmlPreview: debugState.lastListPreview,
         htmlKind,
+        fetchStartedAt: debugState.listFetchStartedAt,
+        headersReceivedAt: debugState.listFetchHeadersReceivedAt,
+        bodyReceivedAt: debugState.listFetchBodyReceivedAt,
         elapsedMs: debugState.elapsedMs,
         timeoutMs: debugState.timeoutMs,
       };
@@ -702,13 +774,13 @@ export async function loadEumPublicHearings(
       if (htmlKind !== 'expected') {
         debugState.lastErrorStage = 'list-fetch-error';
         logEumStage('error', {
-          ...listFetchLog,
+          ...listFetchBodyLog,
           message: `unexpected list html: ${htmlKind}`,
         });
         throw new EumStageError('list-fetch-error', `eum-list-fetch-unexpected-${htmlKind}`, snapshotEumDebug(debugState));
       }
 
-      logEumStage('info', listFetchLog);
+      logEumStage('info', listFetchBodyLog);
 
       const parsed = parseEumListHtml(response.html, {
         baseUrl: responseUrl,
@@ -850,6 +922,40 @@ export async function loadEumPublicHearings(
 
     throw new EumStageError(debugState.lastErrorStage || 'dataset-build', String(error), snapshotEumDebug(debugState));
   }
+}
+
+export async function probeEumListConnection(
+  query: EumQuery = {}
+): Promise<{
+  status: number;
+  requestUrl: string;
+  responseUrl: string;
+  contentType: string;
+  detectedCharset: string;
+  timeoutMs: number;
+  elapsedMs: number;
+  fetchStartedAt: string;
+  headersReceivedAt: string;
+  bodyReceivedAt: string;
+  preview: string;
+}> {
+  const listUrl = buildListUrl(query, 1);
+  const startedAt = Date.now();
+  const response = await fetchDecodedHtml(listUrl, LIST_FETCH_TIMEOUT_MS);
+
+  return {
+    status: response.status,
+    requestUrl: listUrl.toString(),
+    responseUrl: response.url || listUrl.toString(),
+    contentType: response.contentType,
+    detectedCharset: response.detectedCharset,
+    timeoutMs: LIST_FETCH_TIMEOUT_MS,
+    elapsedMs: Date.now() - startedAt,
+    fetchStartedAt: response.fetchStartedAt,
+    headersReceivedAt: response.headersReceivedAt,
+    bodyReceivedAt: response.bodyReceivedAt,
+    preview: getHtmlPreview(response.html),
+  };
 }
 
 export type { EumQuery, EumDebugSnapshot, EumStage };

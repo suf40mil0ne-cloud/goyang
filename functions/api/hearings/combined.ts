@@ -1,12 +1,13 @@
 import regionAdjacency from '../../../data/region-adjacency.json';
 import { CombinedHearingsResponse, HearingItem, dedupeHearings, sortHearings } from '../../../shared/hearings';
 import { getRegionLabelBySigunguCode, normalizeSigunguCode } from '../../../shared/region-codes';
-import { loadEumPublicHearings } from '../../lib/eum-hearings';
+import { getBuildStamp, type BuildStampEnv } from '../../lib/build-stamp';
+import { EUM_LIST_FETCH_TIMEOUT_MS, loadEumPublicHearings } from '../../lib/eum-hearings';
 import { EnvMap, loadMolitHearings } from '../../lib/molit-hearings';
 
 type RequestContext = {
   request: Request;
-  env: EnvMap;
+  env: EnvMap & BuildStampEnv;
 };
 
 type FallbackSelection = {
@@ -34,6 +35,9 @@ type EumDebugState = {
   lastListContentType: string;
   lastListPreview: string;
   lastDetailPreview: string;
+  listFetchStartedAt: string;
+  listFetchHeadersReceivedAt: string;
+  listFetchBodyReceivedAt: string;
   elapsedMs: number;
   timeoutMs: number;
 };
@@ -41,7 +45,8 @@ type EumDebugState = {
 const DEFAULT_PER_PAGE = 50;
 const MAX_PER_PAGE = 200;
 const MOLIT_SOURCE_TIMEOUT_MS = 15000;
-const EUM_SOURCE_TIMEOUT_MS = 12000;
+const EUM_SOURCE_WRAPPER_TIMEOUT_MS = 30000;
+const EUM_SOURCE_TIMEOUT_MS = EUM_SOURCE_WRAPPER_TIMEOUT_MS;
 
 function parsePositiveInteger(value: string | null, fallbackValue: number, min = 1, max = Number.MAX_SAFE_INTEGER): number {
   const parsed = Number.parseInt(String(value ?? ''), 10);
@@ -86,6 +91,9 @@ function createEmptyEumDebug(): EumDebugState {
     lastListContentType: '',
     lastListPreview: '',
     lastDetailPreview: '',
+    listFetchStartedAt: '',
+    listFetchHeadersReceivedAt: '',
+    listFetchBodyReceivedAt: '',
     elapsedMs: 0,
     timeoutMs: 0,
   };
@@ -103,6 +111,9 @@ function formatEumDebug(debug: EumDebugState): Record<string, unknown> {
     lastListContentType: debug.lastListContentType,
     lastListPreview: debug.lastListPreview,
     lastDetailPreview: debug.lastDetailPreview,
+    listFetchStartedAt: debug.listFetchStartedAt,
+    listFetchHeadersReceivedAt: debug.listFetchHeadersReceivedAt,
+    listFetchBodyReceivedAt: debug.listFetchBodyReceivedAt,
     elapsedMs: debug.elapsedMs,
     timeoutMs: debug.timeoutMs,
   };
@@ -145,6 +156,33 @@ function getErrorRequestUrl(error: unknown): string {
     return '';
   }
   return String((error as { requestUrl?: unknown }).requestUrl || '');
+}
+
+function isTerminalEumFailureStage(stage: string): boolean {
+  return ['list-fetch-timeout', 'list-fetch-error', 'source-timeout'].includes(String(stage || ''));
+}
+
+function applyCombinedDebugFields(
+  body: Record<string, unknown>,
+  options: {
+    env: BuildStampEnv;
+    executedSources: string[];
+    failedSourceDetails: FailedSourceEntry[];
+    lastErrorStage: string;
+    eumDebug: EumDebugState;
+  }
+): void {
+  body.buildStamp = getBuildStamp(options.env);
+  body.executedSources = options.executedSources;
+  body.failedSources = options.failedSourceDetails;
+  body.lastErrorStage = options.lastErrorStage;
+  body.lastRequestUrl = options.eumDebug.lastRequestUrl;
+  body.lastListContentType = options.eumDebug.lastListContentType;
+  body.elapsedMs = options.eumDebug.elapsedMs;
+  body.timeoutMs = options.eumDebug.timeoutMs;
+  body.effectiveListFetchTimeoutMs = EUM_LIST_FETCH_TIMEOUT_MS;
+  body.effectiveSourceWrapperTimeoutMs = EUM_SOURCE_WRAPPER_TIMEOUT_MS;
+  body.eumDebug = formatEumDebug(options.eumDebug);
 }
 
 function buildFailedSourceEntry(source: string, error: unknown, debug?: EumDebugState | null, messageOverride?: string): FailedSourceEntry {
@@ -392,8 +430,10 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
 
     const mergedItems = sortHearings(dedupeHearings([...molitItems, ...eumItems]));
     if (!mergedItems.length) {
-      if (includeEum && !eumItems.length) {
-        const stage = lastErrorStage || eumDebug.lastErrorStage || 'dataset-build';
+      const stage = lastErrorStage || eumDebug.lastErrorStage || 'dataset-build';
+      const hasEumFailure = isTerminalEumFailureStage(stage)
+        || failedSourceDetails.some((item) => item.source === 'eum' || item.source === 'eum_public_hearing');
+      if (includeEum && eumResult.status === 'fulfilled' && !eumItems.length && !hasEumFailure) {
         failedSources.push('eum_public_hearing');
         failedSourceDetails.push({
           source: 'eum',
@@ -443,14 +483,13 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
     } satisfies CombinedHearingsResponse as unknown as Record<string, unknown>;
 
     if (debugMode) {
-      responseBody.executedSources = executedSources;
-      responseBody.failedSources = failedSourceDetails;
-      responseBody.lastErrorStage = lastErrorStage;
-      responseBody.lastRequestUrl = eumDebug.lastRequestUrl;
-      responseBody.lastListContentType = eumDebug.lastListContentType;
-      responseBody.elapsedMs = eumDebug.elapsedMs;
-      responseBody.timeoutMs = eumDebug.timeoutMs;
-      responseBody.eumDebug = formatEumDebug(eumDebug);
+      applyCombinedDebugFields(responseBody, {
+        env: context.env,
+        executedSources,
+        failedSourceDetails,
+        lastErrorStage,
+        eumDebug,
+      });
     }
 
     return createJsonResponse(responseBody, 200, responseCacheControl);
@@ -464,14 +503,13 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
         code: 'public_data_service_key_missing',
       };
       if (debugMode) {
-        body.executedSources = executedSources;
-        body.failedSources = failedSourceDetails;
-        body.lastErrorStage = lastErrorStage;
-        body.lastRequestUrl = eumDebug.lastRequestUrl;
-        body.lastListContentType = eumDebug.lastListContentType;
-        body.elapsedMs = eumDebug.elapsedMs;
-        body.timeoutMs = eumDebug.timeoutMs;
-        body.eumDebug = formatEumDebug(eumDebug);
+        applyCombinedDebugFields(body, {
+          env: context.env,
+          executedSources,
+          failedSourceDetails,
+          lastErrorStage,
+          eumDebug,
+        });
       }
       return createJsonResponse(body, 500, responseCacheControl);
     }
@@ -494,14 +532,13 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
     };
 
     if (debugMode) {
-      body.executedSources = executedSources;
-      body.failedSources = failedSourceDetails;
-      body.lastErrorStage = lastErrorStage;
-      body.lastRequestUrl = eumDebug.lastRequestUrl;
-      body.lastListContentType = eumDebug.lastListContentType;
-      body.elapsedMs = eumDebug.elapsedMs;
-      body.timeoutMs = eumDebug.timeoutMs;
-      body.eumDebug = formatEumDebug(eumDebug);
+      applyCombinedDebugFields(body, {
+        env: context.env,
+        executedSources,
+        failedSourceDetails,
+        lastErrorStage,
+        eumDebug,
+      });
     }
 
     return createJsonResponse(body, 502, responseCacheControl);
