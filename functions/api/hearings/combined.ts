@@ -19,6 +19,8 @@ type FailedSourceEntry = {
   source: string;
   stage: string;
   message?: string;
+  elapsedMs?: number;
+  requestUrl?: string;
 };
 
 type EumDebugState = {
@@ -26,16 +28,20 @@ type EumDebugState = {
   listCount: number;
   detailAttemptCount: number;
   detailSuccessCount: number;
+  lastRequestUrl: string;
   lastListUrl: string;
   lastDetailUrl: string;
+  lastListContentType: string;
   lastListPreview: string;
   lastDetailPreview: string;
+  elapsedMs: number;
+  timeoutMs: number;
 };
 
 const DEFAULT_PER_PAGE = 50;
 const MAX_PER_PAGE = 200;
 const MOLIT_SOURCE_TIMEOUT_MS = 15000;
-const EUM_SOURCE_TIMEOUT_MS = 25000;
+const EUM_SOURCE_TIMEOUT_MS = 12000;
 
 function parsePositiveInteger(value: string | null, fallbackValue: number, min = 1, max = Number.MAX_SAFE_INTEGER): number {
   const parsed = Number.parseInt(String(value ?? ''), 10);
@@ -74,22 +80,31 @@ function createEmptyEumDebug(): EumDebugState {
     listCount: 0,
     detailAttemptCount: 0,
     detailSuccessCount: 0,
+    lastRequestUrl: '',
     lastListUrl: '',
     lastDetailUrl: '',
+    lastListContentType: '',
     lastListPreview: '',
     lastDetailPreview: '',
+    elapsedMs: 0,
+    timeoutMs: 0,
   };
 }
 
 function formatEumDebug(debug: EumDebugState): Record<string, unknown> {
   return {
+    lastErrorStage: debug.lastErrorStage,
     listCount: debug.listCount,
     detailAttemptCount: debug.detailAttemptCount,
     detailSuccessCount: debug.detailSuccessCount,
+    lastRequestUrl: debug.lastRequestUrl,
     lastListUrl: debug.lastListUrl,
     lastDetailUrl: debug.lastDetailUrl,
+    lastListContentType: debug.lastListContentType,
     lastListPreview: debug.lastListPreview,
     lastDetailPreview: debug.lastDetailPreview,
+    elapsedMs: debug.elapsedMs,
+    timeoutMs: debug.timeoutMs,
   };
 }
 
@@ -117,16 +132,46 @@ function getErrorDebug(error: unknown): EumDebugState | null {
   };
 }
 
+function getErrorElapsedMs(error: unknown): number | undefined {
+  if (!error || typeof error !== 'object' || !('elapsedMs' in error)) {
+    return undefined;
+  }
+  const value = Number((error as { elapsedMs?: unknown }).elapsedMs);
+  return Number.isFinite(value) ? value : undefined;
+}
+
+function getErrorRequestUrl(error: unknown): string {
+  if (!error || typeof error !== 'object' || !('requestUrl' in error)) {
+    return '';
+  }
+  return String((error as { requestUrl?: unknown }).requestUrl || '');
+}
+
+function buildFailedSourceEntry(source: string, error: unknown, debug?: EumDebugState | null, messageOverride?: string): FailedSourceEntry {
+  const resolvedDebug = debug || getErrorDebug(error) || createEmptyEumDebug();
+  return {
+    source,
+    stage: resolvedDebug.lastErrorStage || getErrorStage(error),
+    message: messageOverride || (error instanceof Error ? error.message : String(error)),
+    elapsedMs: getErrorElapsedMs(error) ?? resolvedDebug.elapsedMs,
+    requestUrl: getErrorRequestUrl(error) || resolvedDebug.lastRequestUrl,
+  };
+}
+
 type SourceTimeoutError = Error & {
   stage: string;
   source: string;
+  elapsedMs: number;
+  requestUrl: string;
 };
 
-function createSourceTimeoutError(source: string): SourceTimeoutError {
+function createSourceTimeoutError(source: string, debug: EumDebugState | null, elapsedMs: number): SourceTimeoutError {
   const error = new Error(`${source}-source-timeout`) as SourceTimeoutError;
   error.name = 'SourceTimeoutError';
-  error.stage = 'source-timeout';
+  error.stage = debug?.lastErrorStage || 'source-timeout';
   error.source = source;
+  error.elapsedMs = elapsedMs;
+  error.requestUrl = debug?.lastRequestUrl || '';
   return error;
 }
 
@@ -146,11 +191,16 @@ async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, createErro
   }
 }
 
-async function runSourceWithTimeout<T>(source: string, timeoutMs: number, work: () => Promise<T>): Promise<T> {
+async function runSourceWithTimeout<T>(
+  source: string,
+  timeoutMs: number,
+  work: () => Promise<T>,
+  getDebugState?: () => EumDebugState | null
+): Promise<T> {
   const startedAt = Date.now();
   console.info('[hearings/combined] source start', { source, timeoutMs });
   try {
-    const result = await withTimeout(work(), timeoutMs, () => createSourceTimeoutError(source));
+    const result = await withTimeout(work(), timeoutMs, () => createSourceTimeoutError(source, getDebugState?.() || null, Date.now() - startedAt));
     console.info('[hearings/combined] source done', {
       source,
       status: 'fulfilled',
@@ -164,6 +214,8 @@ async function runSourceWithTimeout<T>(source: string, timeoutMs: number, work: 
       durationMs: Date.now() - startedAt,
       stage: getErrorStage(error),
       message: String(error),
+      requestUrl: error && typeof error === 'object' && 'requestUrl' in error ? String((error as { requestUrl?: unknown }).requestUrl || '') : '',
+      elapsedMs: error && typeof error === 'object' && 'elapsedMs' in error ? Number((error as { elapsedMs?: unknown }).elapsedMs || 0) : undefined,
     });
     throw error;
   }
@@ -279,7 +331,7 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
         ? runSourceWithTimeout('molit', MOLIT_SOURCE_TIMEOUT_MS, () => loadMolitHearings(context.env))
         : Promise.resolve({ payload: { items: [], fetchedAt }, usedStaleCache: false }),
       includeEum
-        ? runSourceWithTimeout('eum', EUM_SOURCE_TIMEOUT_MS, () => loadEumPublicHearings(eumQuery))
+        ? runSourceWithTimeout('eum', EUM_SOURCE_TIMEOUT_MS, () => loadEumPublicHearings(eumQuery, eumDebug), () => eumDebug)
         : Promise.resolve({
             payload: { items: [], fetchedAt, listCount: 0, detailSuccessCount: 0, detailFailureCount: 0 },
             usedStaleCache: false,
@@ -294,11 +346,7 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
 
     if (molitResult.status === 'rejected') {
       failedSources.push('molit_api');
-      failedSourceDetails.push({
-        source: 'molit',
-        stage: getErrorStage(molitResult.reason),
-        message: String(molitResult.reason),
-      });
+      failedSourceDetails.push(buildFailedSourceEntry('molit', molitResult.reason));
       console.error('[hearings/combined] source failed', {
         source: 'molit_api',
         stage: getErrorStage(molitResult.reason),
@@ -310,14 +358,10 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
     }
 
     if (eumResult.status === 'rejected') {
-      const stage = getErrorStage(eumResult.reason);
       const errorDebug = getErrorDebug(eumResult.reason);
+      const stage = errorDebug?.lastErrorStage || getErrorStage(eumResult.reason);
       failedSources.push('eum_public_hearing');
-      failedSourceDetails.push({
-        source: 'eum',
-        stage,
-        message: String(eumResult.reason),
-      });
+      failedSourceDetails.push(buildFailedSourceEntry('eum', eumResult.reason, errorDebug));
       if (errorDebug) {
         eumDebug = errorDebug;
       }
@@ -355,6 +399,8 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
           source: 'eum',
           stage,
           message: 'EUM returned no items before merge',
+          elapsedMs: eumDebug.elapsedMs,
+          requestUrl: eumDebug.lastRequestUrl,
         });
         lastErrorStage = stage;
       }
@@ -400,12 +446,16 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
       responseBody.executedSources = executedSources;
       responseBody.failedSources = failedSourceDetails;
       responseBody.lastErrorStage = lastErrorStage;
+      responseBody.lastRequestUrl = eumDebug.lastRequestUrl;
+      responseBody.lastListContentType = eumDebug.lastListContentType;
+      responseBody.elapsedMs = eumDebug.elapsedMs;
+      responseBody.timeoutMs = eumDebug.timeoutMs;
       responseBody.eumDebug = formatEumDebug(eumDebug);
     }
 
     return createJsonResponse(responseBody, 200, responseCacheControl);
   } catch (error) {
-    const stage = lastErrorStage || getErrorStage(error) || eumDebug.lastErrorStage || 'unknown';
+    const stage = lastErrorStage || eumDebug.lastErrorStage || getErrorStage(error) || 'unknown';
     lastErrorStage = stage;
 
     if (String(error).includes('public-data-service-key-missing')) {
@@ -417,6 +467,10 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
         body.executedSources = executedSources;
         body.failedSources = failedSourceDetails;
         body.lastErrorStage = lastErrorStage;
+        body.lastRequestUrl = eumDebug.lastRequestUrl;
+        body.lastListContentType = eumDebug.lastListContentType;
+        body.elapsedMs = eumDebug.elapsedMs;
+        body.timeoutMs = eumDebug.timeoutMs;
         body.eumDebug = formatEumDebug(eumDebug);
       }
       return createJsonResponse(body, 500, responseCacheControl);
@@ -443,6 +497,10 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
       body.executedSources = executedSources;
       body.failedSources = failedSourceDetails;
       body.lastErrorStage = lastErrorStage;
+      body.lastRequestUrl = eumDebug.lastRequestUrl;
+      body.lastListContentType = eumDebug.lastListContentType;
+      body.elapsedMs = eumDebug.elapsedMs;
+      body.timeoutMs = eumDebug.timeoutMs;
       body.eumDebug = formatEumDebug(eumDebug);
     }
 

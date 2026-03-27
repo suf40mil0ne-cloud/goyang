@@ -39,24 +39,54 @@ type DecodedHtmlResponse = {
   contentType: string;
 };
 
-type EumStage = 'list-fetch' | 'list-fetch-timeout' | 'list-parse' | 'detail-fetch' | 'detail-fetch-timeout' | 'detail-parse' | 'dataset-build';
+type EumStage =
+  | 'list-fetch-start'
+  | 'list-fetch-done'
+  | 'list-fetch-error'
+  | 'list-fetch-timeout'
+  | 'list-parse'
+  | 'detail-fetch'
+  | 'detail-fetch-timeout'
+  | 'detail-parse'
+  | 'dataset-build';
 
 type EumDebugSnapshot = {
   lastErrorStage: EumStage | '';
   listCount: number;
   detailAttemptCount: number;
   detailSuccessCount: number;
+  lastRequestUrl: string;
   lastListUrl: string;
   lastDetailUrl: string;
+  lastListContentType: string;
   lastListPreview: string;
   lastDetailPreview: string;
+  elapsedMs: number;
+  timeoutMs: number;
 };
 
 type EumDebugState = EumDebugSnapshot & {
-  lastListContentType: string;
   lastDetailContentType: string;
   lastListDetectedCharset: string;
   lastDetailDetectedCharset: string;
+};
+
+type ExternalEumDebugState = {
+  lastErrorStage?: string;
+  listCount?: number;
+  detailAttemptCount?: number;
+  detailSuccessCount?: number;
+  lastRequestUrl?: string;
+  lastListUrl?: string;
+  lastDetailUrl?: string;
+  lastListContentType?: string;
+  lastListPreview?: string;
+  lastDetailPreview?: string;
+  lastDetailContentType?: string;
+  lastListDetectedCharset?: string;
+  lastDetailDetectedCharset?: string;
+  elapsedMs?: number;
+  timeoutMs?: number;
 };
 
 export class EumStageError extends Error {
@@ -75,7 +105,8 @@ const EUM_LIST_URL = 'https://www.eum.go.kr/web/cp/hr/hrPeopleHearList.jsp';
 const DATASET_CACHE_TTL_MS = 15 * 60 * 1000;
 const DATASET_STALE_TTL_MS = 60 * 60 * 1000;
 const DETAIL_CACHE_TTL_MS = 60 * 60 * 1000;
-const REQUEST_TIMEOUT_MS = 15000;
+const LIST_FETCH_TIMEOUT_MS = 8000;
+const DETAIL_FETCH_TIMEOUT_MS = 8000;
 const REQUEST_RETRIES = 2;
 const RETRY_DELAY_MS = 600;
 const DEFAULT_MAX_PAGES = 2;
@@ -167,14 +198,17 @@ function createEmptyEumDebugState(): EumDebugState {
     listCount: 0,
     detailAttemptCount: 0,
     detailSuccessCount: 0,
+    lastRequestUrl: '',
     lastListUrl: '',
     lastDetailUrl: '',
+    lastListContentType: '',
     lastListPreview: '',
     lastDetailPreview: '',
-    lastListContentType: '',
     lastDetailContentType: '',
     lastListDetectedCharset: '',
     lastDetailDetectedCharset: '',
+    elapsedMs: 0,
+    timeoutMs: 0,
   };
 }
 
@@ -184,10 +218,14 @@ function snapshotEumDebug(state: EumDebugState): EumDebugSnapshot {
     listCount: state.listCount,
     detailAttemptCount: state.detailAttemptCount,
     detailSuccessCount: state.detailSuccessCount,
+    lastRequestUrl: state.lastRequestUrl,
     lastListUrl: state.lastListUrl,
     lastDetailUrl: state.lastDetailUrl,
+    lastListContentType: state.lastListContentType,
     lastListPreview: state.lastListPreview,
     lastDetailPreview: state.lastDetailPreview,
+    elapsedMs: state.elapsedMs,
+    timeoutMs: state.timeoutMs,
   };
 }
 
@@ -262,6 +300,9 @@ function logEumStage(
     htmlKind?: string;
     parsedCount?: number;
     message?: string;
+    elapsedMs?: number;
+    timeoutMs?: number;
+    errorName?: string;
   }
 ): void {
   if (level === 'error') {
@@ -309,9 +350,9 @@ function buildListUrl(query: EumQuery, pageNo: number): URL {
   return url;
 }
 
-async function fetchDecodedHtml(url: URL): Promise<DecodedHtmlResponse> {
+async function fetchDecodedHtml(url: URL, timeoutMs: number): Promise<DecodedHtmlResponse> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const response = await fetch(url, {
@@ -341,12 +382,12 @@ async function fetchDecodedHtml(url: URL): Promise<DecodedHtmlResponse> {
   }
 }
 
-async function fetchDecodedHtmlWithRetry(url: URL, label: string): Promise<DecodedHtmlResponse> {
+async function fetchDecodedHtmlWithRetry(url: URL, label: string, timeoutMs: number): Promise<DecodedHtmlResponse> {
   let lastError: unknown = null;
 
   for (let attempt = 0; attempt <= REQUEST_RETRIES; attempt += 1) {
     try {
-      const response = await fetchDecodedHtml(url);
+      const response = await fetchDecodedHtml(url, timeoutMs);
       if (response.status < 200 || response.status >= 300) {
         throw new Error(`${label}-upstream-${response.status}`);
       }
@@ -359,6 +400,9 @@ async function fetchDecodedHtmlWithRetry(url: URL, label: string): Promise<Decod
         requestUrl: url.toString(),
         message: String(error),
       });
+      if (isAbortLikeError(error)) {
+        break;
+      }
       if (attempt < REQUEST_RETRIES) {
         await sleep(RETRY_DELAY_MS * (attempt + 1));
       }
@@ -469,14 +513,19 @@ async function loadDetail(listItem: EumListItem, debugState: EumDebugState): Pro
   }
 
   const requestUrl = new URL(listItem.detailUrl);
+  debugState.lastRequestUrl = requestUrl.toString();
   debugState.lastDetailUrl = requestUrl.toString();
+  debugState.elapsedMs = 0;
+  debugState.timeoutMs = DETAIL_FETCH_TIMEOUT_MS;
 
   let response: DecodedHtmlResponse;
+  const fetchStartedAt = Date.now();
   try {
-    response = await fetchDecodedHtmlWithRetry(requestUrl, `eum-detail-${listItem.seq}`);
+    response = await fetchDecodedHtmlWithRetry(requestUrl, `eum-detail-${listItem.seq}`, DETAIL_FETCH_TIMEOUT_MS);
   } catch (error) {
     const stage: EumStage = isAbortLikeError(error) ? 'detail-fetch-timeout' : 'detail-fetch';
     debugState.lastErrorStage = stage;
+    debugState.elapsedMs = Date.now() - fetchStartedAt;
     logEumStage('error', {
       stage,
       requestUrl: requestUrl.toString(),
@@ -486,10 +535,14 @@ async function loadDetail(listItem: EumListItem, debugState: EumDebugState): Pro
       seq: listItem.seq,
       htmlPreview: debugState.lastDetailPreview,
       message: isAbortLikeError(error) ? 'detail fetch timed out' : String(error),
+      elapsedMs: debugState.elapsedMs,
+      timeoutMs: debugState.timeoutMs,
+      errorName: error instanceof Error ? error.name : '',
     });
     throw new EumStageError(stage, isAbortLikeError(error) ? 'eum-detail-fetch-timeout' : String(error), snapshotEumDebug(debugState));
   }
 
+  debugState.elapsedMs = Date.now() - fetchStartedAt;
   debugState.lastDetailPreview = getHtmlPreview(response.html);
   debugState.lastDetailContentType = response.contentType;
   debugState.lastDetailDetectedCharset = response.detectedCharset;
@@ -505,6 +558,8 @@ async function loadDetail(listItem: EumListItem, debugState: EumDebugState): Pro
     seq: listItem.seq,
     htmlPreview: debugState.lastDetailPreview,
     htmlKind,
+    elapsedMs: debugState.elapsedMs,
+    timeoutMs: debugState.timeoutMs,
   };
 
   if (htmlKind !== 'expected') {
@@ -558,11 +613,15 @@ async function loadDetail(listItem: EumListItem, debugState: EumDebugState): Pro
   return parsed;
 }
 
-export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ payload: EumDatasetPayload; usedStaleCache: boolean; debug: EumDebugSnapshot }> {
+export async function loadEumPublicHearings(
+  query: EumQuery = {},
+  externalDebugState?: ExternalEumDebugState
+): Promise<{ payload: EumDatasetPayload; usedStaleCache: boolean; debug: EumDebugSnapshot }> {
   const cacheKey = buildQueryKey(query);
   const now = Date.now();
   const cached = datasetCache.get(cacheKey);
-  const debugState = createEmptyEumDebugState();
+  const debugState = (externalDebugState as EumDebugState | undefined) || createEmptyEumDebugState();
+  Object.assign(debugState, createEmptyEumDebugState());
 
   if (cached && now - cached.cachedAt <= DATASET_CACHE_TTL_MS) {
     console.info('[eum] using fresh cache', { cacheKey, count: cached.payload.items.length });
@@ -581,14 +640,21 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
 
     for (let pageNo = 1; pageNo <= maxPages; pageNo += 1) {
       const listUrl = buildListUrl(query, pageNo);
-      debugState.lastListUrl = listUrl.toString();
+      debugState.lastErrorStage = 'list-fetch-start';
+      debugState.lastRequestUrl = listUrl.toString();
+      debugState.lastListUrl = '';
+      debugState.lastListContentType = '';
+      debugState.elapsedMs = 0;
+      debugState.timeoutMs = LIST_FETCH_TIMEOUT_MS;
 
       let response: DecodedHtmlResponse;
+      const fetchStartedAt = Date.now();
       try {
-        response = await fetchDecodedHtmlWithRetry(listUrl, `eum-list-${pageNo}`);
+        response = await fetchDecodedHtmlWithRetry(listUrl, `eum-list-${pageNo}`, LIST_FETCH_TIMEOUT_MS);
       } catch (error) {
-        const stage: EumStage = isAbortLikeError(error) ? 'list-fetch-timeout' : 'list-fetch';
+        const stage: EumStage = isAbortLikeError(error) ? 'list-fetch-timeout' : 'list-fetch-error';
         debugState.lastErrorStage = stage;
+        debugState.elapsedMs = Date.now() - fetchStartedAt;
         logEumStage('error', {
           stage,
           requestUrl: listUrl.toString(),
@@ -598,18 +664,30 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
           pageNo,
           htmlPreview: debugState.lastListPreview,
           message: isAbortLikeError(error) ? 'list fetch timed out' : String(error),
+          elapsedMs: debugState.elapsedMs,
+          timeoutMs: debugState.timeoutMs,
+          errorName: error instanceof Error ? error.name : '',
         });
-        throw new EumStageError(stage, isAbortLikeError(error) ? 'eum-list-fetch-timeout' : String(error), snapshotEumDebug(debugState));
+        throw new EumStageError(
+          stage,
+          isAbortLikeError(error)
+            ? 'eum-list-fetch-timeout'
+            : `${error instanceof Error ? error.name : 'Error'}: ${error instanceof Error ? error.message : String(error)}`,
+          snapshotEumDebug(debugState)
+        );
       }
 
+      debugState.lastErrorStage = 'list-fetch-done';
+      debugState.elapsedMs = Date.now() - fetchStartedAt;
       debugState.lastListPreview = getHtmlPreview(response.html);
+      debugState.lastListUrl = response.url || listUrl.toString();
       debugState.lastListContentType = response.contentType;
       debugState.lastListDetectedCharset = response.detectedCharset;
 
       const responseUrl = response.url || listUrl.toString();
       const htmlKind = classifyEumHtml(response.html, responseUrl, 'list');
       const listFetchLog = {
-        stage: 'list-fetch' as const,
+        stage: 'list-fetch-done' as const,
         requestUrl: listUrl.toString(),
         responseUrl,
         contentType: response.contentType,
@@ -617,15 +695,17 @@ export async function loadEumPublicHearings(query: EumQuery = {}): Promise<{ pay
         pageNo,
         htmlPreview: debugState.lastListPreview,
         htmlKind,
+        elapsedMs: debugState.elapsedMs,
+        timeoutMs: debugState.timeoutMs,
       };
 
       if (htmlKind !== 'expected') {
-        debugState.lastErrorStage = 'list-fetch';
+        debugState.lastErrorStage = 'list-fetch-error';
         logEumStage('error', {
           ...listFetchLog,
           message: `unexpected list html: ${htmlKind}`,
         });
-        throw new EumStageError('list-fetch', `eum-list-fetch-unexpected-${htmlKind}`, snapshotEumDebug(debugState));
+        throw new EumStageError('list-fetch-error', `eum-list-fetch-unexpected-${htmlKind}`, snapshotEumDebug(debugState));
       }
 
       logEumStage('info', listFetchLog);
