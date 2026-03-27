@@ -302,17 +302,48 @@ function showRegionPicker(forceOpen = true) {
   button.setAttribute('aria-expanded', String(!nextState));
 }
 
-function applyRegion(region, sourceLabel, legalDong = '') {
-  state.selectedRegion = {
+function isTrustedAutoDetectedRegion(matched) {
+  return Boolean(
+    matched?.region?.sido &&
+    matched?.region?.sigungu &&
+    matched?.matchSource === 'reverse-geocode' &&
+    matched?.isTrusted !== false
+  );
+}
+
+function applyRegion(region, sourceLabel, legalDong = '', options = {}) {
+  const nextRegion = {
     sido: region.sido,
     sigungu: region.sigungu,
     adminCode: region.adminCode || '',
     fullName: region.fullName || getRegionLabel(region),
   };
+  const shouldPersist = options.persist !== false && Boolean(nextRegion.sido && nextRegion.sigungu);
+
+  console.info('[geo] applyRegion payload', {
+    sourceLabel,
+    legalDong,
+    region: nextRegion,
+    matchSource: options.matchSource || null,
+    isTrusted: options.isTrusted ?? null,
+    confidence: options.confidence ?? null,
+    shouldPersist,
+  });
+
+  state.selectedRegion = nextRegion;
   state.selectedLegalDong = legalDong;
   state.visibleCount = INITIAL_VISIBLE_COUNT;
 
-  savePreferredRegion(state.selectedRegion);
+  if (shouldPersist) {
+    savePreferredRegion(state.selectedRegion);
+  } else {
+    console.info('[geo] savePreferredRegion skipped', {
+      sourceLabel,
+      region: nextRegion,
+      reason: options.skipSaveReason || 'persist-disabled',
+    });
+  }
+
   syncSelectorWithRegion(state.selectedRegion);
   renderNoticeList();
 
@@ -326,7 +357,7 @@ function applyRegion(region, sourceLabel, legalDong = '') {
     helper,
     status: `${state.selectedRegion.sigungu} 기준으로 진행 중 공고를 먼저 보여줍니다.`,
     resolution: sourceLabel,
-    selectedLabel: `선택 지역: ${getRegionLabel(state.selectedRegion)}`,
+    selectedLabel: `선택 지역: ${getRegionLabel(state.selectedRegion)}` ,
   });
 }
 
@@ -346,13 +377,39 @@ async function handleDetectLocation() {
     };
     const matched = await reverseGeocodeDistrict(coords, state.districts);
 
-    if (!matched?.region) throw new Error('지역을 식별하지 못했습니다.');
+    console.info('[geo] matchSource', {
+      matchSource: matched?.matchSource || null,
+      isTrusted: matched?.isTrusted ?? null,
+      confidence: matched?.confidence ?? null,
+      fallbackReason: matched?.fallbackReason || null,
+      parsedRegion: matched?.parsedRegion || null,
+      nearestCandidate: matched?.nearestCandidate || null,
+    });
 
-    const sourceLabel = matched.matchSource === 'nearest-district'
-      ? 'GPS -> 가까운 행정구역으로 추정'
-      : 'GPS -> 행정구역 변환 완료';
+    if (!matched?.region?.sido || !matched?.region?.sigungu || !isTrustedAutoDetectedRegion(matched)) {
+      const helper = matched?.matchSource === 'reverse-geocode-unlisted'
+        ? '현재 위치 주소는 확인했지만 내부 지역 목록과 정확히 일치하지 않았습니다. 지역을 직접 선택해주세요.'
+        : '현재 위치를 확인했지만 정확한 행정구역을 자동 확정하지 않았습니다. 지역을 직접 선택해주세요.';
+      const status = matched?.matchSource === 'nearest-district'
+        ? '가까운 행정구역 fallback 후보는 확인했지만 자동 선택하지 않았습니다.'
+        : 'GPS 결과의 신뢰도가 낮아 자동 저장과 자동 선택을 건너뜁니다.';
 
-    applyRegion(matched.region, sourceLabel, matched.legalDong || '');
+      setLocationFeedback({
+        helper,
+        status,
+        resolution: matched?.matchSource === 'nearest-district' ? '위치 확인됨, 자동 확정 보류' : '위치 확인됨, 직접 선택 필요',
+        selectedLabel: state.selectedRegion ? `선택 지역: ${getRegionLabel(state.selectedRegion)}` : '선택된 지역 없음',
+      });
+      showRegionPicker(true);
+      return;
+    }
+
+    applyRegion(matched.region, 'GPS -> 행정구역 변환 완료', matched.legalDong || '', {
+      persist: true,
+      matchSource: matched.matchSource,
+      isTrusted: matched.isTrusted,
+      confidence: matched.confidence,
+    });
   } catch (error) {
     setLocationFeedback({
       helper: '현재 위치를 확인하지 못했습니다. 지역을 직접 선택해주세요.',
@@ -395,7 +452,7 @@ function bindHeroActions() {
       return;
     }
 
-    applyRegion(saved, '최근 본 지역 불러오기');
+    applyRegion(saved, '최근 본 지역 불러오기', '', { persist: true, isTrusted: true, matchSource: 'saved-region' });
   });
 
   favoriteButton?.addEventListener('click', () => {
@@ -412,7 +469,7 @@ function bindHeroActions() {
     if (!token) return;
     const [sido, sigungu] = token.split('::');
     const matched = findDistrictByName(state.districts, sido, sigungu);
-    if (matched) applyRegion(matched, '저장한 지역 불러오기');
+    if (matched) applyRegion(matched, '저장한 지역 불러오기', '', { persist: true, isTrusted: true, matchSource: 'saved-region-chip' });
   });
 }
 
@@ -438,7 +495,7 @@ function bindRegionForm() {
       fullName: sigungu === sido ? sido : `${sido} ${sigungu}`,
     };
 
-    applyRegion(matched, '직접 선택한 지역');
+    applyRegion(matched, '직접 선택한 지역', '', { persist: true, isTrusted: true, matchSource: 'manual-selection' });
   });
 
   noticeList?.addEventListener('click', (event) => {

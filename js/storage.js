@@ -57,22 +57,32 @@ export function removeKeyword(keyword) {
 export function loadPreferredRegion() {
   try {
     const raw = localStorage.getItem(PREFERRED_REGION_KEY);
-    if (!raw) return null;
+    if (!raw) {
+      console.info('[geo] loadPreferredRegion payload', null);
+      return null;
+    }
     const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' ? parsed : null;
+    const next = parsed && typeof parsed === 'object' ? parsed : null;
+    console.info('[geo] loadPreferredRegion payload', next);
+    return next;
   } catch (error) {
+    console.info('[geo] loadPreferredRegion payload', null);
     return null;
   }
 }
 
 export function savePreferredRegion(region) {
-  if (!region) return null;
+  if (!region) {
+    console.info('[geo] savePreferredRegion payload', null);
+    return null;
+  }
   const next = {
     sido: region.sido,
     sigungu: region.sigungu,
     adminCode: region.adminCode || '',
     fullName: region.fullName || `${region.sido} ${region.sigungu}`,
   };
+  console.info('[geo] savePreferredRegion payload', next);
   localStorage.setItem(PREFERRED_REGION_KEY, JSON.stringify(next));
   saveRecentRegion(next);
   return next;
