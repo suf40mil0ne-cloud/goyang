@@ -1,8 +1,6 @@
 /**
  * src/lib/region-utils.js
- *
  * GPS 역지오코딩 주소 → 시군구 매핑 유틸리티
- * App.jsx의 matchRegionFromAddress()가 이 파일에서 import됨
  */
 
 import {
@@ -10,8 +8,6 @@ import {
   getCityHierarchyByName,
   getRegionHierarchyByRegion,
 } from '../../shared/region-codes';
-
-// ─── 내부 지역 데이터 ────────────────────────────────────────────────────────
 
 const REGION_DATA = [
   { name: '서울특별시', area: 'seoul', districts: [
@@ -170,50 +166,67 @@ export function matchRegionFromAddress(address) {
     state, city, borough, cityDistrict, county, suburb,
   });
 
-  // 전략 1: state + borough/city_district 정확 매칭
+  // ── 전략 1: state + "city borough" 조합 (고양시 일산서구 처리 핵심) ──────
+  // Nominatim이 city="고양시", borough="일산서구"로 분리해서 줄 때
+  // → "고양시 일산서구"로 합쳐서 매칭
+  if (state && city && borough) {
+    const combined = `${city} ${borough}`;
+    const match = getRegionHierarchyByRegion(state, combined);
+    if (match) {
+      console.info('[region-utils] matched via state + city+borough combined', { state, combined });
+      return match;
+    }
+  }
+
+  // ── 전략 2: state + borough/city_district 단독 매칭 ──────────────────────
+  // 광역시 구 처럼 city 없이 borough만 오는 경우
+  // 예: state="인천광역시", borough="부평구"
   for (const district of [borough, cityDistrict].filter(Boolean)) {
-    if (state && district) {
-      const direct = getRegionHierarchyByRegion(state, district);
-      if (direct) {
+    if (state) {
+      const match = getRegionHierarchyByRegion(state, district);
+      if (match) {
         console.info('[region-utils] matched via state+district', { state, district });
-        return direct;
-      }
-      if (city) {
-        const withCity = getRegionHierarchyByRegion(state, `${city} ${district}`);
-        if (withCity) {
-          console.info('[region-utils] matched via state+city+district', { state, city, district });
-          return withCity;
-        }
+        return match;
       }
     }
   }
 
-  // 전략 2: state + city 시 단위 매칭
+  // ── 전략 3: state + city 시 단위 매칭 ────────────────────────────────────
   if (state && city) {
-    const cityMatch = getRegionHierarchyByRegion(state, city)
+    const match = getRegionHierarchyByRegion(state, city)
       || getCityHierarchyByName(state, city, 'city-only');
-    if (cityMatch) {
+    if (match) {
       console.info('[region-utils] matched via state+city', { state, city });
-      return cityMatch;
+      return match;
     }
   }
 
-  // 전략 3: state 단독 매칭
+  // ── 전략 4: state 단독 ────────────────────────────────────────────────────
   if (state) {
-    const stateMatch = getCityHierarchyByName(state, state, 'city-only');
-    if (stateMatch) {
+    const match = getCityHierarchyByName(state, state, 'city-only');
+    if (match) {
       console.info('[region-utils] matched via state only', { state });
-      return stateMatch;
+      return match;
     }
   }
 
-  // 전략 4: 전체 텍스트 fallback
-  const fullText = [state, city, borough, cityDistrict, county, suburb].filter(Boolean).join(' ');
+  // ── 전략 5: 전체 텍스트 fallback (city+borough 명시적 조합 우선) ──────────
+  // fallback에서도 city와 borough를 합친 형태를 텍스트에 포함시켜
+  // "일산서구"만으로 매칭되는 것을 방지
+  const fullText = [
+    state,
+    city && borough ? `${city} ${borough}` : '',
+    city,
+    borough,
+    cityDistrict,
+    county,
+  ].filter(Boolean).join(' ');
+
   if (fullText) {
-    const textMatch = findHearingRegionFieldsByText(fullText, 'text-fallback');
-    if (textMatch) {
+    const match = findHearingRegionFieldsByText(fullText, 'text-fallback');
+    if (match) {
       console.info('[region-utils] matched via text fallback', { fullText });
-      return textMatch;
+      return match;
     }
   }
 
