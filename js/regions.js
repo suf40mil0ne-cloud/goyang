@@ -74,7 +74,7 @@ export function parseRegionQuery(search = window.location.search) {
 
   if (sido && sigungu) return { scope: 'sigungu', sido, sigungu };
   if (sido) return { scope: 'sido', sido, sigungu: '' };
-  return { scope: scope === 'nation' ? 'nation' : 'nation', sido: '', sigungu: '' };
+  return { scope: scope === 'nation' ? 'nation' : scope, sido: '', sigungu: '' };
 }
 
 export function flattenDistricts(regions) {
