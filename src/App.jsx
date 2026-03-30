@@ -1751,7 +1751,7 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="mt-auto border-t border-[#e0e3e5] bg-[#f2f4f6] px-6 py-10 md:px-8 lg:ml-72">
+      <footer className="mt-auto border-t border-[#e0e3e5] bg-[#f2f4f6] px-6 py-10 md:px-8 lg:ml-72 pb-28 md:pb-10">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div className="flex flex-col gap-2">
             <span className="font-bold text-[#191c1e]">공람콕</span>
