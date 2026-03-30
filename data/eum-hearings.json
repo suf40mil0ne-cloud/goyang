@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-03-30T13:27:55.878Z",
-  "count": 66,
+  "crawledAt": "2026-03-30T15:06:41.863Z",
+  "count": 61,
   "items": [
     {
       "seq": "4436",
@@ -586,17 +586,6 @@
       "listPage": 6
     },
     {
-      "seq": "4350",
-      "title": "대구광역시 개발행위허가 제한지역 기간연장에 관한 주민의견 청취 공고",
-      "noticeNumber": "대구광역시 공고 제2026-415호",
-      "agency": "대구광역시 도시주택국 도시계획과",
-      "publishedAt": "2026-03-16",
-      "hearingStartDate": "2026-03-17",
-      "hearingEndDate": "2026-03-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4350&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "4341",
       "title": "고양 도시관리계획(도시계획시설:도로) 결정(변경)(안) 공람 공고",
       "noticeNumber": "경기도 고양시 공고 제2026-783호",
@@ -630,39 +619,6 @@
       "listPage": 6
     },
     {
-      "seq": "4305",
-      "title": "도시관리계획[북항배후부지 지구단위계획] 결정(변경)(안) 공고·열람",
-      "noticeNumber": "인천광역시 공고 제2026-653호",
-      "agency": "인천광역시 도시계획국 도시관리과",
-      "publishedAt": "2026-03-16",
-      "hearingStartDate": "2026-03-16",
-      "hearingEndDate": "2026-03-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4305&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4303",
-      "title": "광주 도시관리계획(도시계획시설:도로, 학교) 결정(변경)(안) 주민열람 공고",
-      "noticeNumber": "경기도 광주시 공고 제2026-784호",
-      "agency": "경기도 광주시 도시주택국 도시계획과",
-      "publishedAt": "2026-03-16",
-      "hearingStartDate": "2026-03-16",
-      "hearingEndDate": "2026-03-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4303&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4302",
-      "title": "도시관리계획(송라지구 용도지역, 지구단위계획구역 및 지구단위계획) 결정(변경)(안) 재열람공고",
-      "noticeNumber": "경기도 동두천시 공고 제2026-496호",
-      "agency": "경기도 동두천시 도시과",
-      "publishedAt": "2026-03-16",
-      "hearingStartDate": "2026-03-16",
-      "hearingEndDate": "2026-03-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4302&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "4428",
       "title": "을지로2가구역 및 1·3·6·18지구, 10·11지구 도시정비형 재개발사업 정비계획 결정 (변경) 및 지구단위계획(변경) 결정(안) 공람·공고",
       "noticeNumber": "서울특별시 중구 공고 제2026-301호",
@@ -694,17 +650,6 @@
       "hearingEndDate": "2026-04-03",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4320&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
-    },
-    {
-      "seq": "4285",
-      "title": "양주도시관리계획(지구단위계획 : 삼숭지구 22BL 일원) 결정(변경)(안) 주민공람 공고",
-      "noticeNumber": "경기도 양주시 공고 제2026-672호",
-      "agency": "경기도 양주시 도시주택국 도시과",
-      "publishedAt": "2026-03-13",
-      "hearingStartDate": "2026-03-13",
-      "hearingEndDate": "2026-03-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4285&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
     },
     {
       "seq": "4376",
