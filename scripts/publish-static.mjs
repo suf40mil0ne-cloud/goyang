@@ -41,7 +41,7 @@ async function copyAssets() {
 }
 
 async function publishIndexHtml() {
-  const distIndexPath = path.join(distDir, 'index.html');
+  const distIndexPath = path.join(distDir, 'app.html');
   const rootIndexPath = path.join(rootDir, 'index.html');
   const html = await fs.readFile(distIndexPath, 'utf8');
 
