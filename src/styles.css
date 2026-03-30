@@ -252,16 +252,22 @@ textarea {
 }
 
 .mobile-nav {
+  display: none;
   position: fixed;
   bottom: 0;
   z-index: 50;
-  display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
   background: rgba(255, 255, 255, 0.96);
   padding: 1rem 1.25rem;
   box-shadow: 0 -12px 30px rgba(25, 28, 30, 0.12);
+}
+
+@media (max-width: 767px) {
+  .mobile-nav {
+    display: flex;
+  }
 }
 
 .mobile-nav-item {
