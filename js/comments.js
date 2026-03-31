@@ -128,16 +128,9 @@ function renderInputArea(isLoggedIn) {
         <p class="gc-error" style="display:none;"></p>
       </div>`;
   }
-  return `
-    <div class="gc-login-prompt">
-      <p>댓글을 작성하려면 카카오 로그인이 필요합니다.</p>
-      <button class="gc-kakao-login-btn" type="button" onclick="kakaoLogin()">
-        <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#3C1E1E" d="M12 3C6.477 3 2 6.477 2 10.8c0 2.733 1.643 5.133 4.127 6.55l-.995 3.673a.375.375 0 0 0 .554.41L9.94 19.14A11.56 11.56 0 0 0 12 19.4c5.523 0 10-3.477 10-7.8S17.523 3 12 3Z"/>
-        </svg>
-        카카오로 로그인
-      </button>
-    </div>`;
+  return `<p style="font-size:13px;color:#888;text-align:center;padding:12px 0;">
+    댓글을 작성하려면 <a href="#" onclick="kakaoLogin();return false;" style="color:#3B82F6;">카카오 로그인</a>이 필요합니다.
+  </p>`;
 }
 
 // ──────────────────────────────────────────────
@@ -145,7 +138,7 @@ function renderInputArea(isLoggedIn) {
 // ──────────────────────────────────────────────
 
 async function initComments(noticeId, container) {
-  if (!container) return;
+  if (!container || !noticeId) return;
 
   const user = getCurrentUser();
   const currentUserId = user?.id ?? null;
