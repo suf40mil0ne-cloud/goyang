@@ -100,26 +100,33 @@ async function fetchKakaoUser(accessToken) {
 // CORS 유틸리티
 // ──────────────────────────────────────────────
 
-const ALLOWED_ORIGIN = 'https://goyang-eke.pages.dev';
+const ALLOWED_ORIGINS = [
+  'https://goyang-eke.pages.dev',
+  'https://xn--ob0bw4r.com',
+  'https://www.xn--ob0bw4r.com',
+  'https://공람.com',
+];
 
-function corsHeaders() {
+function getCorsHeaders(request) {
+  const origin = request.headers.get('Origin') || '';
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
-    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
+    'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     Vary: 'Origin',
   };
 }
 
-function jsonResponse(data, status = 200) {
+function jsonResponse(data, status = 200, request) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json', ...corsHeaders() },
+    headers: { 'Content-Type': 'application/json', ...getCorsHeaders(request) },
   });
 }
 
-function errorResponse(message, status = 400) {
-  return jsonResponse({ error: message }, status);
+function errorResponse(message, status = 400, request) {
+  return jsonResponse({ error: message }, status, request);
 }
 
 // ──────────────────────────────────────────────
@@ -144,7 +151,7 @@ async function handleKakaoAuth(request, env) {
   const code = searchParams.get('code');
 
   if (!code) {
-    return errorResponse('missing_code');
+    return errorResponse('missing_code', 400, request);
   }
 
   let tokenData;
@@ -152,7 +159,7 @@ async function handleKakaoAuth(request, env) {
     tokenData = await fetchKakaoToken(code, env);
   } catch (e) {
     console.error('[kakao] token exchange failed', e.message);
-    return errorResponse(e.message, 502);
+    return errorResponse(e.message, 502, request);
   }
 
   let user;
@@ -160,7 +167,7 @@ async function handleKakaoAuth(request, env) {
     user = await fetchKakaoUser(tokenData.access_token);
   } catch (e) {
     console.error('[kakao] user info failed', e.message);
-    return errorResponse('user_info_failed', 502);
+    return errorResponse('user_info_failed', 502, request);
   }
 
   // users 테이블에서 기존 닉네임 조회, 없으면 랜덤 닉네임 생성 후 저장
@@ -190,7 +197,7 @@ async function handleKakaoAuth(request, env) {
     env.JWT_SECRET,
   );
 
-  return jsonResponse({ token: jwt, user: { ...user, nickname } });
+  return jsonResponse({ token: jwt, user: { ...user, nickname } }, 200, request);
 }
 
 // ──────────────────────────────────────────────
@@ -241,13 +248,13 @@ async function verifyJWT(token, secret) {
 async function handleGetComments(request, env) {
   const { searchParams } = new URL(request.url);
   const noticeId = searchParams.get('notice_id');
-  if (!noticeId) return errorResponse('missing_notice_id');
+  if (!noticeId) return errorResponse('missing_notice_id', 400, request);
 
   const { results } = await env.DB.prepare(
     'SELECT id, notice_id, user_id, nickname, profile_image, content, created_at FROM comments WHERE notice_id = ? ORDER BY created_at ASC'
   ).bind(noticeId).all();
 
-  return jsonResponse({ comments: results });
+  return jsonResponse({ comments: results }, 200, request);
 }
 
 // POST /comments  body: { notice_id, content }
@@ -259,25 +266,25 @@ async function handlePostComment(request, env) {
   try {
     payload = await verifyJWT(token, env.JWT_SECRET);
   } catch (e) {
-    return errorResponse('unauthorized:' + e.message, 401);
+    return errorResponse('unauthorized:' + e.message, 401, request);
   }
 
   let body;
   try {
     body = await request.json();
   } catch {
-    return errorResponse('invalid_json');
+    return errorResponse('invalid_json', 400, request);
   }
 
   const { notice_id, content } = body;
-  if (!notice_id || !content?.trim()) return errorResponse('missing_fields');
-  if (content.trim().length > 1000) return errorResponse('content_too_long');
+  if (!notice_id || !content?.trim()) return errorResponse('missing_fields', 400, request);
+  if (content.trim().length > 1000) return errorResponse('content_too_long', 400, request);
 
   const result = await env.DB.prepare(
     'INSERT INTO comments (notice_id, user_id, nickname, profile_image, content) VALUES (?, ?, ?, ?, ?)'
   ).bind(notice_id, payload.sub, payload.nickname, payload.profileImage ?? null, content.trim()).run();
 
-  return jsonResponse({ id: result.meta.last_row_id }, 201);
+  return jsonResponse({ id: result.meta.last_row_id }, 201, request);
 }
 
 // DELETE /comments/:id
@@ -289,16 +296,16 @@ async function handleDeleteComment(request, env, id) {
   try {
     payload = await verifyJWT(token, env.JWT_SECRET);
   } catch (e) {
-    return errorResponse('unauthorized:' + e.message, 401);
+    return errorResponse('unauthorized:' + e.message, 401, request);
   }
 
   // 본인 댓글인지 확인
   const row = await env.DB.prepare('SELECT user_id FROM comments WHERE id = ?').bind(id).first();
-  if (!row) return errorResponse('not_found', 404);
-  if (row.user_id !== payload.sub) return errorResponse('forbidden', 403);
+  if (!row) return errorResponse('not_found', 404, request);
+  if (row.user_id !== payload.sub) return errorResponse('forbidden', 403, request);
 
   await env.DB.prepare('DELETE FROM comments WHERE id = ?').bind(id).run();
-  return jsonResponse({ deleted: true });
+  return jsonResponse({ deleted: true }, 200, request);
 }
 
 // ──────────────────────────────────────────────
@@ -311,7 +318,7 @@ export default {
 
     // CORS preflight
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders() });
+      return new Response(null, { status: 204, headers: getCorsHeaders(request) });
     }
 
     // ── 카카오 인증 라우트 ──
