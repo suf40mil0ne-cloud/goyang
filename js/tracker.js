@@ -1,4 +1,4 @@
-const WORKER_URL = 'https://goyang-worker.suf40mil0ne.workers.dev';
+var WORKER_URL = 'https://goyang-worker.suf40mil0ne.workers.dev';
 
 (async () => {
   try {
