@@ -58,7 +58,7 @@ async function signJWT(payload, secret) {
 // ──────────────────────────────────────────────
 
 /** 인가코드 → 카카오 액세스 토큰 교환 */
-async function fetchKakaoToken(code, env) {
+async function fetchKakaoToken(code, redirectUri, env) {
   const res = await fetch('https://kauth.kakao.com/oauth/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -66,14 +66,14 @@ async function fetchKakaoToken(code, env) {
       grant_type: 'authorization_code',
       client_id: env.KAKAO_REST_KEY,
       client_secret: env.KAKAO_CLIENT_SECRET,
-      redirect_uri: env.KAKAO_REDIRECT_URI,
+      redirect_uri: redirectUri,
       code,
     }),
   });
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`kakao_token_error:${res.status}:${err}:key=${env.KAKAO_REST_KEY?.slice(0,6)}:uri=${env.KAKAO_REDIRECT_URI}`);
+    throw new Error(`kakao_token_error:${res.status}:${err}:key=${env.KAKAO_REST_KEY?.slice(0,6)}:uri=${redirectUri}`);
   }
   return res.json();
 }
@@ -159,6 +159,7 @@ function generateRandomNickname() {
 async function handleKakaoAuth(request, env) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get('code');
+  const redirectUri = searchParams.get('redirect_uri') || env.KAKAO_REDIRECT_URI;
 
   if (!code) {
     return errorResponse('missing_code', 400, request);
@@ -166,7 +167,7 @@ async function handleKakaoAuth(request, env) {
 
   let tokenData;
   try {
-    tokenData = await fetchKakaoToken(code, env);
+    tokenData = await fetchKakaoToken(code, redirectUri, env);
   } catch (e) {
     console.error('[kakao] token exchange failed', e.message);
     return errorResponse(e.message, 502, request);

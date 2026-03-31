@@ -109,7 +109,8 @@
 
       let res;
       try {
-        res = await fetch(`${WORKER_URL}/auth/kakao?code=${encodeURIComponent(code)}`);
+        const redirectUri = `${location.origin}/auth/callback`;
+        res = await fetch(`${WORKER_URL}/auth/kakao?code=${encodeURIComponent(code)}&redirect_uri=${encodeURIComponent(redirectUri)}`);
       } catch {
         showError('서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.');
         return;
