@@ -812,7 +812,7 @@ function KakaoAuthWidget() {
       <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path fill="#3C1E1E" d="M12 3C6.477 3 2 6.477 2 10.8c0 2.733 1.643 5.133 4.127 6.55l-.995 3.673a.375.375 0 0 0 .554.41L9.94 19.14A11.56 11.56 0 0 0 12 19.4c5.523 0 10-3.477 10-7.8S17.523 3 12 3Z"/>
       </svg>
-      카카오 로그인
+      <span className="hidden sm:inline">카카오 </span>로그인
     </button>
   );
 }
@@ -1480,7 +1480,7 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button type="button" className="icon-shell" aria-label="알림">
+            <button type="button" className="icon-shell hidden sm:inline-flex" aria-label="알림">
               <Bell className="h-5 w-5" />
             </button>
             <button type="button" className="icon-shell" onClick={handleDetectLocation} aria-label="현재 위치 감지">
