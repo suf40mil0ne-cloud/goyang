@@ -71,7 +71,7 @@ async function fetchKakaoToken(code, env) {
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`kakao_token_error:${res.status}:${err}`);
+    throw new Error(`kakao_token_error:${res.status}:${err}:key=${env.KAKAO_REST_KEY?.slice(0,6)}:uri=${env.KAKAO_REDIRECT_URI}`);
   }
   return res.json();
 }
@@ -137,7 +137,7 @@ async function handleKakaoAuth(request, env) {
     tokenData = await fetchKakaoToken(code, env);
   } catch (e) {
     console.error('[kakao] token exchange failed', e.message);
-    return errorResponse('token_exchange_failed', 502);
+    return errorResponse('token_exchange_failed:' + e.message, 502);
   }
 
   let user;
