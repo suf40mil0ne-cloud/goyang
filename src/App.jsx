@@ -1836,6 +1836,9 @@ export default function App() {
             <a href="#current-district" className="transition hover:text-[#006194]">현재 자치구</a>
             <a href="#selected-region-list" className="transition hover:text-[#006194]">요약 리스트</a>
             <a href="#overview-grid" className="transition hover:text-[#006194]">보조 정보</a>
+            <a href="/privacy.html" className="transition hover:text-[#006194]">개인정보처리방침</a>
+            <a href="/terms.html" className="transition hover:text-[#006194]">이용약관</a>
+            <a href="/about.html" className="transition hover:text-[#006194]">서비스 소개</a>
           </div>
         </div>
       </footer>
