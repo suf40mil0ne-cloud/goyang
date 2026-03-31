@@ -1552,7 +1552,7 @@ export default function App() {
                   내 한 마디가 도시의 내일을 바꿉니다
                 </h1>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#52606d] sm:text-[1.05rem]">
-                  우리 동네 도시계획 공람 공고를 한눈에 확인하고,{' '}
+                  우리 동네 주민의견청취 공고를 한눈에 확인하고,<br />
                   주민의견을 제출해 더 나은 도시를 만드는 데 참여하세요.
                 </p>
                 <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
