@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://goyang.pages.dev/sitemap.xml
+Sitemap: https://goyang-eke.pages.dev/sitemap.xml
