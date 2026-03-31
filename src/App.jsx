@@ -391,7 +391,15 @@ function resolveNoticeRegionMetadata(notice) {
     regionMatchType: normalizeRegionMatchType(notice.regionMatchType),
   };
 
-  const fallbackText = [
+  // 신뢰도 높은 구조화 필드 먼저 시도 (오기관명·제목에 타 지역 언급 시 오분류 방지)
+  const reliableText = [
+    notice.region,
+    notice.agency,
+    notice.department,
+    notice.location,
+  ].filter(Boolean).join(' ');
+
+  const fullFallbackText = [
     notice.region,
     notice.agency,
     notice.department,
@@ -403,7 +411,8 @@ function resolveNoticeRegionMetadata(notice) {
 
   const derivedMeta = !providedMeta.cityLevelRegionKey
     ? getRegionHierarchyBySigunguCode(notice.sigunguCode)
-      || findHearingRegionFieldsByText(fallbackText, 'text-fallback')
+      || findHearingRegionFieldsByText(reliableText, 'text-fallback')
+      || findHearingRegionFieldsByText(fullFallbackText, 'text-fallback')
     : null;
 
   const resolvedMeta = {
