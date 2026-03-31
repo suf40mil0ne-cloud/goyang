@@ -1,3 +1,8 @@
 name = "goyang-worker"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "gonglam-db"
+database_id = "986e410b-5f1c-4ecb-bec7-faa6e5e5cf9d"

@@ -165,9 +165,113 @@ async function handleKakaoAuth(request, env) {
 }
 
 // ──────────────────────────────────────────────
-// fetch 핸들러 (기존 Workers에 통합할 때는
-// 아래 export default 블록 대신 기존 핸들러에
-// ── 카카오 인증 라우트 ── 블록만 삽입하세요)
+// JWT 검증 (댓글 API 인증용)
+// ──────────────────────────────────────────────
+
+async function verifyJWT(token, secret) {
+  if (!token) throw new Error('no_token');
+
+  const parts = token.split('.');
+  if (parts.length !== 3) throw new Error('invalid_token_format');
+
+  const signingInput = `${parts[0]}.${parts[1]}`;
+
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['verify'],
+  );
+
+  // base64url → Uint8Array
+  const b64 = parts[2].replace(/-/g, '+').replace(/_/g, '/');
+  const sigBytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+
+  const valid = await crypto.subtle.verify(
+    'HMAC',
+    key,
+    sigBytes,
+    new TextEncoder().encode(signingInput),
+  );
+  if (!valid) throw new Error('invalid_signature');
+
+  const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+  if (payload.exp < Math.floor(Date.now() / 1000)) throw new Error('token_expired');
+
+  return payload;
+}
+
+// ──────────────────────────────────────────────
+// 댓글 API 핸들러
+// ──────────────────────────────────────────────
+
+// GET /comments?notice_id=xxx
+async function handleGetComments(request, env) {
+  const { searchParams } = new URL(request.url);
+  const noticeId = searchParams.get('notice_id');
+  if (!noticeId) return errorResponse('missing_notice_id');
+
+  const { results } = await env.DB.prepare(
+    'SELECT id, notice_id, user_id, nickname, profile_image, content, created_at FROM comments WHERE notice_id = ? ORDER BY created_at ASC'
+  ).bind(noticeId).all();
+
+  return jsonResponse({ comments: results });
+}
+
+// POST /comments  body: { notice_id, content }
+async function handlePostComment(request, env) {
+  const authHeader = request.headers.get('Authorization') || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+
+  let payload;
+  try {
+    payload = await verifyJWT(token, env.JWT_SECRET);
+  } catch (e) {
+    return errorResponse('unauthorized:' + e.message, 401);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return errorResponse('invalid_json');
+  }
+
+  const { notice_id, content } = body;
+  if (!notice_id || !content?.trim()) return errorResponse('missing_fields');
+  if (content.trim().length > 1000) return errorResponse('content_too_long');
+
+  const result = await env.DB.prepare(
+    'INSERT INTO comments (notice_id, user_id, nickname, profile_image, content) VALUES (?, ?, ?, ?, ?)'
+  ).bind(notice_id, payload.sub, payload.nickname, payload.profileImage ?? null, content.trim()).run();
+
+  return jsonResponse({ id: result.meta.last_row_id }, 201);
+}
+
+// DELETE /comments/:id
+async function handleDeleteComment(request, env, id) {
+  const authHeader = request.headers.get('Authorization') || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+
+  let payload;
+  try {
+    payload = await verifyJWT(token, env.JWT_SECRET);
+  } catch (e) {
+    return errorResponse('unauthorized:' + e.message, 401);
+  }
+
+  // 본인 댓글인지 확인
+  const row = await env.DB.prepare('SELECT user_id FROM comments WHERE id = ?').bind(id).first();
+  if (!row) return errorResponse('not_found', 404);
+  if (row.user_id !== payload.sub) return errorResponse('forbidden', 403);
+
+  await env.DB.prepare('DELETE FROM comments WHERE id = ?').bind(id).run();
+  return jsonResponse({ deleted: true });
+}
+
+// ──────────────────────────────────────────────
+// fetch 핸들러
 // ──────────────────────────────────────────────
 
 export default {
@@ -179,11 +283,22 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders() });
     }
 
-    // ── 카카오 인증 라우트 (기존 코드에 이 블록만 추가) ──
+    // ── 카카오 인증 라우트 ──
     if (url.pathname === '/auth/kakao' && request.method === 'GET') {
       return handleKakaoAuth(request, env);
     }
-    // ── 여기까지가 추가 블록, 기존 라우트는 아래에 유지 ──
+
+    // ── 댓글 라우트 ──
+    if (url.pathname === '/comments') {
+      if (request.method === 'GET')  return handleGetComments(request, env);
+      if (request.method === 'POST') return handlePostComment(request, env);
+    }
+
+    // DELETE /comments/:id
+    const deleteMatch = url.pathname.match(/^\/comments\/(\d+)$/);
+    if (deleteMatch && request.method === 'DELETE') {
+      return handleDeleteComment(request, env, Number(deleteMatch[1]));
+    }
 
     return new Response('Not Found', { status: 404 });
   },
