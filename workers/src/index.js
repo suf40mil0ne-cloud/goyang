@@ -32,7 +32,8 @@ function base64url(input) {
 /** HS256 JWT 발급 (Web Crypto API) */
 async function signJWT(payload, secret) {
   const header = base64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-  const body = base64url(JSON.stringify(payload));
+  const bodyStr = unescape(encodeURIComponent(JSON.stringify(payload)));
+  const body = btoa(bodyStr).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
   const signingInput = `${header}.${body}`;
 
   const key = await crypto.subtle.importKey(
@@ -122,6 +123,19 @@ function errorResponse(message, status = 400) {
 }
 
 // ──────────────────────────────────────────────
+// 랜덤 닉네임 생성
+// ──────────────────────────────────────────────
+
+function generateRandomNickname() {
+  const adjectives = ['행복한', '용감한', '슬기로운', '따뜻한', '빠른', '조용한', '씩씩한', '부지런한', '신나는', '영리한'];
+  const nouns = ['시민', '주민', '이웃', '탐색가', '관찰자', '기록자', '참여자', '목격자', '제보자', '감시자'];
+  const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const noun = nouns[Math.floor(Math.random() * nouns.length)];
+  const num = Math.floor(Math.random() * 900) + 100;
+  return `${adj}${noun}${num}`;
+}
+
+// ──────────────────────────────────────────────
 // 카카오 인증 라우트 핸들러
 // ──────────────────────────────────────────────
 
@@ -149,11 +163,26 @@ async function handleKakaoAuth(request, env) {
     return errorResponse('user_info_failed', 502);
   }
 
+  // users 테이블에서 기존 닉네임 조회, 없으면 랜덤 닉네임 생성 후 저장
+  let nickname;
+  const existingUser = await env.DB.prepare(
+    'SELECT nickname FROM users WHERE kakao_id = ?'
+  ).bind(user.id).first();
+
+  if (existingUser) {
+    nickname = existingUser.nickname;
+  } else {
+    nickname = generateRandomNickname();
+    await env.DB.prepare(
+      'INSERT INTO users (kakao_id, nickname, profile_image) VALUES (?, ?, ?)'
+    ).bind(user.id, nickname, user.profileImage ?? null).run();
+  }
+
   const now = Math.floor(Date.now() / 1000);
   const jwt = await signJWT(
     {
       sub: user.id,
-      nickname: user.nickname,
+      nickname,
       profileImage: user.profileImage,
       iat: now,
       exp: now + 60 * 60 * 24, // 24시간
@@ -161,7 +190,7 @@ async function handleKakaoAuth(request, env) {
     env.JWT_SECRET,
   );
 
-  return jsonResponse({ token: jwt, user });
+  return jsonResponse({ token: jwt, user: { ...user, nickname } });
 }
 
 // ──────────────────────────────────────────────
@@ -196,7 +225,7 @@ async function verifyJWT(token, secret) {
   );
   if (!valid) throw new Error('invalid_signature');
 
-  const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+  const payload = JSON.parse(decodeURIComponent(escape(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')))));
   if (payload.exp < Math.floor(Date.now() / 1000)) throw new Error('token_expired');
 
   return payload;
