@@ -64,6 +64,7 @@ async function fetchKakaoToken(code, env) {
     body: new URLSearchParams({
       grant_type: 'authorization_code',
       client_id: env.KAKAO_REST_KEY,
+      client_secret: env.KAKAO_CLIENT_SECRET,
       redirect_uri: env.KAKAO_REDIRECT_URI,
       code,
     }),
@@ -137,7 +138,7 @@ async function handleKakaoAuth(request, env) {
     tokenData = await fetchKakaoToken(code, env);
   } catch (e) {
     console.error('[kakao] token exchange failed', e.message);
-    return errorResponse('token_exchange_failed:' + e.message, 502);
+    return errorResponse(e.message, 502);
   }
 
   let user;
