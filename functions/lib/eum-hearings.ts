@@ -1,5 +1,5 @@
 import { computeHearingStatus, HearingItem, sortHearings } from '../../shared/hearings';
-import { findHearingRegionFieldsByText, normalizeSigunguCode } from '../../shared/region-codes';
+import { findHearingRegionFieldsByText, extractSidoFromText, normalizeSigunguCode } from '../../shared/region-codes';
 import { formatIsoDate } from '../../shared/public-hearings';
 import { EumDetailItem, EumListItem, parseEumDetailHtml, parseEumListHtml } from './eum-hearings-parser';
 
@@ -515,7 +515,25 @@ function normalizeEumHearing(listItem: EumListItem, detailItem: EumDetailItem | 
     body,
     normalizeInlineText(detailItem?.department),
   ].join(' ');
-  const regionFields = findHearingRegionFieldsByText(locationSourceText);
+  // 공고번호 또는 기관명 앞부분에서 시도를 직접 추출 (고신뢰도 anchor)
+  // 예: "서울특별시 공고 제2026-996호" → "서울특별시"
+  const sidoFromNotice = extractSidoFromText(listItem.noticeNumber) ?? extractSidoFromText(agency);
+
+  let regionFields = findHearingRegionFieldsByText(locationSourceText);
+
+  // 텍스트 매칭으로 얻은 시도가 공고번호 기반 시도와 불일치하면 공고번호를 기준으로 보정.
+  // 이는 본문에 타 지역명이 포함되거나 단일 문자 alias 오매칭이 남아있을 때 최후 방어선.
+  if (sidoFromNotice && regionFields?.sido && regionFields.sido !== sidoFromNotice) {
+    console.warn('[region-debug] sido mismatch — overriding with notice-based sido', {
+      seq: listItem.seq,
+      noticeNumber: listItem.noticeNumber,
+      matchedSido: regionFields.sido,
+      matchedDistrict: regionFields.matchedDistrict,
+      sidoFromNotice,
+    });
+    regionFields = findHearingRegionFieldsByText(sidoFromNotice);
+  }
+
   const region = regionFields?.region || '';
   const sigunguCode = normalizeSigunguCode(regionFields?.sigunguCode || '');
 

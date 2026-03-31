@@ -106,11 +106,19 @@ export function normalizeSigunguCode(value: unknown): string {
 }
 
 const AMBIGUOUS_DISTRICT_ALIASES = new Set([
+  // 광역시에 동일 이름으로 존재하는 구 이름 (시 맥락 없이 단독 매칭 금지)
   '서구',
   '동구',
   '남구',
   '북구',
   '중구',
+  // sigungu.json의 단일 문자 alias ("서", "동" 등)는 너무 짧아 오매칭 유발 가능
+  // 예: "서울특별시 공고" 텍스트에서 부산 서구의 alias "서"가 매칭되는 문제 방지
+  '서',
+  '동',
+  '남',
+  '북',
+  '중',
   '일산서구',
   '일산동구',
   '수정구',
@@ -519,6 +527,39 @@ export function findHearingRegionFieldsByText(value: unknown, regionMatchType?: 
     matchedCity: cityMatch.cityName,
     matchedDistrict: null,
   }, regionMatchType || 'city-only');
+}
+
+// 공고번호나 기관명 앞부분에 시도 이름이 명시적으로 등장하는 경우 추출.
+// 정규 공고 형식: "서울특별시 공고 제2026-996호", "경기도 성남시 공고 ..."
+// 긴 형태(세종특별자치시, 강원특별자치도 등)를 먼저 검사해 부분 매칭 방지.
+const EXPLICIT_SIDO_NAMES: readonly string[] = [
+  '서울특별시',
+  '부산광역시',
+  '대구광역시',
+  '인천광역시',
+  '광주광역시',
+  '대전광역시',
+  '울산광역시',
+  '세종특별자치시',
+  '강원특별자치도',
+  '전북특별자치도',
+  '제주특별자치도',
+  '경기도',
+  '강원도',
+  '충청북도',
+  '충청남도',
+  '전라북도',
+  '전라남도',
+  '경상북도',
+  '경상남도',
+];
+
+export function extractSidoFromText(value: unknown): string | null {
+  const text = String(value ?? '').trim();
+  for (const sido of EXPLICIT_SIDO_NAMES) {
+    if (text.startsWith(sido)) return sido;
+  }
+  return null;
 }
 
 export function findRegionMatchByText(value: unknown): RegionMatch | null {
