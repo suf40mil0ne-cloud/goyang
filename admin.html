@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>관리자 | 공람콕</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -23,18 +24,28 @@
     }
     header .brand { font-size: 1.2rem; font-weight: 900; color: #006194; text-decoration: none; }
     header .badge {
-      font-size: 0.7rem; font-weight: 700; background: #006194;
-      color: #fff; padding: 3px 8px; border-radius: 4px; margin-left: 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: #006194;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
     }
-    main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
     h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 1.5rem; color: #191c1e; }
+    h2 { font-size: 1.05rem; font-weight: 800; color: #191c1e; }
+    p { line-height: 1.5; }
 
-    .status-box {
+    .status-box,
+    .panel {
       background: #fff;
       border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+    .status-box {
       padding: 2rem;
       text-align: center;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
       font-size: 1rem;
       color: #3f4850;
     }
@@ -47,6 +58,43 @@
       border-radius: 8px;
       font-weight: 700;
       text-decoration: none;
+    }
+
+    .dashboard-stack {
+      display: grid;
+      gap: 1.25rem;
+    }
+    .panel {
+      padding: 1.25rem;
+    }
+    .panel-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .panel-kicker {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #52606d;
+      margin-bottom: 0.3rem;
+    }
+    .panel-note {
+      font-size: 0.9rem;
+      color: #52606d;
+    }
+    .panel-total {
+      align-self: center;
+      font-size: 0.9rem;
+      color: #006194;
+      font-weight: 700;
+      background: #eef6ff;
+      border-radius: 999px;
+      padding: 0.55rem 0.9rem;
     }
 
     .toolbar {
@@ -70,6 +118,60 @@
     }
     .btn-refresh:hover { background: #00507a; }
 
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .stat-card {
+      border: 1px solid #dfe7ef;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      color: #52606d;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .stat-value {
+      margin-top: 0.55rem;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #006194;
+      line-height: 1.1;
+    }
+    .stat-footnote {
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      color: #7d8a97;
+    }
+
+    .stats-detail-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 1rem;
+    }
+    .subpanel {
+      border: 1px solid #edf1f5;
+      border-radius: 12px;
+      padding: 1rem;
+      background: #fff;
+    }
+    .subpanel h3 {
+      font-size: 0.96rem;
+      font-weight: 800;
+      margin-bottom: 0.85rem;
+      color: #191c1e;
+    }
+    .chart-wrap {
+      position: relative;
+      min-height: 280px;
+    }
+
     .table-wrap { overflow-x: auto; }
     table {
       width: 100%;
@@ -79,6 +181,10 @@
       overflow: hidden;
       box-shadow: 0 4px 16px rgba(0,0,0,0.06);
       font-size: 0.875rem;
+    }
+    .subpanel table {
+      box-shadow: none;
+      background: transparent;
     }
     thead { background: #f2f4f6; }
     th {
@@ -135,9 +241,31 @@
     .page-btn:hover:not(:disabled) { border-color: #006194; color: #006194; }
     .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .page-btn.active { background: #006194; color: #fff; border-color: #006194; }
-    .page-info { font-size: 0.85rem; color: #52606d; padding: 0 0.5rem; }
 
-    .empty { text-align: center; padding: 3rem; color: #8a9aa8; font-size: 0.9rem; }
+    .empty,
+    .placeholder {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: #8a9aa8;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .stats-grid,
+      .stats-detail-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      header { padding: 1rem 1.25rem; }
+      main { padding: 1.4rem 1rem 2rem; }
+      .panel { padding: 1rem; }
+      .stats-grid,
+      .stats-detail-grid {
+        grid-template-columns: 1fr;
+      }
+      .stat-value { font-size: 1.55rem; }
+    }
   </style>
 </head>
 <body>
@@ -147,7 +275,7 @@
   </header>
 
   <main>
-    <h1>댓글 관리</h1>
+    <h1>방문자 통계 및 댓글 관리</h1>
     <div id="content">
       <div class="status-box">확인 중…</div>
     </div>
@@ -155,6 +283,7 @@
 
   <script>
     const WORKER_URL = 'https://goyang-worker.suf40mil0ne.workers.dev';
+    const numberFormatter = new Intl.NumberFormat('ko-KR');
 
     function getToken() { return localStorage.getItem('gonglam_token'); }
     function getUser()  {
@@ -163,33 +292,43 @@
     function formatDate(s) {
       const normalized = s.replace(' ', 'T');
       const d = new Date(normalized.endsWith('Z') ? normalized : normalized + 'Z');
-      if (isNaN(d)) return s;
+      if (Number.isNaN(d.getTime())) return s;
       return d.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+    }
+    function formatNumber(value) {
+      return numberFormatter.format(Number(value || 0));
+    }
+    function formatDailyLabel(dateString) {
+      const [, month, day] = String(dateString).split('-');
+      return `${month}.${day}`;
     }
 
     let currentPage = 1;
     const LIMIT = 50;
+    let visitorsChart = null;
+    let latestStats = null;
 
     async function checkAdmin() {
       const token = getToken();
-      const user  = getUser();
+      const user = getUser();
       if (!token || !user) {
         showStatus('관리자 로그인이 필요합니다.', true);
         return false;
       }
       document.getElementById('user-info').textContent = user.nickname + ' 님';
 
-      const res = await fetch(`${WORKER_URL}/me`, {
+      const res = await fetch(`${WORKER_URL}/admin/stats`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (!res.ok) { showStatus('관리자 로그인이 필요합니다.', true); return false; }
-      const payload = await res.json();
-
-      const testRes = await fetch(`${WORKER_URL}/admin/comments?page=1&limit=1`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (testRes.status === 403) { showStatus('권한이 없습니다.'); return false; }
-      if (!testRes.ok) { showStatus('서버 오류가 발생했습니다.'); return false; }
+      if (res.status === 403) {
+        showStatus('권한이 없습니다.');
+        return false;
+      }
+      if (!res.ok) {
+        showStatus('서버 오류가 발생했습니다.');
+        return false;
+      }
+      latestStats = await res.json();
       return true;
     }
 
@@ -197,31 +336,196 @@
       document.getElementById('content').innerHTML = `
         <div class="status-box">
           <p>${msg}</p>
-          ${showLogin ? `<a href="javascript:kakaoLogin()">카카오로 로그인</a>` : ''}
+          ${showLogin ? '<a href="javascript:kakaoLogin()">카카오로 로그인</a>' : ''}
         </div>`;
+    }
+
+    function renderDashboardShell() {
+      document.getElementById('content').innerHTML = `
+        <div class="dashboard-stack">
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-kicker">Visitors</div>
+                <h2>방문자 통계</h2>
+                <p class="panel-note">최근 7일 추이와 인기 페이지를 함께 확인합니다.</p>
+              </div>
+              <div class="panel-total" id="stats-total-pill">전체 누적 0회</div>
+            </div>
+            <div id="stats-panel">
+              <div class="placeholder">통계를 불러오는 중…</div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-kicker">Comments</div>
+                <h2>댓글 관리</h2>
+                <p class="panel-note">신고나 정리 대상 댓글을 빠르게 확인합니다.</p>
+              </div>
+            </div>
+            <div id="comments-panel">
+              <div class="placeholder">댓글을 불러오는 중…</div>
+            </div>
+          </section>
+        </div>`;
+    }
+
+    async function refreshStats() {
+      const token = getToken();
+      const res = await fetch(`${WORKER_URL}/admin/stats`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) {
+        throw new Error('stats_failed');
+      }
+      latestStats = await res.json();
+      renderStats(latestStats);
+    }
+
+    function renderStats(stats) {
+      const statsPanel = document.getElementById('stats-panel');
+      const totalPill = document.getElementById('stats-total-pill');
+      if (!statsPanel || !totalPill) {
+        return;
+      }
+
+      totalPill.textContent = `전체 누적 ${formatNumber(stats.total)}회`;
+      const cards = [
+        { label: '오늘', value: stats.today, footnote: '오늘 기록된 방문' },
+        { label: '어제', value: stats.yesterday, footnote: '전일 비교 기준' },
+        { label: '이번주', value: stats.thisWeek, footnote: '월요일부터 누적' },
+        { label: '이번달', value: stats.thisMonth, footnote: '당월 누적 방문' },
+      ];
+
+      const topRows = (stats.topPages || []).length
+        ? stats.topPages.map((row, index) => `
+          <tr>
+            <td class="td-id">${index + 1}</td>
+            <td title="${esc(row.path)}">${esc(row.path)}</td>
+            <td style="white-space:nowrap;font-weight:700;color:#006194;">${formatNumber(row.count)}</td>
+          </tr>`).join('')
+        : '<tr><td colspan="3" class="empty">기록된 페이지 방문이 없습니다.</td></tr>';
+
+      statsPanel.innerHTML = `
+        <div class="toolbar">
+          <span class="info">오늘 ${formatNumber(stats.today)}회 · 이번달 ${formatNumber(stats.thisMonth)}회</span>
+          <button class="btn-refresh" onclick="refreshAll()">전체 새로고침</button>
+        </div>
+        <div class="stats-grid">
+          ${cards.map((card) => `
+            <article class="stat-card">
+              <div class="stat-label">${card.label}</div>
+              <div class="stat-value">${formatNumber(card.value)}</div>
+              <div class="stat-footnote">${card.footnote}</div>
+            </article>`).join('')}
+        </div>
+        <div class="stats-detail-grid">
+          <section class="subpanel">
+            <h3>최근 7일 방문자 수</h3>
+            <div class="chart-wrap"><canvas id="visitors-chart"></canvas></div>
+          </section>
+          <section class="subpanel">
+            <h3>인기 페이지 Top 5</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>순위</th><th>페이지</th><th>방문 수</th></tr>
+                </thead>
+                <tbody>${topRows}</tbody>
+              </table>
+            </div>
+          </section>
+        </div>`;
+
+      renderVisitorsChart(stats.daily || []);
+    }
+
+    function renderVisitorsChart(daily) {
+      const canvas = document.getElementById('visitors-chart');
+      if (!canvas || typeof Chart === 'undefined') {
+        return;
+      }
+      if (visitorsChart) {
+        visitorsChart.destroy();
+      }
+      visitorsChart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels: daily.map((item) => formatDailyLabel(item.date)),
+          datasets: [{
+            label: '방문 수',
+            data: daily.map((item) => Number(item.count || 0)),
+            backgroundColor: '#7eb8ff',
+            borderColor: '#3b82f6',
+            borderWidth: 1,
+            borderRadius: 6,
+            maxBarThickness: 42,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (context) => `방문 ${formatNumber(context.parsed.y)}회`,
+              },
+            },
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: '#52606d' },
+            },
+            y: {
+              beginAtZero: true,
+              ticks: {
+                color: '#52606d',
+                precision: 0,
+                callback: (value) => formatNumber(value),
+              },
+              grid: { color: '#edf1f5' },
+            },
+          },
+        },
+      });
     }
 
     async function loadComments(page = 1) {
       const token = getToken();
+      const commentsPanel = document.getElementById('comments-panel');
       const res = await fetch(`${WORKER_URL}/admin/comments?page=${page}&limit=${LIMIT}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (!res.ok) { showStatus('댓글을 불러올 수 없습니다.'); return; }
+      if (!res.ok) {
+        if (commentsPanel) {
+          commentsPanel.innerHTML = '<div class="empty">댓글을 불러올 수 없습니다.</div>';
+        }
+        return;
+      }
       const { comments, total } = await res.json();
       renderTable(comments, total, page);
     }
 
     function renderTable(comments, total, page) {
+      const commentsPanel = document.getElementById('comments-panel');
+      if (!commentsPanel) {
+        return;
+      }
+
       const totalPages = Math.ceil(total / LIMIT);
       const start = (page - 1) * LIMIT + 1;
-      const end   = Math.min(page * LIMIT, total);
+      const end = Math.min(page * LIMIT, total);
 
       const rows = comments.length === 0
-        ? `<tr><td colspan="6" class="empty">댓글이 없습니다.</td></tr>`
-        : comments.map(c => `
+        ? '<tr><td colspan="6" class="empty">댓글이 없습니다.</td></tr>'
+        : comments.map((c) => `
           <tr>
             <td class="td-id">${c.id}</td>
-            <td class="td-notice" title="${c.notice_id}">${c.notice_id}</td>
+            <td class="td-notice" title="${esc(c.notice_id)}">${esc(c.notice_id)}</td>
             <td class="td-nick">${esc(c.nickname)}</td>
             <td class="td-content">${esc(c.content)}</td>
             <td class="td-date">${formatDate(c.created_at)}</td>
@@ -230,19 +534,19 @@
             </td>
           </tr>`).join('');
 
-      const paginationBtns = [];
+      const paginationButtons = [];
       if (totalPages > 1) {
-        paginationBtns.push(`<button class="page-btn" onclick="goPage(${page-1})" ${page<=1?'disabled':''}>이전</button>`);
-        for (let i = Math.max(1, page-2); i <= Math.min(totalPages, page+2); i++) {
-          paginationBtns.push(`<button class="page-btn ${i===page?'active':''}" onclick="goPage(${i})">${i}</button>`);
+        paginationButtons.push(`<button class="page-btn" onclick="goPage(${page - 1})" ${page <= 1 ? 'disabled' : ''}>이전</button>`);
+        for (let index = Math.max(1, page - 2); index <= Math.min(totalPages, page + 2); index += 1) {
+          paginationButtons.push(`<button class="page-btn ${index === page ? 'active' : ''}" onclick="goPage(${index})">${index}</button>`);
         }
-        paginationBtns.push(`<button class="page-btn" onclick="goPage(${page+1})" ${page>=totalPages?'disabled':''}>다음</button>`);
+        paginationButtons.push(`<button class="page-btn" onclick="goPage(${page + 1})" ${page >= totalPages ? 'disabled' : ''}>다음</button>`);
       }
 
-      document.getElementById('content').innerHTML = `
+      commentsPanel.innerHTML = `
         <div class="toolbar">
-          <span class="info">전체 ${total}개${total > 0 ? ` · ${start}–${end} 표시` : ''}</span>
-          <button class="btn-refresh" onclick="loadComments(${page})">새로고침</button>
+          <span class="info">전체 ${formatNumber(total)}개${total > 0 ? ` · ${start}–${end} 표시` : ''}</span>
+          <button class="btn-refresh" onclick="loadComments(${page})">댓글 새로고침</button>
         </div>
         <div class="table-wrap">
           <table>
@@ -254,7 +558,7 @@
             <tbody>${rows}</tbody>
           </table>
         </div>
-        ${totalPages > 1 ? `<div class="pagination">${paginationBtns.join('')}</div>` : ''}`;
+        ${totalPages > 1 ? `<div class="pagination">${paginationButtons.join('')}</div>` : ''}`;
     }
 
     async function deleteComment(id, btn) {
@@ -280,7 +584,10 @@
 
     function esc(str) {
       return String(str ?? '')
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
     }
 
     function kakaoLogin() {
@@ -292,10 +599,25 @@
       location.href = url.toString();
     }
 
+    async function refreshAll() {
+      try {
+        await refreshStats();
+        await loadComments(currentPage);
+      } catch {
+        showStatus('통계를 새로고침할 수 없습니다.');
+      }
+    }
+
     (async () => {
       const ok = await checkAdmin();
-      if (ok) loadComments(1);
+      if (!ok) {
+        return;
+      }
+      renderDashboardShell();
+      renderStats(latestStats || { today: 0, yesterday: 0, thisWeek: 0, thisMonth: 0, total: 0, daily: [], topPages: [] });
+      await loadComments(1);
     })();
   </script>
+  <script src="/js/tracker.js"></script>
 </body>
 </html>

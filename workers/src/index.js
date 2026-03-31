@@ -135,6 +135,49 @@ function errorResponse(message, status = 400, request) {
   return jsonResponse({ error: message }, status, request);
 }
 
+const BOT_USER_AGENT_PATTERN = /bot|crawler|spider/i;
+const SEOUL_TIME_OFFSET = '+9 hours';
+
+function normalizeTrackedPath(value) {
+  const normalized = String(value ?? '').trim();
+  if (!normalized) {
+    return '';
+  }
+  return normalized.startsWith('/') ? normalized : `/${normalized}`;
+}
+
+function getSeoulDateString(date = new Date()) {
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+  const parts = formatter.formatToParts(date).reduce((accumulator, part) => {
+    if (part.type !== 'literal') {
+      accumulator[part.type] = part.value;
+    }
+    return accumulator;
+  }, {});
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function shiftDateString(dateString, days) {
+  const [year, month, day] = String(dateString).split('-').map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function getWeekStartDateString(dateString) {
+  const [year, month, day] = String(dateString).split('-').map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  const weekday = date.getUTCDay();
+  const diff = weekday === 0 ? -6 : 1 - weekday;
+  date.setUTCDate(date.getUTCDate() + diff);
+  return date.toISOString().slice(0, 10);
+}
+
 const EUM_ATTACHMENT_USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 GonglamKok/1.0';
 
@@ -443,6 +486,44 @@ async function handleDeleteComment(request, env, id) {
   return jsonResponse({ deleted: true }, 200, request);
 }
 
+async function handleTrack(request, env) {
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return errorResponse('invalid_json', 400, request);
+  }
+
+  const trackedPath = normalizeTrackedPath(body?.path);
+  if (!trackedPath) {
+    return errorResponse('missing_path', 400, request);
+  }
+
+  const userAgent = String(request.headers.get('User-Agent') || '').trim();
+  if (BOT_USER_AGENT_PATTERN.test(userAgent)) {
+    return jsonResponse({ ok: true }, 200, request);
+  }
+
+  const referrer = String(request.headers.get('Referer') || request.headers.get('Referrer') || '').trim();
+
+  await env.DB.prepare(
+    'INSERT INTO page_views (path, user_agent, referrer) VALUES (?, ?, ?)'
+  ).bind(
+    trackedPath,
+    userAgent ? userAgent.slice(0, 1000) : null,
+    referrer ? referrer.slice(0, 1000) : null,
+  ).run();
+
+  const today = getSeoulDateString();
+  await env.DB.prepare(
+    `INSERT INTO daily_stats (date, total_views, unique_ips)
+     VALUES (?, 1, 0)
+     ON CONFLICT(date) DO UPDATE SET total_views = total_views + 1`
+  ).bind(today).run();
+
+  return jsonResponse({ ok: true }, 200, request);
+}
+
 // ──────────────────────────────────────────────
 // 관리자 API 핸들러
 // ──────────────────────────────────────────────
@@ -492,6 +573,59 @@ async function handleAdminDeleteComment(request, env, id) {
   return jsonResponse({ deleted: true }, 200, request);
 }
 
+async function handleAdminStats(request, env) {
+  const auth = await requireAdmin(request, env);
+  if (auth.error) return auth.error;
+
+  const today = getSeoulDateString();
+  const yesterday = shiftDateString(today, -1);
+  const weekStart = getWeekStartDateString(today);
+  const monthStart = `${today.slice(0, 7)}-01`;
+  const recentStart = shiftDateString(today, -6);
+  const dateExpression = `date(datetime(visited_at, '${SEOUL_TIME_OFFSET}'))`;
+
+  const [todayRow, yesterdayRow, weekRow, monthRow, totalRow, dailyRows, topPageRows] = await Promise.all([
+    env.DB.prepare(`SELECT COUNT(*) AS count FROM page_views WHERE ${dateExpression} = ?`).bind(today).first(),
+    env.DB.prepare(`SELECT COUNT(*) AS count FROM page_views WHERE ${dateExpression} = ?`).bind(yesterday).first(),
+    env.DB.prepare(`SELECT COUNT(*) AS count FROM page_views WHERE ${dateExpression} >= ? AND ${dateExpression} <= ?`).bind(weekStart, today).first(),
+    env.DB.prepare(`SELECT COUNT(*) AS count FROM page_views WHERE ${dateExpression} >= ? AND ${dateExpression} <= ?`).bind(monthStart, today).first(),
+    env.DB.prepare('SELECT COUNT(*) AS count FROM page_views').first(),
+    env.DB.prepare(
+      `SELECT ${dateExpression} AS date, COUNT(*) AS count
+       FROM page_views
+       WHERE ${dateExpression} >= ? AND ${dateExpression} <= ?
+       GROUP BY ${dateExpression}
+       ORDER BY date ASC`
+    ).bind(recentStart, today).all(),
+    env.DB.prepare(
+      `SELECT path, COUNT(*) AS count
+       FROM page_views
+       GROUP BY path
+       ORDER BY count DESC, path ASC
+       LIMIT 5`
+    ).all(),
+  ]);
+
+  const dailyMap = new Map((dailyRows.results || []).map((row) => [row.date, Number(row.count || 0)]));
+  const daily = Array.from({ length: 7 }, (_, index) => {
+    const date = shiftDateString(today, -6 + index);
+    return { date, count: Number(dailyMap.get(date) || 0) };
+  });
+
+  return jsonResponse({
+    today: Number(todayRow?.count || 0),
+    yesterday: Number(yesterdayRow?.count || 0),
+    thisWeek: Number(weekRow?.count || 0),
+    thisMonth: Number(monthRow?.count || 0),
+    total: Number(totalRow?.count || 0),
+    daily,
+    topPages: (topPageRows.results || []).map((row) => ({
+      path: row.path,
+      count: Number(row.count || 0),
+    })),
+  }, 200, request);
+}
+
 // GET /me
 async function handleMe(request, env) {
   const authHeader = request.headers.get('Authorization') || '';
@@ -526,6 +660,10 @@ export default {
       return getAttachment(request, env);
     }
 
+    if (url.pathname === '/track' && request.method === 'POST') {
+      return handleTrack(request, env);
+    }
+
     // ── 댓글 라우트 ──
     if (url.pathname === '/comments') {
       if (request.method === 'GET')  return handleGetComments(request, env);
@@ -541,6 +679,9 @@ export default {
     // ── 관리자 라우트 ──
     if (url.pathname === '/admin/comments' && request.method === 'GET') {
       return handleAdminGetComments(request, env);
+    }
+    if (url.pathname === '/admin/stats' && request.method === 'GET') {
+      return handleAdminStats(request, env);
     }
     const adminDeleteMatch = url.pathname.match(/^\/admin\/comments\/(\d+)$/);
     if (adminDeleteMatch && request.method === 'DELETE') {
