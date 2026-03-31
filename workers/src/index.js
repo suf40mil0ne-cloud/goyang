@@ -10,7 +10,7 @@
  *
  * 필요 환경변수 (wrangler secret put 또는 대시보드에서 설정):
  *   KAKAO_REST_KEY     - 카카오 앱 REST API 키
- *   KAKAO_REDIRECT_URI - https://goyang-eke.pages.dev/auth/callback
+ *   KAKAO_REDIRECT_URI - https://공람.com/auth/callback
  *   JWT_SECRET         - 32자 이상 랜덤 문자열 (openssl rand -base64 32)
  */
 
