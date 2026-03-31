@@ -133,7 +133,7 @@ function errorResponse(message, status = 400, request) {
 // 관리자 설정
 // ──────────────────────────────────────────────
 
-const ADMIN_IDS = ['여기에본인카카오ID']; // 본인 카카오 ID 숫자
+const ADMIN_IDS = ['4823280911']; // 본인 카카오 ID 숫자
 
 function isAdmin(userId) {
   return ADMIN_IDS.includes(String(userId));
