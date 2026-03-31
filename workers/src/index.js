@@ -105,6 +105,12 @@ const ALLOWED_ORIGINS = [
   'https://xn--ob0bw4r.com',
   'https://www.xn--ob0bw4r.com',
   'https://공람.com',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:4173',
+  'http://127.0.0.1:4173',
+  'http://localhost:8788',
+  'http://127.0.0.1:8788',
 ];
 
 function getCorsHeaders(request) {
@@ -127,6 +133,124 @@ function jsonResponse(data, status = 200, request) {
 
 function errorResponse(message, status = 400, request) {
   return jsonResponse({ error: message }, status, request);
+}
+
+const EUM_ATTACHMENT_USER_AGENT =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 GonglamKok/1.0';
+
+function decodeHtmlEntities(value) {
+  return String(value ?? '').replace(/&(#x?[0-9a-f]+|amp|lt|gt|quot|apos);/gi, (match, entity) => {
+    const normalized = String(entity).toLowerCase();
+    if (normalized === 'amp') return '&';
+    if (normalized === 'lt') return '<';
+    if (normalized === 'gt') return '>';
+    if (normalized === 'quot') return '"';
+    if (normalized === 'apos') return "'";
+    if (normalized.startsWith('#x')) {
+      const codePoint = Number.parseInt(normalized.slice(2), 16);
+      return Number.isFinite(codePoint) ? String.fromCodePoint(codePoint) : match;
+    }
+    if (normalized.startsWith('#')) {
+      const codePoint = Number.parseInt(normalized.slice(1), 10);
+      return Number.isFinite(codePoint) ? String.fromCodePoint(codePoint) : match;
+    }
+    return match;
+  });
+}
+
+function extractAttribute(tag, attributeName) {
+  const pattern = new RegExp("\\b" + attributeName + "\\s*=\\s*(['\"])(.*?)\\1", 'i');
+  const match = String(tag ?? '').match(pattern);
+  return match ? decodeHtmlEntities(match[2]).trim() : '';
+}
+
+function isAllowedEumUrl(value) {
+  try {
+    const url = new URL(value);
+    return ['www.eum.go.kr', 'eum.go.kr'].includes(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
+function extractEumAttachments(html, pageUrl) {
+  const files = [];
+  const seen = new Set();
+  const formRegex = /<form\b([^>]*)>([\s\S]*?)<\/form>/gi;
+  let formMatch;
+
+  while ((formMatch = formRegex.exec(html)) !== null) {
+    const formAttributes = formMatch[1] || '';
+    const formContent = formMatch[2] || '';
+    const action = extractAttribute(formAttributes, 'action');
+    const formAction = new URL(action || pageUrl, pageUrl).toString();
+    const inputRegex = /<input\b[^>]*>/gi;
+    let inputMatch;
+
+    while ((inputMatch = inputRegex.exec(formContent)) !== null) {
+      const inputTag = inputMatch[0] || '';
+      if (extractAttribute(inputTag, 'name') !== 'file') {
+        continue;
+      }
+
+      const filePath = extractAttribute(inputTag, 'value');
+      if (!filePath) {
+        continue;
+      }
+
+      const decodedPath = decodeHtmlEntities(filePath);
+      const fileName = decodedPath.split('/').filter(Boolean).pop() || '';
+      const ext = fileName.includes('.') ? fileName.split('.').pop().toLowerCase() : '';
+      const key = formAction + '::' + decodedPath;
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      files.push({
+        name: fileName || decodedPath,
+        ext,
+        path: decodedPath,
+        formAction,
+      });
+    }
+  }
+
+  return files;
+}
+
+async function getAttachment(request, _env) {
+  const { searchParams } = new URL(request.url);
+  const targetUrl = decodeHtmlEntities(searchParams.get('url'));
+
+  if (!targetUrl) {
+    return errorResponse('missing_url', 400, request);
+  }
+  if (!isAllowedEumUrl(targetUrl)) {
+    return errorResponse('invalid_url', 400, request);
+  }
+
+  let upstream;
+  try {
+    upstream = await fetch(targetUrl, {
+      headers: {
+        'User-Agent': EUM_ATTACHMENT_USER_AGENT,
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+        Referer: 'https://www.eum.go.kr/',
+      },
+      redirect: 'follow',
+    });
+  } catch (error) {
+    console.error('[attachment] fetch failed', error);
+    return errorResponse('attachment_fetch_failed', 502, request);
+  }
+
+  if (!upstream.ok) {
+    return errorResponse('attachment_fetch_failed:' + upstream.status, 502, request);
+  }
+
+  const html = await upstream.text();
+  return jsonResponse({ files: extractEumAttachments(html, targetUrl) }, 200, request);
 }
 
 // ──────────────────────────────────────────────
@@ -396,6 +520,10 @@ export default {
     // ── 카카오 인증 라우트 ──
     if (url.pathname === '/auth/kakao' && request.method === 'GET') {
       return handleKakaoAuth(request, env);
+    }
+
+    if (url.pathname === '/attachment' && request.method === 'GET') {
+      return getAttachment(request, env);
     }
 
     // ── 댓글 라우트 ──

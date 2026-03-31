@@ -192,6 +192,106 @@ function normalizeInlineText(value) {
   return normalizeString(value).replace(/\s+/g, ' ').trim();
 }
 
+
+const ATTACHMENT_WORKER_URL = 'https://goyang-worker.suf40mil0ne.workers.dev';
+const attachmentMetadataCache = new globalThis.Map();
+
+function isEumAttachmentEligible(notice, finalNoticeHref) {
+  const normalizedHref = normalizeInlineText(finalNoticeHref);
+  if (!normalizedHref) {
+    return false;
+  }
+  if (notice.source === 'eum_public_hearing') {
+    return true;
+  }
+
+  try {
+    const parsedUrl = new URL(normalizedHref);
+    return ['www.eum.go.kr', 'eum.go.kr'].includes(parsedUrl.hostname);
+  } catch {
+    return /hrPeopleHearDet.jsp/i.test(normalizedHref);
+  }
+}
+
+async function fetchAttachmentMetadata(finalNoticeHref) {
+  const normalizedHref = normalizeInlineText(finalNoticeHref);
+  if (!normalizedHref) {
+    return [];
+  }
+
+  const cached = attachmentMetadataCache.get(normalizedHref);
+  if (cached) {
+    return cached;
+  }
+
+  const requestPromise = (async () => {
+    const url = new URL('/attachment', ATTACHMENT_WORKER_URL);
+    url.searchParams.set('url', normalizedHref);
+
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+      return [];
+    }
+
+    const payload = await response.json().catch(() => ({ files: [] }));
+    if (!Array.isArray(payload?.files)) {
+      return [];
+    }
+
+    return payload.files
+      .map((file) => {
+        const normalizedPath = normalizeInlineText(file?.path);
+        const normalizedAction = normalizeInlineText(file?.formAction);
+        const fallbackName = normalizedPath.split('/').filter(Boolean).pop() || '';
+        const normalizedName = normalizeInlineText(file?.name) || fallbackName;
+        const normalizedExt = normalizeInlineText(file?.ext) || (normalizedName.includes('.') ? normalizedName.split('.').pop().toLowerCase() : '');
+        if (!normalizedPath || !normalizedAction) {
+          return null;
+        }
+        return {
+          name: normalizedName || '첨부파일',
+          ext: normalizedExt,
+          path: normalizedPath,
+          formAction: normalizedAction,
+        };
+      })
+      .filter(Boolean);
+  })().catch(() => []);
+
+  attachmentMetadataCache.set(normalizedHref, requestPromise);
+  return requestPromise;
+}
+
+function downloadAttachment(action, filePath) {
+  const normalizedAction = normalizeInlineText(action);
+  const normalizedPath = normalizeInlineText(filePath);
+  if (!normalizedAction || !normalizedPath) {
+    return;
+  }
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = normalizedAction;
+  form.target = '_blank';
+  form.style.display = 'none';
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'hidden';
+  fileInput.name = 'file';
+  fileInput.value = normalizedPath;
+  form.appendChild(fileInput);
+
+  const mobileInput = document.createElement('input');
+  mobileInput.type = 'hidden';
+  mobileInput.name = 'mobile_yn';
+  mobileInput.value = '';
+  form.appendChild(mobileInput);
+
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+}
+
 function normalizeComparableText(value) {
   return normalizeInlineText(value)
     .toLowerCase()
@@ -828,9 +928,13 @@ function CommentsSection({ noticeId }) {
 }
 
 function NoticeSummaryCard({ notice, emphasized = false }) {
+  const cardRef = useRef(null);
+  const [shouldLoadAttachment, setShouldLoadAttachment] = useState(false);
+  const [attachmentFiles, setAttachmentFiles] = useState(null);
   const statusMeta = getStatusMeta(notice.status);
   const summary = buildNoticeSummary(notice);
   const finalNoticeHref = notice.link;
+  const canLoadAttachment = isEumAttachmentEligible(notice, finalNoticeHref);
   if (notice.source === 'eum_public_hearing' && finalNoticeHref) {
     console.info('[eum-url-debug] render final href', {
       seq: notice.seq || '',
@@ -849,8 +953,51 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
     ? (notice.districtLevelRegionName || '세부 구 미확정')
     : '';
 
+  useEffect(() => {
+    if (!canLoadAttachment || shouldLoadAttachment || attachmentFiles !== null) {
+      return undefined;
+    }
+
+    const node = cardRef.current;
+    if (!node || typeof window === 'undefined' || typeof window.IntersectionObserver !== 'function') {
+      setShouldLoadAttachment(true);
+      return undefined;
+    }
+
+    const observer = new window.IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldLoadAttachment(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px 0px' }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [attachmentFiles, canLoadAttachment, shouldLoadAttachment]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!canLoadAttachment || !shouldLoadAttachment || attachmentFiles !== null) {
+      return undefined;
+    }
+
+    fetchAttachmentMetadata(finalNoticeHref).then((files) => {
+      if (!cancelled) {
+        setAttachmentFiles(files);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [attachmentFiles, canLoadAttachment, finalNoticeHref, shouldLoadAttachment]);
+
   return (
-    <article className={`feed-card ${emphasized ? 'border border-[#c1e0ff]' : ''}`}>
+    <article ref={cardRef} className={`feed-card ${emphasized ? 'border border-[#c1e0ff]' : ''}`}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-[#f2f4f6] px-3 py-1 text-[11px] font-bold text-[#43617c]">
@@ -896,33 +1043,47 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
           <span className="rounded-full bg-[#f2f4f6] px-3 py-2">출처: {sourceLabel}</span>
           <span className="rounded-full bg-[#f2f4f6] px-3 py-2">{attachmentLabel}</span>
         </div>
-        {finalNoticeHref ? (
-          <a
-            href={finalNoticeHref}
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => {
-              if (notice.source === 'eum_public_hearing') {
-                console.info('[eum-url-debug] click open url', {
-                  seq: notice.seq || '',
-                  href: finalNoticeHref,
-                });
-              }
-            }}
-            className="rounded-xl border border-[#bfc7d2] px-4 py-2 text-sm font-semibold text-[#3f4850] transition hover:border-[#006194] hover:text-[#006194]"
-          >
-            원문 보기
-          </a>
-        ) : (
-          <button
-            type="button"
-            className="rounded-xl border border-[#bfc7d2] px-4 py-2 text-sm font-semibold text-[#3f4850] opacity-70"
-            disabled
-            title="원문 링크 정보가 제공되지 않았습니다."
-          >
-            원문 보기
-          </button>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          {(attachmentFiles || []).map((file) => (
+            <button
+              key={file.formAction + file.path}
+              type="button"
+              onClick={() => downloadAttachment(file.formAction, file.path)}
+              className="inline-flex items-center gap-1.5 rounded-[6px] border border-[#bdd0ff] bg-[#f0f4ff] px-[14px] py-[6px] text-[13px] font-semibold text-[#3B82F6] transition hover:border-[#3B82F6] hover:bg-[#e8f0ff]"
+              title={file.name}
+            >
+              <span aria-hidden="true">📎</span>
+              <span>{file.name || '첨부파일'}</span>
+            </button>
+          ))}
+          {finalNoticeHref ? (
+            <a
+              href={finalNoticeHref}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => {
+                if (notice.source === 'eum_public_hearing') {
+                  console.info('[eum-url-debug] click open url', {
+                    seq: notice.seq || '',
+                    href: finalNoticeHref,
+                  });
+                }
+              }}
+              className="rounded-xl border border-[#bfc7d2] px-4 py-2 text-sm font-semibold text-[#3f4850] transition hover:border-[#006194] hover:text-[#006194]"
+            >
+              원문 보기
+            </a>
+          ) : (
+            <button
+              type="button"
+              className="rounded-xl border border-[#bfc7d2] px-4 py-2 text-sm font-semibold text-[#3f4850] opacity-70"
+              disabled
+              title="원문 링크 정보가 제공되지 않았습니다."
+            >
+              원문 보기
+            </button>
+          )}
+        </div>
       </div>
       <CommentsSection noticeId={notice.id} />
     </article>
