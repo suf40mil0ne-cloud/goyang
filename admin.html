@@ -281,8 +281,8 @@
     </div>
   </main>
 
+  <script src="/js/tracker.js"></script>
   <script>
-    var WORKER_URL = 'https://goyang-worker.suf40mil0ne.workers.dev';
     const numberFormatter = new Intl.NumberFormat('ko-KR');
 
     function getToken() { return localStorage.getItem('gonglam_token'); }
@@ -618,6 +618,5 @@
       await loadComments(1);
     })();
   </script>
-  <script src="/js/tracker.js"></script>
 </body>
 </html>

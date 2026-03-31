@@ -104,13 +104,6 @@ const ALLOWED_ORIGINS = [
   'https://goyang-eke.pages.dev',
   'https://xn--ob0bw4r.com',
   'https://www.xn--ob0bw4r.com',
-  'https://공람.com',
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  'http://localhost:4173',
-  'http://127.0.0.1:4173',
-  'http://localhost:8788',
-  'http://127.0.0.1:8788',
 ];
 
 function getCorsHeaders(request) {
