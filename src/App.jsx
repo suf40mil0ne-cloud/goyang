@@ -752,7 +752,7 @@ function buildNoticeSummary(notice) {
 }
 
 const KAKAO_KEY = '702f4cd88b9cf13b50973c9d9e42bea7';
-const KAKAO_REDIRECT = 'https://goyang-eke.pages.dev/auth/callback';
+const KAKAO_REDIRECT = `${location.origin}/auth/callback`;
 
 function KakaoAuthWidget() {
   const [user, setUser] = useState(() => {
