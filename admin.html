@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>관리자 | 공람콕</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+      background: #f7f9fb;
+      color: #191c1e;
+      min-height: 100vh;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid #e0e3e5;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header .brand { font-size: 1.2rem; font-weight: 900; color: #006194; text-decoration: none; }
+    header .badge {
+      font-size: 0.7rem; font-weight: 700; background: #006194;
+      color: #fff; padding: 3px 8px; border-radius: 4px; margin-left: 8px;
+    }
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+    h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 1.5rem; color: #191c1e; }
+
+    .status-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      font-size: 1rem;
+      color: #3f4850;
+    }
+    .status-box a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.6rem 1.4rem;
+      background: #FEE500;
+      color: #3C1E1E;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .toolbar .info { font-size: 0.9rem; color: #52606d; }
+    .btn-refresh {
+      padding: 0.5rem 1.2rem;
+      background: #006194;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-refresh:hover { background: #00507a; }
+
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      font-size: 0.875rem;
+    }
+    thead { background: #f2f4f6; }
+    th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #52606d;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid #f0f2f4;
+      color: #2c3a44;
+      vertical-align: top;
+    }
+    tr:hover td { background: #fafbfc; }
+    .td-id { color: #8a9aa8; font-size: 0.78rem; width: 50px; }
+    .td-notice { font-size: 0.78rem; color: #006194; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .td-nick { font-weight: 600; white-space: nowrap; }
+    .td-content { max-width: 300px; word-break: break-all; line-height: 1.5; }
+    .td-date { white-space: nowrap; font-size: 0.78rem; color: #8a9aa8; }
+    .btn-delete {
+      padding: 4px 12px;
+      background: none;
+      border: 1px solid #e85c5c;
+      border-radius: 6px;
+      color: #e85c5c;
+      font-size: 0.78rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-delete:hover { background: #fff0f0; }
+    .btn-delete:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .page-btn {
+      padding: 0.4rem 0.9rem;
+      border: 1px solid #bfc7d2;
+      border-radius: 6px;
+      background: #fff;
+      color: #3f4850;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .page-btn:hover:not(:disabled) { border-color: #006194; color: #006194; }
+    .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .page-btn.active { background: #006194; color: #fff; border-color: #006194; }
+    .page-info { font-size: 0.85rem; color: #52606d; padding: 0 0.5rem; }
+
+    .empty { text-align: center; padding: 3rem; color: #8a9aa8; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">공람콕<span class="badge">ADMIN</span></a>
+    <div id="user-info" style="font-size:0.875rem;color:#52606d;"></div>
+  </header>
+
+  <main>
+    <h1>댓글 관리</h1>
+    <div id="content">
+      <div class="status-box">확인 중…</div>
+    </div>
+  </main>
+
+  <script>
+    const WORKER_URL = 'https://goyang-worker.suf40mil0ne.workers.dev';
+
+    function getToken() { return localStorage.getItem('gonglam_token'); }
+    function getUser()  {
+      try { return JSON.parse(localStorage.getItem('gonglam_user') || 'null'); } catch { return null; }
+    }
+    function formatDate(s) {
+      const d = new Date(s);
+      if (isNaN(d)) return s;
+      return d.toLocaleDateString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+    }
+
+    let currentPage = 1;
+    const LIMIT = 50;
+
+    async function checkAdmin() {
+      const token = getToken();
+      const user  = getUser();
+      if (!token || !user) {
+        showStatus('관리자 로그인이 필요합니다.', true);
+        return false;
+      }
+      document.getElementById('user-info').textContent = user.nickname + ' 님';
+
+      const res = await fetch(`${WORKER_URL}/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) { showStatus('관리자 로그인이 필요합니다.', true); return false; }
+      const payload = await res.json();
+
+      const testRes = await fetch(`${WORKER_URL}/admin/comments?page=1&limit=1`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (testRes.status === 403) { showStatus('권한이 없습니다.'); return false; }
+      if (!testRes.ok) { showStatus('서버 오류가 발생했습니다.'); return false; }
+      return true;
+    }
+
+    function showStatus(msg, showLogin = false) {
+      document.getElementById('content').innerHTML = `
+        <div class="status-box">
+          <p>${msg}</p>
+          ${showLogin ? `<a href="javascript:kakaoLogin()">카카오로 로그인</a>` : ''}
+        </div>`;
+    }
+
+    async function loadComments(page = 1) {
+      const token = getToken();
+      const res = await fetch(`${WORKER_URL}/admin/comments?page=${page}&limit=${LIMIT}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) { showStatus('댓글을 불러올 수 없습니다.'); return; }
+      const { comments, total } = await res.json();
+      renderTable(comments, total, page);
+    }
+
+    function renderTable(comments, total, page) {
+      const totalPages = Math.ceil(total / LIMIT);
+      const start = (page - 1) * LIMIT + 1;
+      const end   = Math.min(page * LIMIT, total);
+
+      const rows = comments.length === 0
+        ? `<tr><td colspan="6" class="empty">댓글이 없습니다.</td></tr>`
+        : comments.map(c => `
+          <tr>
+            <td class="td-id">${c.id}</td>
+            <td class="td-notice" title="${c.notice_id}">${c.notice_id}</td>
+            <td class="td-nick">${esc(c.nickname)}</td>
+            <td class="td-content">${esc(c.content)}</td>
+            <td class="td-date">${formatDate(c.created_at)}</td>
+            <td>
+              <button class="btn-delete" onclick="deleteComment(${c.id}, this)">삭제</button>
+            </td>
+          </tr>`).join('');
+
+      const paginationBtns = [];
+      if (totalPages > 1) {
+        paginationBtns.push(`<button class="page-btn" onclick="goPage(${page-1})" ${page<=1?'disabled':''}>이전</button>`);
+        for (let i = Math.max(1, page-2); i <= Math.min(totalPages, page+2); i++) {
+          paginationBtns.push(`<button class="page-btn ${i===page?'active':''}" onclick="goPage(${i})">${i}</button>`);
+        }
+        paginationBtns.push(`<button class="page-btn" onclick="goPage(${page+1})" ${page>=totalPages?'disabled':''}>다음</button>`);
+      }
+
+      document.getElementById('content').innerHTML = `
+        <div class="toolbar">
+          <span class="info">전체 ${total}개${total > 0 ? ` · ${start}–${end} 표시` : ''}</span>
+          <button class="btn-refresh" onclick="loadComments(${page})">새로고침</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>번호</th><th>공고 ID</th><th>닉네임</th><th>내용</th><th>작성일</th><th>삭제</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        ${totalPages > 1 ? `<div class="pagination">${paginationBtns.join('')}</div>` : ''}`;
+    }
+
+    async function deleteComment(id, btn) {
+      if (!confirm(`댓글 #${id}을 삭제하시겠습니까?`)) return;
+      btn.disabled = true;
+      const token = getToken();
+      const res = await fetch(`${WORKER_URL}/admin/comments/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        loadComments(currentPage);
+      } else {
+        alert('삭제에 실패했습니다.');
+        btn.disabled = false;
+      }
+    }
+
+    function goPage(page) {
+      currentPage = page;
+      loadComments(page);
+    }
+
+    function esc(str) {
+      return String(str ?? '')
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function kakaoLogin() {
+      sessionStorage.setItem('gonglam_return', '/admin.html');
+      const url = new URL('https://kauth.kakao.com/oauth/authorize');
+      url.searchParams.set('client_id', '702f4cd88b9cf13b50973c9d9e42bea7');
+      url.searchParams.set('redirect_uri', `${location.origin}/auth/callback`);
+      url.searchParams.set('response_type', 'code');
+      location.href = url.toString();
+    }
+
+    (async () => {
+      const ok = await checkAdmin();
+      if (ok) loadComments(1);
+    })();
+  </script>
+</body>
+</html>

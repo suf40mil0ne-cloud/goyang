@@ -130,6 +130,16 @@ function errorResponse(message, status = 400, request) {
 }
 
 // ──────────────────────────────────────────────
+// 관리자 설정
+// ──────────────────────────────────────────────
+
+const ADMIN_IDS = ['여기에본인카카오ID']; // 본인 카카오 ID 숫자
+
+function isAdmin(userId) {
+  return ADMIN_IDS.includes(String(userId));
+}
+
+// ──────────────────────────────────────────────
 // 랜덤 닉네임 생성
 // ──────────────────────────────────────────────
 
@@ -309,6 +319,67 @@ async function handleDeleteComment(request, env, id) {
 }
 
 // ──────────────────────────────────────────────
+// 관리자 API 핸들러
+// ──────────────────────────────────────────────
+
+async function requireAdmin(request, env) {
+  const authHeader = request.headers.get('Authorization') || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  try {
+    const payload = await verifyJWT(token, env.JWT_SECRET);
+    if (!isAdmin(payload.sub)) return { error: errorResponse('forbidden', 403, request) };
+    return { payload };
+  } catch (e) {
+    return { error: errorResponse('unauthorized:' + e.message, 401, request) };
+  }
+}
+
+// GET /admin/comments?page=1&limit=50
+async function handleAdminGetComments(request, env) {
+  const auth = await requireAdmin(request, env);
+  if (auth.error) return auth.error;
+
+  const { searchParams } = new URL(request.url);
+  const page  = Math.max(1, Number(searchParams.get('page')  || 1));
+  const limit = Math.min(100, Math.max(1, Number(searchParams.get('limit') || 50)));
+  const offset = (page - 1) * limit;
+
+  const { results } = await env.DB.prepare(
+    'SELECT id, notice_id, user_id, nickname, content, created_at FROM comments ORDER BY created_at DESC LIMIT ? OFFSET ?'
+  ).bind(limit, offset).all();
+
+  const { results: countRows } = await env.DB.prepare(
+    'SELECT COUNT(*) as total FROM comments'
+  ).all();
+
+  return jsonResponse({ comments: results, total: countRows[0].total, page, limit }, 200, request);
+}
+
+// DELETE /admin/comments/:id
+async function handleAdminDeleteComment(request, env, id) {
+  const auth = await requireAdmin(request, env);
+  if (auth.error) return auth.error;
+
+  const row = await env.DB.prepare('SELECT id FROM comments WHERE id = ?').bind(id).first();
+  if (!row) return errorResponse('not_found', 404, request);
+
+  await env.DB.prepare('DELETE FROM comments WHERE id = ?').bind(id).run();
+  return jsonResponse({ deleted: true }, 200, request);
+}
+
+// GET /me
+async function handleMe(request, env) {
+  const authHeader = request.headers.get('Authorization') || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  try {
+    const payload = await verifyJWT(token, env.JWT_SECRET);
+    return jsonResponse(payload, 200, request);
+  } catch (e) {
+    return errorResponse('unauthorized:' + e.message, 401, request);
+  }
+}
+
+// ──────────────────────────────────────────────
 // fetch 핸들러
 // ──────────────────────────────────────────────
 
@@ -336,6 +407,20 @@ export default {
     const deleteMatch = url.pathname.match(/^\/comments\/(\d+)$/);
     if (deleteMatch && request.method === 'DELETE') {
       return handleDeleteComment(request, env, Number(deleteMatch[1]));
+    }
+
+    // ── 관리자 라우트 ──
+    if (url.pathname === '/admin/comments' && request.method === 'GET') {
+      return handleAdminGetComments(request, env);
+    }
+    const adminDeleteMatch = url.pathname.match(/^\/admin\/comments\/(\d+)$/);
+    if (adminDeleteMatch && request.method === 'DELETE') {
+      return handleAdminDeleteComment(request, env, Number(adminDeleteMatch[1]));
+    }
+
+    // ── /me ──
+    if (url.pathname === '/me' && request.method === 'GET') {
+      return handleMe(request, env);
     }
 
     return new Response('Not Found', { status: 404 });
