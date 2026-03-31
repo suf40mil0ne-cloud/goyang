@@ -1549,10 +1549,10 @@ export default function App() {
                   위치 기반 탐색
                 </span>
                 <h1 className="hero-title mt-5 text-[#191c1e]">
-                  내 주변 도시계획 공고 찾기
+                  내 한 마디가 도시의 내일을 바꿉니다
                 </h1>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#52606d] sm:text-[1.05rem]">
-                  토지이음 주민의견청취 공람과 국토부 인터넷 주민의견청취를 통합해 현재 자치구와 인접 자치구 공고를 분리해 보여줍니다.
+                  우리 동네 도시계획 공람 공고를 한눈에 확인하고, 주민의견을 제출해 더 나은 도시를 만드는 데 참여하세요.
                 </p>
                 <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
                   <button type="button" onClick={handleDetectLocation} className="hero-button w-full justify-center sm:w-auto">
