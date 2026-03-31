@@ -225,7 +225,9 @@ async function verifyJWT(token, secret) {
   );
   if (!valid) throw new Error('invalid_signature');
 
-  const payload = JSON.parse(decodeURIComponent(escape(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')))));
+  const rawPayload = atob(parts[1].replace(/-/g, '+').replace(/_/g, '/'));
+  const payloadBytes = Uint8Array.from(rawPayload, (c) => c.charCodeAt(0));
+  const payload = JSON.parse(new TextDecoder().decode(payloadBytes));
   if (payload.exp < Math.floor(Date.now() / 1000)) throw new Error('token_expired');
 
   return payload;
