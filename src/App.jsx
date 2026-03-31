@@ -752,6 +752,16 @@ function buildNoticeSummary(notice) {
   return resolved.length > 120 ? `${resolved.slice(0, 120).trim()}...` : resolved;
 }
 
+function CommentsSection({ noticeId }) {
+  const containerRef = useRef(null);
+  useEffect(() => {
+    if (containerRef.current && typeof window.initComments === 'function') {
+      window.initComments(noticeId, containerRef.current);
+    }
+  }, [noticeId]);
+  return <div ref={containerRef} />;
+}
+
 function NoticeSummaryCard({ notice, emphasized = false }) {
   const statusMeta = getStatusMeta(notice.status);
   const summary = buildNoticeSummary(notice);
@@ -849,6 +859,7 @@ function NoticeSummaryCard({ notice, emphasized = false }) {
           </button>
         )}
       </div>
+      <CommentsSection noticeId={notice.id} />
     </article>
   );
 }
