@@ -1,0 +1,139 @@
+<!doctype html>
+<!--
+  auth/callback.html
+  배치 위치: Pages 레포 루트의 auth/callback.html
+  서비스 URL: https://goyang-eke.pages.dev/auth/callback
+
+  역할: 카카오로부터 인가코드를 받아 Workers에 전달하고,
+        JWT와 사용자 정보를 localStorage에 저장한 뒤 / 로 이동
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로그인 처리 중 · 공람콕</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f7f9fb;
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+      color: #1a2530;
+      gap: 20px;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid #e0e3e5;
+      border-top-color: #FEE500;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .message {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #3f4850;
+    }
+
+    .error-box {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 24px 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .error-box.visible { display: flex; }
+    .error-box .icon { font-size: 2rem; }
+    .error-box p { font-size: 0.95rem; color: #3f4850; }
+    .error-box a {
+      margin-top: 4px;
+      font-size: 0.9rem;
+      color: #006194;
+      text-decoration: none;
+    }
+    .error-box a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div id="loading">
+    <div class="spinner"></div>
+    <p class="message">카카오 로그인 처리 중…</p>
+  </div>
+
+  <div id="error-box" class="error-box">
+    <span class="icon">⚠️</span>
+    <p id="error-msg">로그인 처리 중 오류가 발생했습니다.</p>
+    <a href="/">홈으로 돌아가기</a>
+  </div>
+
+  <script>
+    // ── 설정 ──────────────────────────────────────
+    // Workers 배포 후 실제 URL로 교체하세요
+    const WORKER_URL = 'https://YOUR_WORKER.workers.dev';
+    // ──────────────────────────────────────────────
+
+    function showError(msg) {
+      document.getElementById('loading').style.display = 'none';
+      const box = document.getElementById('error-box');
+      box.classList.add('visible');
+      if (msg) document.getElementById('error-msg').textContent = msg;
+    }
+
+    async function processCallback() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const kakaoError = params.get('error');
+
+      // 사용자가 카카오 로그인 취소
+      if (kakaoError) {
+        showError('카카오 로그인이 취소되었습니다.');
+        return;
+      }
+
+      if (!code) {
+        showError('인가코드가 없습니다. 다시 시도해 주세요.');
+        return;
+      }
+
+      let res;
+      try {
+        res = await fetch(`${WORKER_URL}/auth/kakao?code=${encodeURIComponent(code)}`);
+      } catch {
+        showError('서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.');
+        return;
+      }
+
+      if (!res.ok) {
+        let detail = '';
+        try { detail = (await res.json()).error ?? ''; } catch {}
+        showError(`로그인 처리 실패 (${res.status}${detail ? ': ' + detail : ''})`);
+        return;
+      }
+
+      const { token, user } = await res.json();
+
+      localStorage.setItem('gonglam_token', token);
+      localStorage.setItem('gonglam_user', JSON.stringify(user));
+
+      // 이전 페이지 또는 홈으로 복귀
+      const returnTo = sessionStorage.getItem('gonglam_return') || '/';
+      sessionStorage.removeItem('gonglam_return');
+      window.location.replace(returnTo);
+    }
+
+    processCallback();
+  </script>
+</body>
+</html>
