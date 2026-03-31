@@ -13,7 +13,7 @@
  */
 
 // ── 설정 상수 ─────────────────────────────────
-const KAKAO_KEY = 'YOUR_REST_API_KEY'; // 카카오 앱 REST API 키
+const KAKAO_KEY = '702f4cd88b9cf13b50973c9d9e42bea7'; // 카카오 앱 REST API 키
 const REDIRECT   = 'https://goyang-eke.pages.dev/auth/callback';
 // ──────────────────────────────────────────────
 
