@@ -47,7 +47,7 @@ export async function initTimelinePage() {
                 </div>
                 <h3>${entry.title}</h3>
                 <p>${entry.summary}</p>
-                <a class="resource-link" href="${entry.href}" ${entry.type === 'gosi' ? 'target="_blank" rel="noopener noreferrer"' : ''}>${entry.type === 'gosi' ? '원문 공고 보기' : '상세 보기'}</a>
+                <a class="resource-link" href="${entry.href}" ${entry.type === 'gosi' ? 'target="_blank" rel="noopener noreferrer"' : ''}>${entry.type === 'gosi' ? '📎 원문 · 첨부파일 보기' : '상세 보기'}</a>
               </article>
             `
           )

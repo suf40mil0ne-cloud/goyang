@@ -231,7 +231,7 @@ function renderNotice(notice, relatedNotices) {
         'official-detail': {
           label: notice.directNoticeLink.label || '공식 게시판',
           description: '지자체 고시공고 또는 공식 게시글 상세 화면으로 바로 연결됩니다.',
-          buttonLabel: '원문 공고 보기',
+          buttonLabel: '📎 원문 · 첨부파일 보기',
         },
       }[notice.directNoticeType];
 

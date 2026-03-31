@@ -127,7 +127,7 @@ function syncSelectorWithRegion(region) {
 }
 
 function buildNoticeCard(notice) {
-  const officialLabel = notice.hearingType === '인터넷 주민의견청취' ? '원문·제출처 확인' : '원문 공고 보기';
+  const officialLabel = notice.hearingType === '인터넷 주민의견청취' ? '원문·제출처 확인' : '📎 원문 · 첨부파일 보기';
   const actionLink = getPreferredNoticeActionLink(notice);
   const signalMarkup = (notice.signalBadges || [])
     .slice(0, 4)

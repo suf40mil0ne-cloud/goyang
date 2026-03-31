@@ -35,7 +35,7 @@ function buildNoticeCard(notice) {
       </dl>
       <div class="button-row compact-actions">
         <a class="resource-link" href="notice.html?id=${encodeURIComponent(notice.id)}">상세보기</a>
-        ${actionLink ? `<a class="resource-link" href="${actionLink.url}" target="_blank" rel="noopener noreferrer">${actionLink.label || '원문 공고 보기'}</a>` : ''}
+        ${actionLink ? `<a class="resource-link" href="${actionLink.url}" target="_blank" rel="noopener noreferrer">${actionLink.label || '📎 원문 · 첨부파일 보기'}</a>` : ''}
       </div>
     </article>
   `;
