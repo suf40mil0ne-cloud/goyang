@@ -161,7 +161,8 @@ async function initComments(noticeId, container) {
     const comments = await loadComments(noticeId);
     list.innerHTML = renderComments(comments, currentUserId);
   } catch (e) {
-    list.innerHTML = `<p class="gc-error">${escapeHtml(e.message)}</p>`;
+    console.error('[comments] load failed', e);
+    list.innerHTML = '';
   }
 
   // 글자 수 카운트
@@ -191,7 +192,7 @@ async function initComments(noticeId, container) {
         const updated = await loadComments(noticeId);
         list.innerHTML = renderComments(updated, currentUserId);
       } catch (e) {
-        if (errorEl) { errorEl.textContent = e.message; errorEl.style.display = 'block'; }
+        console.error('[comments] post failed', e);
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = '등록';
@@ -213,7 +214,7 @@ async function initComments(noticeId, container) {
       const updated = await loadComments(noticeId);
       list.innerHTML = renderComments(updated, currentUserId);
     } catch (e) {
-      alert(e.message);
+      console.error('[comments] delete failed', e);
       btn.disabled = false;
     }
   });
