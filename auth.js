@@ -78,7 +78,7 @@ function renderLoginState() {
       <div class="kauth-user">
         ${user.profileImage
           ? `<img class="kauth-avatar" src="${escapeAttr(user.profileImage)}" alt="프로필" width="32" height="32" />`
-          : `<span class="kauth-avatar kauth-avatar--placeholder" aria-hidden="true">👤</span>`
+          : ''
         }
         <span class="kauth-nickname">${escapeHtml(user.nickname)}</span>
         <button class="kauth-logout-btn" type="button" onclick="kakaoLogout()">로그아웃</button>
@@ -177,13 +177,6 @@ const KAKAO_LOGO_SVG = `
       border-radius: 50%;
       object-fit: cover;
       flex-shrink: 0;
-    }
-    .kauth-avatar--placeholder {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f0f2f4;
-      font-size: 1rem;
     }
 
     .kauth-nickname {
