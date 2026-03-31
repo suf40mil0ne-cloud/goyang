@@ -48,10 +48,15 @@ function formatDate(dateStr) {
 // ──────────────────────────────────────────────
 
 async function loadComments(noticeId) {
-  const res = await fetch(`${WORKER_URL}/comments?notice_id=${encodeURIComponent(noticeId)}`);
-  if (!res.ok) throw new Error(`댓글 조회 실패: ${res.status}`);
-  const { comments } = await res.json();
-  return comments;
+  try {
+    const res = await fetch(`${WORKER_URL}/comments?notice_id=${encodeURIComponent(noticeId)}`);
+    if (!res.ok) return [];
+    const { comments } = await res.json();
+    return comments ?? [];
+  } catch (e) {
+    console.error('[comments] fetch failed', e);
+    return [];
+  }
 }
 
 async function postComment(noticeId, content) {
@@ -140,7 +145,9 @@ function renderInputArea(isLoggedIn) {
 async function initComments(noticeId, container) {
   if (!container || !noticeId) return;
 
-  const user = getCurrentUser();
+  const token = localStorage.getItem('gonglam_token');
+  const user = (() => { try { return JSON.parse(localStorage.getItem('gonglam_user') || 'null'); } catch { return null; } })();
+  const isLoggedIn = !!(token && user);
   const currentUserId = user?.id ?? null;
 
   // 스타일 주입
@@ -150,20 +157,15 @@ async function initComments(noticeId, container) {
   container.innerHTML = `
     <section class="gc-section">
       <h3 class="gc-title">댓글</h3>
-      ${renderInputArea(!!user)}
+      ${renderInputArea(isLoggedIn)}
       <div class="gc-list"><p class="gc-loading">불러오는 중…</p></div>
     </section>`;
 
   const list = container.querySelector('.gc-list');
 
   // 댓글 로드
-  try {
-    const comments = await loadComments(noticeId);
-    list.innerHTML = renderComments(comments, currentUserId);
-  } catch (e) {
-    console.error('[comments] load failed', e);
-    list.innerHTML = '';
-  }
+  const comments = await loadComments(noticeId);
+  list.innerHTML = renderComments(comments, currentUserId);
 
   // 글자 수 카운트
   const textarea = container.querySelector('.gc-textarea');
