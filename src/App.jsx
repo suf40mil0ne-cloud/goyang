@@ -12,7 +12,6 @@ import {
   Megaphone,
   Radar,
   RotateCcw,
-  UserRound,
 } from 'lucide-react';
 import regionAdjacency from '../data/region-adjacency.json';
 import { findHearingRegionFieldsByText, findSigunguCodeByRegion, getRegionHierarchyByRegion, getRegionHierarchyBySigunguCode, getRegionLabelBySigunguCode } from '../shared/region-codes';
@@ -752,6 +751,72 @@ function buildNoticeSummary(notice) {
   return resolved.length > 120 ? `${resolved.slice(0, 120).trim()}...` : resolved;
 }
 
+const KAKAO_KEY = '702f4cd88b9cf13b50973c9d9e42bea7';
+const KAKAO_REDIRECT = 'https://goyang-eke.pages.dev/auth/callback';
+
+function KakaoAuthWidget() {
+  const [user, setUser] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('gonglam_user') || 'null'); } catch { return null; }
+  });
+
+  const token = localStorage.getItem('gonglam_token');
+  const isExpired = !token || (() => {
+    try {
+      const p = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      return p.exp < Math.floor(Date.now() / 1000);
+    } catch { return true; }
+  })();
+  const loggedIn = !!user && !isExpired;
+
+  const handleLogin = () => {
+    sessionStorage.setItem('gonglam_return', window.location.pathname + window.location.search);
+    const url = new URL('https://kauth.kakao.com/oauth/authorize');
+    url.searchParams.set('client_id', KAKAO_KEY);
+    url.searchParams.set('redirect_uri', KAKAO_REDIRECT);
+    url.searchParams.set('response_type', 'code');
+    window.location.href = url.toString();
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('gonglam_token');
+    localStorage.removeItem('gonglam_user');
+    setUser(null);
+  };
+
+  if (loggedIn) {
+    return (
+      <div className="flex items-center gap-2 rounded-full bg-white px-3 py-1.5 shadow-sm">
+        {user.profileImage && (
+          <img src={user.profileImage} alt="프로필" className="h-6 w-6 rounded-full object-cover flex-shrink-0" />
+        )}
+        <span className="max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap text-sm font-semibold text-[#1a2530]">
+          {user.nickname}
+        </span>
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="rounded-md bg-[#f0f2f4] px-2 py-1 text-xs text-[#3f4850] hover:bg-[#e0e3e5]"
+        >
+          로그아웃
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleLogin}
+      className="flex items-center gap-1.5 rounded-lg bg-[#FEE500] px-3 py-2 text-sm font-semibold text-[#3C1E1E] hover:brightness-95"
+    >
+      <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="#3C1E1E" d="M12 3C6.477 3 2 6.477 2 10.8c0 2.733 1.643 5.133 4.127 6.55l-.995 3.673a.375.375 0 0 0 .554.41L9.94 19.14A11.56 11.56 0 0 0 12 19.4c5.523 0 10-3.477 10-7.8S17.523 3 12 3Z"/>
+      </svg>
+      카카오 로그인
+    </button>
+  );
+}
+
 function CommentsSection({ noticeId }) {
   const containerRef = useRef(null);
   useEffect(() => {
@@ -1403,7 +1468,7 @@ export default function App() {
                 <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-[#006194]">
                   Public Hearing Feed
                 </span>
-                <span className="block text-2xl font-extrabold tracking-tight text-[#191c1e]">공람콕</span>
+                <span className="block text-2xl font-extrabold tracking-tight text-[#191c1e]">공람콕<sup style={{fontSize:'10px',fontWeight:600,color:'#fff',background:'#4A90E2',padding:'2px 5px',borderRadius:'4px',marginLeft:'4px',verticalAlign:'middle'}}>beta</sup></span>
               </span>
             </button>
 
@@ -1421,9 +1486,7 @@ export default function App() {
             <button type="button" className="icon-shell" onClick={handleDetectLocation} aria-label="현재 위치 감지">
               {isDetecting ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <LocateFixed className="h-5 w-5" />}
             </button>
-            <div className="hidden h-9 w-9 items-center justify-center rounded-full bg-[#c1e0ff] text-[#45647f] sm:flex">
-              <UserRound className="h-4 w-4" />
-            </div>
+            <KakaoAuthWidget />
           </div>
         </div>
       </nav>
