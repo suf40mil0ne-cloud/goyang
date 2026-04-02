@@ -1815,7 +1815,7 @@ export default function App() {
               </div>
             ) : currentHearings.length ? (
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                {currentHearings.slice(0, 4).map((notice, index) => (
+                {(showAllHearings ? currentHearings : currentHearings.slice(0, 4)).map((notice, index) => (
                   <NoticeSummaryCard key={`current-${notice.id}`} notice={notice} emphasized={index === 0} />
                 ))}
               </div>
