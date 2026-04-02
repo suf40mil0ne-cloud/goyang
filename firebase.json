@@ -1,0 +1,51 @@
+{
+  "hosting": {
+    "site": "flor-99d94",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*",
+      "**/node_modules/**",
+      "src/**",
+      "workers/**",
+      "scripts/**",
+      "dist/**",
+      "functions/**",
+      "shared/**",
+      "package.json",
+      "package-lock.json",
+      "tsconfig.json",
+      "vite.config.js",
+      "README.md",
+      "GEMINI.md",
+      "firebase-debug.log"
+    ],
+    "rewrites": [
+      {
+        "source": "/app",
+        "destination": "/app.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/assets/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      },
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
+    ]
+  }
+}
