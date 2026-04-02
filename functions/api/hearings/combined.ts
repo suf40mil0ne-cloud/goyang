@@ -259,13 +259,14 @@ async function runSourceWithTimeout<T>(
   }
 }
 
-function inferRequestedSido(sigunguCode: string): string {
+function inferRequestedSigungu(sigunguCode: string): string {
   const label = getRegionLabelBySigunguCode(sigunguCode);
-  return label.split(' ')[0] || '';
+  const parts = label.split(' ');
+  return parts[parts.length - 1] || '';
 }
 
-function isRelatedToSido(item: HearingItem, requestedSido: string, requestedPrefix: string): boolean {
-  if (!requestedSido && !requestedPrefix) {
+function isRelatedToSigungu(item: HearingItem, requestedSigungu: string, requestedPrefix: string): boolean {
+  if (!requestedSigungu && !requestedPrefix) {
     return false;
   }
 
@@ -275,7 +276,7 @@ function isRelatedToSido(item: HearingItem, requestedSido: string, requestedPref
 
   return [item.region, item.agency, item.department, item.title, item.summary, item.body]
     .join(' ')
-    .includes(requestedSido);
+    .includes(requestedSigungu);
 }
 
 function applyRegionFallback(items: HearingItem[], requestedSigunguCode: string): FallbackSelection {
@@ -299,10 +300,10 @@ function applyRegionFallback(items: HearingItem[], requestedSigunguCode: string)
   const adjacentCodes = (regionAdjacency as Record<string, string[]>)[requestedSigunguCode] || [];
   const adjacentSet = new Set(adjacentCodes);
   const requestedPrefix = requestedSigunguCode.slice(0, 2);
-  const requestedSido = inferRequestedSido(requestedSigunguCode);
+  const requestedSigungu = inferRequestedSigungu(requestedSigunguCode);
   const relatedItems = items.filter((item) =>
     Boolean(item.sigunguCode && adjacentSet.has(item.sigunguCode))
-    || isRelatedToSido(item, requestedSido, requestedPrefix)
+    || isRelatedToSigungu(item, requestedSigungu, requestedPrefix)
   );
 
   if (relatedItems.length) {
