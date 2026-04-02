@@ -1650,9 +1650,6 @@ export default function App() {
                 <Radar className="h-5 w-5" />
               </span>
               <span className="text-left">
-                <span className="block text-[11px] font-bold uppercase tracking-[0.18em] text-[#006194]">
-                  Public Hearing Feed
-                </span>
                 <span className="block text-2xl font-extrabold tracking-tight text-[#191c1e]">공람콕<sup style={{fontSize:'10px',fontWeight:600,color:'#fff',background:'#4A90E2',padding:'2px 5px',borderRadius:'4px',marginLeft:'4px',verticalAlign:'middle'}}>beta</sup></span>
               </span>
             </button>
@@ -1660,7 +1657,9 @@ export default function App() {
             <div className="hidden items-center gap-6 md:flex">
               <a className="nav-tab nav-tab-active" href="#hero">내 주변 공고</a>
               <a className="nav-tab" href="#current-district">현재 자치구</a>
-              <a className="nav-tab" href="#selected-region-list">선택 지역 요약</a>
+              {/* 선택 지역 요약 탭: UI에서만 숨김, 코드 유지 */}
+              {/* <a className="nav-tab" href="#selected-region-list">선택 지역 요약</a> */}
+              <button type="button" className="nav-tab" onClick={handleShowAll}>전체 공고 보기</button>
             </div>
           </div>
 
@@ -1678,7 +1677,6 @@ export default function App() {
 
       <aside className="left-rail">
         <div className="mb-8">
-          <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">Your Civic Feed</p>
           <p className="mt-1 text-xs text-[#3f4850]">
             {selectedRegion ? formatRegionLabel(selectedRegion) : showAllHearings ? '최신 공고 전체' : '지역 미선택'}
           </p>
@@ -1708,6 +1706,14 @@ export default function App() {
             <Info className="h-4 w-4" />
             <span>지역 직접 선택</span>
             <ChevronDown className={`ml-auto h-4 w-4 transition ${isPickerOpen ? 'rotate-180' : ''}`} />
+          </button>
+          <button
+            type="button"
+            className="rail-link text-left"
+            onClick={handleShowAll}
+          >
+            <MapIcon className="h-4 w-4" />
+            <span>전체 공고 보기</span>
           </button>
         </nav>
 
