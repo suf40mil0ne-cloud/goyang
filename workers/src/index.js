@@ -651,48 +651,57 @@ export default {
       return new Response(null, { status: 204, headers: getCorsHeaders(request) });
     }
 
-    // ── 카카오 인증 라우트 ──
-    if (url.pathname === '/auth/kakao' && request.method === 'GET') {
-      return handleKakaoAuth(request, env);
-    }
+    try {
+      // ── 카카오 인증 라우트 ──
+      if (url.pathname === '/auth/kakao' && request.method === 'GET') {
+        return await handleKakaoAuth(request, env);
+      }
 
-    if (url.pathname === '/attachment' && request.method === 'GET') {
-      return getAttachment(request, env);
-    }
+      if (url.pathname === '/attachment' && request.method === 'GET') {
+        return await getAttachment(request, env);
+      }
 
-    if (url.pathname === '/track' && request.method === 'POST') {
-      return handleTrack(request, env);
-    }
+      if (url.pathname === '/track' && request.method === 'POST') {
+        return await handleTrack(request, env);
+      }
 
-    // ── 댓글 라우트 ──
-    if (url.pathname === '/comments') {
-      if (request.method === 'GET')  return handleGetComments(request, env);
-      if (request.method === 'POST') return handlePostComment(request, env);
-    }
+      // ── 댓글 라우트 ──
+      if (url.pathname === '/comments') {
+        if (request.method === 'GET')  return await handleGetComments(request, env);
+        if (request.method === 'POST') return await handlePostComment(request, env);
+      }
 
-    // DELETE /comments/:id
-    const deleteMatch = url.pathname.match(/^\/comments\/(\d+)$/);
-    if (deleteMatch && request.method === 'DELETE') {
-      return handleDeleteComment(request, env, Number(deleteMatch[1]));
-    }
+      // DELETE /comments/:id
+      const deleteMatch = url.pathname.match(/^\/comments\/(\d+)$/);
+      if (deleteMatch && request.method === 'DELETE') {
+        return await handleDeleteComment(request, env, Number(deleteMatch[1]));
+      }
 
-    // ── 관리자 라우트 ──
-    if (url.pathname === '/admin/comments' && request.method === 'GET') {
-      return handleAdminGetComments(request, env);
-    }
-    if (url.pathname === '/admin/stats' && request.method === 'GET') {
-      return handleAdminStats(request, env);
-    }
-    const adminDeleteMatch = url.pathname.match(/^\/admin\/comments\/(\d+)$/);
-    if (adminDeleteMatch && request.method === 'DELETE') {
-      return handleAdminDeleteComment(request, env, Number(adminDeleteMatch[1]));
-    }
+      // ── 관리자 라우트 ──
+      if (url.pathname === '/admin/comments' && request.method === 'GET') {
+        return await handleAdminGetComments(request, env);
+      }
+      if (url.pathname === '/admin/stats' && request.method === 'GET') {
+        return await handleAdminStats(request, env);
+      }
+      const adminDeleteMatch = url.pathname.match(/^\/admin\/comments\/(\d+)$/);
+      if (adminDeleteMatch && request.method === 'DELETE') {
+        return await handleAdminDeleteComment(request, env, Number(adminDeleteMatch[1]));
+      }
 
-    // ── /me ──
-    if (url.pathname === '/me' && request.method === 'GET') {
-      return handleMe(request, env);
-    }
+      // ── /me ──
+      if (url.pathname === '/me' && request.method === 'GET') {
+        return await handleMe(request, env);
+      }
 
-    return new Response('Not Found', { status: 404 });
+      return jsonResponse({ error: 'not_found' }, 404, request);
+    } catch (err) {
+      console.error('[worker] unhandled error', err instanceof Error ? err.message : String(err), err?.stack);
+      return jsonResponse(
+        { error: 'internal_server_error', detail: err instanceof Error ? err.message : String(err) },
+        500,
+        request,
+      );
+    }
   },
 };
