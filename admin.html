@@ -317,15 +317,30 @@
       }
       document.getElementById('user-info').textContent = user.nickname + ' 님';
 
-      const res = await fetch(`${WORKER_URL}/admin/stats`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      let res;
+      try {
+        res = await fetch(`${WORKER_URL}/admin/stats`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      } catch (e) {
+        showStatus(`네트워크 오류: ${e.message}`);
+        return false;
+      }
+
+      if (res.status === 401) {
+        localStorage.removeItem('gonglam_token');
+        localStorage.removeItem('gonglam_user');
+        showStatus('로그인이 만료되었습니다. 다시 로그인해주세요.', true);
+        return false;
+      }
       if (res.status === 403) {
-        showStatus('권한이 없습니다.');
+        showStatus('관리자 권한이 없습니다.');
         return false;
       }
       if (!res.ok) {
-        showStatus('서버 오류가 발생했습니다.');
+        let detail = '';
+        try { detail = (await res.json()).detail || (await res.json()).error || ''; } catch {}
+        showStatus(`서버 오류 (${res.status})${detail ? ': ' + detail : ''}`);
         return false;
       }
       latestStats = await res.json();
