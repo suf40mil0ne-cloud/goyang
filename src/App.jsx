@@ -1132,6 +1132,7 @@ export default function App() {
   const [updatedAt, setUpdatedAt] = useState('');
   const [fallbackMessage, setFallbackMessage] = useState('');
   const [sourceWarning, setSourceWarning] = useState('');
+  const [showAllHearings, setShowAllHearings] = useState(false);
 
   const currentSigunguCode = useMemo(
     () => (selectedRegion ? findSigunguCodeByRegion(selectedRegion.sido, selectedRegion.sigungu) : ''),
@@ -1272,7 +1273,7 @@ export default function App() {
 
   const cityLevelHearings = useMemo(() => {
     if (!selectedRegion) {
-      return recentHearings;
+      return showAllHearings ? recentHearings : [];
     }
 
     return sortHearingsForSelectedRegion(
@@ -1281,7 +1282,7 @@ export default function App() {
       adjacentCodes,
       'city-level-match'
     );
-  }, [adjacentCodes, recentHearings, selectedRegion]);
+  }, [adjacentCodes, recentHearings, selectedRegion, showAllHearings]);
 
   const districtLevelMatchedHearings = useMemo(() => {
     if (!selectedRegion || !currentDistrictRegionKey) {
@@ -1311,7 +1312,7 @@ export default function App() {
 
   const currentDistrictHearings = useMemo(() => {
     if (!selectedRegion) {
-      return recentHearings;
+      return showAllHearings ? recentHearings : [];
     }
 
     if (activeDistrictFilter) {
@@ -1324,7 +1325,7 @@ export default function App() {
     }
 
     return cityLevelHearings;
-  }, [activeDistrictFilter, adjacentCodes, cityLevelHearings, recentHearings, selectedRegion]);
+  }, [activeDistrictFilter, adjacentCodes, cityLevelHearings, recentHearings, selectedRegion, showAllHearings]);
 
   const adjacentDistrictHearings = useMemo(() => {
     if (!selectedRegion) {
@@ -1355,7 +1356,7 @@ export default function App() {
 
   const summaryHearings = useMemo(() => {
     if (!selectedRegion) {
-      return recentHearings;
+      return showAllHearings ? recentHearings : [];
     }
 
     return sortHearingsForSelectedRegion(
@@ -1364,13 +1365,13 @@ export default function App() {
       adjacentCodes,
       'summary-hearings'
     );
-  }, [adjacentCodes, currentDistrictHearings, recentHearings, selectedRegion, visibleAdjacentHearings]);
+  }, [adjacentCodes, currentDistrictHearings, recentHearings, selectedRegion, showAllHearings, visibleAdjacentHearings]);
 
   const currentSectionTitle = selectedRegion
     ? activeDistrictFilter
       ? activeDistrictFilter.label + ' 공고'
       : (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu) + ' 공고'
-    : '전체 최신 공고';
+    : showAllHearings ? '전체 최신 공고' : '지역을 선택해주세요';
   const currentSectionDescription = selectedRegion
     ? activeDistrictFilter
       ? activeDistrictFilter.label + '에 정확히 매칭된 공고만 보여줍니다.'
@@ -1378,7 +1379,7 @@ export default function App() {
           selectedRegion.matchedDistrict ? selectedRegion.matchedDistrict + ' 공고를 먼저 보여주고' : '',
           (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu) + '를 함께 보여줍니다.',
         ].filter(Boolean).join(' ')
-    : '지역이 선택되지 않아 최신 공고 전체를 보여줍니다.';
+    : showAllHearings ? '지역이 선택되지 않아 최신 공고 전체를 보여줍니다.' : '위치를 허용하거나 지역을 직접 선택해주세요.';
   const adjacentSectionDescription = selectedRegion
     ? currentDistrictRegionKey
       ? '현재 구를 제외한 인접 구 공고를 보조 순위로 분리해 보여줍니다. 같은 시의 다른 구 공고는 위 섹션에 포함됩니다.'
@@ -1401,7 +1402,7 @@ export default function App() {
     }
 
     if (!selectedRegion) {
-      return '선택 지역이 없어서 최신 공고 전체를 먼저 보여줍니다.';
+      return showAllHearings ? '선택 지역이 없어서 최신 공고 전체를 보여줍니다.' : '';
     }
 
     if (currentDistrictHearings.length && visibleAdjacentHearings.length) {
@@ -1421,7 +1422,7 @@ export default function App() {
     }
 
     return '';
-  }, [activeDistrictFilter, currentDistrictHearings.length, fallbackMessage, selectedRegion, visibleAdjacentHearings.length]);
+  }, [activeDistrictFilter, currentDistrictHearings.length, fallbackMessage, selectedRegion, showAllHearings, visibleAdjacentHearings.length]);
 
   useEffect(() => {
     if (!import.meta.env.DEV) {
@@ -1492,6 +1493,7 @@ export default function App() {
     setSelectedRegionFilterKey(region.cityLevelRegionKey || region.districtLevelRegionKey || '');
     setIsNearbyExpanded(false);
     setShowAdjacentSections(false);
+    setShowAllHearings(false);
     setLocationResolution(resolutionText);
     setLocationMessage([
       region.matchedDistrict ? region.matchedDistrict + ' 공고를 먼저 보여주고,' : '',
@@ -1509,9 +1511,22 @@ export default function App() {
     setSelectedAdjacentCodes([]);
     setFallbackMessage('');
     setSourceWarning('');
+    setShowAllHearings(false);
     setLocationResolution('위치 확인 대기 중');
     setLocationMessage('현재 위치를 확인하지 못했습니다. 위치를 허용하거나 지역을 선택해주세요.');
     setError('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleShowAll() {
+    setSelectedRegion(null);
+    setShowAllHearings(true);
+    setSelectedAdjacentCodes([]);
+    setShowAdjacentSections(false);
+    setIsNearbyExpanded(false);
+    setFallbackMessage('');
+    setLocationResolution('전체 지역 보기');
+    setLocationMessage('모든 지역의 최신 공고를 표시합니다.');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -1665,7 +1680,7 @@ export default function App() {
         <div className="mb-8">
           <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">Your Civic Feed</p>
           <p className="mt-1 text-xs text-[#3f4850]">
-            {selectedRegion ? formatRegionLabel(selectedRegion) : '전체 최신 공고'}
+            {selectedRegion ? formatRegionLabel(selectedRegion) : showAllHearings ? '최신 공고 전체' : '지역 미선택'}
           </p>
         </div>
 
@@ -1734,9 +1749,12 @@ export default function App() {
                     <ChevronDown className="h-4 w-4" />
                     지역 직접 선택
                   </button>
+                  <button type="button" onClick={handleShowAll} className="hero-button-secondary w-full justify-center sm:w-auto">
+                    전체 지역 보기
+                  </button>
                 </div>
                 <div className="mt-7 flex flex-wrap justify-center gap-2.5">
-                  <span className="status-chip">{selectedRegion ? formatRegionLabel(selectedRegion) : '최신 공고 전체'}</span>
+                  <span className="status-chip">{selectedRegion ? formatRegionLabel(selectedRegion) : showAllHearings ? '최신 공고 전체' : '지역 미선택'}</span>
                   <span className="status-chip">{updatedAt ? `업데이트 ${updatedAt.slice(0, 19).replace('T', ' ')}` : '최근 공고를 불러오는 중입니다.'}</span>
                 </div>
                 <div className="mt-5 rounded-[20px] border border-[#d8e3ef] bg-[#f7f9fb] px-5 py-4 text-left text-sm leading-6 text-[#3f4850]">
@@ -1795,15 +1813,39 @@ export default function App() {
                   <NoticeSummaryCard key={`current-${notice.id}`} notice={notice} emphasized={index === 0} />
                 ))}
               </div>
+            ) : selectedRegion ? (
+              <div className="rounded-[24px] bg-white p-8 text-center shadow-sm">
+                <p className="mb-4 text-sm leading-7 text-[#3f4850]">
+                  {activeDistrictFilter ? activeDistrictFilter.label : (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu)} 공고가 없습니다.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowAdjacentSections(true)}
+                  className="hero-button-secondary justify-center"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                  인접 지역 공고 보기
+                </button>
+              </div>
+            ) : !showAllHearings ? (
+              <div className="rounded-[24px] bg-white p-8 text-center shadow-sm">
+                <p className="mb-4 text-sm leading-7 text-[#3f4850]">위치를 허용하거나 지역을 직접 선택해주세요.</p>
+                <button
+                  type="button"
+                  onClick={handleOpenRegionPicker}
+                  className="hero-button-secondary justify-center"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                  지역 직접 선택
+                </button>
+              </div>
             ) : (
               <div className="rounded-[24px] bg-white p-8 text-sm leading-7 text-[#3f4850] shadow-sm">
-                {selectedRegion
-                  ? `${activeDistrictFilter ? activeDistrictFilter.label : (selectedRegion.cityLevelRegionName || selectedRegion.matchedCity || selectedRegion.sigungu)} 공고가 없습니다.`
-                  : '현재 수집된 최신 공고가 없습니다.'}
+                현재 수집된 최신 공고가 없습니다.
               </div>
             )}
 
-            {selectedRegion ? (
+            {selectedRegion && currentHearings.length ? (
               <div className="flex justify-center">
                 <button
                   type="button"
@@ -1819,7 +1861,7 @@ export default function App() {
             ) : null}
           </section>
 
-          <section id="adjacent-districts" className="space-y-6" hidden={selectedRegion ? !showAdjacentSections : false}>
+          <section id="adjacent-districts" className="space-y-6" hidden={!selectedRegion || !showAdjacentSections}>
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#006194]">인접 지역 함께 보기</p>
@@ -1887,7 +1929,7 @@ export default function App() {
           <section
             id="selected-region-list"
             className="space-y-6"
-            hidden={selectedRegion ? !showAdjacentSections : false}
+            hidden={!selectedRegion || !showAdjacentSections}
           >
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
