@@ -42,7 +42,7 @@ function injectStructuredData(notice) {
     datePublished: notice.postedDate,
     dateModified: notice.lastVerifiedAt,
     author: { '@type': 'Organization', name: '공람콕' },
-    mainEntityOfPage: `https://goyang.pages.dev/notice.html?id=${notice.id}`,
+    mainEntityOfPage: `${location.origin}/notice.html?id=${notice.id}`,
   });
   document.head.appendChild(articleScript);
 }
@@ -124,7 +124,7 @@ function renderNotice(notice, relatedNotices) {
   setMeta('meta[name="description"]', `${notice.easySummary} 실제 제출은 원문 공고 기준으로 진행해야 합니다.`);
   setMeta('meta[property="og:title"]', document.title);
   setMeta('meta[property="og:description"]', notice.easySummary);
-  setCanonical(`https://goyang.pages.dev/notice.html?id=${encodeURIComponent(notice.id)}`);
+  setCanonical(`${location.origin}/notice.html?id=${encodeURIComponent(notice.id)}`);
 
   const title = document.getElementById('notice-title');
   const breadcrumbCurrent = document.getElementById('breadcrumb-current');

@@ -106,14 +106,21 @@ const ALLOWED_ORIGINS = [
   'https://www.xn--ob0bw4r.com',
 ];
 
+function isAllowedOrigin(origin) {
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  // Cloudflare Pages 미리보기 배포 허용
+  if (/^https:\/\/[a-z0-9-]+\.goyang-eke\.pages\.dev$/.test(origin)) return true;
+  return false;
+}
+
 function getCorsHeaders(request) {
   const origin = request.headers.get('Origin') || '';
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  const allowedOrigin = isAllowedOrigin(origin) ? origin : '*';
   return {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    Vary: 'Origin',
+    ...(allowedOrigin !== '*' && { Vary: 'Origin' }),
   };
 }
 

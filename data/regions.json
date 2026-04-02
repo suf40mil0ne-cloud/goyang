@@ -1711,7 +1711,7 @@
     "districts": [
       {
         "sigungu": "강릉시",
-        "adminCode": "",
+        "adminCode": "42150",
         "aliases": [
           "강릉시",
           "강원 강릉시",
@@ -1724,7 +1724,7 @@
       },
       {
         "sigungu": "고성군",
-        "adminCode": "",
+        "adminCode": "42810",
         "aliases": [
           "고성군",
           "강원 고성군",
@@ -1737,7 +1737,7 @@
       },
       {
         "sigungu": "동해시",
-        "adminCode": "",
+        "adminCode": "42170",
         "aliases": [
           "동해시",
           "강원 동해시",
@@ -1750,7 +1750,7 @@
       },
       {
         "sigungu": "삼척시",
-        "adminCode": "",
+        "adminCode": "42230",
         "aliases": [
           "삼척시",
           "강원 삼척시",
@@ -1763,7 +1763,7 @@
       },
       {
         "sigungu": "속초시",
-        "adminCode": "",
+        "adminCode": "42210",
         "aliases": [
           "속초시",
           "강원 속초시",
@@ -1776,7 +1776,7 @@
       },
       {
         "sigungu": "양구군",
-        "adminCode": "",
+        "adminCode": "42790",
         "aliases": [
           "양구군",
           "강원 양구군",
@@ -1789,7 +1789,7 @@
       },
       {
         "sigungu": "양양군",
-        "adminCode": "",
+        "adminCode": "42820",
         "aliases": [
           "양양군",
           "강원 양양군",
@@ -1802,7 +1802,7 @@
       },
       {
         "sigungu": "영월군",
-        "adminCode": "",
+        "adminCode": "42740",
         "aliases": [
           "영월군",
           "강원 영월군",
@@ -1827,7 +1827,7 @@
       },
       {
         "sigungu": "인제군",
-        "adminCode": "",
+        "adminCode": "42800",
         "aliases": [
           "인제군",
           "강원 인제군",
@@ -1840,7 +1840,7 @@
       },
       {
         "sigungu": "정선군",
-        "adminCode": "",
+        "adminCode": "42760",
         "aliases": [
           "정선군",
           "강원 정선군",
@@ -1853,7 +1853,7 @@
       },
       {
         "sigungu": "철원군",
-        "adminCode": "",
+        "adminCode": "42770",
         "aliases": [
           "철원군",
           "강원 철원군",
@@ -1878,7 +1878,7 @@
       },
       {
         "sigungu": "태백시",
-        "adminCode": "",
+        "adminCode": "42190",
         "aliases": [
           "태백시",
           "강원 태백시",
@@ -1891,7 +1891,7 @@
       },
       {
         "sigungu": "평창군",
-        "adminCode": "",
+        "adminCode": "42750",
         "aliases": [
           "평창군",
           "강원 평창군",
@@ -1904,7 +1904,7 @@
       },
       {
         "sigungu": "홍천군",
-        "adminCode": "",
+        "adminCode": "42720",
         "aliases": [
           "홍천군",
           "강원 홍천군",
@@ -1917,7 +1917,7 @@
       },
       {
         "sigungu": "화천군",
-        "adminCode": "",
+        "adminCode": "42780",
         "aliases": [
           "화천군",
           "강원 화천군",
@@ -1930,7 +1930,7 @@
       },
       {
         "sigungu": "횡성군",
-        "adminCode": "",
+        "adminCode": "42730",
         "aliases": [
           "횡성군",
           "강원 횡성군",
