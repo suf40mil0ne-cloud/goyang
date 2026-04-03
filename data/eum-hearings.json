@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-04-03T14:47:51.890Z",
-  "count": 73,
+  "crawledAt": "2026-04-03T15:41:03.324Z",
+  "count": 58,
   "items": [
     {
       "seq": "4472",
@@ -630,17 +630,6 @@
       "listPage": 6
     },
     {
-      "seq": "4377",
-      "title": "여주도시계획시설(도로 소로1류21호 외2) 결정(경미한 변경) 및 실시계획인가(변경) 및 사업인정에 관한 의견청취 공고",
-      "noticeNumber": "경기도 여주시 공고 제2026-603호",
-      "agency": "경기도 여주시 도시건설국 도시계획과",
-      "publishedAt": "2026-03-20",
-      "hearingStartDate": "2026-03-20",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4377&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "4371",
       "title": "2035년 김제 도시관리계획(재정비) 결정(변경)(안) 및 전략환경영향평가서(초안)·기후변화영향평가서(초안) 주민 공람·공고",
       "noticeNumber": "전북특별자치도 김제시 공고 제2026-374호",
@@ -650,160 +639,6 @@
       "hearingEndDate": "2026-04-17",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4371&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
-    },
-    {
-      "seq": "4370",
-      "title": "도시계획시설(도로)사업 실시계획(변경)인가를 위한  주민 등의 의견청취 공고",
-      "noticeNumber": "충청남도 보령시 공고 제2026-609호",
-      "agency": "충청남도 보령시 경제도시국 도시과",
-      "publishedAt": "2026-03-20",
-      "hearingStartDate": "2026-03-20",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4370&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4366",
-      "title": "김해도시관리계획(시설 : 폐기물처리 및 재활용시설) 결정(변경)(안) 열람 공고",
-      "noticeNumber": "경상남도 김해시 공고 제2026-1465호",
-      "agency": "경상남도 김해시 도시관리국 도시계획과",
-      "publishedAt": "2026-03-20",
-      "hearingStartDate": "2026-03-20",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4366&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4352",
-      "title": "원주 도시관리계획(지구단위계획:단관지구) 결정(변경)(안) 열람&#8228;공고",
-      "noticeNumber": "강원도 원주시 공고 제2026-767호",
-      "agency": "강원특별자치도 원주시 도시국 도시계획과",
-      "publishedAt": "2026-03-20",
-      "hearingStartDate": "2026-03-20",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4352&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4346",
-      "title": "단양 군관리계획(군계획시설:도로, 공공청사) 결정(변경)(안)을 위한 주민열람·공고",
-      "noticeNumber": "충청북도 단양군 공고 제2026-501호",
-      "agency": "충청북도 단양군",
-      "publishedAt": "2026-03-20",
-      "hearingStartDate": "2026-03-20",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4346&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4431",
-      "title": "수색동 72-2번지 일원 공공지원민간임대주택(어르신안심주택)공급촉진지구 지정 등을 위한 열람 공고",
-      "noticeNumber": "서울특별시 은평구 공고 제2026-597호",
-      "agency": "서울특별시 은평구 공간혁신국 공간계획과",
-      "publishedAt": "2026-03-19",
-      "hearingStartDate": "2026-03-19",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4431&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4365",
-      "title": "인제 군관리계획(시설 : 공공청사, 도로, 광장) 결정(변경)(안) 공람&#8228;공고",
-      "noticeNumber": "강원특별자치도 인제군 공고 제2026-398호",
-      "agency": "강원특별자치도 인제군 도시건설국 도시개발과",
-      "publishedAt": "2026-03-19",
-      "hearingStartDate": "2026-03-19",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4365&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4364",
-      "title": "인제 군관리계획(재정비) 결정(변경)(안) 재공람&#8228;공고",
-      "noticeNumber": "강원특별자치도 인제군 공고 제2026-401호",
-      "agency": "강원특별자치도 인제군 도시건설국 도시개발과",
-      "publishedAt": "2026-03-19",
-      "hearingStartDate": "2026-03-19",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4364&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4340",
-      "title": "창원도시관리계획(폐기물처리시설) 결정(변경)(안) 열람 공고",
-      "noticeNumber": "경상남도 창원시 공고 제2026-555호",
-      "agency": "경상남도 창원시(통합) 도시정책국 도시계획과",
-      "publishedAt": "2026-03-17",
-      "hearingStartDate": "2026-03-17",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4340&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "4387",
-      "title": "의정부동 지구단위계획구역 도시계획시설[교통시설: 도로(중로3-4호선 외 3개소)]사업 사업시행자 지정 및 실시계획인가 전 열람 (정정)공...",
-      "noticeNumber": "경기도 의정부시 공고 제2026-565호",
-      "agency": "경기도 의정부시 도시주택국 도시정책과",
-      "publishedAt": "2026-03-16",
-      "hearingStartDate": "2026-03-16",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4387&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "4428",
-      "title": "을지로2가구역 및 1·3·6·18지구, 10·11지구 도시정비형 재개발사업 정비계획 결정 (변경) 및 지구단위계획(변경) 결정(안) 공람·공고",
-      "noticeNumber": "서울특별시 중구 공고 제2026-301호",
-      "agency": "서울특별시 중구 도시관리국 도심정비과",
-      "publishedAt": "2026-03-13",
-      "hearingStartDate": "2026-03-13",
-      "hearingEndDate": "2026-04-12",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4428&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "4330",
-      "title": "한강로1가 도시정비형 재개발사업 정비구역 지정 및 정비계획 결정(안)에 대한 재공람공고",
-      "noticeNumber": "서울특별시 공고 제2026-432호",
-      "agency": "서울특별시 용산구 도시관리국 도시계획과",
-      "publishedAt": "2026-03-13",
-      "hearingStartDate": "2026-03-13",
-      "hearingEndDate": "2026-04-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4330&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "4320",
-      "title": "평택 가곡2지구 도시개발구역 지정(1차변경) 및 개발계획 수립(1차변경)(안), 사업인정에 관한 의견 청취 공고",
-      "noticeNumber": "경기도 평택시 공고 제2026-847호",
-      "agency": "경기도 평택시",
-      "publishedAt": "2026-03-13",
-      "hearingStartDate": "2026-03-13",
-      "hearingEndDate": "2026-04-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4320&pageNo=10&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 10
-    },
-    {
-      "seq": "4376",
-      "title": "구산역세권(대조동) 장기전세주택 도시정비형 재개발사업 정비계획 결정 및 정비구역 지정(안)을 위한 공람공고",
-      "noticeNumber": "서울특별시 은평구 공고 제2026-518호",
-      "agency": "서울특별시 은평구 공간혁신국 공간계획과",
-      "publishedAt": "2026-03-12",
-      "hearingStartDate": "2026-03-12",
-      "hearingEndDate": "2026-04-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4376&pageNo=10&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 10
-    },
-    {
-      "seq": "4349",
-      "title": "새절2역세권(신사동) 장기전세주택 도시정비형 재개발사업 정비계획 결정 및 정비구역 지정(안)에 대한 공람 공고",
-      "noticeNumber": "서울특별시 은평구 공고 제2026-465호",
-      "agency": "서울특별시 은평구 공간혁신국 공간계획과",
-      "publishedAt": "2026-03-12",
-      "hearingStartDate": "2026-03-12",
-      "hearingEndDate": "2026-04-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4349&pageNo=10&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 10
     }
   ]
 }
