@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-04-08T07:25:56.350Z",
-  "count": 75,
+  "crawledAt": "2026-04-08T09:05:51.306Z",
+  "count": 76,
   "items": [
     {
       "seq": "4497",
@@ -826,6 +826,17 @@
       "hearingEndDate": "2026-04-17",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4371&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
+    },
+    {
+      "seq": "4503",
+      "title": "구로주공아파트 재건축사업 정비구역 지정 및 정비계획 결정, 지구단위계획(구역) 결정(안)에 대한 공람공고",
+      "noticeNumber": "서울특별시 구로구 공고 제2026-564호",
+      "agency": "서울특별시 구로구 주택정책국 주택과",
+      "publishedAt": "2026-03-19",
+      "hearingStartDate": "2026-03-19",
+      "hearingEndDate": "2026-04-20",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4503&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 9
     }
   ]
 }
