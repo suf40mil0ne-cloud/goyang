@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-04-13T14:52:22.233Z",
-  "count": 78,
+  "crawledAt": "2026-04-13T16:16:39.517Z",
+  "count": 73,
   "items": [
+    {
+      "seq": "4534",
+      "title": "고양 도시관리계획(일산 지구단위계획) 결정(변경)(안) 공람 공고",
+      "noticeNumber": "경기도 고양시 공고 제2026-1031호",
+      "agency": "경기도 고양시 도시주택정책실 도시계획정책관",
+      "publishedAt": "2026-04-14",
+      "hearingStartDate": "2026-04-14",
+      "hearingEndDate": "2026-04-28",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4534&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "4543",
       "title": "여주 도시계획시설(체육시설:YJC골프클럽) 사업 실시계획(변경) 인가 공고·공고",
@@ -109,8 +120,8 @@
       "publishedAt": "2026-04-09",
       "hearingStartDate": "2026-04-09",
       "hearingEndDate": "2026-04-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4514&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4514&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "4511",
@@ -219,8 +230,8 @@
       "publishedAt": "2026-04-08",
       "hearingStartDate": "2026-04-08",
       "hearingEndDate": "2026-04-22",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4505&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4505&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "4497",
@@ -329,8 +340,8 @@
       "publishedAt": "2026-04-06",
       "hearingStartDate": "2026-04-06",
       "hearingEndDate": "2026-05-15",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4467&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4467&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "4466",
@@ -439,8 +450,8 @@
       "publishedAt": "2026-04-02",
       "hearingStartDate": "2026-04-02",
       "hearingEndDate": "2026-04-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4538&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4538&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "4537",
@@ -549,8 +560,8 @@
       "publishedAt": "2026-04-02",
       "hearingStartDate": "2026-04-02",
       "hearingEndDate": "2026-04-15",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4457&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4457&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "4456",
@@ -652,28 +663,6 @@
       "listPage": 6
     },
     {
-      "seq": "4436",
-      "title": "전주 도시관리계획(전주화산지구 지구단위계획구역 및 지구단위계획) 변경 결정(안)에 대한 주민 의견청취 공고",
-      "noticeNumber": "전북특별자치도 전주시 공고 제2026-806호",
-      "agency": "전북특별자치도 전주시 건설안전국 도시계획과",
-      "publishedAt": "2026-03-30",
-      "hearingStartDate": "2026-03-30",
-      "hearingEndDate": "2026-04-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4436&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4429",
-      "title": "도시관리계획(도시계획시설:수도공급설비) 결정(변경)(안) 열람공고",
-      "noticeNumber": "서울특별시 공고 제2026-13호",
-      "agency": "서울특별시 서울아리수본부 본부 급수부 계획설계과",
-      "publishedAt": "2026-03-30",
-      "hearingStartDate": "2026-03-30",
-      "hearingEndDate": "2026-04-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4429&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "4427",
       "title": "여주 도시계획시설(주차장:신지리 2호 노외주차장) 결정(안) 재공람·공고",
       "noticeNumber": "경기도 여주시 공고 제2026-649호",
@@ -682,17 +671,6 @@
       "hearingStartDate": "2026-03-30",
       "hearingEndDate": "2026-04-14",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4427&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4424",
-      "title": "대전 도시관리계획(둔산지구 택지개발사업 지구단위계획) 결정(변경)(안) 주민열람 공고",
-      "noticeNumber": "대전광역시 공고 제2026-675호",
-      "agency": "대전광역시 도시주택국 도시계획과",
-      "publishedAt": "2026-03-27",
-      "hearingStartDate": "2026-03-30",
-      "hearingEndDate": "2026-04-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4424&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
@@ -727,39 +705,6 @@
       "hearingEndDate": "2026-05-06",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4403&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
-    },
-    {
-      "seq": "4393",
-      "title": "도시계획시설(도로)사업 실시계획인가 취소(폐지)에 관한  주민 등의 의견청취공고",
-      "noticeNumber": "충청남도 보령시 공고 제2026-649호",
-      "agency": "충청남도 보령시 경제도시국 도시과",
-      "publishedAt": "2026-03-30",
-      "hearingStartDate": "2026-03-30",
-      "hearingEndDate": "2026-04-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4393&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4527",
-      "title": "증평 군관리계획(군계획시설:주차장) 결정을 위한 공람 공고",
-      "noticeNumber": "충청북도 증평군 공고 제2026-395호",
-      "agency": "충청북도 증평군",
-      "publishedAt": "2026-03-27",
-      "hearingStartDate": "2026-03-27",
-      "hearingEndDate": "2026-04-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4527&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4419",
-      "title": "강릉 도시관리계획(교통시설:궤도) 결정(변경)(안) 재열람·공고",
-      "noticeNumber": "강원특별자치도 강릉시 공고 제2026-585호",
-      "agency": "강원특별자치도 강릉시",
-      "publishedAt": "2026-03-27",
-      "hearingStartDate": "2026-03-27",
-      "hearingEndDate": "2026-04-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4419&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
     },
     {
       "seq": "4499",
