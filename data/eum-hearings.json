@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-04-17T05:30:59.392Z",
-  "count": 67,
+  "crawledAt": "2026-04-17T07:52:56.656Z",
+  "count": 72,
   "items": [
     {
       "seq": "4574",
@@ -736,8 +736,63 @@
       "publishedAt": "2026-04-01",
       "hearingStartDate": "2026-04-01",
       "hearingEndDate": "2026-04-28",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4468&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4468&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 9
+    },
+    {
+      "seq": "4406",
+      "title": "월계시영고층아파트 재건축사업 정비구역 지정 및 정비계획 수립(안) 공람 공고",
+      "noticeNumber": "서울특별시 노원구 공고 제2026-567호",
+      "agency": "서울특별시 노원구 도시계획국 재건축사업과",
+      "publishedAt": "2026-03-30",
+      "hearingStartDate": "2026-03-30",
+      "hearingEndDate": "2026-05-06",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4406&pageNo=10&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 10
+    },
+    {
+      "seq": "4403",
+      "title": "월계삼호4차아파트 재건축사업 정비구역 지정 및 정비계획 수립(안) 공람 공고",
+      "noticeNumber": "서울특별시 노원구 공고 제2026-566호",
+      "agency": "서울특별시 노원구 도시계획국 재건축사업과",
+      "publishedAt": "2026-03-30",
+      "hearingStartDate": "2026-03-30",
+      "hearingEndDate": "2026-05-06",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4403&pageNo=10&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 10
+    },
+    {
+      "seq": "4499",
+      "title": "사당동 제일아파트 주택재건축 정비계획 및 정비구역 결정(안) 열람공고",
+      "noticeNumber": "서울특별시 동작구 공고 제2026-648호",
+      "agency": "서울특별시 동작구 도시교통국 도시계획과",
+      "publishedAt": "2026-03-26",
+      "hearingStartDate": "2026-03-26",
+      "hearingEndDate": "2026-04-27",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4499&pageNo=11&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 11
+    },
+    {
+      "seq": "4454",
+      "title": "여의대방역세권(신길동 1343일원) 장기전세주택 도시정비형 재개발사업 정비구역 지정 및 정비계획 결정(안)에 대한 재공람공고",
+      "noticeNumber": "서울특별시 영등포구 공고 제2026-623호",
+      "agency": "서울특별시 영등포구 도시공간국 재개발사업과",
+      "publishedAt": "2026-03-26",
+      "hearingStartDate": "2026-03-26",
+      "hearingEndDate": "2026-04-27",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4454&pageNo=11&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 11
+    },
+    {
+      "seq": "4432",
+      "title": "신월5동 72번지 일대 주택정비형 재개발사업 정비계획 결정 및 정비구역 지정(안) 공람 공고",
+      "noticeNumber": "서울특별시 양천구 공고 제2026-556호",
+      "agency": "서울특별시 양천구 도시주택국 도시계획과",
+      "publishedAt": "2026-03-26",
+      "hearingStartDate": "2026-03-26",
+      "hearingEndDate": "2026-04-27",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4432&pageNo=11&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 11
     }
   ]
 }
