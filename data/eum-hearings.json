@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-04-20T14:53:52.682Z",
-  "count": 70,
+  "crawledAt": "2026-04-20T16:14:18.822Z",
+  "count": 65,
   "items": [
     {
       "seq": "4588",
@@ -619,17 +619,6 @@
       "listPage": 6
     },
     {
-      "seq": "4481",
-      "title": "도시관리계획(도시계획시설: 주차장, 공원) 결정(변경)‘안’열람공고",
-      "noticeNumber": "울산광역시 중구 공고 제2026-441호",
-      "agency": "울산광역시 중구",
-      "publishedAt": "2026-04-06",
-      "hearingStartDate": "2026-04-06",
-      "hearingEndDate": "2026-04-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4481&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "4479",
       "title": "군포3구역 재개발사업 내 어린이공원 공원조성계획 결정(최초) 주민공람 공고",
       "noticeNumber": "경기도 군포시 공고 제2026-515호",
@@ -639,39 +628,6 @@
       "hearingEndDate": "2026-04-23",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4479&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
-    },
-    {
-      "seq": "4478",
-      "title": "도시관리계획(도시계획시설: 주차장) 결정(폐지)‘안’열람공고",
-      "noticeNumber": "울산광역시 중구 공고 제2026-440호",
-      "agency": "울산광역시 중구",
-      "publishedAt": "2026-04-06",
-      "hearingStartDate": "2026-04-06",
-      "hearingEndDate": "2026-04-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4478&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4475",
-      "title": "문경온천 개발계획(변경) 및 도시관리계획(지구단위계획) 결정(변경)(안) 공람공고",
-      "noticeNumber": "경상북도 문경시 공고 제2026-577호",
-      "agency": "경상북도 문경시 경제도시국 도시과",
-      "publishedAt": "2026-04-06",
-      "hearingStartDate": "2026-04-06",
-      "hearingEndDate": "2026-04-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4475&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4473",
-      "title": "예천 군관리계획(지구단위계획) 결정(변경)(안) 공람공고",
-      "noticeNumber": "경상북도 예천군 공고 제2026-605호",
-      "agency": "경상북도 예천군 도시과",
-      "publishedAt": "2026-04-06",
-      "hearingStartDate": "2026-04-06",
-      "hearingEndDate": "2026-04-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4473&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
     },
     {
       "seq": "4467",
@@ -704,17 +660,6 @@
       "hearingStartDate": "2026-04-06",
       "hearingEndDate": "2026-04-22",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4463&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4460",
-      "title": "의정부 도시관리계획(도시계획시설:하천, 공공하수처리시설, 폐기물처리시설) 결정(변경) 주민 열람 공고",
-      "noticeNumber": "경기도 의정부시 공고 제2026-755호",
-      "agency": "경기도 의정부시 도시주택국 도시정책과",
-      "publishedAt": "2026-04-06",
-      "hearingStartDate": "2026-04-06",
-      "hearingEndDate": "2026-04-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4460&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
