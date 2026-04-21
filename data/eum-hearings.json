@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-04-21T13:49:06.969Z",
+  "crawledAt": "2026-04-21T15:17:53.659Z",
   "count": 67,
   "items": [
+    {
+      "seq": "4583",
+      "title": "도시관리계획(안) 재열람공고(금정구 구서동 481-1번지 일원 문화시설)",
+      "noticeNumber": "부산광역시 공고 제2026-1373호",
+      "agency": "부산광역시 도시공간계획국 도시공간조성과",
+      "publishedAt": "2026-04-22",
+      "hearingStartDate": "2026-04-22",
+      "hearingEndDate": "2026-05-06",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4583&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "4592",
       "title": "시관리계획(시설: 폐기물처리 및 재활용시설) 변경 결정 입안에 따른 재열람·공고",
@@ -109,8 +120,8 @@
       "publishedAt": "2026-04-20",
       "hearingStartDate": "2026-04-20",
       "hearingEndDate": "2026-05-04",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4566&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4566&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "4577",
@@ -219,8 +230,8 @@
       "publishedAt": "2026-04-16",
       "hearingStartDate": "2026-04-16",
       "hearingEndDate": "2026-04-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4562&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4562&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "4561",
@@ -318,8 +329,8 @@
       "publishedAt": "2026-04-15",
       "hearingStartDate": "2026-04-15",
       "hearingEndDate": "2026-04-29",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4552&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4552&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "4549",
@@ -428,8 +439,8 @@
       "publishedAt": "2026-04-10",
       "hearingStartDate": "2026-04-10",
       "hearingEndDate": "2026-05-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4520&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4520&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "4502",
@@ -538,8 +549,8 @@
       "publishedAt": "2026-04-09",
       "hearingStartDate": "2026-04-09",
       "hearingEndDate": "2026-04-23",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4509&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4509&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "4508",
@@ -648,18 +659,7 @@
       "publishedAt": "2026-04-08",
       "hearingStartDate": "2026-04-08",
       "hearingEndDate": "2026-04-22",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4482&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4483",
-      "title": "도봉동 625-80번지 일대 가로주택정비사업 사업시행계획인가를 위한 주민 공람공고",
-      "noticeNumber": "서울특별시 도봉구 공고 제2026-528호",
-      "agency": "서울특별시 도봉구 도시관리국 재건축재개발과",
-      "publishedAt": "2026-04-07",
-      "hearingStartDate": "2026-04-07",
-      "hearingEndDate": "2026-04-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4483&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4482&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
