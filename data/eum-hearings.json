@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-04-24T14:01:20.113Z",
-  "count": 70,
+  "crawledAt": "2026-04-24T16:06:27.014Z",
+  "count": 66,
   "items": [
     {
       "seq": "4609",
@@ -685,28 +685,6 @@
       "listPage": 7
     },
     {
-      "seq": "4502",
-      "title": "아산 도시관리계획(용도지역) 결정(변경) 전략환경영향평가항목등의 결정내용 공개 공고",
-      "noticeNumber": "충청남도 아산시 공고 제2026-1280호",
-      "agency": "충청남도 아산시",
-      "publishedAt": "2026-04-10",
-      "hearingStartDate": "2026-04-10",
-      "hearingEndDate": "2026-04-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4502&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4488",
-      "title": "광주 도시관리계획(도시계획시설:도로, 가스공급설비) 결정(변경)(안) 주민열람 공고",
-      "noticeNumber": "경기도 광주시 공고 제2026-1089호",
-      "agency": "경기도 광주시",
-      "publishedAt": "2026-04-10",
-      "hearingStartDate": "2026-04-10",
-      "hearingEndDate": "2026-04-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4488&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "4560",
       "title": "평택 안중역세권 도시개발구역 지정 및 개발계획 수립(안)과  전략환경영향평가(초안), 기후변화영향평가(초안)에 대한 주민공람 및 공청회...",
       "noticeNumber": "경기도 평택시 공고 제2026-1227호",
@@ -727,28 +705,6 @@
       "hearingEndDate": "2026-04-27",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4545&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
-    },
-    {
-      "seq": "4528",
-      "title": "토지거래허가구역 재지정 및 조정 공고",
-      "noticeNumber": "서울특별시 공고 제2026-1141호",
-      "agency": "서울특별시 주택실 주택정책관 주택정책과",
-      "publishedAt": "2026-04-09",
-      "hearingStartDate": "2026-04-09",
-      "hearingEndDate": "2026-04-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4528&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "4514",
-      "title": "여주 도시관리계획(여주역세권 지구단위계획) 결정(변경)(안) 재공람·공고",
-      "noticeNumber": "경기도 여주시 공고 제2026-729호",
-      "agency": "경기도 여주시 도시건설국 도시계획과",
-      "publishedAt": "2026-04-09",
-      "hearingStartDate": "2026-04-09",
-      "hearingEndDate": "2026-04-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4514&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
     },
     {
       "seq": "4496",
