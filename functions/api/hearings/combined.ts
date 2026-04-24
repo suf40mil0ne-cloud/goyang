@@ -75,6 +75,7 @@ function createJsonResponse(body: Record<string, unknown>, status: number, cache
     headers: {
       'content-type': 'application/json; charset=UTF-8',
       'cache-control': cacheControl || 'public, max-age=300, stale-while-revalidate=300',
+      'access-control-allow-origin': '*',
     },
   });
 }
