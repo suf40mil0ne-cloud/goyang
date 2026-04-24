@@ -21,6 +21,28 @@
       "GEMINI.md",
       "firebase-debug.log"
     ],
+    "redirects": [
+      {
+        "source": "/api/hearings/combined",
+        "destination": "https://goyang-eke.pages.dev/api/hearings/combined",
+        "type": 302
+      },
+      {
+        "source": "/api/hearings/debug",
+        "destination": "https://goyang-eke.pages.dev/api/hearings/debug",
+        "type": 302
+      },
+      {
+        "source": "/api/public-hearings",
+        "destination": "https://goyang-eke.pages.dev/api/public-hearings",
+        "type": 302
+      },
+      {
+        "source": "/api/debug/eum-probe",
+        "destination": "https://goyang-eke.pages.dev/api/debug/eum-probe",
+        "type": 302
+      }
+    ],
     "rewrites": [
       {
         "source": "/app",
