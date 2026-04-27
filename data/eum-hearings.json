@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-04-27T14:01:58.076Z",
-  "count": 74,
+  "crawledAt": "2026-04-27T16:28:22.632Z",
+  "count": 70,
   "items": [
     {
       "seq": "4637",
@@ -696,39 +696,6 @@
       "listPage": 7
     },
     {
-      "seq": "4542",
-      "title": "성남 도시관리계획(위례 택지개발지구 지구단위계획) 결정(변경)(안) 주민의견 청취 공고(창곡동 511번지, 위례고운초등학교)",
-      "noticeNumber": "경기도 성남시 공고 제2026-1096호",
-      "agency": "경기도 성남시 도시주택국 도시계획과",
-      "publishedAt": "2026-04-13",
-      "hearingStartDate": "2026-04-13",
-      "hearingEndDate": "2026-04-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4542&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4541",
-      "title": "함안군관리계획(법수강주 산업유통형 지구단위계획구역 및 계획) 결정(변경) 공람&#8231;공고",
-      "noticeNumber": "경상남도 함안군 공고 제2026-568호",
-      "agency": "경상남도 함안군 산업건설국 도시건축과",
-      "publishedAt": "2026-04-13",
-      "hearingStartDate": "2026-04-13",
-      "hearingEndDate": "2026-04-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4541&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4540",
-      "title": "부천 도시관리계획(상동지구 지구단위계획) 결정(변경)(안) 공람공고",
-      "noticeNumber": "경기도 부천시 공고 제2026-969호",
-      "agency": "경기도 부천시 도시국 도시계획과",
-      "publishedAt": "2026-04-13",
-      "hearingStartDate": "2026-04-13",
-      "hearingEndDate": "2026-04-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4540&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "4539",
       "title": "도시관리계획(안) 열람공고",
       "noticeNumber": "대구광역시 동구 공고 제2026-611호",
@@ -759,17 +726,6 @@
       "hearingStartDate": "2026-04-09",
       "hearingEndDate": "2026-04-29",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4560&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "4545",
-      "title": "창원도시관리계획(도로) 결정(안) 열람 공고",
-      "noticeNumber": "경상남도 창원시 공고 제2026-747호",
-      "agency": "경상남도 창원시(통합) 도시정책국 도시계획과",
-      "publishedAt": "2026-04-09",
-      "hearingStartDate": "2026-04-09",
-      "hearingEndDate": "2026-04-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4545&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
