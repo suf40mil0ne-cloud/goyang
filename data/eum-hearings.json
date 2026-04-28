@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-04-28T14:18:02.718Z",
-  "count": 73,
+  "crawledAt": "2026-04-28T16:54:48.000Z",
+  "count": 70,
   "items": [
     {
       "seq": "4643",
@@ -707,28 +707,6 @@
       "listPage": 7
     },
     {
-      "seq": "4548",
-      "title": "[재공고] 용인도시관리계획(체육시설 폐지, 연구시설ㆍ도로 신설) 결정(변경) 열람",
-      "noticeNumber": "경기도 용인시 공고 제2026-1298호",
-      "agency": "경기도 용인시 도시정책실 도시정보과",
-      "publishedAt": "2026-04-14",
-      "hearingStartDate": "2026-04-15",
-      "hearingEndDate": "2026-04-28",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4548&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4534",
-      "title": "고양 도시관리계획(일산 지구단위계획) 결정(변경)(안) 공람 공고",
-      "noticeNumber": "경기도 고양시 공고 제2026-1031호",
-      "agency": "경기도 고양시 도시주택정책실 도시계획정책관",
-      "publishedAt": "2026-04-14",
-      "hearingStartDate": "2026-04-14",
-      "hearingEndDate": "2026-04-28",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4534&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "4591",
       "title": "창원도시관리계획(도로) 결정(변경)(안) 열람 공고",
       "noticeNumber": "경상남도 창원시 공고 제2026-794호",
@@ -737,17 +715,6 @@
       "hearingStartDate": "2026-04-13",
       "hearingEndDate": "2026-04-30",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4591&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4543",
-      "title": "여주 도시계획시설(체육시설:YJC골프클럽) 사업 실시계획(변경) 인가 공고·공고",
-      "noticeNumber": "경기도 여주시 공고 제2026-749호",
-      "agency": "경기도 여주시 도시건설국 도시계획과",
-      "publishedAt": "2026-04-13",
-      "hearingStartDate": "2026-04-13",
-      "hearingEndDate": "2026-04-28",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4543&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
