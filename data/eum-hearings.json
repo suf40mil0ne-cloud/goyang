@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-05T11:17:17.570Z",
-  "count": 67,
+  "crawledAt": "2026-05-05T16:26:42.216Z",
+  "count": 63,
   "items": [
     {
       "seq": "4682",
@@ -652,17 +652,6 @@
       "listPage": 6
     },
     {
-      "seq": "4592",
-      "title": "시관리계획(시설: 폐기물처리 및 재활용시설) 변경 결정 입안에 따른 재열람·공고",
-      "noticeNumber": "대전광역시 중구 공고 제2026-626호",
-      "agency": "대전광역시 중구 도시국 도시과",
-      "publishedAt": "2026-04-21",
-      "hearingStartDate": "2026-04-21",
-      "hearingEndDate": "2026-05-05",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4592&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "4599",
       "title": "홍문3지구 도시개발구역 지정(안) 및 개발계획 수립(안) 공람·공고",
       "noticeNumber": "경기도 여주시 공고 제2026-794호",
@@ -671,39 +660,6 @@
       "hearingStartDate": "2026-04-20",
       "hearingEndDate": "2026-05-07",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4599&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4587",
-      "title": "건축허가 제한(안) 주민의견청취 열람 공고",
-      "noticeNumber": "경기도 남양주시 공고 제2026-968호",
-      "agency": "경기도 남양주시 도시국 도시재생과",
-      "publishedAt": "2026-04-20",
-      "hearingStartDate": "2026-04-20",
-      "hearingEndDate": "2026-05-05",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4587&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4586",
-      "title": "개발행위허가 제한(안) 주민의견청취 열람 공고",
-      "noticeNumber": "경기도 남양주시 공고 제2026-966호",
-      "agency": "경기도 남양주시 도시국 도시재생과",
-      "publishedAt": "2026-04-20",
-      "hearingStartDate": "2026-04-20",
-      "hearingEndDate": "2026-05-05",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4586&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4585",
-      "title": "건축허가 제한(안) 주민의견청취 열람 공고",
-      "noticeNumber": "경기도 남양주시 공고 제2026-967호",
-      "agency": "경기도 남양주시 도시국 도시재생과",
-      "publishedAt": "2026-04-20",
-      "hearingStartDate": "2026-04-20",
-      "hearingEndDate": "2026-05-05",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4585&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
