@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-05-06T14:21:53.634Z",
-  "count": 73,
+  "crawledAt": "2026-05-06T16:44:07.298Z",
+  "count": 62,
   "items": [
+    {
+      "seq": "4685",
+      "title": "도시관리계획(온수역 일대 지구단위계획 및 럭비구장 특별계획구역 세부개발계획) 결정(변경)(안) 재열람공고",
+      "noticeNumber": "서울특별시 구로구 공고 제2026-908호",
+      "agency": "서울특별시 구로구 건설정책국 도시계획과",
+      "publishedAt": "2026-05-07",
+      "hearingStartDate": "2026-05-07",
+      "hearingEndDate": "2026-05-21",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4685&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "4688",
       "title": "강릉 도시관리계획(공간시설: 소공원) 결정(안) 열람·공고",
@@ -109,8 +120,8 @@
       "publishedAt": "2026-04-30",
       "hearingStartDate": "2026-04-30",
       "hearingEndDate": "2026-05-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4681&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4681&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "4676",
@@ -219,8 +230,8 @@
       "publishedAt": "2026-04-30",
       "hearingStartDate": "2026-04-30",
       "hearingEndDate": "2026-05-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4661&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4661&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "4660",
@@ -329,8 +340,8 @@
       "publishedAt": "2026-04-29",
       "hearingStartDate": "2026-04-29",
       "hearingEndDate": "2026-05-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4654&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4654&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "4657",
@@ -439,8 +450,8 @@
       "publishedAt": "2026-04-24",
       "hearingStartDate": "2026-04-24",
       "hearingEndDate": "2026-05-25",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4636&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4636&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "4632",
@@ -538,8 +549,8 @@
       "publishedAt": "2026-04-23",
       "hearingStartDate": "2026-04-23",
       "hearingEndDate": "2026-05-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4623&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4623&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "4621",
@@ -648,29 +659,7 @@
       "publishedAt": "2026-04-23",
       "hearingStartDate": "2026-04-23",
       "hearingEndDate": "2026-05-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4584&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4651",
-      "title": "마포로5구역 제10·11지구 도시정비형 재개발사업  사업시행계획(변경)인가를 위한 공람·공고",
-      "noticeNumber": "서울특별시 중구 공고 제2026-461호",
-      "agency": "서울특별시 중구 도시관리국 도심정비과",
-      "publishedAt": "2026-04-22",
-      "hearingStartDate": "2026-04-22",
-      "hearingEndDate": "2026-05-06",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4651&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "4608",
-      "title": "이천 도시관리계획[지구단위계획(주거형:신원지구)]결정(변경)(안) 주민공람·공고",
-      "noticeNumber": "경기도 이천시 공고 제2026-1224호",
-      "agency": "경기도 이천시 도시주택국 도시과",
-      "publishedAt": "2026-04-22",
-      "hearingStartDate": "2026-04-22",
-      "hearingEndDate": "2026-05-06",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4608&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4584&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
@@ -685,17 +674,6 @@
       "listPage": 7
     },
     {
-      "seq": "4583",
-      "title": "도시관리계획(안) 재열람공고(금정구 구서동 481-1번지 일원 문화시설)",
-      "noticeNumber": "부산광역시 공고 제2026-1373호",
-      "agency": "부산광역시 도시공간계획국 도시공간조성과",
-      "publishedAt": "2026-04-22",
-      "hearingStartDate": "2026-04-22",
-      "hearingEndDate": "2026-05-06",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4583&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "4599",
       "title": "홍문3지구 도시개발구역 지정(안) 및 개발계획 수립(안) 공람·공고",
       "noticeNumber": "경기도 여주시 공고 제2026-794호",
@@ -705,105 +683,6 @@
       "hearingEndDate": "2026-05-07",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4599&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
-    },
-    {
-      "seq": "4567",
-      "title": "도시관리계획(구월 지구단위계획) 결정(변경)(안) 재공고·열람",
-      "noticeNumber": "인천광역시 공고 제2026-951호",
-      "agency": "인천광역시 도시계획국 도시관리과",
-      "publishedAt": "2026-04-20",
-      "hearingStartDate": "2026-04-20",
-      "hearingEndDate": "2026-05-06",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4567&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "4572",
-      "title": "묵현8지구 도시관리계획 결정(변경)(안) 및 전략환경영향평가서(초안) 공람 및 주민설명회 개최 공고",
-      "noticeNumber": "경기도 남양주시 공고 제2026-952호",
-      "agency": "경기도 남양주시 도시국 도시정책과",
-      "publishedAt": "2026-04-17",
-      "hearingStartDate": "2026-04-17",
-      "hearingEndDate": "2026-05-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4572&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "4568",
-      "title": "[공고문] 군산 도시관리계획(재정비) 입안 및 전략환경영향평가서(초안)， 기후변화영향평가서(초안) 주민열람공고",
-      "noticeNumber": "전북특별자치도 군산시 공고 제2026-1015호",
-      "agency": "전북특별자치도 군산시 안전건설국 도시계획과",
-      "publishedAt": "2026-04-15",
-      "hearingStartDate": "2026-04-15",
-      "hearingEndDate": "2026-05-15",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4568&pageNo=10&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 10
-    },
-    {
-      "seq": "4520",
-      "title": "용산역전면 및 용산역전면 제1-2구역 도시정비형 재개발사업 정비구역(변경)(안) 공람공고",
-      "noticeNumber": "서울특별시 용산구 공고 제2026-602호",
-      "agency": "서울특별시 용산구 도시관리국 도시계획과",
-      "publishedAt": "2026-04-10",
-      "hearingStartDate": "2026-04-10",
-      "hearingEndDate": "2026-05-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4520&pageNo=11&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 11
-    },
-    {
-      "seq": "4655",
-      "title": "마장세림아파트 주택재건축정비사업 정비구역 및 정비계획(변경)에 대한 공람공고",
-      "noticeNumber": "서울특별시 성동구 공고 제2026-524호",
-      "agency": "서울특별시 성동구 도시관리국 주거정비과",
-      "publishedAt": "2026-04-09",
-      "hearingStartDate": "2026-04-09",
-      "hearingEndDate": "2026-05-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4655&pageNo=12&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 12
-    },
-    {
-      "seq": "4496",
-      "title": "돌곶이·상월곡역세권 장기전세주택 도시정비형 재개발사업 정비계획 결정 및 정비구역 지정(안)에 대한  (재)공람공고",
-      "noticeNumber": "서울특별시 성북구 공고 제2026-660호",
-      "agency": "서울특별시 성북구 도시관리국 주거정비과",
-      "publishedAt": "2026-04-09",
-      "hearingStartDate": "2026-04-09",
-      "hearingEndDate": "2026-05-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4496&pageNo=13&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 13
-    },
-    {
-      "seq": "4476",
-      "title": "사근동 293번지 일대 주택정비형 재개발사업 정비계획 결정 및 정비구역 지정(안) 재공람·공고",
-      "noticeNumber": "서울특별시 성동구 공고 제2026-547호",
-      "agency": "서울특별시 성동구 도시관리국 주거정비과",
-      "publishedAt": "2026-04-09",
-      "hearingStartDate": "2026-04-09",
-      "hearingEndDate": "2026-05-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4476&pageNo=13&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 13
-    },
-    {
-      "seq": "4693",
-      "title": "번동 148일대 정비계획 결정 및 정비구역 지정(안) 재공람공고",
-      "noticeNumber": "서울특별시 강북구 공고 제2026-610호",
-      "agency": "서울특별시 강북구 도시관리국 주거정비과",
-      "publishedAt": "2026-04-07",
-      "hearingStartDate": "2026-04-07",
-      "hearingEndDate": "2026-05-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4693&pageNo=14&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 14
-    },
-    {
-      "seq": "4467",
-      "title": "아산 도시관리계획(용도지역,도시계획시설) 결정(변경)(안) 및 전략환경영향평가서(초안) 열람 공고",
-      "noticeNumber": "충청남도 아산시 공고 제2026-1187호",
-      "agency": "충청남도 아산시 도시개발국 도시계획과",
-      "publishedAt": "2026-04-06",
-      "hearingStartDate": "2026-04-06",
-      "hearingEndDate": "2026-05-15",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4467&pageNo=15&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 15
     }
   ]
 }
