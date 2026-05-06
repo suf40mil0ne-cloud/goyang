@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-06T06:31:33.059Z",
-  "count": 72,
+  "crawledAt": "2026-05-06T09:25:45.196Z",
+  "count": 73,
   "items": [
     {
       "seq": "4688",
@@ -784,6 +784,17 @@
       "listPage": 13
     },
     {
+      "seq": "4693",
+      "title": "번동 148일대 정비계획 결정 및 정비구역 지정(안) 재공람공고",
+      "noticeNumber": "서울특별시 강북구 공고 제2026-610호",
+      "agency": "서울특별시 강북구 도시관리국 주거정비과",
+      "publishedAt": "2026-04-07",
+      "hearingStartDate": "2026-04-07",
+      "hearingEndDate": "2026-05-08",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4693&pageNo=14&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 14
+    },
+    {
       "seq": "4467",
       "title": "아산 도시관리계획(용도지역,도시계획시설) 결정(변경)(안) 및 전략환경영향평가서(초안) 열람 공고",
       "noticeNumber": "충청남도 아산시 공고 제2026-1187호",
@@ -791,8 +802,8 @@
       "publishedAt": "2026-04-06",
       "hearingStartDate": "2026-04-06",
       "hearingEndDate": "2026-05-15",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4467&pageNo=14&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 14
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4467&pageNo=15&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 15
     }
   ]
 }
