@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-07T06:38:46.927Z",
-  "count": 64,
+  "crawledAt": "2026-05-07T09:35:18.916Z",
+  "count": 66,
   "items": [
     {
       "seq": "4695",
@@ -703,8 +703,30 @@
       "publishedAt": "2026-04-21",
       "hearingStartDate": "2026-04-20",
       "hearingEndDate": "2026-05-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4599&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4599&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 8
+    },
+    {
+      "seq": "4572",
+      "title": "묵현8지구 도시관리계획 결정(변경)(안) 및 전략환경영향평가서(초안) 공람 및 주민설명회 개최 공고",
+      "noticeNumber": "경기도 남양주시 공고 제2026-952호",
+      "agency": "경기도 남양주시 도시국 도시정책과",
+      "publishedAt": "2026-04-17",
+      "hearingStartDate": "2026-04-17",
+      "hearingEndDate": "2026-05-07",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4572&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 9
+    },
+    {
+      "seq": "4568",
+      "title": "[공고문] 군산 도시관리계획(재정비) 입안 및 전략환경영향평가서(초안)， 기후변화영향평가서(초안) 주민열람공고",
+      "noticeNumber": "전북특별자치도 군산시 공고 제2026-1015호",
+      "agency": "전북특별자치도 군산시 안전건설국 도시계획과",
+      "publishedAt": "2026-04-15",
+      "hearingStartDate": "2026-04-15",
+      "hearingEndDate": "2026-05-15",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4568&pageNo=10&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 10
     }
   ]
 }
