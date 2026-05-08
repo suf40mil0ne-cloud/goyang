@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-08T13:56:30.303Z",
-  "count": 57,
+  "crawledAt": "2026-05-08T15:27:46.747Z",
+  "count": 51,
   "items": [
     {
       "seq": "4708",
@@ -498,17 +498,6 @@
       "listPage": 5
     },
     {
-      "seq": "4650",
-      "title": "장위11-2구역 가로주택정비사업 사업시행계획변경인가를 위한 공람공고",
-      "noticeNumber": "서울특별시 공고 제2026-752호",
-      "agency": "서울특별시 성북구 도시관리국 신속도시정비과",
-      "publishedAt": "2026-04-24",
-      "hearingStartDate": "2026-04-24",
-      "hearingEndDate": "2026-05-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4650&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
       "seq": "4636",
       "title": "잠실아파트지구 개발기본계획 결정(변경)(안),장미1,2,3차아파트 주택재건축정비사업 정비구역 및 정비계획(변경)(안)에 대한 재공람？공고",
       "noticeNumber": "서울특별시 송파구 공고 제2026-795호",
@@ -520,39 +509,6 @@
       "listPage": 5
     },
     {
-      "seq": "4632",
-      "title": "평택 도시관리계획[지구단위계획 재정비_군문택지지구 등 51개 지구] 결정(변경)(안) 공람 공고",
-      "noticeNumber": "경기도 평택시 공고 제2026-1484호",
-      "agency": "경기도 평택시",
-      "publishedAt": "2026-04-24",
-      "hearingStartDate": "2026-04-24",
-      "hearingEndDate": "2026-05-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4632&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4630",
-      "title": "의령군관리계획[교통시설:도로(소로2-111호선)] 결정을 위한 공람 공고",
-      "noticeNumber": "경상남도 의령군 공고 제2026-521호",
-      "agency": "경상남도 의령군 산업건설국 도시재생과",
-      "publishedAt": "2026-04-24",
-      "hearingStartDate": "2026-04-24",
-      "hearingEndDate": "2026-05-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4630&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4626",
-      "title": "김제 도시계획시설사업(근린광장) 사업시행자지정 및 실시계획인가전 열람공고[동헌 앞 다목적광장 조성사업]",
-      "noticeNumber": "전북특별자치도 김제시 공고 제2026-539호",
-      "agency": "전북특별자치도 김제시 도시건설국 도시과",
-      "publishedAt": "2026-04-24",
-      "hearingStartDate": "2026-04-24",
-      "hearingEndDate": "2026-05-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4626&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
       "seq": "4615",
       "title": "원주 도시관리계획(주차장73호) 결정(변경)(안) 주민 열람·공고",
       "noticeNumber": "강원도 원주시 공고 제2026-1193호",
@@ -561,28 +517,6 @@
       "hearingStartDate": "2026-04-24",
       "hearingEndDate": "2026-05-11",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4615&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4596",
-      "title": "남원 도시관리계획(도시계획시설:역사공원) 조성계획 결정(변경)(안) 주민 의견청취 열람공고",
-      "noticeNumber": "전북특별자치도 남원시 공고 제2026-1044호",
-      "agency": "전북특별자치도 남원시 안전건설국 도시과",
-      "publishedAt": "2026-04-24",
-      "hearingStartDate": "2026-04-24",
-      "hearingEndDate": "2026-05-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4596&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4623",
-      "title": "[재공고] 용인도시관리계획(연구시설7호 금호타이어) 결정(변경) 및 사업시행자 지정, 실시계획 인가 열람",
-      "noticeNumber": "경기도 용인시 공고 제2026-1412호",
-      "agency": "경기도 용인시 도시정책실 도시정보과",
-      "publishedAt": "2026-04-23",
-      "hearingStartDate": "2026-04-23",
-      "hearingEndDate": "2026-05-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4623&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
