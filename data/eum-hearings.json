@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-13T04:49:18.522Z",
-  "count": 55,
+  "crawledAt": "2026-05-13T07:50:45.917Z",
+  "count": 56,
   "items": [
     {
       "seq": "4728",
@@ -245,6 +245,17 @@
       "listPage": 3
     },
     {
+      "seq": "4731",
+      "title": "2030년 양구 군관리계획(재정비) 결정(변경)(안) 주민 재공람공고",
+      "noticeNumber": "강원특별자치도 양구군 공고 제2026-630호",
+      "agency": "강원특별자치도 양구군 경제건설국 도시교통과",
+      "publishedAt": "2026-04-30",
+      "hearingStartDate": "2026-04-30",
+      "hearingEndDate": "2026-05-20",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4731&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
+    },
+    {
       "seq": "4687",
       "title": "예천 군관리계획(공원, 공원조성계획) 결정(변경)(안) 공람공고",
       "noticeNumber": "경상북도 예천군 공고 제2026-738호",
@@ -329,8 +340,8 @@
       "publishedAt": "2026-04-30",
       "hearingStartDate": "2026-04-30",
       "hearingEndDate": "2026-05-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4670&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4670&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "4668",
@@ -439,8 +450,8 @@
       "publishedAt": "2026-04-30",
       "hearingStartDate": "2026-04-30",
       "hearingEndDate": "2026-05-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4635&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4635&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "4700",
