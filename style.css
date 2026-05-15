@@ -1237,6 +1237,7 @@ body {
   z-index: 40;
   padding: 18px 0 12px;
   backdrop-filter: blur(12px);
+  margin-bottom: 128px;
 }
 
 .brand-mark {

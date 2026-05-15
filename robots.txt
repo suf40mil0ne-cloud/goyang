@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /regions/
+Disallow: /pages/about.html
+Disallow: /pages/privacy.html
+Disallow: /pages/terms.html
+Disallow: /app.html
+Disallow: /admin.html
 
-Sitemap: https://goyang-eke.pages.dev/sitemap.xml
+Sitemap: https://xn--ob0bw4r.com/sitemap.xml

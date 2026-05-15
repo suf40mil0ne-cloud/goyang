@@ -1728,7 +1728,7 @@ export default function App() {
         </button>
       </aside>
 
-      <main className="pb-28 pt-24 lg:ml-72 lg:pb-12">
+      <main className="pb-28 pt-[230px] lg:ml-72 lg:pb-12">
         <div className="mx-auto max-w-7xl space-y-10 px-4 sm:px-8">
           <section id="hero" className="relative overflow-hidden rounded-[28px] bg-[#e8f3ff] shadow-sm">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(0,97,148,0.18),_transparent_32%),linear-gradient(135deg,_rgba(0,97,148,0.92),_rgba(0,123,185,0.72))]" />
