@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-16T14:59:08.014Z",
-  "count": 39,
+  "crawledAt": "2026-05-16T16:04:02.415Z",
+  "count": 38,
   "items": [
     {
       "seq": "4756",
@@ -408,17 +408,6 @@
       "hearingEndDate": "2026-05-20",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4731&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 4
-    },
-    {
-      "seq": "4671",
-      "title": "삼척 도시관리계획(시설：도로) 결정(변경)(안) 주민 열람 공고",
-      "noticeNumber": "강원특별자치도 삼척시 공고 제2026-748호",
-      "agency": "강원특별자치도 삼척시 안전건설국 도시과",
-      "publishedAt": "2026-04-30",
-      "hearingStartDate": "2026-04-30",
-      "hearingEndDate": "2026-05-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4671&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
     },
     {
       "seq": "4666",
