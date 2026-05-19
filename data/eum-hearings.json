@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-19T09:51:15.149Z",
-  "count": 48,
+  "crawledAt": "2026-05-19T16:22:57.832Z",
+  "count": 46,
   "items": [
     {
       "seq": "4767",
@@ -465,17 +465,6 @@
       "listPage": 6
     },
     {
-      "seq": "4657",
-      "title": "2030년 광양 도시관리계획(재정비) 결정(변경)(안) 및 전략환경영향평가서(초안) 열람공고",
-      "noticeNumber": "전라남도 광양시 공고 제2026-1047호",
-      "agency": "전라남도 광양시 안전도시국 도시과",
-      "publishedAt": "2026-04-28",
-      "hearingStartDate": "2026-04-28",
-      "hearingEndDate": "2026-05-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4657&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "4643",
       "title": "군포도시관리계획(벌터마벨·대야·당정2·당정대영·지구단위계획) 결정(변경)(안) 주민공람 공고",
       "noticeNumber": "경기도 군포시 공고 제2026-609호",
@@ -495,17 +484,6 @@
       "hearingStartDate": "2026-04-27",
       "hearingEndDate": "2026-05-20",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4620&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "4610",
-      "title": "도시관리계획(용도구역: 수산자원보호구역) 결정(변경)(안) 열람 공고",
-      "noticeNumber": "충청남도 서산시 공고 제2026-1269호",
-      "agency": "충청남도 서산시 건설도시국 도시과",
-      "publishedAt": "2026-04-27",
-      "hearingStartDate": "2026-04-27",
-      "hearingEndDate": "2026-05-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4610&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
