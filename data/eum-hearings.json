@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-21T12:16:19.633Z",
-  "count": 54,
+  "crawledAt": "2026-05-21T16:16:45.814Z",
+  "count": 50,
   "items": [
     {
       "seq": "4785",
@@ -476,17 +476,6 @@
       "listPage": 5
     },
     {
-      "seq": "4695",
-      "title": "도시계획시설(체육시설:골프장)사업 실시계획(변경)인가를 위한 열람공고",
-      "noticeNumber": "울산광역시 울주군 공고 제2026-1295호",
-      "agency": "울산광역시 울주군 도시건설국 도시과",
-      "publishedAt": "2026-05-07",
-      "hearingStartDate": "2026-05-08",
-      "hearingEndDate": "2026-05-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4695&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
       "seq": "4690",
       "title": "단양 군관리계획(군계획시설：도로 및 공원조성계획) 결정(변경)을 위한 주민열람·공고",
       "noticeNumber": "충청북도 단양군 공고 제2026-740호",
@@ -495,39 +484,6 @@
       "hearingStartDate": "2026-05-08",
       "hearingEndDate": "2026-05-22",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4690&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4721",
-      "title": "도시관리계획(도시계획시설:도로) 결정을 위한 열람공고(안)",
-      "noticeNumber": "서울특별시 영등포구 공고 제2026-965호",
-      "agency": "서울특별시 영등포구 도시공간국 도시계획과",
-      "publishedAt": "2026-05-07",
-      "hearingStartDate": "2026-05-07",
-      "hearingEndDate": "2026-05-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4721&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4685",
-      "title": "도시관리계획(온수역 일대 지구단위계획 및 럭비구장 특별계획구역 세부개발계획) 결정(변경)(안) 재열람공고",
-      "noticeNumber": "서울특별시 구로구 공고 제2026-908호",
-      "agency": "서울특별시 구로구 건설정책국 도시계획과",
-      "publishedAt": "2026-05-07",
-      "hearingStartDate": "2026-05-07",
-      "hearingEndDate": "2026-05-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4685&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4686",
-      "title": "철원 군관리계획(시설:어린이공원, 공원조성계획) 결정(안) 공람ㆍ공고",
-      "noticeNumber": "강원특별자치도 철원군 공고 제2026-740호",
-      "agency": "강원특별자치도 철원군 건설도시과",
-      "publishedAt": "2026-05-06",
-      "hearingStartDate": "2026-05-06",
-      "hearingEndDate": "2026-05-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4686&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
