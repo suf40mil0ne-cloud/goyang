@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-22T12:22:37.640Z",
-  "count": 54,
+  "crawledAt": "2026-05-22T15:50:38.476Z",
+  "count": 47,
   "items": [
     {
       "seq": "4792",
@@ -476,17 +476,6 @@
       "listPage": 5
     },
     {
-      "seq": "4797",
-      "title": "고덕동 258 외 1필지 자율주택정비사업 사업시행계획변경인가를 위한 공람공고",
-      "noticeNumber": "서울특별시 강동구 공고 제2026-82호",
-      "agency": "서울특별시 강동구 도시관리국 건축과",
-      "publishedAt": "2026-05-08",
-      "hearingStartDate": "2026-05-08",
-      "hearingEndDate": "2026-05-22",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4797&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
       "seq": "4708",
       "title": "원효로1가 역세권 도시정비형 재개발사업 정비구역 지정 및 정비계획 결정(안)에 대한 재공람 공고",
       "noticeNumber": "서울특별시 용산구 공고 제2026-733호",
@@ -495,39 +484,6 @@
       "hearingStartDate": "2026-05-08",
       "hearingEndDate": "2026-06-08",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4708&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4706",
-      "title": "도시계획시설(도로)사업 실시계획인가 전 열람·공고",
-      "noticeNumber": "경기도 파주시 공고 제2026-1425호",
-      "agency": "경기도 파주시 도시발전국 도시계획과",
-      "publishedAt": "2026-05-08",
-      "hearingStartDate": "2026-05-08",
-      "hearingEndDate": "2026-05-22",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4706&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4705",
-      "title": "의왕도시계획시설(도로) 결정(신설)(안) 주민의견청취 공고",
-      "noticeNumber": "경기도 의왕시 공고 제2026-703호",
-      "agency": "경기도 의왕시 안전도시국 도시정책과",
-      "publishedAt": "2026-05-08",
-      "hearingStartDate": "2026-05-08",
-      "hearingEndDate": "2026-05-22",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4705&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4690",
-      "title": "단양 군관리계획(군계획시설：도로 및 공원조성계획) 결정(변경)을 위한 주민열람·공고",
-      "noticeNumber": "충청북도 단양군 공고 제2026-740호",
-      "agency": "충청북도 단양군",
-      "publishedAt": "2026-05-08",
-      "hearingStartDate": "2026-05-08",
-      "hearingEndDate": "2026-05-22",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4690&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
@@ -562,39 +518,6 @@
       "hearingEndDate": "2026-06-01",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4783&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
-    },
-    {
-      "seq": "4666",
-      "title": "구미 도시관리계획(구평2지구 지구단위계획) 결정(변경)(안) 공람·공고",
-      "noticeNumber": "경상북도 구미시 공고 제2026-1435호",
-      "agency": "경상북도 구미시 도시건설국 공공시설과",
-      "publishedAt": "2026-04-30",
-      "hearingStartDate": "2026-04-30",
-      "hearingEndDate": "2026-05-22",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4666&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "4787",
-      "title": "명일한양아파트 주택재건축정비사업  정비계획 결정 및 정비구역 지정(안) 재공람공고",
-      "noticeNumber": "서울특별시 강동구 공고 제2026-953호",
-      "agency": "서울특별시 강동구 도시관리국 재건축재개발과",
-      "publishedAt": "2026-04-29",
-      "hearingStartDate": "2026-04-29",
-      "hearingEndDate": "2026-05-29",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4787&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "4786",
-      "title": "고덕주공9단지아파트 주택재건축정비사업  정비계획 결정 및 정비구역 지정(안) 재공람공고",
-      "noticeNumber": "서울특별시 강동구 공고 제2026-954호",
-      "agency": "서울특별시 강동구 도시관리국 재건축재개발과",
-      "publishedAt": "2026-04-29",
-      "hearingStartDate": "2026-04-29",
-      "hearingEndDate": "2026-05-29",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4786&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
     }
   ]
 }
