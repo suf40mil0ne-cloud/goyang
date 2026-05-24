@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-24T11:22:10.187Z",
-  "count": 47,
+  "crawledAt": "2026-05-24T15:06:27.847Z",
+  "count": 46,
   "items": [
     {
       "seq": "4792",
@@ -451,17 +451,6 @@
       "hearingStartDate": "2026-05-11",
       "hearingEndDate": "2026-05-26",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4746&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4723",
-      "title": "성남 도시관리계획(도로: 중로1-1호선) 결정(변경) 및 실시계획(변경) 주민의견 청취 공고",
-      "noticeNumber": "경기도 성남시 공고 제2026-1336호",
-      "agency": "경기도 성남시 도시주택국 도시계획과",
-      "publishedAt": "2026-05-11",
-      "hearingStartDate": "2026-05-11",
-      "hearingEndDate": "2026-05-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4723&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
