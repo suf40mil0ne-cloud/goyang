@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-27T00:09:03.915Z",
-  "count": 51,
+  "crawledAt": "2026-05-27T05:18:15.243Z",
+  "count": 52,
   "items": [
     {
       "seq": "4819",
@@ -551,6 +551,17 @@
       "hearingEndDate": "2026-05-27",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4682&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
+    },
+    {
+      "seq": "4820",
+      "title": "도시관리계획[신대방동 588-7 일대 역세권 활성화사업(도시정비형 재개발) 정비구역 및 정비계획, 신대방동 588-7 일대 역세권 활성화사업 ...",
+      "noticeNumber": "서울특별시 동작구 공고 제2026-859호",
+      "agency": "서울특별시 동작구 도시교통국 도시계획과",
+      "publishedAt": "2026-04-30",
+      "hearingStartDate": "2026-04-30",
+      "hearingEndDate": "2026-06-01",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4820&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 8
     },
     {
       "seq": "4783",
