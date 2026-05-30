@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-05-30T13:44:50.857Z",
-  "count": 50,
+  "crawledAt": "2026-05-30T15:10:46.611Z",
+  "count": 49,
   "items": [
     {
       "seq": "4842",
@@ -440,17 +440,6 @@
       "hearingStartDate": "2026-05-15",
       "hearingEndDate": "2026-06-03",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4756&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4754",
-      "title": "여주 도시계획시설(도로:중로1류31호, 중로3류35호) 사업 실시계획 인가 및 사업인정에 관한 의견청취 공고",
-      "noticeNumber": "경기도 여주시 공고 제2026-922호",
-      "agency": "경기도 여주시 도시건설국 도시계획과",
-      "publishedAt": "2026-05-15",
-      "hearingStartDate": "2026-05-15",
-      "hearingEndDate": "2026-05-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4754&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
