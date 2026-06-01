@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-06-01T12:40:35.040Z",
-  "count": 54,
+  "crawledAt": "2026-06-01T18:41:28.942Z",
+  "count": 51,
   "items": [
     {
       "seq": "4845",
@@ -432,17 +432,6 @@
       "listPage": 4
     },
     {
-      "seq": "4758",
-      "title": "도시관리계획(소래염전생태공원 조성계획) 결정(최초)을 위한 주민 공람 공고",
-      "noticeNumber": "인천광역시 공고 제2026-1162호",
-      "agency": "인천광역시 도시균형국 공원조성과",
-      "publishedAt": "2026-05-18",
-      "hearingStartDate": "2026-05-18",
-      "hearingEndDate": "2026-06-01",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4758&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
-    },
-    {
       "seq": "4757",
       "title": "성남 도시관리계획(태평동 7306번지 일원 공동주택 건립을 위한 지구단위계획구역 및 계획) 결정(변경)(안) 전략환경영향평가 항목등의 결...",
       "noticeNumber": "경기도 성남시 공고 제2026-1388호",
@@ -462,17 +451,6 @@
       "hearingStartDate": "2026-05-18",
       "hearingEndDate": "2026-06-17",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4750&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4747",
-      "title": "도시계획시설(전기공급설비)사업 실시계획(변경) 및 도시관리계획(도시계획시설: 전기공급설비) 결정(경미한 변경) 공고열람",
-      "noticeNumber": "인천광역시 공고 제2026-1170호",
-      "agency": "인천광역시 도시계획국 도시관리과",
-      "publishedAt": "2026-05-18",
-      "hearingStartDate": "2026-05-18",
-      "hearingEndDate": "2026-06-01",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4747&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
@@ -506,17 +484,6 @@
       "hearingStartDate": "2026-05-15",
       "hearingEndDate": "2026-06-15",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4749&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4770",
-      "title": "경산 도시관리계획(용도지역, 용도지구, 압량지구 지구단위계획구역·계획)  결정(변경)“안” 재열람 공고",
-      "noticeNumber": "경상북도 경산시 공고 제2026-1020호",
-      "agency": "경상북도 경산시 건설안전국 도시과",
-      "publishedAt": "2026-05-14",
-      "hearingStartDate": "2026-05-14",
-      "hearingEndDate": "2026-06-01",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4770&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
