@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-06-08T14:11:26.709Z",
-  "count": 77,
+  "crawledAt": "2026-06-08T17:57:03.863Z",
+  "count": 76,
   "items": [
     {
       "seq": "4917",
@@ -836,17 +836,6 @@
       "hearingStartDate": "2026-05-13",
       "hearingEndDate": "2026-06-13",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4724&pageNo=12&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 12
-    },
-    {
-      "seq": "4708",
-      "title": "원효로1가 역세권 도시정비형 재개발사업 정비구역 지정 및 정비계획 결정(안)에 대한 재공람 공고",
-      "noticeNumber": "서울특별시 용산구 공고 제2026-733호",
-      "agency": "서울특별시 용산구 도시관리국 도시계획과",
-      "publishedAt": "2026-05-08",
-      "hearingStartDate": "2026-05-08",
-      "hearingEndDate": "2026-06-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4708&pageNo=12&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 12
     }
   ]
