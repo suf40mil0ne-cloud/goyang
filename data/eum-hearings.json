@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-06-13T14:05:11.133Z",
-  "count": 64,
+  "crawledAt": "2026-06-13T18:09:40.055Z",
+  "count": 59,
   "items": [
     {
       "seq": "4948",
@@ -649,61 +649,6 @@
       "hearingStartDate": "2026-05-14",
       "hearingEndDate": "2026-06-16",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4742&pageNo=13&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 13
-    },
-    {
-      "seq": "4728",
-      "title": "충무로5 도시정비형 재개발사업 정비구역 지정 및 정비계획(안) 재공람 공고",
-      "noticeNumber": "서울특별시 중구 공고 제2026-529호",
-      "agency": "서울특별시 중구 도시관리국 도심정비과",
-      "publishedAt": "2026-05-13",
-      "hearingStartDate": "2026-05-13",
-      "hearingEndDate": "2026-06-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4728&pageNo=13&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 13
-    },
-    {
-      "seq": "4727",
-      "title": "충무로4 도시정비형 재개발사업 정비구역 지정 및 정비계획(안) 재공람 공고",
-      "noticeNumber": "서울특별시 중구 공고 제2026-528호",
-      "agency": "서울특별시 중구 도시관리국 도심정비과",
-      "publishedAt": "2026-05-13",
-      "hearingStartDate": "2026-05-13",
-      "hearingEndDate": "2026-06-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4727&pageNo=13&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 13
-    },
-    {
-      "seq": "4726",
-      "title": "충무로3 도시정비형 재개발사업 정비구역 지정 및 정비계획(안) 재공람 공고",
-      "noticeNumber": "서울특별시 중구 공고 제2026-527호",
-      "agency": "서울특별시 중구 도시관리국 도심정비과",
-      "publishedAt": "2026-05-13",
-      "hearingStartDate": "2026-05-13",
-      "hearingEndDate": "2026-06-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4726&pageNo=13&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 13
-    },
-    {
-      "seq": "4725",
-      "title": "충무로2 도시정비형 재개발사업 정비구역 지정 및 정비계획(안) 재공람 공고",
-      "noticeNumber": "서울특별시 중구 공고 제2026-526호",
-      "agency": "서울특별시 중구 도시관리국 도심정비과",
-      "publishedAt": "2026-05-13",
-      "hearingStartDate": "2026-05-13",
-      "hearingEndDate": "2026-06-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4725&pageNo=13&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 13
-    },
-    {
-      "seq": "4724",
-      "title": "충무로1 도시정비형 재개발사업 정비구역 지정 및 정비계획(안) 재공람공고",
-      "noticeNumber": "서울특별시 중구 공고 제2026-525호",
-      "agency": "서울특별시 중구 도시관리국 도심정비과",
-      "publishedAt": "2026-05-13",
-      "hearingStartDate": "2026-05-13",
-      "hearingEndDate": "2026-06-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4724&pageNo=13&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 13
     }
   ]
