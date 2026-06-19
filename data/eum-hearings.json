@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-06-19T12:09:08.197Z",
-  "count": 53,
+  "crawledAt": "2026-06-19T22:05:59.520Z",
+  "count": 45,
   "items": [
     {
       "seq": "5004",
@@ -476,17 +476,6 @@
       "listPage": 5
     },
     {
-      "seq": "4915",
-      "title": "제천 도시관리계획(강저지구 지구단위계획) 결정(변경)(안) 열람공고",
-      "noticeNumber": "충청북도 제천시 공고 제2026-1172호",
-      "agency": "충청북도 제천시 경제산업국 도시디자인과",
-      "publishedAt": "2026-06-05",
-      "hearingStartDate": "2026-06-05",
-      "hearingEndDate": "2026-06-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4915&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
       "seq": "4899",
       "title": "미아동 130번지 일대 주택정비형 재개발 정비계획 결정 및 정비구역 지정(안) 재공람공고",
       "noticeNumber": "서울특별시 강북구 공고 제2026-911호",
@@ -495,17 +484,6 @@
       "hearingStartDate": "2026-06-05",
       "hearingEndDate": "2026-07-06",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4899&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4897",
-      "title": "여주 도시계획시설(체육시설:해슬리나인브릿지CC) 결정(변경) 및 실시계획(변경)인가에 따른 공람·공고",
-      "noticeNumber": "경기도 여주시 공고 제2026-1038호",
-      "agency": "경기도 여주시 도시건설국 도시계획과",
-      "publishedAt": "2026-06-05",
-      "hearingStartDate": "2026-06-05",
-      "hearingEndDate": "2026-06-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4897&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
@@ -518,72 +496,6 @@
       "hearingEndDate": "2026-06-22",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4886&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
-    },
-    {
-      "seq": "4885",
-      "title": "충주 도시관리계획(지구단위계획구역 및 지구단위계획 목행강변지구) 결정(안) 주민 열람 재공고",
-      "noticeNumber": "충청북도 충주시 공고 제2026-1661호",
-      "agency": "충청북도 충주시 건설국 도시계획과",
-      "publishedAt": "2026-06-05",
-      "hearingStartDate": "2026-06-05",
-      "hearingEndDate": "2026-06-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4885&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4884",
-      "title": "김제 도시계획시설사업(사회복지시설) 사업시행자(변경)지정 및 실시계획(변경)인가 전 열람공고",
-      "noticeNumber": "전북특별자치도 김제시 공고 제2026-703호",
-      "agency": "전북특별자치도 김제시 도시건설국 도시과",
-      "publishedAt": "2026-06-05",
-      "hearingStartDate": "2026-06-05",
-      "hearingEndDate": "2026-06-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4884&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4883",
-      "title": "김제 도시계획시설사업(대율유원지내 소로2-1호선) 실시계획(변경)인가 전 열람공고",
-      "noticeNumber": "전북특별자치도 김제시 공고 제2026-705호",
-      "agency": "전북특별자치도 김제시 도시건설국 도시과",
-      "publishedAt": "2026-06-05",
-      "hearingStartDate": "2026-06-05",
-      "hearingEndDate": "2026-06-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4883&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4864",
-      "title": "단양 군관리계획(지구단위계획:상리지구) 결정(변경)을 위한 주민열람·공고",
-      "noticeNumber": "충청북도 단양군 공고 제2026-838호",
-      "agency": "충청북도 단양군",
-      "publishedAt": "2026-06-05",
-      "hearingStartDate": "2026-06-05",
-      "hearingEndDate": "2026-06-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4864&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4863",
-      "title": "단양 군관리계획(군계획시설:주차장) 결정(변경)(안)을 위한 주민열람·공고",
-      "noticeNumber": "충청북도 단양군 공고 제2026-837호",
-      "agency": "충청북도 단양군",
-      "publishedAt": "2026-06-05",
-      "hearingStartDate": "2026-06-05",
-      "hearingEndDate": "2026-06-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4863&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4850",
-      "title": "남원 도시관리계획(용도지역, 도시계획시설 유원지) 결정(변경)(안) 주민의견청취 열람공고",
-      "noticeNumber": "전북특별자치도 남원시 공고 제2026-1326호",
-      "agency": "전북특별자치도 남원시 안전건설국 도시과",
-      "publishedAt": "2026-06-05",
-      "hearingStartDate": "2026-06-05",
-      "hearingEndDate": "2026-06-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4850&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
     }
   ]
 }
