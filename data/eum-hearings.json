@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-06-20T11:58:17.240Z",
-  "count": 45,
+  "crawledAt": "2026-06-21T00:10:29.251Z",
+  "count": 44,
   "items": [
     {
       "seq": "5004",
@@ -462,17 +462,6 @@
       "hearingStartDate": "2026-06-08",
       "hearingEndDate": "2026-06-22",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4882&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4898",
-      "title": "도시관리계획(도로, 주차장)(지구단위계획) (푸르내 자연휴양림) 변경결정 입안에 따른 공람공고",
-      "noticeNumber": "대전광역시 중구 공고 제2026-859호",
-      "agency": "대전광역시 중구 도시국 도시과",
-      "publishedAt": "2026-06-05",
-      "hearingStartDate": "2026-06-06",
-      "hearingEndDate": "2026-06-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4898&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
