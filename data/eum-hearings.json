@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-06-24T12:20:33.537Z",
-  "count": 59,
+  "crawledAt": "2026-06-24T17:56:41.266Z",
+  "count": 57,
   "items": [
     {
       "seq": "5028",
@@ -616,28 +616,6 @@
       "hearingStartDate": "2026-06-10",
       "hearingEndDate": "2026-06-30",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4931&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4927",
-      "title": "계룡 도시관리계획(도시계획시설:도로)결정(변경)(안) 공람·공고",
-      "noticeNumber": "충청남도 계룡시 공고 제2026-509호",
-      "agency": "충청남도 계룡시",
-      "publishedAt": "2026-06-10",
-      "hearingStartDate": "2026-06-10",
-      "hearingEndDate": "2026-06-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4927&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4920",
-      "title": "의정부 도시계획시설[공간시설:공원(직동근린공원)]사업(호원 반려견 놀이터 조성사업) 실시계획인가 전 열람공고",
-      "noticeNumber": "경기도 의정부시 공고 제2026-1162호",
-      "agency": "경기도 의정부시 도시주택국 도시정책과",
-      "publishedAt": "2026-06-10",
-      "hearingStartDate": "2026-06-10",
-      "hearingEndDate": "2026-06-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4920&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
