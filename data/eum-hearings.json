@@ -1,10 +1,10 @@
 {
-  "crawledAt": "2026-06-28T15:21:00.535Z",
-  "count": 51,
+  "crawledAt": "2026-06-29T17:39:30.575Z",
+  "count": 46,
   "items": [
     {
       "seq": "5023",
-      "title": "도시관리계획[부평미군부대 지구단위계획] 결정(변경)(안) 공고·열람",
+      "title": "도시관리계획[북항배후부지 지구단위계획] 결정(변경)(안) 공고·열람",
       "noticeNumber": "인천광역시 공고 제2026-1434호",
       "agency": "인천광역시 도시계획국 도시관리과",
       "publishedAt": "2026-06-29",
@@ -451,61 +451,6 @@
       "hearingStartDate": "2026-06-15",
       "hearingEndDate": "2026-06-30",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4996&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4982",
-      "title": "광산구 GB 해제된 집단취락 도시관리계획(지구단위계획) 결정(변경)(안)에 따른 주민열람공고",
-      "noticeNumber": "광주광역시 광산구 공고 제2026-1263호",
-      "agency": "광주광역시 광산구 도시건축국 도시계획과",
-      "publishedAt": "2026-06-15",
-      "hearingStartDate": "2026-06-15",
-      "hearingEndDate": "2026-06-29",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4982&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4970",
-      "title": "도시계획시설(도로 : 소로2-148호선)사업  실시계획(변경)인가 및 사업인정에 관한 주민 등의  의견청취를 위한 공람 .공고",
-      "noticeNumber": "충청남도 공주시 공고 제2026-1765호",
-      "agency": "충청남도 공주시",
-      "publishedAt": "2026-06-15",
-      "hearingStartDate": "2026-06-15",
-      "hearingEndDate": "2026-06-29",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4970&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4969",
-      "title": "부천 도시관리계획(송내역세권 지구단위계획) 결정(변경) 공람공고",
-      "noticeNumber": "경기도 부천시 공고 제2026-1535호",
-      "agency": "경기도 부천시 도시국 도시계획과",
-      "publishedAt": "2026-06-15",
-      "hearingStartDate": "2026-06-15",
-      "hearingEndDate": "2026-06-29",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4969&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4968",
-      "title": "양성 방신 도시계획시설(도로: 소로1-102호선) 실시계획(변경) 작성 전 열람공고",
-      "noticeNumber": "경기도 안성시 공고 제2026-1666호",
-      "agency": "경기도 안성시 경제도시국 도시정책과",
-      "publishedAt": "2026-06-15",
-      "hearingStartDate": "2026-06-15",
-      "hearingEndDate": "2026-06-29",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4968&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4966",
-      "title": "횡성 군관리계획(군계획시설 폐지, 용도지역, 지구단위계획:동원썬밸리CC 지구) 결정(변경)안 주민 재공람&#8228;공고",
-      "noticeNumber": "강원특별자치도 횡성군 공고 제2026-1054호",
-      "agency": "강원특별자치도 횡성군 도시교통과",
-      "publishedAt": "2026-06-15",
-      "hearingStartDate": "2026-06-15",
-      "hearingEndDate": "2026-06-29",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4966&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
