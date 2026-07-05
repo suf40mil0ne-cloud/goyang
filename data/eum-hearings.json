@@ -1,7 +1,40 @@
 {
-  "crawledAt": "2026-07-05T11:05:26.495Z",
-  "count": 50,
+  "crawledAt": "2026-07-05T17:14:31.460Z",
+  "count": 51,
   "items": [
+    {
+      "seq": "5103",
+      "title": "도시계획시설(도로)(중로2-2)사업 사업시행자 지정 및 실시계획(최초)인가 및 사업인정에 관한 주민 등의 의견청취 재열람공고",
+      "noticeNumber": "대전광역시 중구 공고 제2026-1022호",
+      "agency": "대전광역시 중구 도시국 도시과",
+      "publishedAt": "2026-07-06",
+      "hearingStartDate": "2026-07-06",
+      "hearingEndDate": "2026-07-20",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5103&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
+    {
+      "seq": "5096",
+      "title": "광주역세권(2단계) 도시개발구역 지정 및 개발계획(안) 및 도시관리계획(용도지역) 결정(변경)(안) 및 사업인정 의제 사업에 관한 주민 등...",
+      "noticeNumber": "경기도 광주시 공고 제2026-1858호",
+      "agency": "경기도 광주시 도시주택국 도시사업과",
+      "publishedAt": "2026-07-06",
+      "hearingStartDate": "2026-07-06",
+      "hearingEndDate": "2026-07-23",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5096&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
+    {
+      "seq": "5054",
+      "title": "도시관리계획(도시계획시설: 공원, 녹지) 결정(안) 재공고·열람",
+      "noticeNumber": "인천광역시 공고 제2026-1465호",
+      "agency": "인천광역시 도시계획국 도시관리과",
+      "publishedAt": "2026-07-06",
+      "hearingStartDate": "2026-07-06",
+      "hearingEndDate": "2026-07-21",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5054&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "5109",
       "title": "충주 도시관리계획(지구단위계획: 지식기반형 기업도시) 변경결정(안) 주민 열람공고",
@@ -87,8 +120,8 @@
       "publishedAt": "2026-07-02",
       "hearingStartDate": "2026-07-02",
       "hearingEndDate": "2026-07-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5084&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5084&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5083",
@@ -98,8 +131,8 @@
       "publishedAt": "2026-07-02",
       "hearingStartDate": "2026-07-02",
       "hearingEndDate": "2026-07-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5083&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5083&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5082",
@@ -109,8 +142,8 @@
       "publishedAt": "2026-07-02",
       "hearingStartDate": "2026-07-02",
       "hearingEndDate": "2026-08-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5082&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5082&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5074",
@@ -197,8 +230,8 @@
       "publishedAt": "2026-06-30",
       "hearingStartDate": "2026-06-30",
       "hearingEndDate": "2026-07-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5053&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5053&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5023",
@@ -208,8 +241,8 @@
       "publishedAt": "2026-06-29",
       "hearingStartDate": "2026-06-29",
       "hearingEndDate": "2026-07-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5023&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5023&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5042",
@@ -219,8 +252,8 @@
       "publishedAt": "2026-06-26",
       "hearingStartDate": "2026-06-26",
       "hearingEndDate": "2026-07-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5042&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5042&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5035",
@@ -285,8 +318,8 @@
       "publishedAt": "2026-06-25",
       "hearingStartDate": "2026-06-25",
       "hearingEndDate": "2026-07-09",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5039&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5039&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5038",
@@ -296,8 +329,8 @@
       "publishedAt": "2026-06-25",
       "hearingStartDate": "2026-06-25",
       "hearingEndDate": "2026-07-31",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5038&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5038&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5037",
@@ -307,8 +340,8 @@
       "publishedAt": "2026-06-25",
       "hearingStartDate": "2026-06-25",
       "hearingEndDate": "2026-07-09",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5037&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5037&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5110",
@@ -395,8 +428,8 @@
       "publishedAt": "2026-06-24",
       "hearingStartDate": "2026-06-24",
       "hearingEndDate": "2026-07-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4993&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4993&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "5022",
@@ -406,8 +439,8 @@
       "publishedAt": "2026-06-23",
       "hearingStartDate": "2026-06-23",
       "hearingEndDate": "2026-07-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5022&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5022&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "5021",
@@ -417,8 +450,8 @@
       "publishedAt": "2026-06-23",
       "hearingStartDate": "2026-06-23",
       "hearingEndDate": "2026-07-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5021&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5021&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "4998",
@@ -429,17 +462,6 @@
       "hearingStartDate": "2026-06-23",
       "hearingEndDate": "2026-07-07",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4998&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5030",
-      "title": "대전 도시관리계획(대덕테크노밸리 지구단위계획) 결정(변경)(안) 주민열람 공고",
-      "noticeNumber": "대전광역시 공고 제2026-1218호",
-      "agency": "대전광역시 유성구",
-      "publishedAt": "2026-06-22",
-      "hearingStartDate": "2026-06-22",
-      "hearingEndDate": "2026-07-05",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5030&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
@@ -505,8 +527,8 @@
       "publishedAt": "2026-06-22",
       "hearingStartDate": "2026-06-22",
       "hearingEndDate": "2026-07-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5008&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5008&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "5007",
@@ -516,8 +538,8 @@
       "publishedAt": "2026-06-22",
       "hearingStartDate": "2026-06-22",
       "hearingEndDate": "2026-07-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5007&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5007&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "5000",
@@ -527,8 +549,8 @@
       "publishedAt": "2026-06-22",
       "hearingStartDate": "2026-06-22",
       "hearingEndDate": "2026-07-12",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5000&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5000&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "4983",
@@ -539,17 +561,6 @@
       "hearingStartDate": "2026-06-22",
       "hearingEndDate": "2026-07-10",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4983&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "4978",
-      "title": "도시관리계획(소공원 조성계획) 결정(안) 열람공고",
-      "noticeNumber": "부산광역시 남구 공고 제2026-856호",
-      "agency": "부산광역시 남구 주민생활국",
-      "publishedAt": "2026-06-22",
-      "hearingStartDate": "2026-06-22",
-      "hearingEndDate": "2026-07-05",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4978&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     }
   ]
