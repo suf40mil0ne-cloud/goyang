@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-06T08:23:12.424Z",
-  "count": 56,
+  "crawledAt": "2026-07-06T22:15:52.185Z",
+  "count": 52,
   "items": [
     {
       "seq": "5115",
@@ -528,50 +528,6 @@
       "hearingStartDate": "2026-06-22",
       "hearingEndDate": "2026-07-09",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5019&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5013",
-      "title": "김해도시관리계획(시설 : 학교, 도로) 결정(변경)(안) 열람 공고",
-      "noticeNumber": "경상남도 김해시 공고 제2026-3012호",
-      "agency": "경상남도 김해시 도시관리국 도시계획과",
-      "publishedAt": "2026-06-22",
-      "hearingStartDate": "2026-06-22",
-      "hearingEndDate": "2026-07-06",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5013&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5011",
-      "title": "부천 도시계획시설(도로: 광로3-1) 결정(변경) 공람공고",
-      "noticeNumber": "경기도 부천시 공고 제2026-1656호",
-      "agency": "경기도 부천시",
-      "publishedAt": "2026-06-22",
-      "hearingStartDate": "2026-06-22",
-      "hearingEndDate": "2026-07-06",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5011&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5010",
-      "title": "양평 군계획시설(하수도) 실시계획(변경)인가 열람 공고[단월 공공하수처리시설 증설사업]",
-      "noticeNumber": "경기도 양평군 공고 제2026-1138호",
-      "agency": "경기도 양평군 도시건설국 도시과",
-      "publishedAt": "2026-06-22",
-      "hearingStartDate": "2026-06-22",
-      "hearingEndDate": "2026-07-06",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5010&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5009",
-      "title": "예천 군관리계획(지구단위계획:낙상) 결정(변경)(안) 공람공고",
-      "noticeNumber": "경상북도 예천군 공고 제2026-929호",
-      "agency": "경상북도 예천군 도시과",
-      "publishedAt": "2026-06-22",
-      "hearingStartDate": "2026-06-22",
-      "hearingEndDate": "2026-07-06",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5009&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
