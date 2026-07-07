@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-07T08:24:31.165Z",
-  "count": 52,
+  "crawledAt": "2026-07-07T17:18:26.517Z",
+  "count": 49,
   "items": [
     {
       "seq": "5115",
@@ -484,39 +484,6 @@
       "hearingStartDate": "2026-06-24",
       "hearingEndDate": "2026-07-08",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4993&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5022",
-      "title": "전주 도시관리계획(00부대이전부지 지구단위계획) 변경 결정(안) 주민 의견청취 공고",
-      "noticeNumber": "전북특별자치도 전주시 공고 제2026-1451호",
-      "agency": "전북특별자치도 전주시 건설안전국 도시계획과",
-      "publishedAt": "2026-06-23",
-      "hearingStartDate": "2026-06-23",
-      "hearingEndDate": "2026-07-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5022&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5021",
-      "title": "전주 도시관리계획(만성지구 지구단위계획) 변경 결정(안) 주민의견청취 공고",
-      "noticeNumber": "전북특별자치도 전주시 공고 제2026-1450호",
-      "agency": "전북특별자치도 전주시 건설안전국 도시계획과",
-      "publishedAt": "2026-06-23",
-      "hearingStartDate": "2026-06-23",
-      "hearingEndDate": "2026-07-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5021&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4998",
-      "title": "[공고] 용인도시관리계획(용도지역, 대로 3-12호, 공공청사12호, 공공청사A호) 결정(변경) 및 전략환경영향평가(초안)",
-      "noticeNumber": "경기도 용인시 공고 제2026-706호",
-      "agency": "경기도 용인시 도시정책실 도시정책과",
-      "publishedAt": "2026-06-22",
-      "hearingStartDate": "2026-06-23",
-      "hearingEndDate": "2026-07-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4998&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
