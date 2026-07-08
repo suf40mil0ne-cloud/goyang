@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-07-08T14:19:19.053Z",
-  "count": 50,
+  "crawledAt": "2026-07-08T20:22:22.241Z",
+  "count": 46,
   "items": [
+    {
+      "seq": "5099",
+      "title": "도시관리계획(부암동 등 7개 지구단위계획구역) 결정(변경)(안)",
+      "noticeNumber": "서울특별시 공고 제2026-2014호",
+      "agency": "서울특별시 도시공간본부 도시관리과",
+      "publishedAt": "2026-07-09",
+      "hearingStartDate": "2026-07-09",
+      "hearingEndDate": "2026-07-23",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5099&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "5122",
       "title": "양평 군계획시설(하천) 실시계획인가를 위한 열람 공고",
@@ -109,8 +120,8 @@
       "publishedAt": "2026-07-03",
       "hearingStartDate": "2026-07-03",
       "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5109&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5109&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5108",
@@ -219,8 +230,8 @@
       "publishedAt": "2026-07-02",
       "hearingStartDate": "2026-07-02",
       "hearingEndDate": "2026-07-15",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5074&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5074&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5062",
@@ -329,8 +340,8 @@
       "publishedAt": "2026-06-26",
       "hearingStartDate": "2026-06-26",
       "hearingEndDate": "2026-07-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5035&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5035&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5102",
@@ -410,39 +421,6 @@
       "listPage": 4
     },
     {
-      "seq": "5110",
-      "title": "강릉 도시관리계획(경포2지구 지구단위계획) 결정(변경)(안) 열람·공고",
-      "noticeNumber": "강원도 강릉시 공고 제2026-1115호",
-      "agency": "강원특별자치도 강릉시 도시교통국 도시과",
-      "publishedAt": "2026-06-24",
-      "hearingStartDate": "2026-06-24",
-      "hearingEndDate": "2026-07-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5110&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
-    },
-    {
-      "seq": "5028",
-      "title": "장성 군관리계획(상무평화공원지구 지구단위계획) 결정(변경)(안) 주민재열람 공고",
-      "noticeNumber": "전라남도 장성군 공고 제2026-728호",
-      "agency": "전라남도 장성군 지역개발과 도시계획팀",
-      "publishedAt": "2026-06-24",
-      "hearingStartDate": "2026-06-24",
-      "hearingEndDate": "2026-07-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5028&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5026",
-      "title": "도로사업계획에 관한 주민 등의 의견 청취 공고",
-      "noticeNumber": "경기도 하남시 공고 제2026-1226호",
-      "agency": "경기도 하남시 도시주택국 도시정책과",
-      "publishedAt": "2026-06-24",
-      "hearingStartDate": "2026-06-24",
-      "hearingEndDate": "2026-07-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5026&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
       "seq": "5025",
       "title": "도시관리계획(시설:주차장) 결정(변경)(안) 열람공고",
       "noticeNumber": "부산광역시 해운대구 공고 제2026-836호",
@@ -465,17 +443,6 @@
       "listPage": 5
     },
     {
-      "seq": "5020",
-      "title": "대전광역시 문화문화공원 개발행위 특례사업 도시관리계획(시설: 도로)(지구단위계획) 결정(변경) 재열람 공고",
-      "noticeNumber": "대전광역시 중구 공고 제2026-952호",
-      "agency": "대전광역시 중구 도시국 도시과",
-      "publishedAt": "2026-06-24",
-      "hearingStartDate": "2026-06-24",
-      "hearingEndDate": "2026-07-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5020&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
       "seq": "4995",
       "title": "양주 도시관리계획(도시계획시설:도로) 결정(변경)(안)을 위한 주민공람 공고(소로3-동160)",
       "noticeNumber": "경기도 양주시 공고 제2026-210호",
@@ -484,17 +451,6 @@
       "hearingStartDate": "2026-06-24",
       "hearingEndDate": "2026-07-09",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4995&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "4993",
-      "title": "의정부 도시관리계획(도시계획시설: 하수도) 결정(변경)(안) 주민 열람 공고",
-      "noticeNumber": "경기도 의정부시 공고 제2026-1262호",
-      "agency": "경기도 의정부시 도시주택국 도시정책과",
-      "publishedAt": "2026-06-24",
-      "hearingStartDate": "2026-06-24",
-      "hearingEndDate": "2026-07-08",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4993&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
@@ -549,8 +505,8 @@
       "publishedAt": "2026-06-22",
       "hearingStartDate": "2026-06-22",
       "hearingEndDate": "2026-07-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4983&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=4983&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 7
     }
   ]
 }
