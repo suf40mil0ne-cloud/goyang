@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-13T13:26:15.262Z",
-  "count": 51,
+  "crawledAt": "2026-07-13T16:36:42.735Z",
+  "count": 50,
   "items": [
     {
       "seq": "5151",
@@ -517,17 +517,6 @@
       "hearingStartDate": "2026-06-30",
       "hearingEndDate": "2026-07-14",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5053&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5023",
-      "title": "도시관리계획[북항배후부지 지구단위계획] 결정(변경)(안) 공고·열람",
-      "noticeNumber": "인천광역시 공고 제2026-1434호",
-      "agency": "인천광역시 도시계획국 도시관리과",
-      "publishedAt": "2026-06-29",
-      "hearingStartDate": "2026-06-29",
-      "hearingEndDate": "2026-07-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5023&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
