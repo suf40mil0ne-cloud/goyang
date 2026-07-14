@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-13T23:04:28.378Z",
-  "count": 50,
+  "crawledAt": "2026-07-14T02:41:58.538Z",
+  "count": 51,
   "items": [
     {
       "seq": "5151",
@@ -311,6 +311,17 @@
       "listPage": 3
     },
     {
+      "seq": "5160",
+      "title": "칠곡 군관리계획(신리지구 지구단위계획) 결정(변경)(안) 열람 공고",
+      "noticeNumber": "경상북도 칠곡군 공고 제2026-112호",
+      "agency": "경상북도 칠곡군 관광경제국 지역활력과",
+      "publishedAt": "2026-07-03",
+      "hearingStartDate": "2026-07-03",
+      "hearingEndDate": "2026-07-17",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5160&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
+    },
+    {
       "seq": "5117",
       "title": "상계보람아파트 재건축사업 정비계획 결정 및 정비구역 지정(안) 재공람 공고",
       "noticeNumber": "서울특별시 노원구 공고 제2026-1158호",
@@ -329,8 +340,8 @@
       "publishedAt": "2026-07-03",
       "hearingStartDate": "2026-07-03",
       "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5109&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5109&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5108",
@@ -439,8 +450,8 @@
       "publishedAt": "2026-07-02",
       "hearingStartDate": "2026-07-02",
       "hearingEndDate": "2026-07-15",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5074&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5074&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "5062",
