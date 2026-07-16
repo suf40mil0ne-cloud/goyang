@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-07-16T12:21:07.229Z",
-  "count": 66,
+  "crawledAt": "2026-07-16T15:03:33.345Z",
+  "count": 62,
   "items": [
+    {
+      "seq": "5191",
+      "title": "남영동 업무지구 제2구역 도시정비형 재개발사업 정비계획 결정(변경)(안)에 대한 재공람공고",
+      "noticeNumber": "서울특별시 용산구 공고 제2026-1030호",
+      "agency": "서울특별시 용산구 도시관리국 도시계획과",
+      "publishedAt": "2026-07-17",
+      "hearingStartDate": "2026-07-17",
+      "hearingEndDate": "2026-08-18",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5191&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "5190",
       "title": "상계주공6단지아파트 재건축 정비계획 수립 및 정비구역 지정(안), 상계(1·2단계) 택지개발지구 지구단위계획구역 내 특별계획구역12 세부...",
@@ -109,8 +120,8 @@
       "publishedAt": "2026-07-16",
       "hearingStartDate": "2026-07-16",
       "hearingEndDate": "2026-07-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5177&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5177&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5175",
@@ -219,8 +230,8 @@
       "publishedAt": "2026-07-14",
       "hearingStartDate": "2026-07-14",
       "hearingEndDate": "2026-07-28",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5173&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5173&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5151",
@@ -329,8 +340,8 @@
       "publishedAt": "2026-07-10",
       "hearingStartDate": "2026-07-10",
       "hearingEndDate": "2026-07-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5132&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5132&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5128",
@@ -439,8 +450,8 @@
       "publishedAt": "2026-07-09",
       "hearingStartDate": "2026-07-09",
       "hearingEndDate": "2026-07-23",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5099&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5099&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "5122",
@@ -549,8 +560,8 @@
       "publishedAt": "2026-07-06",
       "hearingStartDate": "2026-07-06",
       "hearingEndDate": "2026-07-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5054&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5054&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "5160",
@@ -641,39 +652,6 @@
       "listPage": 6
     },
     {
-      "seq": "5086",
-      "title": "성주 군관리계획(지구단위계획구역 및 계획) 결정(변경)(안) 재열람공고",
-      "noticeNumber": "경상북도 성주군 공고 제2026-798호",
-      "agency": "경상북도 성주군 관광진흥과",
-      "publishedAt": "2026-07-02",
-      "hearingStartDate": "2026-07-02",
-      "hearingEndDate": "2026-07-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5086&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5084",
-      "title": "도시관리계획(도시계획시설:학교) 결정(변경) 및 세부시설조성계획 결정(변경)(안) 재열람공고 (국민대학교)",
-      "noticeNumber": "서울특별시 공고 제2026-1115호",
-      "agency": "서울특별시 성북구 도시관리국 도시계획과",
-      "publishedAt": "2026-07-02",
-      "hearingStartDate": "2026-07-02",
-      "hearingEndDate": "2026-07-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5084&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5083",
-      "title": "횡성 군관리계획(지구단위계획: 횡성 미래 모빌리티 거점 특화단지) 결정(변경)(안) 주민공람·공고",
-      "noticeNumber": "강원특별자치도 횡성군 공고 제2026-1128호",
-      "agency": "강원특별자치도 횡성군 도시교통과",
-      "publishedAt": "2026-07-02",
-      "hearingStartDate": "2026-07-02",
-      "hearingEndDate": "2026-07-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5083&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "5082",
       "title": "광흥창역세권(현석동 1-31일원) 장기전세주택  도시정비형 재개발사업 정비구역 지정 및 정비계획  결정(안)에 대한 공람공고",
       "noticeNumber": "서울특별시 마포구 공고 제2026-1046호",
@@ -685,17 +663,6 @@
       "listPage": 7
     },
     {
-      "seq": "5062",
-      "title": "도시관리계획(서초로 지구단위계획 변경 및  특별계획구역⑤ 세부개발계획 수립) 결정(변경)(안) 재열람공고",
-      "noticeNumber": "서울특별시 공고 제2026-1951호",
-      "agency": "서울특별시 미래공간기획관 공공개발담당관",
-      "publishedAt": "2026-07-02",
-      "hearingStartDate": "2026-07-02",
-      "hearingEndDate": "2026-07-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5062&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "5102",
       "title": "장위재정비촉진지구 변경 및 장위13-1구역 재정비촉진계획 결정(변경)(안) 공람공고",
       "noticeNumber": "서울특별시 성북구 공고 제2026-1901호",
@@ -704,17 +671,6 @@
       "hearingStartDate": "2026-06-25",
       "hearingEndDate": "2026-07-27",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5102&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5041",
-      "title": "서산 부장리 고분군 기반시설 정비사업(지역개발사업) 지역개발사업계획(변경)(안), 지역개발사업구역 지정(안), 도시관리계획 결정(변경)(...",
-      "noticeNumber": "충청남도 서산시 공고 제2026-1780호",
-      "agency": "충청남도 서산시 복지문화국 문화예술과",
-      "publishedAt": "2026-06-25",
-      "hearingStartDate": "2026-06-25",
-      "hearingEndDate": "2026-07-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5041&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
