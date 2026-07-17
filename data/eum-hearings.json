@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-17T13:43:26.645Z",
-  "count": 62,
+  "crawledAt": "2026-07-17T22:01:01.383Z",
+  "count": 59,
   "items": [
     {
       "seq": "5191",
@@ -564,17 +564,6 @@
       "listPage": 6
     },
     {
-      "seq": "5160",
-      "title": "칠곡 군관리계획(신리지구 지구단위계획) 결정(변경)(안) 열람 공고",
-      "noticeNumber": "경상북도 칠곡군 공고 제2026-112호",
-      "agency": "경상북도 칠곡군 관광경제국 지역활력과",
-      "publishedAt": "2026-07-03",
-      "hearingStartDate": "2026-07-03",
-      "hearingEndDate": "2026-07-17",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5160&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5117",
       "title": "상계보람아파트 재건축사업 정비계획 결정 및 정비구역 지정(안) 재공람 공고",
       "noticeNumber": "서울특별시 노원구 공고 제2026-1158호",
@@ -627,28 +616,6 @@
       "hearingStartDate": "2026-07-03",
       "hearingEndDate": "2026-07-24",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5097&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5088",
-      "title": "도시계획시설(녹지) 결정(변경)을 위한 열람 정정 공고",
-      "noticeNumber": "서울특별시 서초구 공고 제2026-1324호",
-      "agency": "서울특별시 서초구 도시관리국 공원녹지과",
-      "publishedAt": "2026-07-03",
-      "hearingStartDate": "2026-07-03",
-      "hearingEndDate": "2026-07-17",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5088&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5049",
-      "title": "영양 군관리계획(도로) 결정(변경)(안) 공람공고",
-      "noticeNumber": "경상북도 영양군 공고 제2026-592호",
-      "agency": "경상북도 영양군 지역개발과",
-      "publishedAt": "2026-07-03",
-      "hearingStartDate": "2026-07-03",
-      "hearingEndDate": "2026-07-17",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5049&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
