@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-20T08:07:09.375Z",
-  "count": 62,
+  "crawledAt": "2026-07-20T18:53:35.585Z",
+  "count": 53,
   "items": [
     {
       "seq": "5200",
@@ -531,72 +531,6 @@
       "listPage": 5
     },
     {
-      "seq": "5158",
-      "title": "거제 도시관리계획(시설:도로) 변경 결정(안) 공람·공고",
-      "noticeNumber": "경상남도 거제시 공고 제2026-1615호",
-      "agency": "경상남도 거제시 도시정책국 도시계획과",
-      "publishedAt": "2026-07-06",
-      "hearingStartDate": "2026-07-06",
-      "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5158&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5115",
-      "title": "구례 군관리계획(문수배수지) 결정(변경)(안) 주민의견 청취 열람 공고",
-      "noticeNumber": "전남광주통합특별시 구례군 공고 제2026-591호",
-      "agency": "전남광주통합특별시 구례군",
-      "publishedAt": "2026-07-06",
-      "hearingStartDate": "2026-07-06",
-      "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5115&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5114",
-      "title": "구례 군관리계획(섬진강주차장) 결정(변경)(안) 주민의견 청취 열람 공고",
-      "noticeNumber": "전남광주통합특별시 구례군 공고 제2026-589호",
-      "agency": "전남광주통합특별시 구례군",
-      "publishedAt": "2026-07-06",
-      "hearingStartDate": "2026-07-06",
-      "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5114&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5112",
-      "title": "양산도시관리계획(교통시설:도로) 결정(변경) 공람ㆍ공고",
-      "noticeNumber": "경상남도 양산시 공고 제2026-1940호",
-      "agency": "경상남도 양산시",
-      "publishedAt": "2026-07-06",
-      "hearingStartDate": "2026-07-06",
-      "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5112&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5111",
-      "title": "양산도시관리계획(환경기초시설:폐기물처리 및 재활용시설) 결정(신설) 공람ㆍ공고",
-      "noticeNumber": "경상남도 양산시 공고 제2026-1939호",
-      "agency": "경상남도 양산시",
-      "publishedAt": "2026-07-06",
-      "hearingStartDate": "2026-07-06",
-      "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5111&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5103",
-      "title": "도시계획시설(도로)(중로2-2)사업 사업시행자 지정 및 실시계획(최초)인가 및 사업인정에 관한 주민 등의 의견청취 재열람공고",
-      "noticeNumber": "대전광역시 중구 공고 제2026-1022호",
-      "agency": "대전광역시 중구 도시국 도시과",
-      "publishedAt": "2026-07-06",
-      "hearingStartDate": "2026-07-06",
-      "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5103&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5096",
       "title": "광주역세권(2단계) 도시개발구역 지정 및 개발계획(안) 및 도시관리계획(용도지역) 결정(변경)(안) 및 사업인정 의제 사업에 관한 주민 등...",
       "noticeNumber": "경기도 광주시 공고 제2026-1858호",
@@ -628,39 +562,6 @@
       "hearingEndDate": "2026-08-03",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5117&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
-    },
-    {
-      "seq": "5109",
-      "title": "충주 도시관리계획(지구단위계획: 지식기반형 기업도시) 변경결정(안) 주민 열람공고",
-      "noticeNumber": "충청북도 충주시 공고 제2026-1925호",
-      "agency": "충청북도 충주시 건설국 도시계획과",
-      "publishedAt": "2026-07-03",
-      "hearingStartDate": "2026-07-03",
-      "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5109&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5108",
-      "title": "충주 도시관리계획(지구단위계획구역 및 지구단위계획: 봉방지구) 결정(안) 주민 열람 재공고",
-      "noticeNumber": "충청북도 충주시 공고 제2026-1917호",
-      "agency": "충청북도 충주시 건설국 도시계획과",
-      "publishedAt": "2026-07-03",
-      "hearingStartDate": "2026-07-03",
-      "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5108&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5107",
-      "title": "당진 도시관리계획(문봉4지구 산업&#8228;유통형 지구단위계획) 결정(변경)(안) 열람·공고",
-      "noticeNumber": "충청남도 당진시 공고 제2026-1882호",
-      "agency": "충청남도 당진시 건설도시국 스마트도시과",
-      "publishedAt": "2026-07-03",
-      "hearingStartDate": "2026-07-03",
-      "hearingEndDate": "2026-07-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5107&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
     },
     {
       "seq": "5097",
