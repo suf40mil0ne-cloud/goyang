@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-21T13:57:29.742Z",
-  "count": 59,
+  "crawledAt": "2026-07-21T15:49:20.146Z",
+  "count": 57,
   "items": [
     {
       "seq": "5209",
@@ -564,17 +564,6 @@
       "listPage": 6
     },
     {
-      "seq": "5135",
-      "title": "도시관리계획(도시계획시설:공공공지) 결정(변경)(안) 열람공고",
-      "noticeNumber": "서울특별시 성북구 공고 제2026-1168호",
-      "agency": "서울특별시 성북구 도시관리국 도시계획과",
-      "publishedAt": "2026-07-07",
-      "hearingStartDate": "2026-07-07",
-      "hearingEndDate": "2026-07-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5135&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5096",
       "title": "광주역세권(2단계) 도시개발구역 지정 및 개발계획(안) 및 도시관리계획(용도지역) 결정(변경)(안) 및 사업인정 의제 사업에 관한 주민 등...",
       "noticeNumber": "경기도 광주시 공고 제2026-1858호",
@@ -583,17 +572,6 @@
       "hearingStartDate": "2026-07-06",
       "hearingEndDate": "2026-07-27",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5096&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5054",
-      "title": "도시관리계획(도시계획시설: 공원, 녹지) 결정(안) 재공고·열람",
-      "noticeNumber": "인천광역시 공고 제2026-1465호",
-      "agency": "인천광역시 도시계획국 도시관리과",
-      "publishedAt": "2026-07-06",
-      "hearingStartDate": "2026-07-06",
-      "hearingEndDate": "2026-07-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5054&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
