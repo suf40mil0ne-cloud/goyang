@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-24T14:57:25.390Z",
-  "count": 65,
+  "crawledAt": "2026-07-24T20:21:22.901Z",
+  "count": 60,
   "items": [
     {
       "seq": "5221",
@@ -553,17 +553,6 @@
       "listPage": 5
     },
     {
-      "seq": "5132",
-      "title": "익산 도시관리계획(용도지역, 지구단위계획)결정(변경)(안) 주민의견청취 공고",
-      "noticeNumber": "전북특별자치도 익산시 공고 제2026-2072호",
-      "agency": "전북특별자치도 익산시 건설국 도시개발과",
-      "publishedAt": "2026-07-10",
-      "hearingStartDate": "2026-07-10",
-      "hearingEndDate": "2026-07-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5132&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5128",
       "title": "서빙고아파트지구 지구단위계획구역 내 특별계획구역5(강촌APT) 세부개발계획 수립을 위한 열람 공고",
       "noticeNumber": "서울특별시 용산구 공고 제2026-989호",
@@ -572,28 +561,6 @@
       "hearingStartDate": "2026-07-10",
       "hearingEndDate": "2026-07-27",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5128&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5123",
-      "title": "충주 도시관리계획(도시계획시설: 공공공지) 결정(안) 주민 열람공고",
-      "noticeNumber": "충청북도 충주시 공고 제2026-1985호",
-      "agency": "충청북도 충주시 건설국 도시계획과",
-      "publishedAt": "2026-07-10",
-      "hearingStartDate": "2026-07-10",
-      "hearingEndDate": "2026-07-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5123&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5179",
-      "title": "김천시 성장관리계획구역 지정(변경)\"안\" 열람공고",
-      "noticeNumber": "경상북도 김천시 공고 제2026-1686호",
-      "agency": "경상북도 김천시 건설안전국",
-      "publishedAt": "2026-07-09",
-      "hearingStartDate": "2026-07-09",
-      "hearingEndDate": "2026-07-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5179&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
@@ -641,17 +608,6 @@
       "listPage": 6
     },
     {
-      "seq": "5124",
-      "title": "인제 군계획시설(공공하수처리시설) 실시계획(변경)인가를 위한 공람공고",
-      "noticeNumber": "강원특별자치도 인제군 공고 제2026-928호",
-      "agency": "강원특별자치도 인제군 도시건설국 도시개발과",
-      "publishedAt": "2026-07-09",
-      "hearingStartDate": "2026-07-09",
-      "hearingEndDate": "2026-07-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5124&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5096",
       "title": "광주역세권(2단계) 도시개발구역 지정 및 개발계획(안) 및 도시관리계획(용도지역) 결정(변경)(안) 및 사업인정 의제 사업에 관한 주민 등...",
       "noticeNumber": "경기도 광주시 공고 제2026-1858호",
@@ -671,17 +627,6 @@
       "hearingStartDate": "2026-07-03",
       "hearingEndDate": "2026-08-03",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5117&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5097",
-      "title": "도시관리계획(안) 열람공고",
-      "noticeNumber": "대구광역시 북구 공고 제2026-1128호",
-      "agency": "대구광역시 북구",
-      "publishedAt": "2026-07-03",
-      "hearingStartDate": "2026-07-03",
-      "hearingEndDate": "2026-07-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5097&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
