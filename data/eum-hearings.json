@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-07-27T12:26:18.501Z",
-  "count": 63,
+  "crawledAt": "2026-07-27T15:43:39.709Z",
+  "count": 56,
   "items": [
+    {
+      "seq": "5229",
+      "title": "군산 도시계획시설(수도공급설비) 결정 입안 열람공고",
+      "noticeNumber": "전북특별자치도 군산시 공고 제2026-1858호",
+      "agency": "전북특별자치도 군산시 안전건설국 도시계획과",
+      "publishedAt": "2026-07-28",
+      "hearingStartDate": "2026-07-28",
+      "hearingEndDate": "2026-08-11",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5229&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "5228",
       "title": "백두대간 힐링 펫빌리지 진입도로 개설을 위한  봉화 군관리계획(도로, 지구단위계획) 결정(변경)(안) 재열람공고",
@@ -109,8 +120,8 @@
       "publishedAt": "2026-07-23",
       "hearingStartDate": "2026-07-23",
       "hearingEndDate": "2026-08-06",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5214&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5214&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5207",
@@ -219,8 +230,8 @@
       "publishedAt": "2026-07-20",
       "hearingStartDate": "2026-07-20",
       "hearingEndDate": "2026-08-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5200&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5200&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5199",
@@ -329,8 +340,8 @@
       "publishedAt": "2026-07-16",
       "hearingStartDate": "2026-07-16",
       "hearingEndDate": "2026-07-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5185&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5185&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5184",
@@ -439,8 +450,8 @@
       "publishedAt": "2026-07-16",
       "hearingStartDate": "2026-07-16",
       "hearingEndDate": "2026-07-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5163&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5163&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "5162",
@@ -531,61 +542,6 @@
       "listPage": 5
     },
     {
-      "seq": "5149",
-      "title": "부여 군관리계획(군계획시설:사회복지시설) 결정(변경)(안) 주민공람·공고문",
-      "noticeNumber": "충청남도 부여군 공고 제2026-1497호",
-      "agency": "충청남도 부여군",
-      "publishedAt": "2026-07-13",
-      "hearingStartDate": "2026-07-13",
-      "hearingEndDate": "2026-07-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5149&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5148",
-      "title": "도시계획시설(도로)사업 실시계획인가 전 열람·공고",
-      "noticeNumber": "경기도 파주시 공고 제2026-2000호",
-      "agency": "경기도 파주시 도시발전국 도시계획과",
-      "publishedAt": "2026-07-13",
-      "hearingStartDate": "2026-07-13",
-      "hearingEndDate": "2026-07-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5148&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5154",
-      "title": "도시계획시설(도로:중로1-605호)사업 실시계획인가 관계 서류의 열람·공고",
-      "noticeNumber": "충청남도 당진시 공고 제2026-1863호",
-      "agency": "충청남도 당진시 건설도시국 스마트도시과",
-      "publishedAt": "2026-07-10",
-      "hearingStartDate": "2026-07-10",
-      "hearingEndDate": "2026-07-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5154&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5152",
-      "title": "도시계획시설[공원:129호(봉암공원)]사업 실시계획인가 관계 서류의 열람·공고",
-      "noticeNumber": "충청남도 당진시 공고 제2026-1937호",
-      "agency": "충청남도 당진시 건설도시국 스마트도시과",
-      "publishedAt": "2026-07-10",
-      "hearingStartDate": "2026-07-10",
-      "hearingEndDate": "2026-07-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5152&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5147",
-      "title": "양양 군계획시설(시설:시장, 도로)사업 실시계획(변경) 열람&#8228;공고",
-      "noticeNumber": "강원특별자치도 양양군 공고 제2026-743호",
-      "agency": "강원특별자치도 양양군 도시계획과",
-      "publishedAt": "2026-07-10",
-      "hearingStartDate": "2026-07-10",
-      "hearingEndDate": "2026-07-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5147&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5134",
       "title": "대산도시계획시설(폐기물처리 및 재활용시설②호)사업 실시계획인가를 위한 열람 및 의견청취 공고",
       "noticeNumber": "충청남도 서산시 공고 제2026-1878호",
@@ -608,17 +564,6 @@
       "listPage": 6
     },
     {
-      "seq": "5128",
-      "title": "서빙고아파트지구 지구단위계획구역 내 특별계획구역5(강촌APT) 세부개발계획 수립을 위한 열람 공고",
-      "noticeNumber": "서울특별시 용산구 공고 제2026-989호",
-      "agency": "서울특별시 용산구 도시관리국 주택과",
-      "publishedAt": "2026-07-10",
-      "hearingStartDate": "2026-07-10",
-      "hearingEndDate": "2026-07-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5128&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5139",
       "title": "상계한신3차아파트 재건축사업  정비구역 지정 및 정비계획 수립(안) 재공람 공고",
       "noticeNumber": "서울특별시 노원구 공고 제2026-1169호",
@@ -626,18 +571,7 @@
       "publishedAt": "2026-07-09",
       "hearingStartDate": "2026-07-09",
       "hearingEndDate": "2026-08-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5139&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5127",
-      "title": "창원도시관리계획(체육시설) 결정(안) 재열람 공고",
-      "noticeNumber": "경상남도 창원시 공고 제2026-1388호",
-      "agency": "경상남도 창원시(통합) 도시정책국 도시계획과",
-      "publishedAt": "2026-07-09",
-      "hearingStartDate": "2026-07-09",
-      "hearingEndDate": "2026-07-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5127&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5139&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
@@ -661,17 +595,6 @@
       "hearingEndDate": "2026-07-30",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5125&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
-    },
-    {
-      "seq": "5096",
-      "title": "광주역세권(2단계) 도시개발구역 지정 및 개발계획(안) 및 도시관리계획(용도지역) 결정(변경)(안) 및 사업인정 의제 사업에 관한 주민 등...",
-      "noticeNumber": "경기도 광주시 공고 제2026-1858호",
-      "agency": "경기도 광주시 도시주택국 도시사업과",
-      "publishedAt": "2026-07-06",
-      "hearingStartDate": "2026-07-06",
-      "hearingEndDate": "2026-07-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5096&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
     },
     {
       "seq": "5117",
