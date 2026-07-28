@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-28T14:11:59.173Z",
-  "count": 63,
+  "crawledAt": "2026-07-28T16:41:45.823Z",
+  "count": 61,
   "items": [
     {
       "seq": "5234",
@@ -583,28 +583,6 @@
       "hearingStartDate": "2026-07-15",
       "hearingEndDate": "2026-07-29",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5144&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5173",
-      "title": "2030년 칠곡 군관리계획(재정비) 결정(변경)“안” 및 칠곡군 성장관리계획구역 지정(변경)“안” 재열람 공고",
-      "noticeNumber": "경상북도 칠곡군 공고 제2026-855호",
-      "agency": "경상북도 칠곡군 건설안전국 도시계획과",
-      "publishedAt": "2026-07-14",
-      "hearingStartDate": "2026-07-14",
-      "hearingEndDate": "2026-07-28",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5173&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5151",
-      "title": "양평 군관리계획(집단취락지구지정) 결정(변경)(안) 및 전략환경영향평가서(초안) 주민공람 공고",
-      "noticeNumber": "경기도 양평군 공고 제2026-1296호",
-      "agency": "경기도 양평군 도시건설국 건축과",
-      "publishedAt": "2026-07-13",
-      "hearingStartDate": "2026-07-14",
-      "hearingEndDate": "2026-07-28",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5151&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
