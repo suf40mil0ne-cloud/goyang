@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-07-31T12:01:35.947Z",
-  "count": 54,
+  "crawledAt": "2026-07-31T15:20:47.117Z",
+  "count": 51,
   "items": [
     {
       "seq": "5271",
@@ -542,17 +542,6 @@
       "listPage": 6
     },
     {
-      "seq": "5188",
-      "title": "보은 군관리계획[교통시설:도로(중로2-10 외 3개노선)] 결정(변경)(안) 주민 열람공고",
-      "noticeNumber": "충청북도 보은군 공고 제2026-1099호",
-      "agency": "충청북도 보은군 지역개발과",
-      "publishedAt": "2026-07-16",
-      "hearingStartDate": "2026-07-16",
-      "hearingEndDate": "2026-07-31",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5188&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5178",
       "title": "김천 도시관리계획(지구단위계획구역 및 지구단위계획) 결정(안) 주민공람 공고",
       "noticeNumber": "경상북도 김천시 공고 제2026-1775호",
@@ -561,28 +550,6 @@
       "hearingStartDate": "2026-07-16",
       "hearingEndDate": "2026-08-03",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5178&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5169",
-      "title": "도시관리계획(지구단위계획) 결정(변경) 입안을 위한 주민의견 청취 공고(금호·화정지구, 금호2지구）",
-      "noticeNumber": "전남광주통합특별시 공고 제2026-1038호",
-      "agency": "전남광주통합특별시",
-      "publishedAt": "2026-07-16",
-      "hearingStartDate": "2026-07-16",
-      "hearingEndDate": "2026-07-31",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5169&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5167",
-      "title": "도시관리계획(광천터미널 지구단위계획구역 및 계획) 결정(변경) 입안을 위한 주민의견 청취 공고",
-      "noticeNumber": "전남광주통합특별시 공고 제2026-1022호",
-      "agency": "전남광주통합특별시",
-      "publishedAt": "2026-07-16",
-      "hearingStartDate": "2026-07-16",
-      "hearingEndDate": "2026-07-31",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5167&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
