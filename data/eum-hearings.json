@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-08-04T14:20:42.669Z",
-  "count": 59,
+  "crawledAt": "2026-08-04T16:53:33.117Z",
+  "count": 55,
   "items": [
     {
       "seq": "5292",
@@ -573,50 +573,6 @@
       "hearingEndDate": "2026-08-05",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5210&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
-    },
-    {
-      "seq": "5216",
-      "title": "화성동탄(2) 택지개발지구 도시관리계획(지구단위계획) 결정(변경)(안) 주민의견청취공고",
-      "noticeNumber": "경기도 화성시 공고 제2026-2603호",
-      "agency": "경기도 화성시 도시주택국",
-      "publishedAt": "2026-07-21",
-      "hearingStartDate": "2026-07-21",
-      "hearingEndDate": "2026-08-04",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5216&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5209",
-      "title": "강릉 도시계획시설(문화공원: 포남2공원)사업 실시계획(변경)인가 열람·공고",
-      "noticeNumber": "강원특별자치도 강릉시 공고 제2026-1252호",
-      "agency": "강원특별자치도 강릉시 도시교통국 도시과",
-      "publishedAt": "2026-07-21",
-      "hearingStartDate": "2026-07-21",
-      "hearingEndDate": "2026-08-04",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5209&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5208",
-      "title": "강릉 도시계획시설(근린공원: 장현1공원)사업 실시계획(변경)인가 열람·공고",
-      "noticeNumber": "강원특별자치도 강릉시 공고 제2026-1251호",
-      "agency": "강원특별자치도 강릉시 도시교통국 도시과",
-      "publishedAt": "2026-07-21",
-      "hearingStartDate": "2026-07-21",
-      "hearingEndDate": "2026-08-04",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5208&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5194",
-      "title": "장수군관리계획(용도지구:자연취락지구) 결정(변경)(안) 공람공고",
-      "noticeNumber": "전북특별자치도 장수군 공고 제2026-757호",
-      "agency": "전북특별자치도 장수군 건설과",
-      "publishedAt": "2026-07-20",
-      "hearingStartDate": "2026-07-20",
-      "hearingEndDate": "2026-08-04",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5194&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
     },
     {
       "seq": "5191",
