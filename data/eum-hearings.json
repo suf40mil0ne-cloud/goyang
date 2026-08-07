@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-08-07T14:54:36.655Z",
-  "count": 66,
+  "crawledAt": "2026-08-07T15:57:55.678Z",
+  "count": 60,
   "items": [
     {
       "seq": "5274",
@@ -619,28 +619,6 @@
       "listPage": 6
     },
     {
-      "seq": "5221",
-      "title": "개발행위허가 제한지역 지정 해제 열람공고",
-      "noticeNumber": "충청북도 제천시 공고 제2026-1469호",
-      "agency": "충청북도 제천시 경제산업국 신속허가과",
-      "publishedAt": "2026-07-24",
-      "hearingStartDate": "2026-07-24",
-      "hearingEndDate": "2026-08-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5221&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5220",
-      "title": "도시관리계획(도로) 결정(변경), 시행사업자 지정 및 실시계획(변경)인가 열람&#8228;공고",
-      "noticeNumber": "경기도 파주시 공고 제2026-2098호",
-      "agency": "경기도 파주시 도시발전국 도시계획과",
-      "publishedAt": "2026-07-24",
-      "hearingStartDate": "2026-07-24",
-      "hearingEndDate": "2026-08-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5220&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5219",
       "title": "이촌1구역 재건축정비사업 정비계획 결정 및 정비구역 지정(안) 재공람공고",
       "noticeNumber": "서울특별시 용산구 공고 제2026-1036호",
@@ -683,50 +661,6 @@
       "hearingEndDate": "2026-08-11",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5227&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
-    },
-    {
-      "seq": "5205",
-      "title": "도시관리계획(삼양지구 지구단위계획 및 삼양특별계획구역5 세부개발계획) 결정(변경)(안) 주민열람 공고",
-      "noticeNumber": "서울특별시 강북구 공고 제2026-1102호",
-      "agency": "서울특별시 강북구 도시관리국 도시계획과",
-      "publishedAt": "2026-07-23",
-      "hearingStartDate": "2026-07-23",
-      "hearingEndDate": "2026-08-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5205&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5191",
-      "title": "남영동 업무지구 제2구역 도시정비형 재개발사업 정비계획 결정(변경)(안)에 대한 재공람공고",
-      "noticeNumber": "서울특별시 용산구 공고 제2026-1030호",
-      "agency": "서울특별시 용산구 도시관리국 도시계획과",
-      "publishedAt": "2026-07-17",
-      "hearingStartDate": "2026-07-17",
-      "hearingEndDate": "2026-08-18",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5191&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "5242",
-      "title": "역촌역세권(녹번동) 장기전세주택 도시정비형 재개발사업  정비구역 지정 및 정비계획 결정(안)   역촌역세권？은평구청 주변 생활권 지구...",
-      "noticeNumber": "서울특별시 은평구 공고 제2026-1331호",
-      "agency": "서울특별시 은평구 공간혁신국 공간계획과",
-      "publishedAt": "2026-07-16",
-      "hearingStartDate": "2026-07-16",
-      "hearingEndDate": "2026-08-18",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5242&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "5190",
-      "title": "상계주공6단지아파트 재건축 정비계획 수립 및 정비구역 지정(안), 상계(1·2단계) 택지개발지구 지구단위계획구역 내 특별계획구역12 세부...",
-      "noticeNumber": "서울특별시 노원구 공고 제2026-1236호",
-      "agency": "서울특별시 노원구 도시계획국 재건축사업과",
-      "publishedAt": "2026-07-16",
-      "hearingStartDate": "2026-07-16",
-      "hearingEndDate": "2026-08-18",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5190&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
     }
   ]
 }
