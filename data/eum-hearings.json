@@ -1,5 +1,5 @@
 {
-  "crawledAt": "2026-08-09T06:59:40.090Z",
+  "crawledAt": "2026-08-09T10:36:41.295Z",
   "count": 60,
   "items": [
     {
@@ -80,6 +80,17 @@
       "listPage": 1
     },
     {
+      "seq": "5283",
+      "title": "여수 도시관리계획(도로, 주차장) 결정 변경(안) 주민 등의 의견청취 열람공고(정정)",
+      "noticeNumber": "전남광주통합특별시 여수시 공고 제2026-2470호",
+      "agency": "전남광주통합특별시 여수시",
+      "publishedAt": "2026-08-07",
+      "hearingStartDate": "2026-08-07",
+      "hearingEndDate": "2026-08-21",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5283&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
+    {
       "seq": "5327",
       "title": "불광미성아파트 주택재건축정비사업 정비계획 결정 및 정비구역 지정(안)에 대한 주민 재공람 공고",
       "noticeNumber": "서울특별시 은평구 공고 제2026-1440호",
@@ -109,8 +120,8 @@
       "publishedAt": "2026-08-06",
       "hearingStartDate": "2026-08-06",
       "hearingEndDate": "2026-08-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5319&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5319&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5318",
@@ -219,8 +230,8 @@
       "publishedAt": "2026-08-06",
       "hearingStartDate": "2026-08-06",
       "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5298&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5298&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5307",
@@ -319,17 +330,6 @@
       "hearingStartDate": "2026-07-31",
       "hearingEndDate": "2026-08-31",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5300&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
-    },
-    {
-      "seq": "5283",
-      "title": "여수 도시관리계획(도로, 주차장) 결정 변경(안) 주민 등의 의견청취 열람공고",
-      "noticeNumber": "전남광주통합특별시 여수시 공고 제2026-2400호",
-      "agency": "전남광주통합특별시 여수시",
-      "publishedAt": "2026-07-31",
-      "hearingStartDate": "2026-07-31",
-      "hearingEndDate": "2026-08-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5283&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 3
     },
     {
