@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-08-10T13:13:26.802Z",
-  "count": 69,
+  "crawledAt": "2026-08-10T15:00:30.199Z",
+  "count": 64,
   "items": [
+    {
+      "seq": "5324",
+      "title": "의정부 도시관리계획[도시계획시설:하수도(오수중계펌프장)] 결정(변경)(안) 주민 열람 공고",
+      "noticeNumber": "경기도 의정부시 공고 제2026-1545호",
+      "agency": "경기도 의정부시 도시주택국 도시정책과",
+      "publishedAt": "2026-08-11",
+      "hearingStartDate": "2026-08-11",
+      "hearingEndDate": "2026-08-25",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5324&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "5338",
       "title": "상주 도시관리계획(도로) 결정(변경)(안) 열람·공고",
@@ -109,8 +120,8 @@
       "publishedAt": "2026-08-07",
       "hearingStartDate": "2026-08-07",
       "hearingEndDate": "2026-09-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5323&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5323&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5322",
@@ -219,8 +230,8 @@
       "publishedAt": "2026-08-06",
       "hearingStartDate": "2026-08-06",
       "hearingEndDate": "2026-08-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5318&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5318&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5316",
@@ -329,8 +340,8 @@
       "publishedAt": "2026-08-05",
       "hearingStartDate": "2026-08-05",
       "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5307&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5307&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5337",
@@ -439,8 +450,8 @@
       "publishedAt": "2026-07-30",
       "hearingStartDate": "2026-07-31",
       "hearingEndDate": "2026-08-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5271&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5271&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "5245",
@@ -549,8 +560,8 @@
       "publishedAt": "2026-07-29",
       "hearingStartDate": "2026-07-29",
       "hearingEndDate": "2026-08-13",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5264&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5264&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "5250",
@@ -659,62 +670,7 @@
       "publishedAt": "2026-07-28",
       "hearingStartDate": "2026-07-28",
       "hearingEndDate": "2026-08-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5229&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5232",
-      "title": "안성 중리동 도시관리계획[도시계획시설(도로 중로1-78호선)]결정(안) 열람공고",
-      "noticeNumber": "경기도 안성시 공고 제2026-2036호",
-      "agency": "경기도 안성시 경제도시국 도시정책과",
-      "publishedAt": "2026-07-27",
-      "hearingStartDate": "2026-07-27",
-      "hearingEndDate": "2026-08-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5232&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5228",
-      "title": "백두대간 힐링 펫빌리지 진입도로 개설을 위한  봉화 군관리계획(도로, 지구단위계획) 결정(변경)(안) 재열람공고",
-      "noticeNumber": "경상북도 봉화군 공고 제2026-803호",
-      "agency": "경상북도 봉화군 문화관광과",
-      "publishedAt": "2026-07-27",
-      "hearingStartDate": "2026-07-27",
-      "hearingEndDate": "2026-08-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5228&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5226",
-      "title": "평택 도시관리계획[지구단위계획 재정비_동삭2지구 등 7개 지구] 결정(변경)(안) 공람 공고",
-      "noticeNumber": "경기도 평택시 공고 제2026-2390호",
-      "agency": "경기도 평택시",
-      "publishedAt": "2026-07-27",
-      "hearingStartDate": "2026-07-27",
-      "hearingEndDate": "2026-08-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5226&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5225",
-      "title": "평택 도시관리계획[고덕국제화계획지구 지구단위계획] 결정(변경)(안) 공람 공고",
-      "noticeNumber": "경기도 평택시 공고 제2026-2362호",
-      "agency": "경기도 평택시",
-      "publishedAt": "2026-07-27",
-      "hearingStartDate": "2026-07-27",
-      "hearingEndDate": "2026-08-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5225&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5224",
-      "title": "하남 도시관리계획(용도지역, 지구단위계획) 결정(변경)(안)에 관한 주민 열람·공고",
-      "noticeNumber": "경기도 하남시 공고 제2026-1400호",
-      "agency": "경기도 하남시 도시주택국 도시정책과",
-      "publishedAt": "2026-07-27",
-      "hearingStartDate": "2026-07-27",
-      "hearingEndDate": "2026-08-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5224&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5229&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
@@ -726,17 +682,6 @@
       "hearingStartDate": "2026-07-24",
       "hearingEndDate": "2026-08-24",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5219&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5215",
-      "title": "옥천군 군관리계획(공원조성계획:근린공원) 결정(변경) 주민 열람·공고",
-      "noticeNumber": "충청북도 옥천군 공고 제2026-1133호",
-      "agency": "충청북도 옥천군 균형건설국 산림과",
-      "publishedAt": "2026-07-24",
-      "hearingStartDate": "2026-07-24",
-      "hearingEndDate": "2026-08-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5215&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
