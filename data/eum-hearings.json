@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-08-11T14:59:38.243Z",
-  "count": 65,
+  "crawledAt": "2026-08-11T17:58:26.625Z",
+  "count": 60,
   "items": [
     {
       "seq": "5343",
@@ -586,17 +586,6 @@
       "listPage": 6
     },
     {
-      "seq": "5249",
-      "title": "포천(소흘지구,이동교지구,심곡지구,송우택지지구) 도시관리계획 결정(변경)(안) 주민 재공람·공고",
-      "noticeNumber": "경기도 포천시 공고 제2026-2150호",
-      "agency": "경기도 포천시 안전도시국 도시정책과",
-      "publishedAt": "2026-07-29",
-      "hearingStartDate": "2026-07-29",
-      "hearingEndDate": "2026-08-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5249&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5248",
       "title": "포천 5군단 군관사 조성사업 이동 도시관리계획(지구단위계획구역, 지구단위계획 등) 결정(변경),전략환경영향평가서 초안 주민 공람 및 주...",
       "noticeNumber": "경기도 포천시 공고 제2026-2138호",
@@ -641,28 +630,6 @@
       "listPage": 6
     },
     {
-      "seq": "5234",
-      "title": "일죽 도시계획시설(도로: 소로1-176호선, 소로2-301호선) 실시계획(변경) 인가 전 열람공고",
-      "noticeNumber": "경기도 안성시 공고 제2026-2052호",
-      "agency": "경기도 안성시 경제도시국 도시정책과",
-      "publishedAt": "2026-07-28",
-      "hearingStartDate": "2026-07-28",
-      "hearingEndDate": "2026-08-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5234&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5231",
-      "title": "양성 장서지구 도시관리계획(용도지역, 산업유통형 지구단위계획) 결정(변경)(안) 재 열람공고",
-      "noticeNumber": "경기도 안성시 공고 제2026-2055호",
-      "agency": "경기도 안성시 경제도시국 도시정책과",
-      "publishedAt": "2026-07-28",
-      "hearingStartDate": "2026-07-28",
-      "hearingEndDate": "2026-08-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5231&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5230",
       "title": "군포도시관리계획(벌터마벨 지구단위계획) 결정(변경)(안) 주민 재공람 공고",
       "noticeNumber": "경기도 군포시 공고 제2026-1095호",
@@ -671,17 +638,6 @@
       "hearingStartDate": "2026-07-28",
       "hearingEndDate": "2026-08-17",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5230&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5229",
-      "title": "군산 도시계획시설(수도공급설비) 결정 입안 열람공고",
-      "noticeNumber": "전북특별자치도 군산시 공고 제2026-1858호",
-      "agency": "전북특별자치도 군산시 안전건설국 도시계획과",
-      "publishedAt": "2026-07-28",
-      "hearingStartDate": "2026-07-28",
-      "hearingEndDate": "2026-08-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5229&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
@@ -704,17 +660,6 @@
       "hearingStartDate": "2026-07-23",
       "hearingEndDate": "2026-08-12",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5295&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5227",
-      "title": "청송군관리계획(각산리 지구단위계획) 결정(변경)“안”주민 공람·공고",
-      "noticeNumber": "경상북도 청송군 공고 제2026-861호",
-      "agency": "경상북도 청송군 도시경관과",
-      "publishedAt": "2026-07-23",
-      "hearingStartDate": "2026-07-23",
-      "hearingEndDate": "2026-08-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5227&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     }
   ]
