@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-08-14T02:07:17.926Z",
-  "count": 72,
+  "crawledAt": "2026-08-14T15:53:49.431Z",
+  "count": 69,
   "items": [
     {
       "seq": "5380",
@@ -696,17 +696,6 @@
       "listPage": 7
     },
     {
-      "seq": "5245",
-      "title": "익산 도시관리계획[도시계획시설/도로(대로3-2호선 외 3개소)]  결정(변경)(안) 주민의견청취 열람 공고",
-      "noticeNumber": "전북특별자치도 익산시 공고 제2026-2190호",
-      "agency": "전북특별자치도 익산시 건설국 도시개발과",
-      "publishedAt": "2026-07-31",
-      "hearingStartDate": "2026-07-31",
-      "hearingEndDate": "2026-08-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5245&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "5381",
       "title": "홍성 군관리계획(시설: 도로) 결정(변경)(안) 열람&#8231;공고",
       "noticeNumber": "충청남도 홍성군 공고 제2026-1462호",
@@ -718,17 +707,6 @@
       "listPage": 7
     },
     {
-      "seq": "5239",
-      "title": "김천 도시관리계획(재정비) 결정(변경)\"안\" 재열람공고",
-      "noticeNumber": "경상북도 김천시 공고 제2026-1860호",
-      "agency": "경상북도 김천시 건설도시국 균형개발과",
-      "publishedAt": "2026-07-30",
-      "hearingStartDate": "2026-07-30",
-      "hearingEndDate": "2026-08-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5239&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
       "seq": "5236",
       "title": "신촌지역 마포4구역 및 신촌지역 마포4구역 5·6·7·10지구 도시정비형 재개발사업 정비계획 결정(변경)(안) 재공람공고",
       "noticeNumber": "서울특별시 마포구 공고 제2026-1201호",
@@ -737,17 +715,6 @@
       "hearingStartDate": "2026-07-30",
       "hearingEndDate": "2026-08-31",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5236&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5222",
-      "title": "완주 군관리계획(군계획시설:공공청사) 결정(안) 열람 공고",
-      "noticeNumber": "전북특별자치도 완주군 공고 제2026-1340호",
-      "agency": "전북특별자치도 완주군 건설안전국 건설도시과",
-      "publishedAt": "2026-07-30",
-      "hearingStartDate": "2026-07-30",
-      "hearingEndDate": "2026-08-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5222&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
