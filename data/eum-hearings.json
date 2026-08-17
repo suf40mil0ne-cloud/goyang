@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-08-17T14:29:45.665Z",
-  "count": 69,
+  "crawledAt": "2026-08-17T15:27:32.936Z",
+  "count": 67,
   "items": [
     {
       "seq": "5380",
@@ -652,17 +652,6 @@
       "listPage": 6
     },
     {
-      "seq": "5280",
-      "title": "일죽 도시관리계획[용도지역, 도시계획시설(도로 및 수질오염방지시설)] 결정(변경)(안) 재열람공고",
-      "noticeNumber": "경기도 안성시 공고 제2026-2081호",
-      "agency": "경기도 안성시 경제도시국 도시정책과",
-      "publishedAt": "2026-08-03",
-      "hearingStartDate": "2026-08-03",
-      "hearingEndDate": "2026-08-17",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5280&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5279",
       "title": "도시계획시설(체육시설)사업 실시계획인가 전 열람·공고",
       "noticeNumber": "경기도 파주시 공고 제2026-2144호",
@@ -737,17 +726,6 @@
       "hearingStartDate": "2026-07-29",
       "hearingEndDate": "2026-08-27",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5247&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "5230",
-      "title": "군포도시관리계획(벌터마벨 지구단위계획) 결정(변경)(안) 주민 재공람 공고",
-      "noticeNumber": "경기도 군포시 공고 제2026-1095호",
-      "agency": "경기도 군포시 도시주택국 도시계획과",
-      "publishedAt": "2026-07-28",
-      "hearingStartDate": "2026-07-28",
-      "hearingEndDate": "2026-08-17",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5230&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 9
     },
     {
