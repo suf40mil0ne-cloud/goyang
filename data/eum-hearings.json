@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-08-21T14:36:54.464Z",
-  "count": 64,
+  "crawledAt": "2026-08-21T16:36:53.503Z",
+  "count": 53,
   "items": [
     {
       "seq": "5401",
@@ -454,17 +454,6 @@
       "listPage": 5
     },
     {
-      "seq": "5330",
-      "title": "사업시행계획(변경)인가를 위한 공람공고",
-      "noticeNumber": "서울특별시 강북구 공고 제2026-1184호",
-      "agency": "서울특별시 강북구 도시관리국 주거정비과",
-      "publishedAt": "2026-08-07",
-      "hearingStartDate": "2026-08-07",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5330&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
       "seq": "5328",
       "title": "원주 도시관리계획(시설:소로2-621호, 경관광장17호) 결정(변경)(안) 열람·공고",
       "noticeNumber": "강원도 원주시 공고 제2026-2218호",
@@ -484,50 +473,6 @@
       "hearingStartDate": "2026-08-07",
       "hearingEndDate": "2026-09-07",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5323&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5322",
-      "title": "당진 도시관리계획(용도지역, 읍내2지구 지구단위계획구역) 결정(변경)(안) 재열람 공고",
-      "noticeNumber": "충청남도 당진시 공고 제2026-2088호",
-      "agency": "충청남도 당진시 건설도시국 스마트도시과",
-      "publishedAt": "2026-08-07",
-      "hearingStartDate": "2026-08-07",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5322&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5320",
-      "title": "도시관리계획(용산 AI·ICT 콘텐츠산업 특정개발진흥지구) 결정(안) 및 전략환경영향평가서(초안) 열람공고",
-      "noticeNumber": "서울특별시 용산구 공고 제2026-1108호",
-      "agency": "서울특별시 용산구 기획조정실 미래전략담당관",
-      "publishedAt": "2026-08-07",
-      "hearingStartDate": "2026-08-07",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5320&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5314",
-      "title": "의왕도시관리계획(재정비) 결정(변경)(안) 주민의견청취 공고",
-      "noticeNumber": "경기도 의왕시 공고 제2026-1116호",
-      "agency": "경기도 의왕시 도시주택국 도시정책과",
-      "publishedAt": "2026-08-07",
-      "hearingStartDate": "2026-08-07",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5314&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5283",
-      "title": "여수 도시관리계획(도로, 주차장) 결정 변경(안) 주민 등의 의견청취 열람공고(정정)",
-      "noticeNumber": "전남광주통합특별시 여수시 공고 제2026-2470호",
-      "agency": "전남광주통합특별시 여수시",
-      "publishedAt": "2026-08-07",
-      "hearingStartDate": "2026-08-07",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5283&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
@@ -564,61 +509,6 @@
       "listPage": 6
     },
     {
-      "seq": "5326",
-      "title": "강릉 도시관리계획(농공단지, 산업단지 지구단위계획) 결정(변경)(안) 열람·공고",
-      "noticeNumber": "강원특별자치도 강릉시 공고 제2026-1345호",
-      "agency": "강원특별자치도 강릉시 도시교통국 도시과",
-      "publishedAt": "2026-08-06",
-      "hearingStartDate": "2026-08-06",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5326&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5308",
-      "title": "김천 도시관리계획(경북김천 혁신도시 지구단위계획) 결정(변경)\"안\" 열람공고",
-      "noticeNumber": "경상북도 김천시 공고 제2026-1900호",
-      "agency": "경상북도 김천시 건설도시국 균형개발과",
-      "publishedAt": "2026-08-06",
-      "hearingStartDate": "2026-08-06",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5308&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5299",
-      "title": "인제 군관리계획(용도지역, 원통2지구 지구단위계획구역 및 지구단위계획)결정(안) 및 전략환경영향평가(초안) 주민공람·공고",
-      "noticeNumber": "강원특별자치도 인제군 공고 제2026-1032호",
-      "agency": "강원특별자치도 인제군 도시건설국 도시개발과",
-      "publishedAt": "2026-08-06",
-      "hearingStartDate": "2026-08-06",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5299&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5298",
-      "title": "인제 군관리계획(용도지역, 원통1지구 지구단위계획구역 및 지구단위계획)결정(안) 및 전략환경영향평가(초안) 주민공람·공고",
-      "noticeNumber": "강원특별자치도 인제군 공고 제2026-1031호",
-      "agency": "강원특별자치도 인제군 도시건설국 도시개발과",
-      "publishedAt": "2026-08-06",
-      "hearingStartDate": "2026-08-06",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5298&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5307",
-      "title": "도시관리계획(중동2구역 지구단위계획) 결정(변경)(안) 열람공고",
-      "noticeNumber": "부산광역시 해운대구 공고 제2026-1044호",
-      "agency": "부산광역시 해운대구 도시건설국 건설과",
-      "publishedAt": "2026-08-05",
-      "hearingStartDate": "2026-08-05",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5307&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "5290",
       "title": "영동 군관리계획(용도지역, 용도지구, 지구단위계획-영동 추풍령 농어촌관광휴양단지) 결정(변경)(안) 열람 공고",
       "noticeNumber": "충청북도 영동군 공고 제2026-1149호",
@@ -649,17 +539,6 @@
       "hearingStartDate": "2026-07-31",
       "hearingEndDate": "2026-08-31",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5300&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5381",
-      "title": "홍성 군관리계획(시설: 도로) 결정(변경)(안) 열람&#8231;공고",
-      "noticeNumber": "충청남도 홍성군 공고 제2026-1462호",
-      "agency": "충청남도 홍성군 지역개발국 도시재생과",
-      "publishedAt": "2026-07-30",
-      "hearingStartDate": "2026-07-30",
-      "hearingEndDate": "2026-08-21",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5381&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
