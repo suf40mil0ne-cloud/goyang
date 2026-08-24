@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-08-24T14:44:15.647Z",
-  "count": 47,
+  "crawledAt": "2026-08-24T15:41:00.964Z",
+  "count": 44,
   "items": [
     {
       "seq": "5401",
@@ -410,28 +410,6 @@
       "listPage": 4
     },
     {
-      "seq": "5333",
-      "title": "도시관리계획(도시계획시설: 도로)결정 전 열람·공고",
-      "noticeNumber": "경기도 파주시 공고 제2026-2209호",
-      "agency": "경기도 파주시 도시발전국 도시계획과",
-      "publishedAt": "2026-08-10",
-      "hearingStartDate": "2026-08-10",
-      "hearingEndDate": "2026-08-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5333&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
-    },
-    {
-      "seq": "5331",
-      "title": "당진 도시관리계획(용도지역, 읍내2지구 지구단위계획구역) 결정(변경)(안) 재열람 공고(정정)",
-      "noticeNumber": "충청남도 당진시 공고 제2026-2093호",
-      "agency": "충청남도 당진시 건설도시국 스마트도시과",
-      "publishedAt": "2026-08-10",
-      "hearingStartDate": "2026-08-10",
-      "hearingEndDate": "2026-08-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5331&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
-    },
-    {
       "seq": "5317",
       "title": "도시관리계획(도시계획시설 : 도로) 결정(변경)(안) 열람 공고",
       "noticeNumber": "충청남도 서산시 공고 제2026-2074호",
@@ -462,17 +440,6 @@
       "hearingStartDate": "2026-08-10",
       "hearingEndDate": "2026-08-28",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5274&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5328",
-      "title": "원주 도시관리계획(시설:소로2-621호, 경관광장17호) 결정(변경)(안) 열람·공고",
-      "noticeNumber": "강원도 원주시 공고 제2026-2218호",
-      "agency": "강원특별자치도 원주시 도시국 도시계획과",
-      "publishedAt": "2026-08-07",
-      "hearingStartDate": "2026-08-07",
-      "hearingEndDate": "2026-08-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5328&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
