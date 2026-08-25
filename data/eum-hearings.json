@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-08-25T12:51:06.127Z",
-  "count": 45,
+  "crawledAt": "2026-08-25T15:44:15.411Z",
+  "count": 42,
   "items": [
+    {
+      "seq": "5417",
+      "title": "군산 도시계획시설(공원) 결정(변경) 입안 열람공고",
+      "noticeNumber": "전북특별자치도 군산시 공고 제2026-2063호",
+      "agency": "전북특별자치도 군산시 안전건설국 도시계획과",
+      "publishedAt": "2026-08-26",
+      "hearingStartDate": "2026-08-26",
+      "hearingEndDate": "2026-09-09",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5417&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "5401",
       "title": "김제 도시계획시설(체육시설:18홀 대중형골프장)사업의 실시계획(변경)인가 전 열람공고",
@@ -98,8 +109,8 @@
       "publishedAt": "2026-08-20",
       "hearingStartDate": "2026-08-20",
       "hearingEndDate": "2026-09-04",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5394&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5394&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5393",
@@ -208,8 +219,8 @@
       "publishedAt": "2026-08-14",
       "hearingStartDate": "2026-08-14",
       "hearingEndDate": "2026-08-28",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5372&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5372&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5370",
@@ -318,8 +329,8 @@
       "publishedAt": "2026-08-13",
       "hearingStartDate": "2026-08-13",
       "hearingEndDate": "2026-08-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5362&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5362&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5355",
@@ -366,39 +377,6 @@
       "listPage": 4
     },
     {
-      "seq": "5343",
-      "title": "고양 도시관리계획(일산동 2148번지 일대 지구단위계획) 결정(변경)(안)  공람 재공고",
-      "noticeNumber": "경기도 고양시 공고 제2026-1842호",
-      "agency": "경기도 고양시 도시주택정책실 도시계획정책관",
-      "publishedAt": "2026-08-11",
-      "hearingStartDate": "2026-08-11",
-      "hearingEndDate": "2026-08-25",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5343&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
-    },
-    {
-      "seq": "5324",
-      "title": "의정부 도시관리계획[도시계획시설:하수도(오수중계펌프장)] 결정(변경)(안) 주민 열람 공고",
-      "noticeNumber": "경기도 의정부시 공고 제2026-1545호",
-      "agency": "경기도 의정부시 도시주택국 도시정책과",
-      "publishedAt": "2026-08-11",
-      "hearingStartDate": "2026-08-11",
-      "hearingEndDate": "2026-08-25",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5324&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
-    },
-    {
-      "seq": "5338",
-      "title": "상주 도시관리계획(도로) 결정(변경)(안) 열람·공고",
-      "noticeNumber": "경상북도 상주시 공고 제2026-1224호",
-      "agency": "경상북도 상주시",
-      "publishedAt": "2026-08-10",
-      "hearingStartDate": "2026-08-10",
-      "hearingEndDate": "2026-08-25",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5338&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
-    },
-    {
       "seq": "5336",
       "title": "도시관리계획(공원) 결정(안) 열람공고",
       "noticeNumber": "대구광역시 달성군 공고 제2026-1683호",
@@ -418,17 +396,6 @@
       "hearingStartDate": "2026-08-10",
       "hearingEndDate": "2026-08-31",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5317&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5306",
-      "title": "도시관리계획(도시계획시설: 녹지) 결정(안) 공고·열람",
-      "noticeNumber": "인천광역시 공고 제2026-1688호",
-      "agency": "인천광역시 도시계획국 도시관리과",
-      "publishedAt": "2026-08-10",
-      "hearingStartDate": "2026-08-10",
-      "hearingEndDate": "2026-08-25",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5306&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
