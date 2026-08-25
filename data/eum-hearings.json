@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-08-24T23:24:13.666Z",
-  "count": 44,
+  "crawledAt": "2026-08-25T03:55:14.784Z",
+  "count": 45,
   "items": [
     {
       "seq": "5401",
@@ -452,6 +452,17 @@
       "hearingEndDate": "2026-09-07",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5323&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
+    },
+    {
+      "seq": "5419",
+      "title": "광흥창역세권(신수동 301-1일원) 장기전세주택  도시정비형 재개발사업 정비계획 결정 및 정비구역 지정(안)에 대한 재공람공고",
+      "noticeNumber": "서울특별시 마포구 공고 제2026-1229호",
+      "agency": "서울특별시 마포구 도시환경국 도시계획과",
+      "publishedAt": "2026-08-06",
+      "hearingStartDate": "2026-08-06",
+      "hearingEndDate": "2026-09-07",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5419&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "5360",
