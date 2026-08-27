@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-08-27T04:22:59.354Z",
-  "count": 50,
+  "crawledAt": "2026-08-27T16:12:32.609Z",
+  "count": 47,
   "items": [
     {
       "seq": "5433",
@@ -410,28 +410,6 @@
       "listPage": 4
     },
     {
-      "seq": "5364",
-      "title": "광주역세권2 공공주택지구 지정 및 사업인정 의제에 관한 주민 등의 의견 청취 공고",
-      "noticeNumber": "경기도 광주시 공고 제2026-2211호",
-      "agency": "경기도 광주시 도시주택국 도시사업과",
-      "publishedAt": "2026-08-13",
-      "hearingStartDate": "2026-08-13",
-      "hearingEndDate": "2026-08-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5364&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
-    },
-    {
-      "seq": "5362",
-      "title": "도시관리계획(용산 AI·ICT 콘텐츠산업 특정개발진흥지구) 결정(안) 및 전략환경영향평가서(초안) 열람 정정공고",
-      "noticeNumber": "서울특별시 용산구 공고 제2026-1137호",
-      "agency": "서울특별시 용산구 기획조정실 미래전략담당관",
-      "publishedAt": "2026-08-13",
-      "hearingStartDate": "2026-08-13",
-      "hearingEndDate": "2026-08-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5362&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
-    },
-    {
       "seq": "5355",
       "title": "신촌지역 마포4구역 및 신촌지역 마포4구역 9지구 도시정비형 재개발사업 정비구역 및 정비계획 결정(변경)(안) 공람공고(지구단위계획 내...",
       "noticeNumber": "서울특별시 마포구 공고 제2026-1292호",
@@ -462,17 +440,6 @@
       "hearingStartDate": "2026-08-13",
       "hearingEndDate": "2026-08-28",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5341&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5340",
-      "title": "도시관리계획(서울레미콘 부지 지구단위계획구역 및 계획, 특별계획구역 세부개발계획) 결정(안) 재열람공고",
-      "noticeNumber": "서울특별시 공고 제2026-2333호",
-      "agency": "서울특별시 미래공간기획관 공공개발담당관",
-      "publishedAt": "2026-08-13",
-      "hearingStartDate": "2026-08-13",
-      "hearingEndDate": "2026-08-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5340&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
