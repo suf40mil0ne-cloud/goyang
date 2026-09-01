@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-09-01T13:14:05.251Z",
-  "count": 42,
+  "crawledAt": "2026-09-01T17:41:28.957Z",
+  "count": 41,
   "items": [
     {
       "seq": "5461",
@@ -264,17 +264,6 @@
       "hearingStartDate": "2026-08-21",
       "hearingEndDate": "2026-09-07",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5392&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
-    },
-    {
-      "seq": "5380",
-      "title": "홍성 군관리계획(재정비) 결정(변경)(안) 전략환경영향평가서(초안) 열람공고",
-      "noticeNumber": "충청남도 홍성군 공고 제2026-1486호",
-      "agency": "충청남도 홍성군 지역개발국 도시재생과",
-      "publishedAt": "2026-07-30",
-      "hearingStartDate": "2026-08-21",
-      "hearingEndDate": "2026-09-01",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5380&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 3
     },
     {
