@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-09-03T03:33:00.512Z",
-  "count": 49,
+  "crawledAt": "2026-09-03T13:21:11.176Z",
+  "count": 50,
   "items": [
     {
       "seq": "5474",
@@ -234,6 +234,17 @@
       "listPage": 3
     },
     {
+      "seq": "5478",
+      "title": "강진 마량항 일원 친환경저온위판장 건립을 위한  강진 군관리계획(용도지역·항만시설·세부조성계획) 결정(변경)(안) 주민 등의 의견청취 ...",
+      "noticeNumber": "전남광주통합특별시 강진군 공고 제2026-945호",
+      "agency": "전남광주통합특별시 강진군",
+      "publishedAt": "2026-08-27",
+      "hearingStartDate": "2026-08-27",
+      "hearingEndDate": "2026-09-10",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5478&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
+    },
+    {
       "seq": "5433",
       "title": "진주도시관리계획(용도지역, 시설:주차장) 결정(변경) 및 전략환경영향평가서(초안) 열람·공고",
       "noticeNumber": "경상남도 진주시 공고 제2026-2007호",
@@ -307,8 +318,8 @@
       "publishedAt": "2026-08-26",
       "hearingStartDate": "2026-08-26",
       "hearingEndDate": "2026-09-09",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5418&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5418&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5417",
@@ -395,8 +406,8 @@
       "publishedAt": "2026-08-20",
       "hearingStartDate": "2026-08-20",
       "hearingEndDate": "2026-09-09",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5399&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5399&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "5398",
