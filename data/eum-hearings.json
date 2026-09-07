@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-09-07T11:54:34.227Z",
-  "count": 53,
+  "crawledAt": "2026-09-07T17:31:12.987Z",
+  "count": 49,
   "items": [
+    {
+      "seq": "5497",
+      "title": "경주 도시관리계획(연구시설, 도로) 결정(변경)“안” 열람 공고 [문무 SMR 제작지원센터]",
+      "noticeNumber": "경상북도 경주시 공고 제2026-2468호",
+      "agency": "경상북도 경주시 도시개발국 도시계획과",
+      "publishedAt": "2026-09-08",
+      "hearingStartDate": "2026-09-08",
+      "hearingEndDate": "2026-09-30",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5497&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "5487",
       "title": "도시계획시설사업(소로3-석교16호선 및 소로3-석교34호선) 실시계획 변경 및 사업인정에 관한 주민 등의 의견청취 열람공고",
@@ -109,8 +120,8 @@
       "publishedAt": "2026-09-04",
       "hearingStartDate": "2026-09-04",
       "hearingEndDate": "2026-09-18",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5471&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5471&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "5466",
@@ -219,8 +230,8 @@
       "publishedAt": "2026-09-03",
       "hearingStartDate": "2026-09-03",
       "hearingEndDate": "2026-09-17",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5462&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5462&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5453",
@@ -329,8 +340,8 @@
       "publishedAt": "2026-08-31",
       "hearingStartDate": "2026-08-31",
       "hearingEndDate": "2026-09-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5440&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5440&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5448",
@@ -417,8 +428,8 @@
       "publishedAt": "2026-08-27",
       "hearingStartDate": "2026-08-27",
       "hearingEndDate": "2026-09-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5428&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5428&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "5426",
@@ -487,17 +498,6 @@
       "listPage": 5
     },
     {
-      "seq": "5392",
-      "title": "양주 도시관리계획(시설:완충녹지)(변경:폐지)(안)을 위한 주민공람 공고",
-      "noticeNumber": "경기도 양주시 공고 제2026-287호",
-      "agency": "경기도 양주시 도시주택국 도시과",
-      "publishedAt": "2026-08-21",
-      "hearingStartDate": "2026-08-21",
-      "hearingEndDate": "2026-09-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5392&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5399",
       "title": "구미 도시관리계획(도로) 결정(변경)(안) 공람·공고",
       "noticeNumber": "경상북도 구미시 공고 제2026-2353호",
@@ -517,17 +517,6 @@
       "hearingStartDate": "2026-08-20",
       "hearingEndDate": "2026-09-09",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5391&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5385",
-      "title": "도시관리계획(도시계획시설: 공원, 도로) 결정(변경)(안) 공고·열람",
-      "noticeNumber": "인천광역시 공고 제2026-1730호",
-      "agency": "인천광역시",
-      "publishedAt": "2026-08-18",
-      "hearingStartDate": "2026-08-18",
-      "hearingEndDate": "2026-09-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5385&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
@@ -551,39 +540,6 @@
       "hearingEndDate": "2026-09-14",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5355&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 9
-    },
-    {
-      "seq": "5323",
-      "title": "원효로1가 역세권 도시정비형 재개발사업 정비구역 지정 및 정비계획 결정(안)에 대한 재공람공고(정정)",
-      "noticeNumber": "서울특별시 용산구 공고 제2026-1112호",
-      "agency": "서울특별시 용산구 도시관리국 도시계획과",
-      "publishedAt": "2026-08-07",
-      "hearingStartDate": "2026-08-07",
-      "hearingEndDate": "2026-09-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5323&pageNo=10&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 10
-    },
-    {
-      "seq": "5419",
-      "title": "광흥창역세권(신수동 301-1일원) 장기전세주택  도시정비형 재개발사업 정비계획 결정 및 정비구역 지정(안)에 대한 재공람공고",
-      "noticeNumber": "서울특별시 마포구 공고 제2026-1229호",
-      "agency": "서울특별시 마포구 도시환경국 도시계획과",
-      "publishedAt": "2026-08-06",
-      "hearingStartDate": "2026-08-06",
-      "hearingEndDate": "2026-09-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5419&pageNo=11&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 11
-    },
-    {
-      "seq": "5354",
-      "title": "정릉동 710-81번지 주택정비형 재개발사업 정비계획 결정 및 정비구역 지정(안) 공람·공고",
-      "noticeNumber": "서울특별시 성북구 공고 제2026-1289호",
-      "agency": "서울특별시 성북구 도시관리국 신속도시정비과",
-      "publishedAt": "2026-08-06",
-      "hearingStartDate": "2026-08-06",
-      "hearingEndDate": "2026-09-07",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5354&pageNo=11&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 11
     }
   ]
 }
