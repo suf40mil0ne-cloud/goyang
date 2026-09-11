@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-09-11T14:53:43.287Z",
-  "count": 51,
+  "crawledAt": "2026-09-11T18:14:47.627Z",
+  "count": 47,
   "items": [
     {
       "seq": "5525",
@@ -487,39 +487,6 @@
       "listPage": 5
     },
     {
-      "seq": "5448",
-      "title": "순창 군계획시설(도로, 녹지)사업 실시계획(변경)인가를 위한 주민의견청취 열람·공고",
-      "noticeNumber": "전북특별자치도 순창군 공고 제2026-834호",
-      "agency": "전북특별자치도 순창군 경제산업국 건설과",
-      "publishedAt": "2026-08-28",
-      "hearingStartDate": "2026-08-28",
-      "hearingEndDate": "2026-09-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5448&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5445",
-      "title": "[공고] 남이도시관리계획(공공청사 2호 지방소방학교) 결정(변경) 및 실시계획 작성 열람 공고",
-      "noticeNumber": "경기도 용인시 공고 제2026-484호",
-      "agency": "경기도 용인시 도시정책실 도시정보과",
-      "publishedAt": "2026-08-28",
-      "hearingStartDate": "2026-08-28",
-      "hearingEndDate": "2026-09-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5445&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
-      "seq": "5439",
-      "title": "충주 도시관리계획(수도공급설비) 결정(변경)(안) 주민 열람공고",
-      "noticeNumber": "충청북도 충주시 공고 제2026-1997호",
-      "agency": "충청북도 충주시 건설국 도시계획과",
-      "publishedAt": "2026-08-28",
-      "hearingStartDate": "2026-08-28",
-      "hearingEndDate": "2026-09-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5439&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
-    },
-    {
       "seq": "5437",
       "title": "창신1구역3지구 도시정비형 재개발사업 정비계획 결정(변경)(안) 공람공고",
       "noticeNumber": "서울특별시 종로구 공고 제2026-1118호",
@@ -550,17 +517,6 @@
       "hearingStartDate": "2026-08-27",
       "hearingEndDate": "2026-09-30",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5428&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5426",
-      "title": "문경 도시관리계획(도로, 지구단위계획구역 및 계획) 결정(변경)(안) 공람공고",
-      "noticeNumber": "경상북도 문경시 공고 제2026-1222호",
-      "agency": "경상북도 문경시 경제도시국 도시과",
-      "publishedAt": "2026-08-27",
-      "hearingStartDate": "2026-08-27",
-      "hearingEndDate": "2026-09-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5426&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     }
   ]
