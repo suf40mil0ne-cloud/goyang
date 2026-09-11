@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-09-11T00:56:40.562Z",
-  "count": 47,
+  "crawledAt": "2026-09-11T05:44:49.881Z",
+  "count": 48,
   "items": [
     {
       "seq": "5516",
@@ -495,6 +495,17 @@
       "hearingStartDate": "2026-08-28",
       "hearingEndDate": "2026-09-30",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5437&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
+    },
+    {
+      "seq": "5520",
+      "title": "남구로2 역세권(구로동 714-1번지 일대) 장기전세주택 도시정비형 재개발사업 정비구역 지정(안) 및 정비계획 결정(안)에 대한 주민 공람공...",
+      "noticeNumber": "서울특별시 구로구 공고 제2026-1445호",
+      "agency": "서울특별시 구로구 주택정책국 도시개발과",
+      "publishedAt": "2026-08-27",
+      "hearingStartDate": "2026-08-27",
+      "hearingEndDate": "2026-09-28",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5520&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 5
     },
     {
