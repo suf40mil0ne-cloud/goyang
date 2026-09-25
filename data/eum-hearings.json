@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-09-25T13:22:34.090Z",
-  "count": 75,
+  "crawledAt": "2026-09-25T22:03:14.916Z",
+  "count": 73,
   "items": [
     {
       "seq": "5657",
@@ -638,28 +638,6 @@
       "hearingStartDate": "2026-09-12",
       "hearingEndDate": "2026-09-26",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5530&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5622",
-      "title": "부안 군관리계획(용도지역) 결정(변경)(안) 주민의견청취 열람공고",
-      "noticeNumber": "새만금개발청 공고 제2026-39호",
-      "agency": "새만금개발청",
-      "publishedAt": "2026-06-10",
-      "hearingStartDate": "2026-09-11",
-      "hearingEndDate": "2026-09-25",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5622&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5528",
-      "title": "옥천 군관리계획(공공·문화체육시설: 학교) 결정(폐지)(안) 열람 공고",
-      "noticeNumber": "충청북도 옥천군 공고 제2026-1311호",
-      "agency": "충청북도 옥천군 균형건설국 도시교통과",
-      "publishedAt": "2026-09-11",
-      "hearingStartDate": "2026-09-11",
-      "hearingEndDate": "2026-09-25",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5528&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
