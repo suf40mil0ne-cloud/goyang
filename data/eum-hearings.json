@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-09-26T12:46:00.631Z",
-  "count": 73,
+  "crawledAt": "2026-09-26T22:29:24.248Z",
+  "count": 72,
   "items": [
     {
       "seq": "5657",
@@ -627,17 +627,6 @@
       "hearingStartDate": "2026-09-14",
       "hearingEndDate": "2026-09-29",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5518&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5530",
-      "title": "선화용두재정비촉진지구 내 도시계획시설(주차장⑧)사업 및 실시계획(변경)인가에 관한 주민 등의 의견청취 열람공고",
-      "noticeNumber": "대전광역시 중구 공고 제2026-1340호",
-      "agency": "대전광역시 중구 도시국 도시과",
-      "publishedAt": "2026-09-11",
-      "hearingStartDate": "2026-09-12",
-      "hearingEndDate": "2026-09-26",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5530&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
