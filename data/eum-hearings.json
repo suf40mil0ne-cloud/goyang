@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-10-03T12:18:39.760Z",
-  "count": 74,
+  "crawledAt": "2026-10-03T17:04:01.652Z",
+  "count": 73,
   "items": [
     {
       "seq": "5746",
@@ -671,17 +671,6 @@
       "hearingStartDate": "2026-09-21",
       "hearingEndDate": "2026-10-06",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5590&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5729",
-      "title": "유천지구 소규모주택정비 관리지역 내 도시계획시설(주차장)사업 도시관리계획(경미한 변경) 및 실시계획인가 및 사업인정 관한에 관한 주...",
-      "noticeNumber": "대전광역시 중구 공고 제2026-1372호",
-      "agency": "대전광역시 중구 도시국 도시과",
-      "publishedAt": "2026-09-18",
-      "hearingStartDate": "2026-09-19",
-      "hearingEndDate": "2026-10-03",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5729&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     },
     {
