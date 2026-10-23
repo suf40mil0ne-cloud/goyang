@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-10-23T13:11:15.223Z",
-  "count": 61,
+  "crawledAt": "2026-10-23T18:10:05.169Z",
+  "count": 51,
   "items": [
     {
       "seq": "5915",
@@ -562,116 +562,6 @@
       "hearingEndDate": "2026-10-26",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5783&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
-    },
-    {
-      "seq": "5760",
-      "title": "원주 도시관리계획(시설:소로2-621호, 경관광장17호) 결정(변경)(안) 열람·공고",
-      "noticeNumber": "강원도 원주시 공고 제2026-2712호",
-      "agency": "강원특별자치도 원주시 도시국 도시계획과",
-      "publishedAt": "2026-10-07",
-      "hearingStartDate": "2026-10-07",
-      "hearingEndDate": "2026-10-23",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5760&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5759",
-      "title": "원주 도시관리계획(시설:가스공급설비6호)  결정(변경)(안) 열람·공고",
-      "noticeNumber": "강원도 원주시 공고 제2026-2711호",
-      "agency": "강원특별자치도 원주시 도시국 도시계획과",
-      "publishedAt": "2026-10-07",
-      "hearingStartDate": "2026-10-07",
-      "hearingEndDate": "2026-10-23",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5759&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5793",
-      "title": "청주 오창 제4일반산업단지계획 승인신청에 따른 주민의견청취 및 합동설명회 개최공고",
-      "noticeNumber": "충청북도 청주시 공고 제2026-4196호",
-      "agency": "충청북도 청주시",
-      "publishedAt": "2026-10-02",
-      "hearingStartDate": "2026-10-02",
-      "hearingEndDate": "2026-10-23",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5793&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5577",
-      "title": "미아역세권 장기전세주택 도시정비형 재개발사업 정비구역 지정 및 정비계획 결정(안) 주민공람 공고",
-      "noticeNumber": "서울특별시 강북구 공고 제2026-1376호",
-      "agency": "서울특별시 강북구 도시관리국 주거정비과",
-      "publishedAt": "2026-10-02",
-      "hearingStartDate": "2026-10-02",
-      "hearingEndDate": "2026-11-02",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5577&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5749",
-      "title": "무교다동구역 15·16지구 도시정비형 재개발사업 정비계획(변경) 및 지구단위계획(변경) 결정(안) 및 도시관리계획(용도지구:방화지구) 결정...",
-      "noticeNumber": "서울특별시 중구 공고 제2026-1011호",
-      "agency": "서울특별시 중구 도시관리국 도심정비과",
-      "publishedAt": "2026-10-01",
-      "hearingStartDate": "2026-10-01",
-      "hearingEndDate": "2026-10-31",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5749&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "5734",
-      "title": "신촌지역 마포4구역 및 신촌지역 마포4구역 12지구 도시정비형 재개발사업 정비구역 및 정비계획 결정(변경)(안) 재공람공고",
-      "noticeNumber": "서울특별시 마포구 공고 제2026-1535호",
-      "agency": "서울특별시 마포구 도시환경국 도시계획과",
-      "publishedAt": "2026-10-01",
-      "hearingStartDate": "2026-10-01",
-      "hearingEndDate": "2026-11-02",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5734&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "5733",
-      "title": "신촌지역 마포4구역 및 신촌지역 마포4구역 1지구 도시정비형 재개발사업 정비구역 및 정비계획 결정(변경)(안) 재공람공고",
-      "noticeNumber": "서울특별시 마포구 공고 제2026-1534호",
-      "agency": "서울특별시 마포구 도시환경국 도시계획과",
-      "publishedAt": "2026-10-01",
-      "hearingStartDate": "2026-10-01",
-      "hearingEndDate": "2026-11-02",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5733&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "5732",
-      "title": "2030년 장수 군관리계획(재정비) 및 군관리계획(용도지역:2개소, 군계획시설 1개소) 결정(변경)(안) 및 전략환경영향평가서(초안), 기후변...",
-      "noticeNumber": "전북특별자치도 장수군 공고 제2026-838호",
-      "agency": "전북특별자치도 장수군 건설과",
-      "publishedAt": "2026-10-01",
-      "hearingStartDate": "2026-10-01",
-      "hearingEndDate": "2026-10-23",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5732&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "5728",
-      "title": "이천 도시관리계획(용도지역, 도시계획시설:체육시설)(결정)(변경)(안) 주민 공람·공고",
-      "noticeNumber": "경기도 이천시 공고 제2026-2698호",
-      "agency": "경기도 이천시 도시주택국 도시과",
-      "publishedAt": "2026-10-01",
-      "hearingStartDate": "2026-10-01",
-      "hearingEndDate": "2026-10-25",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5728&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
-    },
-    {
-      "seq": "5703",
-      "title": "삼익그린2차아파트 주택재건축정비사업 정비구역 지정 및 정비계획 결정, 지구단위계획 변경 결정(안) 재공람공고",
-      "noticeNumber": "서울특별시 강동구 공고 제2026-1951호",
-      "agency": "서울특별시 강동구 도시관리국 재건축재개발과",
-      "publishedAt": "2026-09-30",
-      "hearingStartDate": "2026-09-30",
-      "hearingEndDate": "2026-10-29",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5703&pageNo=9&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 9
     }
   ]
 }
