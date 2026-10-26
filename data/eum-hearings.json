@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-10-26T09:59:28.248Z",
-  "count": 63,
+  "crawledAt": "2026-10-26T16:43:32.191Z",
+  "count": 60,
   "items": [
     {
       "seq": "5922",
@@ -652,28 +652,6 @@
       "listPage": 6
     },
     {
-      "seq": "5843",
-      "title": "창동 529-1번지 일원 가로주택정비사업 조합설립변경인가를 위한 주민공람·공고",
-      "noticeNumber": "서울특별시 도봉구 공고 제2026-1441호",
-      "agency": "서울특별시 도봉구 도시관리국 재건축재개발과",
-      "publishedAt": "2026-10-12",
-      "hearingStartDate": "2026-10-12",
-      "hearingEndDate": "2026-10-26",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5843&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5836",
-      "title": "태안군관리계획 재정비(안) 열람.공고",
-      "noticeNumber": "충청남도 태안군 공고 제2026-1744호",
-      "agency": "충청남도 태안군",
-      "publishedAt": "2026-10-12",
-      "hearingStartDate": "2026-10-12",
-      "hearingEndDate": "2026-10-26",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5836&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
       "seq": "5784",
       "title": "도시관리계획(도시계획시설: 사회복지시설) 결정(변경)(안) 열람 공고",
       "noticeNumber": "충청남도 서산시 공고 제2026-2386호",
@@ -682,17 +660,6 @@
       "hearingStartDate": "2026-10-12",
       "hearingEndDate": "2026-10-30",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5784&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5783",
-      "title": "서산 보원사지 방문자센터 건립을 위한 도시관리계획(용도지역, 도시계획시설: 문화시설) 결정(변경)(안) 재열람 공고",
-      "noticeNumber": "충청남도 서산시 공고 제2026-2453호",
-      "agency": "충청남도 서산시 건설도시국 도시과",
-      "publishedAt": "2026-10-12",
-      "hearingStartDate": "2026-10-12",
-      "hearingEndDate": "2026-10-26",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5783&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 7
     }
   ]
