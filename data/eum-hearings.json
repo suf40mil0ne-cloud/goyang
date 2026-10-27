@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-10-27T14:07:54.246Z",
-  "count": 61,
+  "crawledAt": "2026-10-27T19:54:19.416Z",
+  "count": 59,
   "items": [
     {
       "seq": "5934",
@@ -639,28 +639,6 @@
       "hearingEndDate": "2026-10-28",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5816&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
-    },
-    {
-      "seq": "5794",
-      "title": "고양 도시관리계획(도시계획시설 : 시장) 결정(변경)(안) 공람 공고",
-      "noticeNumber": "경기도 고양시 공고 제2026-2229호",
-      "agency": "경기도 고양시 도시주택정책실 도시계획정책관",
-      "publishedAt": "2026-10-13",
-      "hearingStartDate": "2026-10-13",
-      "hearingEndDate": "2026-10-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5794&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5779",
-      "title": "함안군관리계획[군계획시설:도로(중로,소로3-A호선)] 결정(변경) 공람·공고",
-      "noticeNumber": "경상남도 함안군 공고 제2026-1232호",
-      "agency": "경상남도 함안군 산업건설국 도시건축과",
-      "publishedAt": "2026-10-13",
-      "hearingStartDate": "2026-10-13",
-      "hearingEndDate": "2026-10-27",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5779&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
     },
     {
       "seq": "5784",
