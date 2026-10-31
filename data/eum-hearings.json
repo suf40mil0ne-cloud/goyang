@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-10-31T13:25:41.051Z",
-  "count": 75,
+  "crawledAt": "2026-10-31T18:19:05.343Z",
+  "count": 74,
   "items": [
     {
       "seq": "5975",
@@ -770,17 +770,6 @@
       "hearingStartDate": "2026-10-19",
       "hearingEndDate": "2026-11-03",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5838&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5847",
-      "title": "도시관리계획(서울발산지구 지구단위계획) 결정(변경)(안) 열람공고",
-      "noticeNumber": "서울특별시 공고 제2026-2874호",
-      "agency": "서울특별시 문화본부 문화시설과",
-      "publishedAt": "2026-10-16",
-      "hearingStartDate": "2026-10-16",
-      "hearingEndDate": "2026-10-31",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5847&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
