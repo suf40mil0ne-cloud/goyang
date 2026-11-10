@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-11-10T07:04:02.413Z",
-  "count": 88,
+  "crawledAt": "2026-11-10T16:13:12.185Z",
+  "count": 86,
   "items": [
     {
       "seq": "6062",
@@ -814,28 +814,6 @@
       "hearingStartDate": "2026-10-28",
       "hearingEndDate": "2026-11-13",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5938&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "6041",
-      "title": "행위허가 제한(안) 공람공고",
-      "noticeNumber": "서울특별시 노원구 공고 제2026-1771호",
-      "agency": "서울특별시 노원구 도시계획국 재건축사업과",
-      "publishedAt": "2026-10-27",
-      "hearingStartDate": "2026-10-27",
-      "hearingEndDate": "2026-11-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6041&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5940",
-      "title": "대덕 건지지구(1블럭) 도시계획시설(도로: 중로1-1호선) 사업시행자 지정(변경) 및 실시계획인가(변경) 전 재열람공고",
-      "noticeNumber": "경기도 안성시 공고 제2026-2812호",
-      "agency": "경기도 안성시 경제도시국 도시정책과",
-      "publishedAt": "2026-10-27",
-      "hearingStartDate": "2026-10-27",
-      "hearingEndDate": "2026-11-10",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5940&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
