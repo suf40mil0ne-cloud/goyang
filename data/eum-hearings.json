@@ -1,7 +1,18 @@
 {
-  "crawledAt": "2026-11-11T10:28:49.826Z",
-  "count": 86,
+  "crawledAt": "2026-11-11T18:26:38.353Z",
+  "count": 82,
   "items": [
+    {
+      "seq": "6057",
+      "title": "도시관리계획(국제교류복합지구 지구단위계획 및 잠실스포츠·MICE 복합공간 특별계획구역 세부개발계획) 결정(변경)(안) 재열람공고",
+      "noticeNumber": "서울특별시 공고 제2026-3086호",
+      "agency": "서울특별시 균형발전본부 균형발전기획관 동남권사업과",
+      "publishedAt": "2026-11-12",
+      "hearingStartDate": "2026-11-12",
+      "hearingEndDate": "2026-11-26",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6057&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 1
+    },
     {
       "seq": "6062",
       "title": "[공고]도시계획시설(대학교8호:용인대학교) 사업시행자 지정 및 실시계획 인가 열람·공고",
@@ -98,8 +109,8 @@
       "publishedAt": "2026-11-06",
       "hearingStartDate": "2026-11-06",
       "hearingEndDate": "2026-11-24",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6030&pageNo=1&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 1
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6030&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 2
     },
     {
       "seq": "6028",
@@ -208,8 +219,8 @@
       "publishedAt": "2026-11-05",
       "hearingStartDate": "2026-11-05",
       "hearingEndDate": "2026-11-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5978&pageNo=2&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 2
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5978&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
     },
     {
       "seq": "5969",
@@ -318,8 +329,8 @@
       "publishedAt": "2026-11-02",
       "hearingStartDate": "2026-11-02",
       "hearingEndDate": "2026-11-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5955&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5955&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "5982",
@@ -428,8 +439,8 @@
       "publishedAt": "2026-10-30",
       "hearingStartDate": "2026-10-30",
       "hearingEndDate": "2026-11-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5936&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5936&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "5935",
@@ -538,8 +549,8 @@
       "publishedAt": "2026-10-29",
       "hearingStartDate": "2026-10-29",
       "hearingEndDate": "2026-11-12",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6022&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6022&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "6020",
@@ -586,17 +597,6 @@
       "listPage": 6
     },
     {
-      "seq": "5963",
-      "title": "도시관리계획(지구단위계획) 결정(변경)“안” 열람공고",
-      "noticeNumber": "울산광역시 공고 제2026-2023호",
-      "agency": "울산광역시 도시국 도시계획과",
-      "publishedAt": "2026-10-29",
-      "hearingStartDate": "2026-10-29",
-      "hearingEndDate": "2026-11-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5963&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
       "seq": "5959",
       "title": "[공고] 도시계획시설(도로:중로 2-70호 외 2개노선) 결정(변경) 및 실시계획 작성(변경) 열람·공고",
       "noticeNumber": "경기도 용인시 공고 제2026-2947호",
@@ -637,8 +637,8 @@
       "publishedAt": "2026-10-29",
       "hearingStartDate": "2026-10-29",
       "hearingEndDate": "2026-11-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5951&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5951&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 7
     },
     {
       "seq": "5950",
@@ -740,39 +740,6 @@
       "listPage": 7
     },
     {
-      "seq": "6015",
-      "title": "여주 도시관리계획(청안6지구 산업유통형 지구단위계획구역 및 계획) 결정(안) 및 전략환경영향평가(초안) 공람·공고",
-      "noticeNumber": "경기도 여주시 공고 제2026-1794호",
-      "agency": "경기도 여주시 도시건설국 도시계획과",
-      "publishedAt": "2026-10-28",
-      "hearingStartDate": "2026-10-28",
-      "hearingEndDate": "2026-11-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6015&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
-    },
-    {
-      "seq": "5997",
-      "title": "방화동 247-71 번지 일대 가로주택정비사업 사업시행계획인가 공람공고",
-      "noticeNumber": "서울특별시 강서구 공고 제2026-1878호",
-      "agency": "서울특별시 강서구 균형발전도시국 도시개발과",
-      "publishedAt": "2026-10-28",
-      "hearingStartDate": "2026-10-28",
-      "hearingEndDate": "2026-11-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5997&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5986",
-      "title": "동두천 도시관리계획(도시계획시설) 결정(변경)(안) 열람공고",
-      "noticeNumber": "경기도 동두천시 공고 제2026-1555호",
-      "agency": "경기도 동두천시 도시과",
-      "publishedAt": "2026-10-28",
-      "hearingStartDate": "2026-10-28",
-      "hearingEndDate": "2026-11-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5986&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
       "seq": "5983",
       "title": "「양주 도시관리계획(도시계획시설) 결정(변경)(안)」 주민공람 공고",
       "noticeNumber": "경기도 양주시 공고 제2026-2311호",
@@ -792,17 +759,6 @@
       "hearingStartDate": "2026-10-28",
       "hearingEndDate": "2026-11-28",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5974&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "5943",
-      "title": "제천 도시관리계획(도시계획시설: 소로3-481호) 결정(변경)(안) 열람공고",
-      "noticeNumber": "충청북도 제천시 공고 제2026-2077호",
-      "agency": "충청북도 제천시 경제산업국 도시디자인과",
-      "publishedAt": "2026-10-28",
-      "hearingStartDate": "2026-10-28",
-      "hearingEndDate": "2026-11-11",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5943&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
@@ -912,8 +868,8 @@
       "publishedAt": "2026-10-15",
       "hearingStartDate": "2026-10-15",
       "hearingEndDate": "2026-11-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6056&pageNo=14&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 14
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6056&pageNo=15&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 15
     },
     {
       "seq": "5987",
@@ -934,8 +890,8 @@
       "publishedAt": "2026-10-15",
       "hearingStartDate": "2026-10-15",
       "hearingEndDate": "2026-11-16",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5787&pageNo=15&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 15
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5787&pageNo=16&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 16
     },
     {
       "seq": "5948",
