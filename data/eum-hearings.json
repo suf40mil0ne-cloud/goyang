@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-11-14T09:54:14.040Z",
-  "count": 57,
+  "crawledAt": "2026-11-14T16:25:52.726Z",
+  "count": 56,
   "items": [
     {
       "seq": "6093",
@@ -572,17 +572,6 @@
       "hearingStartDate": "2026-10-30",
       "hearingEndDate": "2026-12-01",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5973&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
-    },
-    {
-      "seq": "5972",
-      "title": "여주 도시계획시설(공원:대신근린공원) 결정(변경) 및 실시계획(변경) 인가 공람·공고",
-      "noticeNumber": "경기도 여주시 공고 제2026-1823호",
-      "agency": "경기도 여주시",
-      "publishedAt": "2026-10-30",
-      "hearingStartDate": "2026-10-30",
-      "hearingEndDate": "2026-11-14",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5972&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 6
     },
     {
