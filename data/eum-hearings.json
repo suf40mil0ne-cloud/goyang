@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-11-17T03:28:43.510Z",
-  "count": 74,
+  "crawledAt": "2026-11-17T12:51:43.817Z",
+  "count": 75,
   "items": [
     {
       "seq": "6115",
@@ -223,6 +223,17 @@
       "listPage": 3
     },
     {
+      "seq": "6122",
+      "title": "구로동 466번지 일대 주택정비형 재개발사업 정비계획 결정 및 정비구역 지정(안)에 대한 주민 공람공고",
+      "noticeNumber": "서울특별시 구로구 공고 제2026-1937호",
+      "agency": "서울특별시 구로구 주택정책국 도시개발과",
+      "publishedAt": "2026-11-12",
+      "hearingStartDate": "2026-11-12",
+      "hearingEndDate": "2026-12-14",
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6122&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 3
+    },
+    {
       "seq": "6112",
       "title": "서울특별시 중구 공고 제2026 - 1173호",
       "noticeNumber": "서울특별시 중구 공고 제2026-1173호",
@@ -318,8 +329,8 @@
       "publishedAt": "2026-11-12",
       "hearingStartDate": "2026-11-12",
       "hearingEndDate": "2026-11-26",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6076&pageNo=3&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 3
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6076&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 4
     },
     {
       "seq": "6075",
@@ -428,8 +439,8 @@
       "publishedAt": "2026-11-10",
       "hearingStartDate": "2026-11-10",
       "hearingEndDate": "2026-11-30",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5989&pageNo=4&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 4
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5989&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 5
     },
     {
       "seq": "6051",
@@ -538,8 +549,8 @@
       "publishedAt": "2026-11-06",
       "hearingStartDate": "2026-11-06",
       "hearingEndDate": "2026-11-20",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5993&pageNo=5&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 5
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5993&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 6
     },
     {
       "seq": "6113",
@@ -648,8 +659,8 @@
       "publishedAt": "2026-11-05",
       "hearingStartDate": "2026-11-05",
       "hearingEndDate": "2026-11-19",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6002&pageNo=6&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 6
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6002&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 7
     },
     {
       "seq": "5978",
@@ -758,8 +769,8 @@
       "publishedAt": "2026-11-03",
       "hearingStartDate": "2026-11-03",
       "hearingEndDate": "2026-11-17",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5984&pageNo=7&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 7
+      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5984&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
+      "listPage": 8
     },
     {
       "seq": "5976",
