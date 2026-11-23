@@ -1,6 +1,6 @@
 {
-  "crawledAt": "2026-11-23T08:41:27.796Z",
-  "count": 76,
+  "crawledAt": "2026-11-23T20:57:27.028Z",
+  "count": 74,
   "items": [
     {
       "seq": "6176",
@@ -781,28 +781,6 @@
       "hearingStartDate": "2026-11-10",
       "hearingEndDate": "2026-11-30",
       "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=5989&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "6140",
-      "title": "곡성 군계획시설(소로 2-68호선) 사업 실시계획 사전열람 및 사업인정에 관한 주민 등의 의견 청취 공고",
-      "noticeNumber": "전남광주통합특별시 곡성군 공고 제2026-1169호",
-      "agency": "전남광주통합특별시 곡성군 경제과",
-      "publishedAt": "2026-11-09",
-      "hearingStartDate": "2026-11-09",
-      "hearingEndDate": "2026-11-23",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6140&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
-      "listPage": 8
-    },
-    {
-      "seq": "6051",
-      "title": "이천 도시관리계획[지구단위계획(관리일반산업단지)] 결정(변경)(안) 주민 공람·공고",
-      "noticeNumber": "경기도 이천시 공고 제2026-3042호",
-      "agency": "경기도 이천시 신성장산업국 기업투자유치과",
-      "publishedAt": "2026-11-09",
-      "hearingStartDate": "2026-11-09",
-      "hearingEndDate": "2026-11-23",
-      "detailUrl": "https://www.eum.go.kr/web/cp/hr/hrPeopleHearDet.jsp?seq=6051&pageNo=8&zonenm=&startdt=&enddt=&chrgorg=&selSggCd=&select2=&select_3=&gosino=&mobile_yn=",
       "listPage": 8
     },
     {
